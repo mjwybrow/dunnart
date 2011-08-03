@@ -19,13 +19,16 @@ Nightly alpha builds for Mac OS X, Linux and Windows can be found here:
 
 ### How to cite? ###
 
-Tim Dwyer, Kim Marriott, and Michael Wybrow.
-Dunnart: A constraint-based network diagram authoring tool.
-In Proceedings of 16th International Symposium on Graph Drawing (GD'08),
-LNCS 5417, pages 420–431. Springer-Verlag, 2009. [DOI][doi]
+If you refer to Dunnart in your own research or publications, please cite 
+the following reference:
+
+ *  Tim Dwyer, Kim Marriott, and Michael Wybrow.  
+    Dunnart: A constraint-based network diagram authoring tool.  
+    In Proceedings of 16th International Symposium on Graph Drawing (GD'08),  
+    LNCS 5417, pages 420–431. Springer-Verlag, 2009. [DOI][doi]
 
 
-### Further information ### 
+### Further information ###
 
 The concept behind Dunnart is to use constraint-based methods to free users
 from manually maintaining relationships within their diagrams. These could
@@ -34,20 +37,21 @@ or graph layout. In Dunnart, the user can define these features of their layout
 and they will be automatically maintained throughout further editing. The user
 can override or alter these relationships at any time.
 
-![Dunnart screenshot](https://raw.github.com/mjwybrow/dunnart/master/libdunnartcanvas/doc/DunnartScreen.png)
-
 Dunnart is a research prototype. As such, it lacks some of the features and
 polish of a professional diagram editor. any of the significant features of
 Dunnart are implemented in the open-source Adaptagrams constraint layout
 libraries and are described in my publications and/or PhD thesis.
+
+![Dunnart screenshot](https://raw.github.com/mjwybrow/dunnart/master/libdunnartcanvas/doc/DunnartScreen.png)
 
 ### Building ###
 
 Dunnart depends only on the [Qt cross-platform application and UI 
 framework][qt].  All other components are included in the repository.  
 Dunnart can be built by issuing the following commands:
-	qmake -recursive -config release dunnart.pro
-	make
+
+    qmake -recursive -config release dunnart.pro  
+    make
 
 
 ### libdunnartcanvas - Reusable constraint-based canvas component ###
@@ -57,11 +61,11 @@ that extends our low level Adaptagrams constraint-based layout libraries and
 provides interactive constrain-based layout and placement tools.  See the image
 below for an overview of the architecture.
 
-![Dunnart architecture](https://raw.github.com/mjwybrow/dunnart/master/libdunnartcanvas/doc/DunnartStructure.png)
-
 Adaptagrams is a library of tools and reusable code for adaptive diagramming
 applications, for example: drawing tools, automated document and diagram
 layout, smart presentation software, graph drawing, chart layout, etc.
+
+![Dunnart architecture](https://raw.github.com/mjwybrow/dunnart/master/libdunnartcanvas/doc/DunnartStructure.png)
 
 ### Authors ###
 
@@ -81,7 +85,7 @@ Dunnart and `libdunnartcanvas` are available as open source under the terms of
 the GNU GPL.  We are also open to dual-licensing `libdunartcanvas` for 
 commercial use.
 
-Copyright (C) 2003-2007  Michael Wybrow
+Copyright (C) 2003-2007  Michael Wybrow  
 Copyright (C) 2006-2011  Monash University
 
 This program is free software; you can redistribute it and/or

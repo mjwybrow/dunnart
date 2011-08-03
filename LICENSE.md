@@ -6,7 +6,7 @@ Dunnart (and libdunnartcanvas)
 
 Dunnart - Constraint-based Diagram Editor
 
-Copyright (C) 2003-2007  Michael Wybrow  <mjwybrow@users.sourceforge.net>
+Copyright (C) 2003-2007  Michael Wybrow  <http://michael.wybrow.info>  
 Copyright (C) 2006-2011  Monash University
 
 This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@ Adaptagrams libraries
 =====================
 
 Adaptagrams is comprised of the four libraries -- `libavoid`, `libvpsv`, 
-`libcola`, `libtopology` -- which all share the following license.
+`libcola`, `libtopology` -- which all share the following license:
 
 Copyright (C) 2004-2011  Monash University
 
@@ -51,7 +51,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 QtPropertyBrowser
 =================
 
-Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).  
 All rights reserved.
 
 Contact: Nokia Corporation (qt-info@nokia.com)
@@ -105,9 +105,7 @@ this software with
 
   - the libraries of the COIN-OR Osi project (see
     http://www.coin-or.org/projects/Osi.xml);
-
   - all libraries required by Osi;
-
   - and all LP-solver libraries directly supported by the
     COIN-OR Osi project,
 
