@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Created with Dunnart (http://www.csse.monash.edu.au/~mwybrow/dunnart/)-->
+<svg xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:dunnart="http://www.csse.monash.edu.au/~mwybrow/dunnart.dtd" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd">
+  <dunnart:options useMultiway="1" instantFeedback="1" newConnType="53" orientation="0" graphMode="0"/>
+  <sodipodi:namedview showguides="false" guidetolerance="5.0" guidecolor="#000000ff" guideopacity="0.25"/>
+  <style>.shape { stroke:black; stroke-width:1px; fill:#f0f0d2; } .connector { fill:none; stroke:black; stroke-width:1px; stroke-linecap:butt; stroke-linejoin:miter; stroke-opacity:1; } .cluster { fill:#60cdf3; fill-opacity:0.33333333; }</style>
+  <defs>
+    <marker inkscape:stockid="ConnArrowEnd" orient="auto" refX="7.5" refY="0.0" id="ConnArrowEnd" style="overflow:visible;">
+      <path d="M 0.0,0.0 L 1.0,-5.0 L -12.5,0.0 L 1.0,5.0 L 0.0,0.0 z" style="fill-rule:evenodd; stroke:#000000; stroke-width:1px; marker-start:none;" transform="scale(0.6) rotate(180)"/>
+    </marker>
+  </defs>
+  <path id="11" class="connector" dunnart:srcID="7" dunnart:srcFlags="56" dunnart:srcX="449" dunnart:srcY="188" dunnart:dstID="9" dunnart:dstFlags="52" dunnart:dstX="556" dunnart:dstY="186" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 298.000000,133.000000 L 304.000000,133.000000 L 399.000000,131.000000 L 405.000000,131.000000 " dunnart:ArrowType="0" dunnart:type="connAvoidPoly"/>
+  <path id="12" class="connector" dunnart:srcID="9" dunnart:srcFlags="50" dunnart:srcX="582" dunnart:srcY="202" dunnart:dstID="10" dunnart:dstFlags="49" dunnart:dstX="583" dunnart:dstY="297" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 431.000000,147.000000 L 431.000000,153.000000 L 432.000000,236.000000 L 432.000000,242.000000 " dunnart:ArrowType="1" dunnart:type="connAvoidPoly"/>
+  <path id="13" class="connector" dunnart:srcID="10" dunnart:srcFlags="52" dunnart:srcX="557" dunnart:srcY="313" dunnart:dstID="8" dunnart:dstFlags="56" dunnart:dstX="454" dunnart:dstY="310" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 406.000000,258.000000 L 400.000000,258.000000 L 309.000000,255.000000 L 303.000000,255.000000 " dunnart:ArrowType="2" dunnart:type="connAvoidPoly"/>
+  <path id="14" class="connector" dunnart:srcID="8" dunnart:srcFlags="49" dunnart:srcX="428" dunnart:srcY="294" dunnart:dstID="7" dunnart:dstFlags="50" dunnart:dstX="423" dunnart:dstY="204" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 277.000000,239.000000 L 277.000000,233.000000 L 272.000000,155.000000 L 272.000000,149.000000 " dunnart:ArrowType="3" dunnart:type="connAvoidPoly"/>
+  <g>
+    <rect width="52" height="32" x="246" y="117" id="7" class="shape" dunnart:label="" dunnart:width="60" dunnart:height="40" dunnart:xPos="243" dunnart:yPos="114" dunnart:type="umlClass">
+      <dunnart:class_name>Class</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>0</dunnart:attr_section_height>
+      <dunnart:method_section_height>296</dunnart:method_section_height>
+    </rect>
+  </g>
+  <g>
+    <rect width="52" height="32" x="251" y="239" id="8" class="shape" dunnart:label="" dunnart:width="60" dunnart:height="40" dunnart:xPos="248" dunnart:yPos="236" dunnart:type="umlClass">
+      <dunnart:class_name>Class</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>-1250922976</dunnart:attr_section_height>
+      <dunnart:method_section_height>1080950784</dunnart:method_section_height>
+    </rect>
+  </g>
+  <g>
+    <rect width="52" height="32" x="405" y="115" id="9" class="shape" dunnart:label="" dunnart:width="60" dunnart:height="40" dunnart:xPos="402" dunnart:yPos="112" dunnart:type="umlClass">
+      <dunnart:class_name>Class</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>0</dunnart:attr_section_height>
+      <dunnart:method_section_height>0</dunnart:method_section_height>
+    </rect>
+  </g>
+  <g>
+    <rect width="52" height="32" x="406" y="242" id="10" class="shape" dunnart:label="" dunnart:width="60" dunnart:height="40" dunnart:xPos="403" dunnart:yPos="239" dunnart:type="umlClass">
+      <dunnart:class_name>Class</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>0</dunnart:attr_section_height>
+      <dunnart:method_section_height>0</dunnart:method_section_height>
+    </rect>
+  </g>
+</svg>

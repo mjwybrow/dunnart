@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Created with Dunnart (http://www.csse.monash.edu.au/~mwybrow/dunnart/)-->
+<svg xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:dunnart="http://www.csse.monash.edu.au/~mwybrow/dunnart.dtd" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" height="646px" viewBox="190.000000 18.000000 484.000000 646.000000">
+  <dunnart:options useMultiway="1" instantFeedback="1" newConnType="53" orientation="0" graphMode="0" layoutMode="0" nonOverlapConstraints="1" straightenConnectors="0" avoidBuffer="0" pageBoundaryConstraints="0" defaultIdealConnectorLength="1"/>
+  <sodipodi:namedview showguides="false" guidetolerance="5.0" guidecolor="#000000ff" guideopacity="0.25" bordercolor="#000000" borderopacity="0.5" width="484px" height="646px"/>
+  <style type="text/css">.shape   { stroke:black; stroke-width:1px; fill:#f0f0d2; } .connector { fill:none; stroke:black; stroke-width:1px; stroke-linecap:butt; stroke-linejoin:miter; stroke-opacity:1; } .cluster { fill:#60cdf3; fill-opacity:0.33333333; } .tLabel { text-anchor:middle; text-align:center; } .tsLabel { font-size:11px; font-style:normal; font-weight:normal; fill:black; fill-opacity:1; stroke:none; font-family:DejaVu Sans; } .frLabel { font-size:11px; font-style:normal; font-weight:normal; fill:black; fill-opacity:1; stroke:none; stroke-width:1px; stroke-linecap:butt; stroke-linejoin:miter; stroke-opacity:1; font-family:DejaVu Sans; font-stretch:normal; font-variant:normal; text-anchor:middle; text-align:center; progression-align:center; writing-mode:lr; line-height:125%; } </style>
+  <defs>
+    <marker inkscape:stockid="ConnArrowEnd" orient="auto" refX="7.5" refY="0.0" id="ConnArrowEnd" style="overflow:visible;">
+      <path d="M 0.0,0.0 L 1.0,-5.0 L -12.5,0.0 L 1.0,5.0 L 0.0,0.0 z" style="fill-rule:evenodd; stroke:#000000; stroke-width:1px; marker-start:none;" transform="scale(0.6) rotate(180)"/>
+    </marker>
+  </defs>
+  <path id="16" class="connector" dunnart:idealLength="113.915069" dunnart:hidden_connector_length="43.915068" dunnart:src_hidden_len="23.323808" dunnart:dst_hidden_len="20.591260" dunnart:srcID="1" dunnart:srcFlags="544" dunnart:srcX="542" dunnart:srcY="116" dunnart:dstID="4" dunnart:dstFlags="544" dunnart:dstX="429" dunnart:dstY="317" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 391.000000,61.000000 L 288.000000,244.000000 " dunnart:ArrowType="2" dunnart:type="connAvoidPoly"/>
+  <path id="17" class="connector" dunnart:idealLength="108.472036" dunnart:hidden_connector_length="38.472036" dunnart:src_hidden_len="20.223748" dunnart:dst_hidden_len="18.248288" dunnart:srcID="2" dunnart:srcFlags="544" dunnart:srcX="405" dunnart:srcY="191" dunnart:dstID="4" dunnart:dstFlags="544" dunnart:dstX="429" dunnart:dstY="317" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 254.000000,136.000000 L 275.000000,244.000000 " dunnart:ArrowType="2" dunnart:type="connAvoidPoly"/>
+  <path id="18" class="connector" dunnart:idealLength="108.506850" dunnart:hidden_connector_length="38.506848" dunnart:src_hidden_len="18.110770" dunnart:dst_hidden_len="20.396078" dunnart:srcID="9" dunnart:srcFlags="544" dunnart:srcX="411" dunnart:srcY="448" dunnart:dstID="4" dunnart:dstFlags="544" dunnart:dstX="429" dunnart:dstY="317" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 260.000000,393.000000 L 274.000000,282.000000 " dunnart:ArrowType="2" dunnart:type="connAvoidPoly"/>
+  <path id="19" class="connector" dunnart:idealLength="140.327951" dunnart:hidden_connector_length="70.327951" dunnart:src_hidden_len="40.311289" dunnart:dst_hidden_len="30.016662" dunnart:srcID="3" dunnart:srcFlags="544" dunnart:srcX="605" dunnart:srcY="213" dunnart:dstID="4" dunnart:dstFlags="544" dunnart:dstX="429" dunnart:dstY="317" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 454.000000,158.000000 L 304.000000,247.000000 " dunnart:ArrowType="0" dunnart:type="connAvoidPoly"/>
+  <path id="20" class="connector" dunnart:idealLength="138.031127" dunnart:hidden_connector_length="68.031127" dunnart:src_hidden_len="42.011903" dunnart:dst_hidden_len="26.019224" dunnart:srcID="5" dunnart:srcFlags="544" dunnart:srcX="751" dunnart:srcY="301" dunnart:dstID="4" dunnart:dstFlags="544" dunnart:dstX="429" dunnart:dstY="317" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 600.000000,246.000000 L 304.000000,261.000000 " dunnart:ArrowType="2" dunnart:type="connAvoidPoly"/>
+  <path id="21" class="connector" dunnart:idealLength="113.920450" dunnart:hidden_connector_length="43.920448" dunnart:src_hidden_len="21.095023" dunnart:dst_hidden_len="22.825424" dunnart:srcID="8" dunnart:srcFlags="544" dunnart:srcX="541" dunnart:srcY="505" dunnart:dstID="4" dunnart:dstFlags="544" dunnart:dstX="429" dunnart:dstY="317" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 390.000000,450.000000 L 289.000000,282.000000 " dunnart:ArrowType="2" dunnart:type="connAvoidPoly"/>
+  <path id="22" class="connector" dunnart:idealLength="149.106096" dunnart:hidden_connector_length="79.106098" dunnart:src_hidden_len="48.041649" dunnart:dst_hidden_len="31.064449" dunnart:srcID="8" dunnart:srcFlags="544" dunnart:srcX="541" dunnart:srcY="505" dunnart:dstID="12" dunnart:dstFlags="544" dunnart:dstX="775" dunnart:dstY="513" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 390.000000,450.000000 L 593.000000,456.000000 " dunnart:ArrowType="0" dunnart:type="connAvoidPoly"/>
+  <path id="23" class="connector" dunnart:idealLength="120.371335" dunnart:hidden_connector_length="50.371334" dunnart:src_hidden_len="24.758837" dunnart:dst_hidden_len="25.612497" dunnart:srcID="12" dunnart:srcFlags="544" dunnart:srcX="775" dunnart:srcY="513" dunnart:dstID="13" dunnart:dstFlags="544" dunnart:dstX="648" dunnart:dstY="369" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 624.000000,458.000000 L 573.000000,403.000000 L 513.000000,334.000000 " dunnart:ArrowType="0" dunnart:type="connAvoidPoly"/>
+  <path id="24" class="connector" dunnart:idealLength="108.052739" dunnart:hidden_connector_length="38.052741" dunnart:src_hidden_len="20.024984" dunnart:dst_hidden_len="18.027756" dunnart:srcID="14" dunnart:srcFlags="544" dunnart:srcX="769" dunnart:srcY="438" dunnart:dstID="12" dunnart:dstFlags="544" dunnart:dstX="775" dunnart:dstY="513" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 618.000000,383.000000 L 623.000000,440.000000 " dunnart:ArrowType="0" dunnart:type="connAvoidPoly"/>
+  <path id="25" class="connector" dunnart:idealLength="119.052318" dunnart:hidden_connector_length="49.052318" dunnart:src_hidden_len="26.248809" dunnart:dst_hidden_len="22.803509" dunnart:srcID="12" dunnart:srcFlags="544" dunnart:srcX="775" dunnart:srcY="513" dunnart:dstID="15" dunnart:dstFlags="544" dunnart:dstX="698" dunnart:dstY="611" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 624.000000,458.000000 L 561.000000,538.000000 " dunnart:ArrowType="0" dunnart:type="connAvoidPoly"/>
+  <path id="26" class="connector" dunnart:idealLength="108.506848" dunnart:hidden_connector_length="38.506848" dunnart:src_hidden_len="18.110770" dunnart:dst_hidden_len="20.396078" dunnart:srcID="10" dunnart:srcFlags="544" dunnart:srcX="397" dunnart:srcY="550" dunnart:dstID="9" dunnart:dstFlags="544" dunnart:dstX="411" dunnart:dstY="448" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 246.000000,495.000000 L 256.000000,413.000000 " dunnart:ArrowType="0" dunnart:type="connAvoidPoly"/>
+  <path id="27" class="connector" dunnart:idealLength="108.127508" dunnart:hidden_connector_length="38.127508" dunnart:src_hidden_len="20.099751" dunnart:dst_hidden_len="18.027756" dunnart:srcID="8" dunnart:srcFlags="544" dunnart:srcX="541" dunnart:srcY="505" dunnart:dstID="7" dunnart:dstFlags="544" dunnart:dstX="539" dunnart:dstY="570" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 390.000000,450.000000 L 389.000000,497.000000 " dunnart:ArrowType="0" dunnart:type="connAvoidPoly"/>
+  <path id="28" class="connector" dunnart:idealLength="109.562156" dunnart:hidden_connector_length="39.562155" dunnart:src_hidden_len="20.880613" dunnart:dst_hidden_len="18.681542" dunnart:srcID="6" dunnart:srcFlags="544" dunnart:srcX="770" dunnart:srcY="230" dunnart:dstID="5" dunnart:dstFlags="544" dunnart:dstX="751" dunnart:dstY="301" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 619.000000,175.000000 L 605.000000,228.000000 " dunnart:ArrowType="0" dunnart:type="connAvoidPoly"/>
+  <g>
+    <rect width="50" height="38" x="367" y="43" id="1" class="shape" dunnart:label="" dunnart:width="56" dunnart:height="44" dunnart:xPos="364" dunnart:yPos="40" dunnart:type="umlClass">
+      <dunnart:class_name>Server</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>23</dunnart:attr_section_height>
+      <dunnart:method_section_height>47</dunnart:method_section_height>
+      <dunnart:method private="no" name="Server" return_type=""/>
+      <dunnart:method private="no" name="DownloadProfile" return_type="string">
+        <dunnart:parameter mode="out" name="timestamp" type="DateTime"/>
+        <dunnart:parameter mode="out" name="username" type="string"/>
+        <dunnart:parameter mode="out" name="password" type="string"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="DownloadAudio" return_type="byte">
+        <dunnart:parameter mode="out" name="location" type="string"/>
+        <dunnart:parameter mode="out" name="username" type="string"/>
+        <dunnart:parameter mode="out" name="password" type="string"/>
+      </dunnart:method>
+    </rect>
+  </g>
+  <g>
+    <rect width="64" height="38" x="223" y="118" id="2" class="shape" dunnart:label="" dunnart:width="70" dunnart:height="44" dunnart:xPos="220" dunnart:yPos="115" dunnart:type="umlClass">
+      <dunnart:class_name>AppState</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>95</dunnart:attr_section_height>
+      <dunnart:method_section_height>23</dunnart:method_section_height>
+      <dunnart:attribute stereotype="property" private="no" name="ProfileVersion" type="DateTime{get,set}"/>
+      <dunnart:attribute stereotype="property" private="no" name="LastPoll" type="DateTime{get,set}"/>
+      <dunnart:attribute stereotype="property" private="no" name="ExpiryDate" type="DateTime{get,set}"/>
+      <dunnart:attribute stereotype="property" private="no" name="DeviceID" type="int{get,set}"/>
+      <dunnart:attribute stereotype="property" private="no" name="Username" type="string{get,set}"/>
+      <dunnart:attribute stereotype="property" private="no" name="Password" type="string{get,set}"/>
+      <dunnart:attribute stereotype="property" private="no" name="AutoRun" type="bool{get,set}"/>
+      <dunnart:method private="no" name="AppState" return_type=""/>
+    </rect>
+  </g>
+  <g>
+    <rect width="78" height="38" x="416" y="140" id="3" class="shape" dunnart:label="" dunnart:width="84" dunnart:height="44" dunnart:xPos="413" dunnart:yPos="137" dunnart:type="umlClass">
+      <dunnart:class_name>SystemTest</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>23</dunnart:attr_section_height>
+      <dunnart:method_section_height>23</dunnart:method_section_height>
+    </rect>
+  </g>
+  <g>
+    <rect width="50" height="38" x="254" y="244" id="4" class="shape" dunnart:label="" dunnart:width="56" dunnart:height="44" dunnart:xPos="251" dunnart:yPos="241" dunnart:type="umlClass">
+      <dunnart:class_name>System</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>23</dunnart:attr_section_height>
+      <dunnart:method_section_height>119</dunnart:method_section_height>
+      <dunnart:method private="no" name="OnHoldSoftware" return_type="void"/>
+      <dunnart:method private="no" name="SaveState" return_type="void"/>
+      <dunnart:method private="no" name="LoadState" return_type="void"/>
+      <dunnart:method private="no" name="LoadProfileFromXML" return_type="void">
+        <dunnart:parameter mode="out" name="location" type="string"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="WndProc" return_type="void">
+        <dunnart:parameter mode="out" name="m" type="Message"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="PollServer" return_type="void"/>
+      <dunnart:method private="no" name="MusicStoppedEvent" return_type="void"/>
+      <dunnart:method private="no" name="MessageStoppedEvent" return_type="void"/>
+      <dunnart:method private="no" name="GapStoppedEvent" return_type="void"/>
+    </rect>
+  </g>
+  <g>
+    <rect width="86" height="38" x="558" y="228" id="5" class="shape" dunnart:label="" dunnart:width="92" dunnart:height="44" dunnart:xPos="555" dunnart:yPos="225" dunnart:type="umlClass">
+      <dunnart:class_name>AudioDevice</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>107</dunnart:attr_section_height>
+      <dunnart:method_section_height>131</dunnart:method_section_height>
+      <dunnart:attribute stereotype="property" private="no" name="MasterVolume" type="int{get,set}"/>
+      <dunnart:attribute stereotype="property" private="no" name="GapMusicVolume" type="int{get,set}"/>
+      <dunnart:attribute stereotype="property" private="no" name="BoostVolume" type="int{get,set}"/>
+      <dunnart:attribute stereotype="property" private="no" name="OptimalVolume" type="int{get,set}"/>
+      <dunnart:attribute stereotype="property" private="no" name="DeviceID" type="int{get,set}"/>
+      <dunnart:attribute stereotype="property" private="no" name="FadeLength" type="int{get,set}"/>
+      <dunnart:attribute private="yes" name="messageLayer" type="FilgraphManagerClass"/>
+      <dunnart:attribute private="yes" name="musicLayer" type="FilgraphManagerClass"/>
+      <dunnart:method private="no" name="AudioDevice" return_type="void"/>
+      <dunnart:method private="no" name="Play" return_type="void"/>
+      <dunnart:method private="no" name="Pause" return_type="void"/>
+      <dunnart:method private="no" name="Stop" return_type="void"/>
+      <dunnart:method private="no" name="SetMessage" return_type="void">
+        <dunnart:parameter mode="out" name="message" type="Audio"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="SetMusic" return_type="void">
+        <dunnart:parameter mode="out" name="music" type="Audio"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="StartGap" return_type="void"/>
+      <dunnart:method private="no" name="EndGap" return_type="void"/>
+      <dunnart:method private="no" name="FadeMusicToOff" return_type="void"/>
+      <dunnart:method private="no" name="" return_type=""/>
+    </rect>
+  </g>
+  <g>
+    <rect width="114" height="38" x="563" y="157" id="6" class="shape" dunnart:label="" dunnart:width="120" dunnart:height="44" dunnart:xPos="560" dunnart:yPos="154" dunnart:type="umlClass">
+      <dunnart:class_name>AudioDeviceTest</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>0</dunnart:attr_section_height>
+      <dunnart:method_section_height>0</dunnart:method_section_height>
+    </rect>
+  </g>
+  <g>
+    <rect width="120" height="38" x="329" y="497" id="7" class="shape" dunnart:label="" dunnart:width="126" dunnart:height="44" dunnart:xPos="326" dunnart:yPos="494" dunnart:type="umlClass">
+      <dunnart:class_name>AudioManagerTest</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>23</dunnart:attr_section_height>
+      <dunnart:method_section_height>23</dunnart:method_section_height>
+    </rect>
+  </g>
+  <g>
+    <rect width="94" height="38" x="344" y="432" id="8" class="shape" dunnart:label="" dunnart:width="100" dunnart:height="44" dunnart:xPos="341" dunnart:yPos="429" dunnart:type="umlClass">
+      <dunnart:class_name>AudioManager</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>107</dunnart:attr_section_height>
+      <dunnart:method_section_height>71</dunnart:method_section_height>
+      <dunnart:attribute stereotype="property" private="no" name="MusicChangeRate" type="int{get,set}"/>
+      <dunnart:attribute stereotype="property" private="no" name="GapLength" type="int{get,set}"/>
+      <dunnart:attribute stereotype="property" private="no" name="Messages" type="Playlist{get,set}"/>
+      <dunnart:attribute stereotype="property" private="no" name="Music" type="Playlist{get,set}"/>
+      <dunnart:attribute stereotype="property" private="no" name="GenericMessageRate" type="int{get,set}"/>
+      <dunnart:attribute stereotype="property" private="no" name="GenericMessages" type="Playlist{get,set}"/>
+      <dunnart:attribute private="yes" name="numberMessages" type="int"/>
+      <dunnart:attribute private="yes" name="random" type="Random"/>
+      <dunnart:method private="no" name="AudioManager" return_type=""/>
+      <dunnart:method private="no" name="NextMusic" return_type="Audio"/>
+      <dunnart:method private="no" name="NextMessage" return_type="Audio"/>
+      <dunnart:method private="no" name="ChangeMusic" return_type="bool"/>
+      <dunnart:method private="yes" name="NextFromPlaylist" return_type="Audio">
+        <dunnart:parameter mode="in" name="playlist" type="Playlist"/>
+      </dunnart:method>
+    </rect>
+  </g>
+  <g>
+    <rect width="64" height="38" x="229" y="375" id="9" class="shape" dunnart:label="" dunnart:width="70" dunnart:height="44" dunnart:xPos="226" dunnart:yPos="372" dunnart:type="umlClass">
+      <dunnart:class_name>DebugLog</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>23</dunnart:attr_section_height>
+      <dunnart:method_section_height>47</dunnart:method_section_height>
+      <dunnart:attribute private="yes" name="logwriter" type="StreamWrite"/>
+      <dunnart:method private="no" name="DebugLog" return_type="">
+        <dunnart:parameter mode="in" name="location" type="string"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="Add" return_type="">
+        <dunnart:parameter mode="in" name="message" type="string"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="Close" return_type=""/>
+    </rect>
+  </g>
+  <g>
+    <rect width="94" height="38" x="200.99995" y="477" id="10" class="shape" dunnart:label="" dunnart:width="100" dunnart:height="44" dunnart:xPos="197" dunnart:yPos="474" dunnart:type="umlClass">
+      <dunnart:class_name>DebugLogTest</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>0</dunnart:attr_section_height>
+      <dunnart:method_section_height>0</dunnart:method_section_height>
+    </rect>
+  </g>
+  <g>
+    <rect width="64" height="38" x="262" y="571" id="11" class="shape" dunnart:label="" dunnart:width="70" dunnart:height="44" dunnart:xPos="259" dunnart:yPos="568" dunnart:type="umlClass">
+      <dunnart:class_name>Security</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>23</dunnart:attr_section_height>
+      <dunnart:method_section_height>71</dunnart:method_section_height>
+      <dunnart:method private="no" name="Security" return_type=""/>
+      <dunnart:method private="no" name="EncryptString" return_type="string">
+        <dunnart:parameter mode="in" name="input" type="string"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="DecryptString" return_type="string">
+        <dunnart:parameter mode="in" name="input" type="string"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="Serialize" return_type="string">
+        <dunnart:parameter mode="in" name="obj" type="Object"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="Deserialize" return_type="Object">
+        <dunnart:parameter mode="in" name="str" type="string"/>
+      </dunnart:method>
+    </rect>
+  </g>
+  <g>
+    <rect width="64" height="38" x="593" y="440" id="12" class="shape" dunnart:label="" dunnart:width="70" dunnart:height="44" dunnart:xPos="590" dunnart:yPos="437" dunnart:type="umlClass">
+      <dunnart:class_name>Playlist</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>47</dunnart:attr_section_height>
+      <dunnart:method_section_height>47</dunnart:method_section_height>
+      <dunnart:attribute stereotype="property" private="no" name="AudioArray" type="ArrayList{get}"/>
+      <dunnart:attribute stereotype="property" private="no" name="Order" type="int{set}"/>
+      <dunnart:attribute stereotype="property" private="no" name="Current" type="int{get,set}"/>
+      <dunnart:method private="no" name="Playlist" return_type="">
+        <dunnart:parameter mode="in" name="order" type="PlayOrder"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="GetLength" return_type="int"/>
+      <dunnart:method private="no" name="AddAudio" return_type="">
+        <dunnart:parameter mode="in" name="audio" type="Audio"/>
+      </dunnart:method>
+    </rect>
+  </g>
+  <g>
+    <rect width="72" height="38" x="462" y="296" id="13" class="shape" dunnart:label="" dunnart:width="78" dunnart:height="44" dunnart:xPos="459" dunnart:yPos="293" dunnart:type="umlClass">
+      <dunnart:class_name>PlayOrder</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>59</dunnart:attr_section_height>
+      <dunnart:method_section_height>23</dunnart:method_section_height>
+      <dunnart:attribute private="no" name="OrderPlay" type="int=0"/>
+      <dunnart:attribute private="no" name="RandomPlay" type="int=1"/>
+      <dunnart:attribute private="no" name="OddFirst" type="int=2"/>
+      <dunnart:attribute private="no" name="EvenFirst" type="int=3"/>
+      <dunnart:method private="no" name="PlayOrder" return_type=""/>
+    </rect>
+  </g>
+  <g>
+    <rect width="92" height="38" x="573.000025" y="365" id="14" class="shape" dunnart:label="" dunnart:width="98" dunnart:height="44" dunnart:xPos="570" dunnart:yPos="362" dunnart:type="umlClass">
+      <dunnart:class_name>PlaylistTest</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>23</dunnart:attr_section_height>
+      <dunnart:method_section_height>23</dunnart:method_section_height>
+    </rect>
+  </g>
+  <g>
+    <rect width="44" height="38" x="526" y="538" id="15" class="shape" dunnart:label="" dunnart:width="50" dunnart:height="44" dunnart:xPos="523" dunnart:yPos="535" dunnart:type="umlClass">
+      <dunnart:class_name>Audio</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>107</dunnart:attr_section_height>
+      <dunnart:method_section_height>35</dunnart:method_section_height>
+      <dunnart:attribute stereotype="property" private="no" name="Location" type="string{get,set}"/>
+      <dunnart:attribute stereotype="property" private="no" name="Volume" type="int{get,set}"/>
+      <dunnart:attribute stereotype="property" private="no" name="Priority" type="int{get,set}"/>
+      <dunnart:attribute stereotype="property" private="no" name="Commencement" type="DateTime{get,set}"/>
+      <dunnart:attribute stereotype="property" private="no" name="Expiry" type="DateTime{get,set}"/>
+      <dunnart:attribute stereotype="property" private="no" name="On" type="bool{get,set}"/>
+      <dunnart:attribute stereotype="property" private="no" name="PlayDays[7]" type="bool{get,set}"/>
+      <dunnart:attribute stereotype="property" private="no" name="PlayHours[24]" type="bool{get,set}"/>
+      <dunnart:method private="no" name="Audio" return_type="">
+        <dunnart:parameter mode="in" name="location" type="string"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="IsEnabled" return_type="bool">
+        <dunnart:parameter mode="in" name="datetime" type="DateTime"/>
+      </dunnart:method>
+    </rect>
+  </g>
+</svg>

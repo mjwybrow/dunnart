@@ -1,0 +1,62 @@
+# -----------------------------
+
+DUNNARTBASE = $$PWD
+
+DESTDIR = $$DUNNARTBASE/build
+
+# Source common options from a parent project if this exists
+# in a directory one level up.
+contains($$list($$[QT_VERSION]), 4.5.*) {
+  include("$$DUNNARTBASE/../common_options.qmake")
+} else {
+  # From 4.6 onwards, Qt warns about missing includes
+  include("$$DUNNARTBASE/../common_options.qmake", "", true)
+}
+
+# -----------------------------
+
+win32 {
+CONFIG += embed_manifest_dll embed_manifest_exe
+}
+
+# If both release and debug are set, debug overrides release, 
+# which is the normal behaviour for qmake.
+#
+CONFIG(debug, release|debug) {
+	message("CONFIG set for debug")
+} else {
+	message("CONFIG set for release")
+	DEFINES *= NDEBUG
+	macx {
+		# QMAKE_MAC_SDK=/Developer/SDKs/MacOSX10.5.sdk
+		CONFIG += x86_64 x86
+	}
+}
+
+CONFIG(noassertions) {
+	DEFINES *= NDEBUG QT_NO_DEBUG
+}
+
+QMAKE_CXXFLAGS_RELEASE -= -Os -O2
+QMAKE_CXXFLAGS_RELEASE += -O3
+
+QMAKE_CXXFLAGS_DEBUG += -O0
+
+contains(TEMPLATE, lib) {
+  macx {
+    arcadia {
+        QMAKE_LFLAGS_SONAME = -Wl,-install_name,@executable_path/dunnart/build/
+    } else { 
+        QMAKE_LFLAGS_SONAME = -Wl,-install_name,@executable_path/../Frameworks/
+        DESTDIR = $$DUNNARTBASE/Dunnart.app/Contents/Frameworks
+    }
+  } 
+}
+
+# subdirs where qmake should place it's generated files 
+UI_DIR  = gen-ui
+MOC_DIR = gen-moc
+OBJECTS_DIR = gen-obj
+RCC_DIR = gen-rcc
+
+

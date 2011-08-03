@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 1EZG.svg -->
+<!-- 1 of 1 domain(s) -->
+<!-- Generated on 31Mar2008 15:47:48 by ptgraph2 
+Revision 1192, Thu Mar 27 18:19:57 EST 2008
+../ptgraph2.py -ejk -r -uw -l none /home/astivala/pdb/1EZG.pdb -->
+<!-- http://charikar.csse.unimelb.edu.au:2080 -->
+<!-- for use with Dunnart (http://www.csse.monash.edu.au/~mwybrow/dunnart/) -->
+<svg xmlns:dunnart="http://www.csse.monash.edu.au/~mwybrow/dunnart.dtd">
+  <dunnart:options automaticGraphLayout="0" nonOverlapConstraints="1" penaliseCrossings="1" avoidBuffer="4" colourInterferingConnectors="0"/>
+  <dunnart:node id="49" dunnart:label="Na" dunnart:width="32" dunnart:height="32" dunnart:xPos="300" dunnart:yPos="458" dunnart:fillColour="f5f5d1ff" style="fill:#f5f5d1;" dunnart:type="rect" />
+  <dunnart:node id="4" dunnart:label="1a" dunnart:width="40" dunnart:height="63" dunnart:xPos="300" dunnart:yPos="200" dunnart:reversed="0" dunnart:fillColour="f5f5d1ff" style="fill:#f5f5d1;" dunnart:type="bioStrand" />
+  <dunnart:node id="6" dunnart:label="2a" dunnart:width="40" dunnart:height="63" dunnart:xPos="345" dunnart:yPos="221" dunnart:reversed="0" dunnart:fillColour="f5f5d1ff" style="fill:#f5f5d1;" dunnart:type="bioStrand" />
+  <dunnart:node id="10" dunnart:label="3a" dunnart:width="40" dunnart:height="63" dunnart:xPos="390" dunnart:yPos="242" dunnart:reversed="0" dunnart:fillColour="f5f5d1ff" style="fill:#f5f5d1;" dunnart:type="bioStrand" />
+  <dunnart:node id="14" dunnart:label="4a" dunnart:width="40" dunnart:height="63" dunnart:xPos="435" dunnart:yPos="263" dunnart:reversed="0" dunnart:fillColour="f5f5d1ff" style="fill:#f5f5d1;" dunnart:type="bioStrand" />
+  <dunnart:node id="18" dunnart:label="5a" dunnart:width="40" dunnart:height="63" dunnart:xPos="480" dunnart:yPos="284" dunnart:reversed="0" dunnart:fillColour="f5f5d1ff" style="fill:#f5f5d1;" dunnart:type="bioStrand" />
+  <dunnart:node id="22" dunnart:label="6a" dunnart:width="40" dunnart:height="63" dunnart:xPos="525" dunnart:yPos="305" dunnart:reversed="0" dunnart:fillColour="f5f5d1ff" style="fill:#f5f5d1;" dunnart:type="bioStrand" />
+  <dunnart:node id="50" dunnart:label="Ca" dunnart:width="32" dunnart:height="32" dunnart:xPos="525" dunnart:yPos="78" dunnart:fillColour="f5f5d1ff" style="fill:#f5f5d1;" dunnart:type="rect" />
+  <dunnart:node id="51" dunnart:label="Nb" dunnart:width="32" dunnart:height="32" dunnart:xPos="-85" dunnart:yPos="-27" dunnart:fillColour="f5f5d1ff" style="fill:#f5f5d1;" dunnart:type="rect" />
+  <dunnart:node id="46" dunnart:label="7b" dunnart:width="40" dunnart:height="63" dunnart:xPos="-85" dunnart:yPos="95" dunnart:reversed="1" dunnart:fillColour="f5f5d1ff" style="fill:#f5f5d1;" dunnart:type="bioStrand" />
+  <dunnart:node id="42" dunnart:label="8b" dunnart:width="40" dunnart:height="63" dunnart:xPos="-130" dunnart:yPos="116" dunnart:reversed="1" dunnart:fillColour="f5f5d1ff" style="fill:#f5f5d1;" dunnart:type="bioStrand" />
+  <dunnart:node id="38" dunnart:label="9b" dunnart:width="40" dunnart:height="63" dunnart:xPos="-175" dunnart:yPos="137" dunnart:reversed="1" dunnart:fillColour="f5f5d1ff" style="fill:#f5f5d1;" dunnart:type="bioStrand" />
+  <dunnart:node id="34" dunnart:label="10b" dunnart:width="40" dunnart:height="63" dunnart:xPos="-220" dunnart:yPos="158" dunnart:reversed="1" dunnart:fillColour="f5f5d1ff" style="fill:#f5f5d1;" dunnart:type="bioStrand" />
+  <dunnart:node id="30" dunnart:label="11b" dunnart:width="40" dunnart:height="63" dunnart:xPos="-265" dunnart:yPos="179" dunnart:reversed="1" dunnart:fillColour="f5f5d1ff" style="fill:#f5f5d1;" dunnart:type="bioStrand" />
+  <dunnart:node id="28" dunnart:label="12b" dunnart:width="40" dunnart:height="63" dunnart:xPos="-310" dunnart:yPos="200" dunnart:reversed="1" dunnart:fillColour="f5f5d1ff" style="fill:#f5f5d1;" dunnart:type="bioStrand" />
+  <dunnart:node id="52" dunnart:label="Cb" dunnart:width="32" dunnart:height="32" dunnart:xPos="-310" dunnart:yPos="353" dunnart:fillColour="f5f5d1ff" style="fill:#f5f5d1;" dunnart:type="rect" />
+  <path id="67" class="cluster" dunnart:contains="4 6 10 14 18 22" dunnart:type="cluster" dunnart:fillColour="60cdf355"/>
+  <path id="68" class="cluster" dunnart:contains="46 42 38 34 30 28" dunnart:type="cluster" dunnart:fillColour="60cdf355"/>
+  <dunnart:node dunnart:type="distribution" dunnart:direction="100" dunnart:sepDistance="45" dunnart:position="273" id="1"/>
+  <dunnart:node dunnart:type="indGuide" dunnart:position="300" dunnart:direction="100" id="2"/>
+  <dunnart:node dunnart:type="indGuide" dunnart:position="200" dunnart:direction="101" id="3"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="2" objOneID="4" alignmentPos="4" />
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="3" objOneID="4" alignmentPos="0" />
+  <dunnart:node dunnart:type="indGuide" dunnart:position="345" dunnart:direction="100" id="5"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="distribution" constraintID="1" objOneID="2" objTwoID="5"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="5" objOneID="6" alignmentPos="4" />
+  <dunnart:node dunnart:type="indGuide" dunnart:position="221" dunnart:direction="101" id="7"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="7" objOneID="6" alignmentPos="0" />
+  <dunnart:node dunnart:type="distribution" dunnart:direction="101" dunnart:sepDistance="21" dunnart:position="295" id="8"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="distribution" constraintID="8" objOneID="3" objTwoID="7"/>
+  <dunnart:node dunnart:type="indGuide" dunnart:position="390" dunnart:direction="100" id="9"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="distribution" constraintID="1" objOneID="5" objTwoID="9"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="9" objOneID="10" alignmentPos="4" />
+  <dunnart:node dunnart:type="indGuide" dunnart:position="242" dunnart:direction="101" id="11"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="11" objOneID="10" alignmentPos="0" />
+  <dunnart:node dunnart:type="distribution" dunnart:direction="101" dunnart:sepDistance="42" dunnart:position="290" id="12"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="distribution" constraintID="12" objOneID="3" objTwoID="11"/>
+  <dunnart:node dunnart:type="indGuide" dunnart:position="435" dunnart:direction="100" id="13"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="distribution" constraintID="1" objOneID="9" objTwoID="13"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="13" objOneID="14" alignmentPos="4" />
+  <dunnart:node dunnart:type="indGuide" dunnart:position="263" dunnart:direction="101" id="15"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="15" objOneID="14" alignmentPos="0" />
+  <dunnart:node dunnart:type="distribution" dunnart:direction="101" dunnart:sepDistance="63" dunnart:position="285" id="16"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="distribution" constraintID="16" objOneID="3" objTwoID="15"/>
+  <dunnart:node dunnart:type="indGuide" dunnart:position="480" dunnart:direction="100" id="17"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="distribution" constraintID="1" objOneID="13" objTwoID="17"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="17" objOneID="18" alignmentPos="4" />
+  <dunnart:node dunnart:type="indGuide" dunnart:position="284" dunnart:direction="101" id="19"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="19" objOneID="18" alignmentPos="0" />
+  <dunnart:node dunnart:type="distribution" dunnart:direction="101" dunnart:sepDistance="84" dunnart:position="280" id="20"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="distribution" constraintID="20" objOneID="3" objTwoID="19"/>
+  <dunnart:node dunnart:type="indGuide" dunnart:position="525" dunnart:direction="100" id="21"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="distribution" constraintID="1" objOneID="17" objTwoID="21"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="21" objOneID="22" alignmentPos="4" />
+  <dunnart:node dunnart:type="indGuide" dunnart:position="305" dunnart:direction="101" id="23"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="23" objOneID="22" alignmentPos="0" />
+  <dunnart:node dunnart:type="distribution" dunnart:direction="101" dunnart:sepDistance="105" dunnart:position="275" id="24"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="distribution" constraintID="24" objOneID="3" objTwoID="23"/>
+  <dunnart:node dunnart:type="distribution" dunnart:direction="100" dunnart:sepDistance="45" dunnart:position="273" id="25"/>
+  <dunnart:node dunnart:type="indGuide" dunnart:position="-310" dunnart:direction="100" id="26"/>
+  <dunnart:node dunnart:type="indGuide" dunnart:position="200" dunnart:direction="101" id="27"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="26" objOneID="28" alignmentPos="4" />
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="27" objOneID="28" alignmentPos="0" />
+  <dunnart:node dunnart:type="indGuide" dunnart:position="-265" dunnart:direction="100" id="29"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="distribution" constraintID="25" objOneID="26" objTwoID="29"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="29" objOneID="30" alignmentPos="4" />
+  <dunnart:node dunnart:type="indGuide" dunnart:position="179" dunnart:direction="101" id="31"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="31" objOneID="30" alignmentPos="0" />
+  <dunnart:node dunnart:type="distribution" dunnart:direction="101" dunnart:sepDistance="-21" dunnart:position="-315" id="32"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="distribution" constraintID="32" objOneID="27" objTwoID="31"/>
+  <dunnart:node dunnart:type="indGuide" dunnart:position="-220" dunnart:direction="100" id="33"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="distribution" constraintID="25" objOneID="29" objTwoID="33"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="33" objOneID="34" alignmentPos="4" />
+  <dunnart:node dunnart:type="indGuide" dunnart:position="158" dunnart:direction="101" id="35"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="35" objOneID="34" alignmentPos="0" />
+  <dunnart:node dunnart:type="distribution" dunnart:direction="101" dunnart:sepDistance="-42" dunnart:position="-320" id="36"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="distribution" constraintID="36" objOneID="27" objTwoID="35"/>
+  <dunnart:node dunnart:type="indGuide" dunnart:position="-175" dunnart:direction="100" id="37"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="distribution" constraintID="25" objOneID="33" objTwoID="37"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="37" objOneID="38" alignmentPos="4" />
+  <dunnart:node dunnart:type="indGuide" dunnart:position="137" dunnart:direction="101" id="39"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="39" objOneID="38" alignmentPos="0" />
+  <dunnart:node dunnart:type="distribution" dunnart:direction="101" dunnart:sepDistance="-63" dunnart:position="-325" id="40"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="distribution" constraintID="40" objOneID="27" objTwoID="39"/>
+  <dunnart:node dunnart:type="indGuide" dunnart:position="-130" dunnart:direction="100" id="41"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="distribution" constraintID="25" objOneID="37" objTwoID="41"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="41" objOneID="42" alignmentPos="4" />
+  <dunnart:node dunnart:type="indGuide" dunnart:position="116" dunnart:direction="101" id="43"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="43" objOneID="42" alignmentPos="0" />
+  <dunnart:node dunnart:type="distribution" dunnart:direction="101" dunnart:sepDistance="-84" dunnart:position="-330" id="44"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="distribution" constraintID="44" objOneID="27" objTwoID="43"/>
+  <dunnart:node dunnart:type="indGuide" dunnart:position="-85" dunnart:direction="100" id="45"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="distribution" constraintID="25" objOneID="41" objTwoID="45"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="45" objOneID="46" alignmentPos="4" />
+  <dunnart:node dunnart:type="indGuide" dunnart:position="95" dunnart:direction="101" id="47"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="47" objOneID="46" alignmentPos="0" />
+  <dunnart:node dunnart:type="distribution" dunnart:direction="101" dunnart:sepDistance="-105" dunnart:position="-335" id="48"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="distribution" constraintID="48" objOneID="27" objTwoID="47"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="2" objOneID="46" alignmentPos="4" />
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="2" objOneID="49" alignmentPos="4" />
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="21" objOneID="50" alignmentPos="4" />
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="45" objOneID="51" alignmentPos="4" />
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="26" objOneID="52" alignmentPos="4" />
+  <dunnart:node id="53" dunnart:srcID="49" dunnart:dstID="4" dunnart:srcFlags="544" dunnart:dstFlags="50" dunnart:directed="0" dunnart:lineColour="000000ff" dunnart:type="connAvoidPoly"/>
+  <dunnart:node id="54" dunnart:srcID="4" dunnart:dstID="6" dunnart:srcFlags="49" dunnart:dstFlags="50" dunnart:directed="0" dunnart:lineColour="000000ff" dunnart:type="connAvoidPoly"/>
+  <dunnart:node id="55" dunnart:srcID="6" dunnart:dstID="10" dunnart:srcFlags="49" dunnart:dstFlags="50" dunnart:directed="0" dunnart:lineColour="000000ff" dunnart:type="connAvoidPoly"/>
+  <dunnart:node id="56" dunnart:srcID="10" dunnart:dstID="14" dunnart:srcFlags="49" dunnart:dstFlags="50" dunnart:directed="0" dunnart:lineColour="000000ff" dunnart:type="connAvoidPoly"/>
+  <dunnart:node id="57" dunnart:srcID="14" dunnart:dstID="18" dunnart:srcFlags="49" dunnart:dstFlags="50" dunnart:directed="0" dunnart:lineColour="000000ff" dunnart:type="connAvoidPoly"/>
+  <dunnart:node id="58" dunnart:srcID="18" dunnart:dstID="22" dunnart:srcFlags="49" dunnart:dstFlags="50" dunnart:directed="0" dunnart:lineColour="000000ff" dunnart:type="connAvoidPoly"/>
+  <dunnart:node id="59" dunnart:srcID="22" dunnart:dstID="50" dunnart:srcFlags="49" dunnart:dstFlags="544" dunnart:directed="0" dunnart:lineColour="000000ff" dunnart:type="connAvoidPoly"/>
+  <dunnart:node id="60" dunnart:srcID="51" dunnart:dstID="46" dunnart:srcFlags="544" dunnart:dstFlags="49" dunnart:directed="0" dunnart:lineColour="000000ff" dunnart:type="connAvoidPoly"/>
+  <dunnart:node id="61" dunnart:srcID="46" dunnart:dstID="42" dunnart:srcFlags="50" dunnart:dstFlags="49" dunnart:directed="0" dunnart:lineColour="000000ff" dunnart:type="connAvoidPoly"/>
+  <dunnart:node id="62" dunnart:srcID="42" dunnart:dstID="38" dunnart:srcFlags="50" dunnart:dstFlags="49" dunnart:directed="0" dunnart:lineColour="000000ff" dunnart:type="connAvoidPoly"/>
+  <dunnart:node id="63" dunnart:srcID="38" dunnart:dstID="34" dunnart:srcFlags="50" dunnart:dstFlags="49" dunnart:directed="0" dunnart:lineColour="000000ff" dunnart:type="connAvoidPoly"/>
+  <dunnart:node id="64" dunnart:srcID="34" dunnart:dstID="30" dunnart:srcFlags="50" dunnart:dstFlags="49" dunnart:directed="0" dunnart:lineColour="000000ff" dunnart:type="connAvoidPoly"/>
+  <dunnart:node id="65" dunnart:srcID="30" dunnart:dstID="28" dunnart:srcFlags="50" dunnart:dstFlags="49" dunnart:directed="0" dunnart:lineColour="000000ff" dunnart:type="connAvoidPoly"/>
+  <dunnart:node id="66" dunnart:srcID="28" dunnart:dstID="52" dunnart:srcFlags="50" dunnart:dstFlags="544" dunnart:directed="0" dunnart:lineColour="000000ff" dunnart:type="connAvoidPoly"/>
+</svg>

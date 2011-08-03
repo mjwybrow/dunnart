@@ -1,0 +1,36 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id$
+
+PortSystem      1.0
+
+name            libsbml
+version         4.2.0
+revision        1
+categories      devel
+platforms       macosx
+maintainers     nox openmaintainer
+description     An API Library for SBML
+
+long_description \
+    LibSBML is an open-source programming library to help you read, write, \
+    manipulate, translate, and validate SBML files and data streams. It is \
+    not an application itself (though it does come with example programs), \
+    but rather a library you can embed in your own applications.
+
+homepage        http://sbml.org/Software/libSBML
+master_sites    sourceforge:sbml
+use_zip         yes
+distname        ${name}-${version}-src
+
+worksrcdir      ${name}-${version}
+
+checksums           md5     669defb586a81d7e3a6fc27140b07e41 \
+                    sha1    f4c8d7942388073f540a858770db68b6ca810991 \
+                    rmd160  f9059c0d4cb318f1eb8795d2737759255d385a44
+
+depends_lib     lib:libxml2:libxml2
+
+build.cmd       make && make
+
+configure.args  --enable-layout 
+

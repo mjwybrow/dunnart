@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Created with Dunnart (http://www.csse.monash.edu.au/~mwybrow/dunnart/)-->
+<svg xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:dunnart="http://www.csse.monash.edu.au/~mwybrow/dunnart.dtd" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" width="682px" height="499px" viewBox="70.000000 51.000000 682.000000 499.000000">
+  <dunnart:options useMultiway="1" instantFeedback="1" newConnType="53" orientation="0" graphMode="0" automaticGraphLayout="0" layoutMethod="0" layoutMode="0" nonOverlapConstraints="0" straightenConnectors="0" avoidBuffer="4" pageBoundaryConstraints="0" defaultIdealConnectorLength="1" penaliseCrossings="0"/>
+  <sodipodi:namedview showguides="false" guidetolerance="5.0" guidecolor="#000000ff" guideopacity="0.25" bordercolor="#000000" borderopacity="0.5" width="682px" height="499px">
+    <sodipodi:guide dunnart:type="indGuide" position="162" orientation="horizontal" dunnart:position="159" dunnart:direction="101" id="87"/>
+    <sodipodi:guide dunnart:type="indGuide" position="172" orientation="horizontal" dunnart:position="169" dunnart:direction="101" id="88"/>
+    <sodipodi:guide dunnart:type="indGuide" position="182" orientation="horizontal" dunnart:position="179" dunnart:direction="101" id="89"/>
+    <sodipodi:guide dunnart:type="indGuide" position="194" orientation="horizontal" dunnart:position="191" dunnart:direction="101" id="90"/>
+    <sodipodi:guide dunnart:type="indGuide" position="216" orientation="horizontal" dunnart:position="213" dunnart:direction="101" id="91"/>
+  </sodipodi:namedview>
+  <style type="text/css">.shape   { stroke:black; stroke-width:1px; fill:#f0f0d2; } .connector { fill:none; stroke:black; stroke-width:1px; stroke-linecap:butt; stroke-linejoin:miter; stroke-opacity:1; } .cluster { fill:#60cdf3; fill-opacity:0.33333333; } .tLabel { text-anchor:middle; text-align:center; } .tsLabel { font-size:11px; font-style:normal; font-weight:normal; fill:black; fill-opacity:1; stroke:none; font-family:DejaVu Sans; } .frLabel { font-size:11px; font-style:normal; font-weight:normal; fill:black; fill-opacity:1; stroke:none; stroke-width:1px; stroke-linecap:butt; stroke-linejoin:miter; stroke-opacity:1; font-family:DejaVu Sans; font-stretch:normal; font-variant:normal; text-anchor:middle; text-align:center; progression-align:center; writing-mode:lr; line-height:125%; } </style>
+  <defs>
+    <marker inkscape:stockid="ConnArrowEnd" orient="auto" refX="7.5" refY="0.0" id="ConnArrowEnd" style="overflow:visible;">
+      <path d="M 0.0,0.0 L 1.0,-5.0 L -12.5,0.0 L 1.0,5.0 L 0.0,0.0 z" style="fill-rule:evenodd; stroke:black; stroke-width:1px; marker-start:none;" transform="scale(0.6) rotate(180)"/>
+    </marker>
+  </defs>
+  <path id="77" class="cluster" d="M 453.000000,157.000000 L 453.000000,157.000000 L 496.000000,157.000000 L 496.000000,242.000000 L 451.000000,284.000000 L 324.000000,328.000000 L 281.000000,328.000000 L 281.000000,211.000000 L 328.000000,189.000000 L 408.000000,167.000000 L 453.000000,157.000000" dunnart:contains="31 29 28 27 30" dunnart:type="cluster" dunnart:rectangular="0"/>
+  <dunnart:node dunnart:type="separation" dunnart:position="130" dunnart:direction="101" dunnart:sepDistance="54.000000" id="97" dunnart:equality="1"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="separation" constraintID="97" objOneID="87" objTwoID="91"/>
+  <dunnart:node dunnart:type="separation" dunnart:position="143" dunnart:direction="101" dunnart:sepDistance="10.000000" id="98" dunnart:equality="1"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="separation" constraintID="98" objOneID="87" objTwoID="88"/>
+  <dunnart:node dunnart:type="separation" dunnart:position="172" dunnart:direction="101" dunnart:sepDistance="20.000000" id="99" dunnart:equality="1"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="separation" constraintID="99" objOneID="87" objTwoID="89"/>
+  <dunnart:node dunnart:type="separation" dunnart:position="209" dunnart:direction="101" dunnart:sepDistance="32.000000" id="100" dunnart:equality="1"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="separation" constraintID="100" objOneID="87" objTwoID="90"/>
+  <path d="M 302.5,323.2000122 L 286,306.7000122 L 294.25,306.7000122 L 294.25,216.1999969 L 310.75,216.1999969 L 310.75,306.7000122 L 319,306.7000122 L 302.5,323.2000122 z" id="27" class="shape" style="fill:#8080FF;" dunnart:fillColour="8080ffff;" dunnart:label="10" dunnart:width="40" dunnart:height="114" dunnart:xPos="283" dunnart:yPos="213" dunnart:type="bioStrand" dunnart:reversed="1"/>
+  <text id="text27" class="tLabel" x="303.000000" y="274.200000">
+    <tspan id="tspan27n0" class="tsLabel" x="303.000000" y="274.200000" sodipodi:role="line">10</tspan>
+  </text>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="91" objOneID="27" alignmentPos="0"/>
+  <path d="M 349.5,194.1999969 L 366,210.6999969 L 357.75,210.6999969 L 357.75,301.2000122 L 341.25,301.2000122 L 341.25,210.6999969 L 333,210.6999969 L 349.5,194.1999969 z" id="28" class="shape" style="fill:#8080FF;" dunnart:fillColour="8080ffff;" dunnart:label="11" dunnart:width="40" dunnart:height="114" dunnart:xPos="330" dunnart:yPos="191" dunnart:type="bioStrand" dunnart:reversed="0"/>
+  <text id="text28" class="tLabel" x="350.000000" y="252.200000">
+    <tspan id="tspan28n0" class="tsLabel" x="350.000000" y="252.200000" sodipodi:role="line">11</tspan>
+  </text>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="90" objOneID="28" alignmentPos="0"/>
+  <path d="M 393.5,182.1999969 L 410,198.6999969 L 401.75,198.6999969 L 401.75,289.2000122 L 385.25,289.2000122 L 385.25,198.6999969 L 377,198.6999969 L 393.5,182.1999969 z" id="29" class="shape" style="fill:#8080FF;" dunnart:fillColour="8080ffff;" dunnart:label="4" dunnart:width="40" dunnart:height="114" dunnart:xPos="374" dunnart:yPos="179" dunnart:type="bioStrand" dunnart:reversed="0"/>
+  <text id="text29" class="tLabel" x="394.000000" y="240.200000">
+    <tspan id="tspan29n0" class="tsLabel" x="394.000000" y="240.200000" sodipodi:role="line">4</tspan>
+  </text>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="89" objOneID="29" alignmentPos="0"/>
+  <path d="M 429.5,279.2000122 L 413,262.7000122 L 421.25,262.7000122 L 421.25,172.1999969 L 437.75,172.1999969 L 437.75,262.7000122 L 446,262.7000122 L 429.5,279.2000122 z" id="30" class="shape" style="fill:#8080FF;" dunnart:fillColour="8080ffff;" dunnart:label="2" dunnart:width="40" dunnart:height="114" dunnart:xPos="410" dunnart:yPos="169" dunnart:type="bioStrand" dunnart:reversed="1"/>
+  <text id="text30" class="tLabel" x="430.000000" y="230.200000">
+    <tspan id="tspan30n0" class="tsLabel" x="430.000000" y="230.200000" sodipodi:role="line">2</tspan>
+  </text>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="88" objOneID="30" alignmentPos="0"/>
+  <path d="M 474.5,237.1999969 L 458,220.6999969 L 466.25,220.6999969 L 466.25,162.1999969 L 482.75,162.1999969 L 482.75,220.6999969 L 491,220.6999969 L 474.5,237.1999969 z" id="31" class="shape" style="fill:#8080FF;" dunnart:fillColour="8080ffff;" dunnart:label="3" dunnart:width="40" dunnart:height="82" dunnart:xPos="455" dunnart:yPos="159" dunnart:type="bioStrand" dunnart:reversed="1"/>
+  <text id="text31" class="tLabel" x="475.000000" y="204.200000">
+    <tspan id="tspan31n0" class="tsLabel" x="475.000000" y="204.200000" sodipodi:role="line">3</tspan>
+  </text>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="87" objOneID="31" alignmentPos="0"/>
+</svg>

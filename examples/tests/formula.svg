@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Created with Dunnart (http://www.csse.monash.edu.au/~mwybrow/dunnart/)-->
+<svg xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:dunnart="http://www.csse.monash.edu.au/~mwybrow/dunnart.dtd" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd">
+  <dunnart:options useMultiway="1" instantFeedback="0" newConnType="53" orientation="0" graphMode="0"/>
+  <sodipodi:namedview showguides="false" guidetolerance="5.0" guidecolor="#000000ff" guideopacity="0.25"/>
+  <style>.shape { stroke:black; stroke-width:1px; fill:#f0f0d2; } .connector { fill:none; stroke:black; stroke-width:1px; stroke-linecap:butt; stroke-linejoin:miter; stroke-opacity:1; } .cluster { fill:#60cdf3; fill-opacity:0.33333333; }</style>
+  <defs>
+    <marker inkscape:stockid="ConnArrowEnd" orient="auto" refX="7.5" refY="0.0" id="ConnArrowEnd" style="overflow:visible;">
+      <path d="M 0.0,0.0 L 1.0,-5.0 L -12.5,0.0 L 1.0,5.0 L 0.0,0.0 z" style="fill-rule:evenodd; stroke:#000000; stroke-width:1px; marker-start:none;" transform="scale(0.6) rotate(180)"/>
+    </marker>
+  </defs>
+  <dunnart:node dunnart:type="shTextShape" id="6" class="shape" dunnart:label="&amp;#8211;&amp;#8211;&amp;#8211;&amp;#8211;" dunnart:width="102" dunnart:height="6" dunnart:xPos="315" dunnart:yPos="244" dunnart:fontSize="45"/>
+  <dunnart:node dunnart:type="shTextShape" id="9" class="shape" dunnart:label="&amp;#8721;" dunnart:width="32" dunnart:height="38" dunnart:xPos="333" dunnart:yPos="273" dunnart:fontSize="40"/>
+  <dunnart:node dunnart:type="shTextShape" id="1" class="shape" dunnart:label="&amp;#8730;" dunnart:width="49" dunnart:height="88" dunnart:xPos="271" dunnart:yPos="244" dunnart:fontSize="90"/>
+  <dunnart:node dunnart:type="shTextShape" id="10" class="shape" dunnart:label="n" dunnart:width="8" dunnart:height="10" dunnart:xPos="346" dunnart:yPos="260" dunnart:fontSize="16"/>
+  <dunnart:node dunnart:type="shTextShape" id="16" class="shape" dunnart:label="i=1" dunnart:width="21" dunnart:height="13" dunnart:xPos="338" dunnart:yPos="315" dunnart:fontSize="16"/>
+  <dunnart:node dunnart:type="shTextShape" id="18" class="shape" dunnart:label="x" dunnart:width="12" dunnart:height="14" dunnart:xPos="370" dunnart:yPos="287" dunnart:fontSize="25"/>
+  <dunnart:node dunnart:type="shTextShape" id="20" class="shape" dunnart:label="2" dunnart:width="5" dunnart:height="8" dunnart:xPos="385" dunnart:yPos="280" dunnart:fontSize="10"/>
+  <dunnart:node dunnart:type="shTextShape" id="21" class="shape" dunnart:label="i" dunnart:width="3" dunnart:height="8" dunnart:xPos="386" dunnart:yPos="300" dunnart:fontSize="10"/>
+  <dunnart:node dunnart:type="shTextShape" id="22" class="shape" dunnart:label="Greek characters: &amp;#945; &amp;#946; &amp;#947; &amp;#948; &amp;#949; &amp;#950;" dunnart:width="230" dunnart:height="19" dunnart:xPos="262" dunnart:yPos="441" dunnart:fontSize="18"/>
+  <path dunnart:type="shFreehand" id="23" class="shape" dunnart:label="" dunnart:width="6" dunnart:height="6" dunnart:xPos="336" dunnart:yPos="546" dunnart:geometry="1 1 0.000000,0.000000,0 339.000000,549.000000"/>
+</svg>

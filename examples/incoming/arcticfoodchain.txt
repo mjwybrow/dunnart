@@ -1,0 +1,48 @@
+Polar Bear;Bearded Seal
+Polar Bear;Ringed Seal
+Arctic Fox;Ringed Seal
+Arctic Fox;Eider Duck
+Glaucous Gull;Kittywake
+Glaucous Gull;Brunnich's Guillemot
+Glaucous Gull;Little Auk
+Glaucous Gull;Black Guillemot
+Glaucous Gull;Polychaetes
+Glaucous Gull;Polar Cod
+Glaucous Gull;Squid
+Kittywake;Squid
+Kittywake;Capelin
+Kittywake;Amphipods, Krill, & Prawns
+Bearded Seal;Mussels & Snails
+Bearded Seal;Polar Cod
+Bearded Seal;Benthic Crustaceans
+Harp Seal;Capelin
+Harp Seal;Squid
+Harp Seal;Polar Cod
+Harp Seal;Amphipods, Krill, & Prawns
+Eider Duck;Pelagic Invertebrates
+Eider Duck;Benthic Crustaceans
+Eider Duck;Benthic Fish
+Eider Duck;Mussels & Snails
+Eider Duck;Amphipods, Krill, & Prawns
+Ringed Seal;Polar Cod
+Polar Cod;Pelagic Invertebrates
+Little Auk;Amphipods, Krill, & Prawns
+Little Auk;Squid
+Brunnich's Guillemot;Amphipods, Krill, & Prawns
+Brunnich's Guillemot;Capelin
+Brunnich's Guillemot;Squid
+Black Guillemot;Squid
+Black Guillemot;Amphipods, Krill, & Prawns
+Fulmar;Squid
+Fulmar;Amphipods, Krill, & Prawns
+Baleen Whale;Squid
+Baleen Whale;Amphipods, Krill, & Prawns
+Baleen Whale;Polar Cod
+Baleen Whale;Capelin
+Beluga;Capelin
+Beluga;Squid
+Cod;Amphipods, Krill, & Prawns
+Capelin;Amphipods, Krill, & Prawns
+Amphipods, Krill, & Prawns;Pelagic Crustaceans
+Pelagic Crustaceans;Primary Producers
+

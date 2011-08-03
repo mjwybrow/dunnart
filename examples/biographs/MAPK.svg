@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:dunnart="http://www.dunnart.org/ns/dunnart" xmlns:xlink="http://www.w3.org/1999/xlink" pointer-events="none" text-anchor="middle" font-size="12" preserveAspectRatio="xMinYMin" id="root" version="1.1" viewBox="0 0 620 400">
+ <title>MAPK</title>
+ <defs>
+  <g stroke-width="0.3" stroke="black">
+   <!-- [Arrowheads] -->
+   <marker markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto" id="arrow">
+    <path transform="scale(10 10)" d="M.72,.5 l-.43,-.25 v.5 z"/>
+   </marker>
+   <marker markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" refX="0" refY="5" orient="auto" id="biarrow">
+    <path transform="scale(10 10)" d="M.28,.5 l.43,-.25 v.5 z"/>
+   </marker>
+   <marker markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="10" refX="12" refY="5" orient="auto" id="END_TRANSPORT">
+    <path transform="scale(10 10)" d="M0,0 v1 M.92,.5 l-.43,-.25 v.5 z"/>
+   </marker>
+  </g>
+  <g>
+   <!-- [Process boxes] -->
+   <g overflow="visible" id="HETERODIMER_ASSOCIATION">
+    <rect width="2" height="2" fill="white" stroke-width="0.1"/>
+   </g>
+   <g overflow="visible" id="DISSOCIATION">
+    <rect width="2" height="2" fill="white" stroke-width="0.1"/>
+   </g>
+   <g overflow="visible" id="TRUNCATION">
+    <rect width="2" height="2" fill="white" stroke-width="0.1"/>
+    <path stroke-width="0.2" fill="none" d="M.6,2 v-1.4 l.8,.8 v-1.4"/>
+   </g>
+   <g overflow="visible" id="STATE_TRANSITION">
+    <rect width="2" height="2" fill="white" stroke-width="0.1"/>
+   </g>
+   <g overflow="visible" id="KNOWN_TRANSITION_OMITTED">
+    <rect width="2" height="2" fill="white" stroke-width="0.1"/>
+    <path stroke-width="0.2" fill="none" d="M.5,1.6 l.4,-1.2 m.2,1.2 l.4,-1.2"/>
+   </g>
+   <g overflow="visible" id="UNKNOWN_TRANSITION">
+    <rect width="2" height="2" fill="white" stroke-width="0.1"/>
+    <path stroke-width="0.2" fill="none" d="M.6,.6 a.36,.32 0 1 1 .4,.5 v.2 m0,.2 v.2"/>
+   </g>
+   <g overflow="visible" id="TRANSPORT">
+    <rect width="2" height="2" fill="white" stroke-width="0.1"/>
+   </g>
+   <g overflow="visible" id="TRANSCRIPTION">
+    <rect width="2" height="2" fill="white" stroke-width="0.1"/>
+   </g>
+   <g overflow="visible" id="TRANSLATION">
+    <rect width="2" height="2" fill="white" stroke-width="0.1"/>
+   </g>
+  </g>
+  <g stroke="black">
+   <!-- [Process boxes - trifurcated] -->
+   <marker markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto" id="START_HETERODIMER_ASSOCIATION">
+    <circle cx="5" cy="5" r="4" fill="black"/>
+   </marker>
+   <marker markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto" id="START_DISSOCIATION">
+    <circle cx="5" cy="5" r="5" fill="white"/>
+    <circle cx="5" cy="5" r="3" fill="white"/>
+   </marker>
+  </g>
+  <g stroke="black">
+   <!-- [Modifications] -->
+   <marker markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto" id="CATALYSIS">
+    <circle cx="5" cy="5" r="4.5" fill="white"/>
+   </marker>
+   <marker markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto" id="UNKNOWN_CATALYSIS">
+    <circle cx="5" cy="5" r="4.5" fill="white"/>
+   </marker>
+   <marker markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto" id="INHIBITION">
+    <path fill="white" stroke-width="0.1" transform="scale(10 10)" d="M1,0 v1"/>
+   </marker>
+   <marker markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto" id="UNKNOWN_INHIBITION">
+    <path fill="white" stroke-width="0.1" transform="scale(10 10)" d="M0,0 v1"/>
+    <path fill="white" stroke-width="0.1" transform="scale(10 10)" stroke="white" d="M0,.5 h.5"/>
+   </marker>
+   <marker markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto" id="PHYSICAL_STIMULATION">
+    <path fill="white" stroke-width="0.1" transform="scale(10 10)" d="M0,0 v1 l1,-.5 z"/>
+   </marker>
+   <marker markerUnits="userSpaceOnUse" markerWidth="20" markerHeight="10" refX="20" refY="5" orient="auto" id="MODULATION">
+    <path fill="white" stroke-width="0.1" transform="scale(10 10)" d="M0,.5 l1,.5 1,-.5 -1,-.5 z"/>
+   </marker>
+   <marker markerUnits="userSpaceOnUse" markerWidth="15" markerHeight="10" refX="15" refY="5" orient="auto" id="TRIGGER">
+    <path fill="white" stroke-width="0.1" transform="scale(10 10)" d="M0,0 v1 M.5,0 v1 l1,-.5 z"/>
+   </marker>
+  </g>
+  <!-- [Residue symbols] -->
+  <g id="phosphorylated">
+   <circle r="9" fill="white" stroke="black"/>
+   <text y="4.0" stroke="none" font-size="8.0pt">P</text>
+  </g>
+  <g id="acetylated">
+   <circle r="9" fill="white" stroke="black"/>
+   <text y="4.0" stroke="none" font-size="8.0pt">Ac</text>
+  </g>
+  <g id="ubiquitinated">
+   <circle r="9" fill="white" stroke="black"/>
+   <text y="4.0" stroke="none" font-size="8.0pt">Ub</text>
+  </g>
+  <g id="methylated">
+   <circle r="9" fill="white" stroke="black"/>
+   <text y="4.0" stroke="none" font-size="8.0pt">Me</text>
+  </g>
+  <g id="hydroxylated">
+   <circle r="9" fill="white" stroke="black"/>
+   <text y="4.0" stroke="none" font-size="8.0pt">OH</text>
+  </g>
+  <g id="don't care">
+   <circle r="9" fill="white" stroke="black"/>
+   <text y="4.0" stroke="none" font-size="8.0pt">*</text>
+  </g>
+  <g id="unknown">
+   <circle r="9" fill="white" stroke="black"/>
+   <text y="4.0" stroke="none" font-size="8.0pt">?</text>
+  </g>
+  <g id="glycosylated">
+   <circle r="9" fill="white" stroke="black"/>
+   <text y="4.0" stroke="none" font-size="8.0pt">G</text>
+  </g>
+  <g id="myristoylated">
+   <circle r="9" fill="white" stroke="black"/>
+   <text y="4.0" stroke="none" font-size="8.0pt">My</text>
+  </g>
+  <g id="palmytoylated">
+   <circle r="9" fill="white" stroke="black"/>
+   <text y="4.0" stroke="none" font-size="8.0pt">Pa</text>
+  </g>
+  <g id="prenylated">
+   <circle r="9" fill="white" stroke="black"/>
+   <text y="4.0" stroke="none" font-size="8.0pt">Pr</text>
+  </g>
+  <g id="protonated">
+   <circle r="9" fill="white" stroke="black"/>
+   <text y="4.0" stroke="none" font-size="8.0pt">H</text>
+  </g>
+  <g id="sulfated">
+   <circle r="9" fill="white" stroke="black"/>
+   <text y="4.0" stroke="none" font-size="8.0pt">S</text>
+  </g>
+  <g id="empty">
+   <circle r="9" fill="white" stroke="black"/>
+  </g>
+  <style type="text/css">
+     body { margin: 0; resize: both; overflow: auto; }
+     body div { margin: 0; padding: 0; }
+     #listOfCompartmentAliases body,
+     #listOfComplexSpeciesAliases body,
+     #listOfSpeciesAliases body {
+       text-align: center;
+     }
+</style>
+ </defs>
+ <script type="text/ecmascript">
+  function toHtml(parent, frag) {
+    var reg = new RegExp("_br_|_plus_|_minus_|_super_(.*)_endsuper_|_sub_(.*)_endsub_", "g");
+    // Literal regexp may not work!
+    var start = 0;
+    for(var matched; (matched = reg.exec(frag)) != null; ) {
+      var left = RegExp.leftContext.substring(start);
+      parent.appendChild(document.createTextNode(left));
+      var el;
+      if(matched[0] == "_br_") {
+        el = document.createElementNS("http://www.w3.org/1999/xhtml","br");
+      } else if(matched[0] == "_plus_") {
+        el = document.createTextNode("+");
+      } else if(matched[0] == "_minus_") {
+        el = document.createTextNode("-");
+      } else if(matched[0].indexOf("_super_") == 0) {
+        el = toHtml(document.createElementNS("http://www.w3.org/1999/xhtml","sup"), matched[1]);
+      } else if(matched[0].indexOf("_sub_") == 0) {
+        el = toHtml(document.createElementNS("http://www.w3.org/1999/xhtml","sub"), matched[2]);
+      }
+      parent.appendChild(el);
+      start = reg.lastIndex;
+    }
+    parent.appendChild(document.createTextNode(frag.substring(start)));
+    return parent;
+  }
+
+  function enrich(parent) {
+    var container = parent.getElementsByTagName("body")[0];
+    var content = container.firstChild.nodeValue;
+    var rich = toHtml(document.createElementNS("http://www.w3.org/1999/xhtml","div"), content);
+    container.replaceChild(rich, container.firstChild);
+  }
+
+  function enrichText(container) {
+    if(container == null) return;
+    var frag = container.firstChild;
+    container.removeChild(frag);
+    toHtml(container, frag.nodeValue);
+  }
+
+  function enrichAll(container) {
+    if(container == null || !container.hasChildNodes()) return;
+    for(var child = container.firstChild; child != null; child = child.nextSibling) {
+      if(child.nodeType == 1) { // ELEMENT_NODE
+        enrichAll(child); // recursive
+      } else if(child.nodeType == 3) { // TEXT_NODE
+        var span = document.createElementNS("http://www.w3.org/1999/xhtml","span");
+        var rich = toHtml(span, child.nodeValue);
+        container.replaceChild(rich, child);
+      }
+    }
+  }
+</script>
+ <rect id="canvas" fill="none" stroke="gainsboro" height="400" width="620" y="0" x="0"/>
+ <!--
+    # listOfCompartmentAliases #
+  -->
+ <g text-anchor="start" id="listOfCompartmentAliases">
+  <!-- [Compartment-ca0] -->
+  <g fill="none" stroke="#cccccc" transform="translate(10.0 12.0)" id="ca0">
+   <path stroke="none" fill-opacity="0.25" fill-rule="evenodd" fill="#cccccc" d="M20,0 a20,20 0 0,0 -20,20 v338 a20,20 0 0,0 20,20   h560                    a20,20 0 0,0 20,-20 v-338 a20,20 0 0,0 -20,-20 z        m0,12 a8,8 0 0,0 -8,8 v338 a8,8 0 0,0 8,8   h560                    a8,8 0 0,0 8,-8 v-338 a8,8 0 0,0 -8,-8 z"/>
+   <rect stroke-width="2.0" ry="20" rx="20" height="378.0" width="600.0" y="0" x="0"/>
+   <rect stroke-width="1.0" ry="8" rx="8" height="354" width="576" y="12.0" x="12.0"/>
+   <text fill="black" stroke="none" y="353.5" x="287">uVol</text>
+  </g>
+ </g>
+ <!--
+    # listOfComplexSpeciesAliases #
+  -->
+ <g text-anchor="middle" stroke-width="1" stroke="black" id="listOfComplexSpeciesAliases"/>
+ <!--
+    # listOfSpeciesAliases #
+  -->
+ <g text-anchor="middle" stroke-width="1" stroke="black" id="listOfSpeciesAliases">
+  <g transform="translate(83.22 97.0)" dunnart:type="svgNode" id="a0">
+   <!-- [GENERIC-a0] -->
+   <rect ry="4" rx="4" height="40" width="80" y="-20" x="-40" fill="#ffff99"/>
+   <use y="-0.04" x="-40.0" xlink:href="#empty"/>
+   <text pointer-events="none" stroke="none" y="6">MKKK</text>
+  </g>
+  <g transform="translate(218.33 97.0)" dunnart:type="svgNode" id="a1">
+   <!-- [Cocoon-a1] -->
+   <rect ry="8" rx="8" height="50" width="90" y="-25" x="-45" fill="none" stroke-dasharray="2"/>
+   <rect ry="8" rx="8" height="50" width="90" y="-25" x="-45" fill="white" stroke="none"/>
+   <!-- [GENERIC-a1] -->
+   <rect ry="4" rx="4" height="40" width="80" y="-20" x="-40" fill="#ffff99"/>
+   <use y="-0.04" x="-40.0" xlink:href="#phosphorylated"/>
+   <text pointer-events="none" stroke="none" y="6">MKKK</text>
+  </g>
+  <g transform="translate(138.19 204.33)" dunnart:type="svgNode" id="a2">
+   <!-- [GENERIC-a2] -->
+   <rect ry="4" rx="4" height="40" width="80" y="-20" x="-40" fill="#ccffcc"/>
+   <use y="15.82" x="-40.0" xlink:href="#empty"/>
+   <use y="-17.86" x="-40.0" xlink:href="#empty"/>
+   <text pointer-events="none" stroke="none" y="6">MKK</text>
+  </g>
+  <g transform="translate(299.35 204.33)" dunnart:type="svgNode" id="a3">
+   <!-- [GENERIC-a3] -->
+   <rect ry="4" rx="4" height="40" width="80" y="-20" x="-40" fill="#ccffcc"/>
+   <use y="15.82" x="-40.0" xlink:href="#empty"/>
+   <use y="-17.86" x="-40.0" xlink:href="#phosphorylated"/>
+   <text pointer-events="none" stroke="none" y="6">MKK</text>
+  </g>
+  <g transform="translate(449.61 204.33)" dunnart:type="svgNode" id="a4">
+   <!-- [Cocoon-a4] -->
+   <rect ry="8" rx="8" height="50" width="90" y="-25" x="-45" fill="none" stroke-dasharray="2"/>
+   <rect ry="8" rx="8" height="50" width="90" y="-25" x="-45" fill="white" stroke="none"/>
+   <!-- [GENERIC-a4] -->
+   <rect ry="4" rx="4" height="40" width="80" y="-20" x="-40" fill="#ccffcc"/>
+   <use y="15.82" x="-40.0" xlink:href="#phosphorylated"/>
+   <use y="-17.86" x="-40.0" xlink:href="#phosphorylated"/>
+   <text pointer-events="none" stroke="none" y="6">MKK</text>
+  </g>
+  <g transform="translate(202.88 324.88)" dunnart:type="svgNode" id="a5">
+   <!-- [GENERIC-a5] -->
+   <rect ry="4" rx="4" height="40" width="80" y="-20" x="-40" fill="#99ccff"/>
+   <use y="16.38" x="-40.0" xlink:href="#empty"/>
+   <use y="-16.37" x="-40.0" xlink:href="#empty"/>
+   <text pointer-events="none" stroke="none" y="6">MAPK</text>
+  </g>
+  <g transform="translate(369.17 324.88)" dunnart:type="svgNode" id="a6">
+   <!-- [GENERIC-a6] -->
+   <rect ry="4" rx="4" height="40" width="80" y="-20" x="-40" fill="#99ccff"/>
+   <use y="16.38" x="-40.0" xlink:href="#empty"/>
+   <use y="-16.37" x="-40.0" xlink:href="#phosphorylated"/>
+   <text pointer-events="none" stroke="none" y="6">MAPK</text>
+  </g>
+  <g transform="translate(530.04 324.88)" dunnart:type="svgNode" id="a7">
+   <!-- [Cocoon-a7] -->
+   <rect ry="8" rx="8" height="50" width="90" y="-25" x="-45" fill="none" stroke-dasharray="2"/>
+   <rect ry="8" rx="8" height="50" width="90" y="-25" x="-45" fill="white" stroke="none"/>
+   <!-- [GENERIC-a7] -->
+   <rect ry="4" rx="4" height="40" width="80" y="-20" x="-40" fill="#99ccff"/>
+   <use y="16.38" x="-40.0" xlink:href="#phosphorylated"/>
+   <use y="-16.37" x="-40.0" xlink:href="#phosphorylated"/>
+   <text pointer-events="none" stroke="none" y="6">MAPK</text>
+  </g>
+ </g>
+ <!--
+    # listOfReactions #
+  -->
+ <g fill="none" stroke="black" id="listOfReactions">
+  <g id="J0">
+   <!-- [Reaction-J0] -->
+   <path id="J0C1" dunnart:type="connector" dunnart:routingType="orthogonal" dunnart:srcID="a0" dunnart:dstID="J0PN" dunnart:dstPinID="1" d="M123.22,87.0 L145.78,87.0"/>
+   <path id="J0C2" dunnart:type="connector" dunnart:routingType="orthogonal" dunnart:srcID="J0PN" dunnart:srcPinID="1" dunnart:dstID="a1" dunnart:arrowHeadType="triangle_filled" marker-end="url(#arrow)" d="M155.78,87.0 L178.33,87.0"/>
+   <use id="J0PN" dunnart:type="svgNode" dunnart:connectionPins="1 0 0.5 5 left,1 1 0.5 5 right,3 0.5 0 5 up,3 0.5 1 5 down" transform="matrix(5.0 0.0 0.0 5.0 150.78 87.0)" y="-1" x="-1" xlink:href="#STATE_TRANSITION"/>
+   <!-- (INHIBITION.MAPK_PP) -->
+   <path id="J0C3" dunnart:type="connector" dunnart:routingType="orthogonal" dunnart:srcID="a7" dunnart:dstID="J0PN" dunnart:dstPinID="3" dunnart:arrowHeadType="cross" marker-end="url(#INHIBITION)" d="M530.04,304.88 L527.54,51.72 150.46,55.44 150.78,79.5"/>
+  </g>
+  <g id="J1">
+   <!-- [Reaction-J1] -->
+   <path id="J1C1" dunnart:type="connector" dunnart:routingType="orthogonal" dunnart:srcID="a1" dunnart:dstID="J1PN" dunnart:dstPinID="1" d="M178.33,107.0 L155.78,107.0"/>
+   <path id="J1C2" dunnart:type="connector" dunnart:routingType="orthogonal" dunnart:srcID="J1PN" dunnart:srcPinID="1" dunnart:dstID="a0" dunnart:arrowHeadType="triangle_filled" marker-end="url(#arrow)" d="M145.78,107.0 L123.22,107.0"/>
+   <use id="J1PN" dunnart:type="svgNode" dunnart:connectionPins="1 0 0.5 5 left,1 1 0.5 5 right,3 0.5 0 5 up,3 0.5 1 5 down" transform="matrix(-5.0 0.0 -0.0 -5.0 150.78 107.0)" y="-1" x="-1" xlink:href="#STATE_TRANSITION"/>
+  </g>
+  <g id="J2">
+   <!-- [Reaction-J2] -->
+   <path id="J2C1" dunnart:type="connector" dunnart:routingType="orthogonal" dunnart:srcID="a2" dunnart:dstID="J2PN" dunnart:dstPinID="1" d="M178.19,204.33 L213.77,204.33"/>
+   <path id="J2C2" dunnart:type="connector" dunnart:routingType="orthogonal" dunnart:srcID="J2PN" dunnart:srcPinID="1" dunnart:dstID="a3" dunnart:arrowHeadType="triangle_filled" marker-end="url(#arrow)" d="M223.77,204.33 L259.35,204.33"/>
+   <use id="J2PN" dunnart:type="svgNode" dunnart:connectionPins="1 0 0.5 5 left,1 1 0.5 5 right,3 0.5 0 5 up,3 0.5 1 5 down" transform="matrix(5.0 0.0 0.0 5.0 218.77 204.33)" y="-1" x="-1" xlink:href="#STATE_TRANSITION"/>
+   <!-- (CATALYSIS.MKKK_P) -->
+   <path id="J2C3" dunnart:type="connector" dunnart:routingType="orthogonal" dunnart:srcID="a1" dunnart:dstID="J2PN" dunnart:dstPinID="3" dunnart:arrowHeadType="circle_outline" marker-end="url(#CATALYSIS)" d="M218.33,117.0 L218.77,196.83"/>
+  </g>
+  <g id="J3">
+   <!-- [Reaction-J3] -->
+   <path id="J3C1" dunnart:type="connector" dunnart:routingType="orthogonal" dunnart:srcID="a3" dunnart:dstID="J3PN" dunnart:dstPinID="1" d="M339.35,204.33 L369.48,204.33"/>
+   <path id="J3C2" dunnart:type="connector" dunnart:routingType="orthogonal" dunnart:srcID="J3PN" dunnart:srcPinID="1" dunnart:dstID="a4" dunnart:arrowHeadType="triangle_filled" marker-end="url(#arrow)" d="M379.48,204.33 L409.61,204.33"/>
+   <use id="J3PN" dunnart:type="svgNode" dunnart:connectionPins="1 0 0.5 5 left,1 1 0.5 5 right,3 0.5 0 5 up,3 0.5 1 5 down" transform="matrix(5.0 0.0 0.0 5.0 374.48 204.33)" y="-1" x="-1" xlink:href="#STATE_TRANSITION"/>
+   <!-- (CATALYSIS.MKKK_P) -->
+   <path id="J3C3" dunnart:type="connector" dunnart:routingType="orthogonal" dunnart:srcID="a1" dunnart:dstID="J3PN" dunnart:dstPinID="3" dunnart:arrowHeadType="circle_outline" marker-end="url(#CATALYSIS)" d="M238.33,117.0 L374.48,196.83"/>
+  </g>
+  <g id="J4">
+   <!-- [Reaction-J4] -->
+   <path id="J4C1" dunnart:type="connector" dunnart:routingType="orthogonal" dunnart:srcID="a4" dunnart:dstID="J4PN" dunnart:dstPinID="1" d="M409.61,214.33 L379.48,214.33"/>
+   <path id="J4C2" dunnart:type="connector" dunnart:routingType="orthogonal" dunnart:srcID="J4PN" dunnart:srcPinID="1" dunnart:dstID="a3" dunnart:arrowHeadType="triangle_filled" marker-end="url(#arrow)" d="M369.48,214.33 L339.35,214.33"/>
+   <use id="J4PN" dunnart:type="svgNode" dunnart:connectionPins="1 0 0.5 5 left,1 1 0.5 5 right,3 0.5 0 5 up,3 0.5 1 5 down" transform="matrix(-5.0 0.0 -0.0 -5.0 374.48 214.33)" y="-1" x="-1" xlink:href="#STATE_TRANSITION"/>
+  </g>
+  <g id="J5">
+   <!-- [Reaction-J5] -->
+   <path id="J5C1" dunnart:type="connector" dunnart:routingType="orthogonal" dunnart:srcID="a3" dunnart:dstID="J5PN" dunnart:dstPinID="1" d="M259.35,214.33 L223.77,214.33"/>
+   <path id="J5C2" dunnart:type="connector" dunnart:routingType="orthogonal" dunnart:srcID="J5PN" dunnart:srcPinID="1" dunnart:dstID="a2" dunnart:arrowHeadType="triangle_filled" marker-end="url(#arrow)" d="M213.77,214.33 L178.19,214.33"/>
+   <use id="J5PN" dunnart:type="svgNode" dunnart:connectionPins="1 0 0.5 5 left,1 1 0.5 5 right,3 0.5 0 5 up,3 0.5 1 5 down" transform="matrix(-5.0 0.0 -0.0 -5.0 218.77 214.33)" y="-1" x="-1" xlink:href="#STATE_TRANSITION"/>
+  </g>
+  <g id="J6">
+   <!-- [Reaction-J6] -->
+   <path id="J6C1" dunnart:type="connector" dunnart:routingType="orthogonal" dunnart:srcID="a5" dunnart:dstID="J6PN" dunnart:dstPinID="1" d="M242.88,324.88 L281.02,324.88"/>
+   <path id="J6C2" dunnart:type="connector" dunnart:routingType="orthogonal" dunnart:srcID="J6PN" dunnart:srcPinID="1" dunnart:dstID="a6" dunnart:arrowHeadType="triangle_filled" marker-end="url(#arrow)" d="M291.02,324.88 L329.17,324.88"/>
+   <use id="J6PN" dunnart:type="svgNode" dunnart:connectionPins="1 0 0.5 5 left,1 1 0.5 5 right,3 0.5 0 5 up,3 0.5 1 5 down" transform="matrix(5.0 0.0 0.0 5.0 286.02 324.88)" y="-1" x="-1" xlink:href="#STATE_TRANSITION"/>
+   <!-- (CATALYSIS.MKK_PP) -->
+   <path id="J6C3" dunnart:type="connector" dunnart:routingType="orthogonal" dunnart:srcID="a4" dunnart:dstID="J6PN" dunnart:dstPinID="3" dunnart:arrowHeadType="circle_outline" marker-end="url(#CATALYSIS)" d="M429.61,224.33 L286.02,317.38"/>
+  </g>
+  <g id="J7">
+   <!-- [Reaction-J7] -->
+   <path id="J7C1" dunnart:type="connector" dunnart:routingType="orthogonal" dunnart:srcID="a6" dunnart:dstID="J7PN" dunnart:dstPinID="1" d="M409.17,324.88 L444.6,324.88"/>
+   <path id="J7C2" dunnart:type="connector" dunnart:routingType="orthogonal" dunnart:srcID="J7PN" dunnart:srcPinID="1" dunnart:dstID="a7" dunnart:arrowHeadType="triangle_filled" marker-end="url(#arrow)" d="M454.6,324.88 L490.04,324.88"/>
+   <use id="J7PN" dunnart:type="svgNode" dunnart:connectionPins="1 0 0.5 5 left,1 1 0.5 5 right,3 0.5 0 5 up,3 0.5 1 5 down" transform="matrix(5.0 0.0 0.0 5.0 449.6 324.88)" y="-1" x="-1" xlink:href="#STATE_TRANSITION"/>
+   <!-- (CATALYSIS.MKK_PP) -->
+   <path id="J7C3" dunnart:type="connector" dunnart:routingType="orthogonal" dunnart:srcID="a4" dunnart:dstID="J7PN" dunnart:dstPinID="3" dunnart:arrowHeadType="circle_outline" marker-end="url(#CATALYSIS)" d="M449.61,224.33 L449.6,317.38"/>
+  </g>
+  <g id="J8">
+   <!-- [Reaction-J8] -->
+   <path id="J8C1" dunnart:type="connector" dunnart:routingType="orthogonal" dunnart:srcID="a7" dunnart:dstID="J8PN" dunnart:dstPinID="1" d="M490.04,334.88 L454.6,334.88"/>
+   <path id="J8C2" dunnart:type="connector" dunnart:routingType="orthogonal" dunnart:srcID="J8PN" dunnart:srcPinID="1" dunnart:dstID="a6" dunnart:arrowHeadType="triangle_filled" marker-end="url(#arrow)" d="M444.6,334.88 L409.17,334.88"/>
+   <use id="J8PN" dunnart:type="svgNode" dunnart:connectionPins="1 0 0.5 5 left,1 1 0.5 5 right,3 0.5 0 5 up,3 0.5 1 5 down" transform="matrix(-5.0 0.0 -0.0 -5.0 449.6 334.88)" y="-1" x="-1" xlink:href="#STATE_TRANSITION"/>
+  </g>
+  <g id="J9">
+   <!-- [Reaction-J9] -->
+   <path id="J9C1" dunnart:type="connector" dunnart:routingType="orthogonal" dunnart:srcID="a6" dunnart:dstID="J9PN" dunnart:dstPinID="1" d="M329.17,334.88 L291.02,334.88"/>
+   <path id="J9C2" dunnart:type="connector" dunnart:routingType="orthogonal" dunnart:srcID="J9PN" dunnart:srcPinID="1" dunnart:dstID="a5" dunnart:arrowHeadType="triangle_filled" marker-end="url(#arrow)" d="M281.02,334.88 L242.88,334.88"/>
+   <use id="J9PN" dunnart:type="svgNode" dunnart:connectionPins="1 0 0.5 5 left,1 1 0.5 5 right,3 0.5 0 5 up,3 0.5 1 5 down" transform="matrix(-5.0 0.0 -0.0 -5.0 286.02 334.88)" y="-1" x="-1" xlink:href="#STATE_TRANSITION"/>
+  </g>
+ </g>
+</svg>

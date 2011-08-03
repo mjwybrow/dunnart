@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Created with Dunnart (http://www.csse.monash.edu.au/~mwybrow/dunnart/)-->
+<svg xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:dunnart="http://www.csse.monash.edu.au/~mwybrow/dunnart.dtd" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd">
+  <dunnart:options useMultiway="1" instantFeedback="1" newConnType="53" orientation="0" graphMode="0"/>
+  <sodipodi:namedview showguides="false" guidetolerance="5.0" guidecolor="#000000ff" guideopacity="0.25"/>
+  <style>.shape { stroke:black; stroke-width:1px; fill:#f0f0d2; } .connector { fill:none; stroke:black; stroke-width:1px; stroke-linecap:butt; stroke-linejoin:miter; stroke-opacity:1; } .cluster { fill:#60cdf3; fill-opacity:0.33333333; }</style>
+  <defs>
+    <marker inkscape:stockid="ConnArrowEnd" orient="auto" refX="7.5" refY="0.0" id="ConnArrowEnd" style="overflow:visible;">
+      <path d="M 0.0,0.0 L 1.0,-5.0 L -12.5,0.0 L 1.0,5.0 L 0.0,0.0 z" style="fill-rule:evenodd; stroke:#000000; stroke-width:1px; marker-start:none;" transform="scale(0.6) rotate(180)"/>
+    </marker>
+  </defs>
+  <path id="8" class="connector" dunnart:srcID="7" dunnart:srcFlags="52" dunnart:srcX="914" dunnart:srcY="90" dunnart:dstID="6" dunnart:dstFlags="56" dunnart:dstX="406" dunnart:dstY="683" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 763.000000,35.000000 L 757.000000,35.000000 L 627.000000,272.000000 L 477.000000,304.000000 L 459.000000,313.000000 L 445.000000,327.000000 L 300.000000,570.000000 L 261.000000,628.000000 L 255.000000,628.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="9" class="connector" dunnart:srcID="1" dunnart:srcFlags="49" dunnart:srcX="425" dunnart:srcY="137" dunnart:dstID="4" dunnart:dstFlags="56" dunnart:dstX="718" dunnart:dstY="503" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 274.000000,82.000000 L 274.000000,76.000000 L 335.000000,78.000000 L 458.000000,272.000000 L 527.000000,304.000000 L 545.000000,313.000000 L 559.000000,327.000000 L 568.000000,345.000000 L 572.000000,366.000000 L 573.000000,448.000000 L 567.000000,448.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="10" class="connector" dunnart:srcID="3" dunnart:srcFlags="49" dunnart:srcX="451" dunnart:srcY="362" dunnart:dstX="814" dunnart:dstY="690" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 300.000000,307.000000 L 300.000000,301.000000 L 374.000000,436.000000 L 445.000000,569.000000 L 459.000000,583.000000 L 477.000000,592.000000 L 663.000000,635.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="11" class="connector" dunnart:srcID="2" dunnart:srcFlags="40" dunnart:srcX="780" dunnart:srcY="251" dunnart:dstX="554" dunnart:dstY="718" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 629.000000,196.000000 L 635.000000,196.000000 L 627.000000,272.000000 L 568.000000,551.000000 L 559.000000,569.000000 L 545.000000,583.000000 L 403.000000,663.000000 " dunnart:type="connAvoidPoly"/>
+  <rect width="112" height="188" x="218" y="82" id="1" class="shape" dunnart:label="" dunnart:width="120" dunnart:height="196" dunnart:xPos="215" dunnart:yPos="79" dunnart:type="rect"/>
+  <path d="M 449,125 L 635,125 L 623,267 L 461,267 L 449,125 z" id="2" class="shape" dunnart:label="" dunnart:width="194" dunnart:height="150" dunnart:xPos="446" dunnart:yPos="122" dunnart:type="flowUserInt"/>
+  <path d="M 300,307 L 369,436 L 300,565 L 231,436 L 300,307 z" id="3" class="shape" dunnart:label="" dunnart:width="146" dunnart:height="266" dunnart:xPos="228" dunnart:yPos="304" dunnart:type="flowDiamond"/>
+  <rect width="130" height="286" x="437" y="305" rx="65" ry="65" id="4" class="shape" dunnart:label="" dunnart:width="138" dunnart:height="294" dunnart:xPos="434" dunnart:yPos="302" dunnart:type="flowEndOProc"/>
+  <path d="M 361,252 L 429,252 L 417,330 L 349,330 L 361,252 z" id="5" class="shape" dunnart:label="" dunnart:width="88" dunnart:height="86" dunnart:xPos="346" dunnart:yPos="249" dunnart:type="flowInOutput"/>
+  <rect width="52" height="32" x="203" y="612" id="6" class="shape" dunnart:label="" dunnart:width="60" dunnart:height="40" dunnart:xPos="200" dunnart:yPos="609" dunnart:type="rect"/>
+  <rect width="52" height="32" x="763" y="19" id="7" class="shape" dunnart:label="" dunnart:width="60" dunnart:height="40" dunnart:xPos="760" dunnart:yPos="16" dunnart:type="rect"/>
+</svg>

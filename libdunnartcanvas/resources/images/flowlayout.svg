@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.44.1"
+   sodipodi:docbase="/Users/mjwybrow/phd/dunnart/place-imgs"
+   sodipodi:docname="flowlayout.svg"
+   inkscape:export-filename="/Users/mjwybrow/Desktop/graph.png"
+   inkscape:export-xdpi="2.9932661"
+   inkscape:export-ydpi="2.9932661">
+  <defs
+     id="defs4">
+    <marker
+       inkscape:stockid="Arrow1Mend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Mend"
+       style="overflow:visible;">
+      <path
+         id="path2964"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;marker-start:none;"
+         transform="scale(0.4) rotate(180) translate(10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Send"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Send"
+       style="overflow:visible;">
+      <path
+         id="path2958"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;marker-start:none;"
+         transform="scale(0.2) rotate(180) translate(6,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Lend"
+       style="overflow:visible;">
+      <path
+         id="path2970"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;marker-start:none;"
+         transform="scale(0.8) rotate(180) translate(12.5,0)" />
+    </marker>
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient1887">
+      <stop
+         style="stop-color:aqua;stop-opacity:1;"
+         offset="0"
+         id="stop1889" />
+      <stop
+         style="stop-color:aqua;stop-opacity:0;"
+         offset="1"
+         id="stop1891" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient1887"
+       id="linearGradient1893"
+       x1="506.5244"
+       y1="298.07647"
+       x2="636.33274"
+       y2="298.07647"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     gridtolerance="10000"
+     guidetolerance="10"
+     objecttolerance="10"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.35"
+     inkscape:cx="375"
+     inkscape:cy="520"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     inkscape:window-width="823"
+     inkscape:window-height="584"
+     inkscape:window-x="597"
+     inkscape:window-y="22" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:aqua;fill-opacity:1;stroke:black;stroke-width:6.0999999;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect1872"
+       width="62.857155"
+       height="57.142872"
+       x="190.80785"
+       y="151.73782"
+       inkscape:export-filename="/Users/mjwybrow/phd/dunnart/place-imgs/flowlayout.png"
+       inkscape:export-xdpi="7.3084369"
+       inkscape:export-ydpi="7.3084369" />
+    <rect
+       style="fill:aqua;fill-opacity:1;stroke:black;stroke-width:6.0999999;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect2760"
+       width="62.857155"
+       height="57.142872"
+       x="268.5929"
+       y="272.06418"
+       inkscape:export-filename="/Users/mjwybrow/phd/dunnart/place-imgs/flowlayout.png"
+       inkscape:export-xdpi="7.3084369"
+       inkscape:export-ydpi="7.3084369" />
+    <rect
+       style="fill:aqua;fill-opacity:1;stroke:black;stroke-width:6.0999999;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect2762"
+       width="62.857155"
+       height="57.142872"
+       x="89.377022"
+       y="250.11278"
+       inkscape:export-filename="/Users/mjwybrow/phd/dunnart/place-imgs/flowlayout.png"
+       inkscape:export-xdpi="7.3084369"
+       inkscape:export-ydpi="7.3084369" />
+    <rect
+       style="fill:aqua;fill-opacity:1;stroke:black;stroke-width:6.0999999;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect2764"
+       width="62.857155"
+       height="57.142872"
+       x="176.27858"
+       y="390.10233"
+       inkscape:export-filename="/Users/mjwybrow/phd/dunnart/place-imgs/flowlayout.png"
+       inkscape:export-xdpi="7.3084369"
+       inkscape:export-ydpi="7.3084369" />
+    <rect
+       style="fill:aqua;fill-opacity:1;stroke:black;stroke-width:6.0999999;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect2766"
+       width="62.857155"
+       height="57.142872"
+       x="324.27335"
+       y="55.017715"
+       inkscape:export-filename="/Users/mjwybrow/phd/dunnart/place-imgs/flowlayout.png"
+       inkscape:export-xdpi="7.3084369"
+       inkscape:export-ydpi="7.3084369" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:black;stroke-width:5.30000019;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
+       d="M 189.63272,211.9307 L 153.40931,247.06278"
+       id="path2768"
+       inkscape:connector-type="polyline"
+       inkscape:export-filename="/Users/mjwybrow/phd/dunnart/place-imgs/flowlayout.png"
+       inkscape:export-xdpi="7.3084369"
+       inkscape:export-ydpi="7.3084369"
+       inkscape:connection-end="#rect2762"
+       inkscape:connection-start="#rect1872" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:black;stroke-width:5.30000019;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
+       d="M 140.43529,310.30565 L 188.07746,387.05233"
+       id="path2770"
+       inkscape:connector-type="polyline"
+       inkscape:export-filename="/Users/mjwybrow/phd/dunnart/place-imgs/flowlayout.png"
+       inkscape:export-xdpi="7.3084369"
+       inkscape:export-ydpi="7.3084369"
+       inkscape:connection-end="#rect2764"
+       inkscape:connection-start="#rect2762" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:black;stroke-width:5.30000019;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
+       d="M 242.67812,211.9307 L 279.57978,269.01418"
+       id="path2772"
+       inkscape:connector-type="polyline"
+       inkscape:export-filename="/Users/mjwybrow/phd/dunnart/place-imgs/flowlayout.png"
+       inkscape:export-xdpi="7.3084369"
+       inkscape:export-ydpi="7.3084369"
+       inkscape:connection-end="#rect2760"
+       inkscape:connection-start="#rect1872" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:black;stroke-width:5.30000019;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
+       d="M 275.29124,332.25705 L 232.43739,387.05233"
+       id="path2774"
+       inkscape:connector-type="polyline"
+       inkscape:export-filename="/Users/mjwybrow/phd/dunnart/place-imgs/flowlayout.png"
+       inkscape:export-xdpi="7.3084369"
+       inkscape:export-ydpi="7.3084369"
+       inkscape:connection-end="#rect2764"
+       inkscape:connection-start="#rect2760" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:black;stroke-width:5.30000019;stroke-linecap:butt;stroke-linejoin:miter;marker-end:url(#Arrow1Mend);stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;display:inline"
+       d="M 321.22335,108.57517 L 256.715,155.32324"
+       id="path2776"
+       inkscape:connector-type="polyline"
+       inkscape:export-xdpi="7.3084369"
+       inkscape:export-ydpi="7.3084369"
+       inkscape:export-filename="/Users/mjwybrow/phd/dunnart/place-imgs/flowlayout.png"
+       inkscape:connection-start="#rect2766"
+       inkscape:connection-end="#rect1872" />
+    <rect
+       style="fill:aqua;fill-opacity:1;stroke:black;stroke-width:6.0999999;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect3052"
+       width="62.857155"
+       height="57.142872"
+       x="430.67218"
+       y="166.56682"
+       inkscape:export-filename="/Users/mjwybrow/phd/dunnart/place-imgs/flowlayout.png"
+       inkscape:export-xdpi="7.3084369"
+       inkscape:export-ydpi="7.3084369" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:black;stroke-width:5.30000019;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;display:inline;marker-end:url(#Arrow1Mend)"
+       d="M 385.86338,115.21059 L 431.9393,163.51682"
+       id="path3056"
+       inkscape:connector-type="polyline"
+       inkscape:export-xdpi="7.3084369"
+       inkscape:export-ydpi="7.3084369"
+       inkscape:connection-end="#rect3052"
+       inkscape:connection-start="#rect2766"
+       inkscape:export-filename="/Users/mjwybrow/phd/dunnart/place-imgs/flowlayout.png" />
+    <rect
+       style="fill:aqua;fill-opacity:1;stroke:black;stroke-width:6.0999999;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect1883"
+       width="62.857155"
+       height="57.142872"
+       x="451.42859"
+       y="329.505"
+       inkscape:export-filename="/Users/mjwybrow/phd/dunnart/place-imgs/flowlayout.png"
+       inkscape:export-xdpi="7.3084369"
+       inkscape:export-ydpi="7.3084369" />
+    <path
+       style="fill:url(#linearGradient1893);fill-rule:evenodd;stroke:black;stroke-width:5.30000019;stroke-linecap:butt;stroke-linejoin:miter;marker-end:url(#Arrow1Mend);stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;display:inline"
+       d="M 466.12896,226.75969 L 478.82897,326.455"
+       id="path1885"
+       inkscape:connector-type="polyline"
+       inkscape:export-xdpi="7.3084369"
+       inkscape:export-ydpi="7.3084369"
+       inkscape:export-filename="/Users/mjwybrow/phd/dunnart/place-imgs/flowlayout.png"
+       inkscape:connection-start="#rect3052"
+       inkscape:connection-end="#rect1883" />
+  </g>
+</svg>

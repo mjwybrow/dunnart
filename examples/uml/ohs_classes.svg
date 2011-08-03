@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Created with Dunnart (http://www.csse.monash.edu.au/~mwybrow/dunnart/)-->
+<svg xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:dunnart="http://www.csse.monash.edu.au/~mwybrow/dunnart.dtd" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" width="484.000000px" height="646.000000px" viewBox="190.000000 18.000000 484.000000 646.000000">
+  <dunnart:options useMultiway="1" instantFeedback="1" newConnType="53" orientation="0" graphMode="0" layoutMode="0" nonOverlapConstraints="0" defaultIdealConnectorLength="1.000000"/>
+  <sodipodi:namedview showguides="false" guidetolerance="5.0" guidecolor="#000000ff" guideopacity="0.25" bordercolor="#000000" borderopacity="0.5" width="484.000000px" height="646.000000px"/>
+  <style type="text/css">.shape   { stroke:black; stroke-width:1px; fill:#f0f0d2; } .connector { fill:none; stroke:black; stroke-width:1px; stroke-linecap:butt; stroke-linejoin:miter; stroke-opacity:1; } .cluster { fill:#60cdf3; fill-opacity:0.33333333; } .tLabel { text-anchor:middle; text-align:center; } .tsLabel { font-size:11px; font-style:normal; font-weight:normal; fill:black; fill-opacity:1; stroke:none; font-family:DejaVu Sans; } .frLabel { font-size:11px; font-style:normal; font-weight:normal; fill:black; fill-opacity:1; stroke:none; stroke-width:1px; stroke-linecap:butt; stroke-linejoin:miter; stroke-opacity:1; font-family:DejaVu Sans; font-stretch:normal; font-variant:normal; text-anchor:middle; text-align:center; progression-align:center; writing-mode:lr; line-height:125%; } </style>
+  <defs>
+    <marker inkscape:stockid="ConnArrowEnd" orient="auto" refX="7.5" refY="0.0" id="ConnArrowEnd" style="overflow:visible;">
+      <path d="M 0.0,0.0 L 1.0,-5.0 L -12.5,0.0 L 1.0,5.0 L 0.0,0.0 z" style="fill-rule:evenodd; stroke:#000000; stroke-width:1px; marker-start:none;" transform="scale(0.6) rotate(180)"/>
+    </marker>
+  </defs>
+  <path id="16" class="connector" dunnart:idealLength="109.319702" dunnart:hidden_connector_length="39.319702" dunnart:src_hidden_len="20.880613" dunnart:dst_hidden_len="18.439089" dunnart:srcID="1" dunnart:srcFlags="544" dunnart:srcX="570" dunnart:srcY="149" dunnart:dstID="4" dunnart:dstFlags="544" dunnart:dstX="529" dunnart:dstY="328" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 419.000000,94.000000 L 382.000000,255.000000 " dunnart:ArrowType="2" dunnart:type="connAvoidPoly"/>
+  <path id="17" class="connector" dunnart:idealLength="119.043246" dunnart:hidden_connector_length="49.043246" dunnart:src_hidden_len="25.612497" dunnart:dst_hidden_len="23.430749" dunnart:srcID="2" dunnart:srcFlags="544" dunnart:srcX="435" dunnart:srcY="217" dunnart:dstID="4" dunnart:dstFlags="544" dunnart:dstX="529" dunnart:dstY="328" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 284.000000,162.000000 L 363.000000,255.000000 " dunnart:ArrowType="2" dunnart:type="connAvoidPoly"/>
+  <path id="18" class="connector" dunnart:idealLength="129.674255" dunnart:hidden_connector_length="59.674255" dunnart:src_hidden_len="27.658633" dunnart:dst_hidden_len="32.015621" dunnart:srcID="9" dunnart:srcFlags="544" dunnart:srcX="404" dunnart:srcY="434" dunnart:dstID="4" dunnart:dstFlags="544" dunnart:dstX="529" dunnart:dstY="328" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 253.000000,379.000000 L 353.000000,293.000000 " dunnart:ArrowType="2" dunnart:type="connAvoidPoly"/>
+  <path id="19" class="connector" dunnart:idealLength="122.345065" dunnart:hidden_connector_length="52.345065" dunnart:src_hidden_len="27.586228" dunnart:dst_hidden_len="24.758837" dunnart:srcID="3" dunnart:srcFlags="544" dunnart:srcX="600" dunnart:srcY="251" dunnart:dstID="4" dunnart:dstFlags="544" dunnart:dstX="529" dunnart:dstY="328" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 449.000000,196.000000 L 395.000000,255.000000 " dunnart:ArrowType="0" dunnart:type="connAvoidPoly"/>
+  <path id="20" class="connector" dunnart:idealLength="139.885467" dunnart:hidden_connector_length="69.885467" dunnart:src_hidden_len="42.426407" dunnart:dst_hidden_len="27.459060" dunnart:srcID="5" dunnart:srcFlags="544" dunnart:srcX="704" dunnart:srcY="298" dunnart:dstID="4" dunnart:dstFlags="544" dunnart:dstX="529" dunnart:dstY="328" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 553.000000,243.000000 L 405.000000,268.000000 " dunnart:ArrowType="2" dunnart:type="connAvoidPoly"/>
+  <path id="21" class="connector" dunnart:idealLength="108.127508" dunnart:hidden_connector_length="38.127508" dunnart:src_hidden_len="18.027756" dunnart:dst_hidden_len="20.099751" dunnart:srcID="7" dunnart:srcFlags="544" dunnart:srcX="525" dunnart:srcY="430" dunnart:dstID="4" dunnart:dstFlags="544" dunnart:dstX="529" dunnart:dstY="328" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 374.000000,375.000000 L 376.000000,293.000000 " dunnart:ArrowType="2" dunnart:type="connAvoidPoly"/>
+  <path id="22" class="connector" dunnart:idealLength="153.200710" dunnart:hidden_connector_length="83.200710" dunnart:src_hidden_len="47.423623" dunnart:dst_hidden_len="35.777088" dunnart:srcID="7" dunnart:srcFlags="544" dunnart:srcX="525" dunnart:srcY="430" dunnart:dstID="12" dunnart:dstFlags="544" dunnart:dstX="679" dunnart:dstY="500" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 374.000000,375.000000 L 496.000000,429.000000 " dunnart:ArrowType="0" dunnart:type="connAvoidPoly"/>
+  <path id="23" class="connector" dunnart:idealLength="108.027756" dunnart:hidden_connector_length="38.027756" dunnart:src_hidden_len="18.027756" dunnart:dst_hidden_len="20.000000" dunnart:srcID="12" dunnart:srcFlags="544" dunnart:srcX="679" dunnart:srcY="500" dunnart:dstID="13" dunnart:dstFlags="544" dunnart:dstX="672" dunnart:dstY="382" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 528.000000,445.000000 L 521.000000,347.000000 " dunnart:ArrowType="0" dunnart:type="connAvoidPoly"/>
+  <path id="24" class="connector" dunnart:idealLength="141.022558" dunnart:hidden_connector_length="71.022558" dunnart:src_hidden_len="37.735925" dunnart:dst_hidden_len="33.286634" dunnart:srcID="14" dunnart:srcFlags="544" dunnart:srcX="762" dunnart:srcY="446" dunnart:dstID="12" dunnart:dstFlags="544" dunnart:dstX="679" dunnart:dstY="500" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 611.000000,391.000000 L 556.000000,427.000000 " dunnart:ArrowType="0" dunnart:type="connAvoidPoly"/>
+  <path id="25" class="connector" dunnart:idealLength="108.024984" dunnart:hidden_connector_length="38.024984" dunnart:src_hidden_len="20.024984" dunnart:dst_hidden_len="18.000000" dunnart:srcID="12" dunnart:srcFlags="544" dunnart:srcX="679" dunnart:srcY="500" dunnart:dstID="15" dunnart:dstFlags="544" dunnart:dstX="681" dunnart:dstY="592" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 528.000000,445.000000 L 530.000000,519.000000 " dunnart:ArrowType="0" dunnart:type="connAvoidPoly"/>
+  <path id="26" class="connector" dunnart:idealLength="108.000000" dunnart:hidden_connector_length="38.000000" dunnart:src_hidden_len="18.000000" dunnart:dst_hidden_len="20.000000" dunnart:srcID="10" dunnart:srcFlags="544" dunnart:srcX="407" dunnart:srcY="550" dunnart:dstID="9" dunnart:dstFlags="544" dunnart:dstX="404" dunnart:dstY="434" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 256.000000,495.000000 L 253.000000,399.000000 " dunnart:ArrowType="0" dunnart:type="connAvoidPoly"/>
+  <path id="27" class="connector" dunnart:idealLength="108.027756" dunnart:hidden_connector_length="38.027756" dunnart:src_hidden_len="18.027756" dunnart:dst_hidden_len="20.000000" dunnart:srcID="8" dunnart:srcFlags="544" dunnart:srcX="528" dunnart:srcY="519" dunnart:dstID="7" dunnart:dstFlags="544" dunnart:dstX="525" dunnart:dstY="430" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 377.000000,464.000000 L 374.000000,395.000000 " dunnart:ArrowType="0" dunnart:type="connAvoidPoly"/>
+  <path id="28" class="connector" dunnart:idealLength="109.568416" dunnart:hidden_connector_length="39.568416" dunnart:src_hidden_len="21.540659" dunnart:dst_hidden_len="18.027756" dunnart:srcID="6" dunnart:srcFlags="544" dunnart:srcX="733" dunnart:srcY="219" dunnart:dstID="5" dunnart:dstFlags="544" dunnart:dstX="704" dunnart:dstY="298" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 582.000000,164.000000 L 559.000000,226.000000 " dunnart:ArrowType="0" dunnart:type="connAvoidPoly"/>
+  <g>
+    <rect width="52" height="38" x="394" y="76" id="1" class="shape" dunnart:label="" dunnart:width="58" dunnart:height="44" dunnart:xPos="391" dunnart:yPos="73" dunnart:type="umlClass">
+      <dunnart:class_name>Server</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>0</dunnart:attr_section_height>
+      <dunnart:method_section_height>0</dunnart:method_section_height>
+    </rect>
+  </g>
+  <g>
+    <rect width="66" height="38" x="252" y="144" id="2" class="shape" dunnart:label="" dunnart:width="72" dunnart:height="44" dunnart:xPos="249" dunnart:yPos="141" dunnart:type="umlClass">
+      <dunnart:class_name>AppState</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>0</dunnart:attr_section_height>
+      <dunnart:method_section_height>0</dunnart:method_section_height>
+    </rect>
+  </g>
+  <g>
+    <rect width="80" height="38" x="410" y="178" id="3" class="shape" dunnart:label="" dunnart:width="86" dunnart:height="44" dunnart:xPos="407" dunnart:yPos="175" dunnart:type="umlClass">
+      <dunnart:class_name>SystemTest</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>0</dunnart:attr_section_height>
+      <dunnart:method_section_height>0</dunnart:method_section_height>
+    </rect>
+  </g>
+  <g>
+    <rect width="52" height="38" x="353" y="255" id="4" class="shape" dunnart:label="" dunnart:width="58" dunnart:height="44" dunnart:xPos="350" dunnart:yPos="252" dunnart:type="umlClass">
+      <dunnart:class_name>System</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>-1250951096</dunnart:attr_section_height>
+      <dunnart:method_section_height>0</dunnart:method_section_height>
+    </rect>
+  </g>
+  <g>
+    <rect width="86" height="36" x="511" y="226" id="5" class="shape" dunnart:label="" dunnart:width="92" dunnart:height="42" dunnart:xPos="508" dunnart:yPos="223" dunnart:type="umlClass">
+      <dunnart:class_name>AudioDevice</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>10</dunnart:attr_section_height>
+      <dunnart:method_section_height>9</dunnart:method_section_height>
+    </rect>
+  </g>
+  <g>
+    <rect width="114" height="38" x="526" y="146" id="6" class="shape" dunnart:label="" dunnart:width="120" dunnart:height="44" dunnart:xPos="523" dunnart:yPos="143" dunnart:type="umlClass">
+      <dunnart:class_name>AudioDeviceTest</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>0</dunnart:attr_section_height>
+      <dunnart:method_section_height>0</dunnart:method_section_height>
+    </rect>
+  </g>
+  <g>
+    <rect width="94" height="38" x="328" y="357" id="7" class="shape" dunnart:label="" dunnart:width="100" dunnart:height="44" dunnart:xPos="325" dunnart:yPos="354" dunnart:type="umlClass">
+      <dunnart:class_name>AudioManager</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>-1250948904</dunnart:attr_section_height>
+      <dunnart:method_section_height>-1250882192</dunnart:method_section_height>
+    </rect>
+  </g>
+  <g>
+    <rect width="122" height="38" x="317" y="446" id="8" class="shape" dunnart:label="" dunnart:width="128" dunnart:height="44" dunnart:xPos="314" dunnart:yPos="443" dunnart:type="umlClass">
+      <dunnart:class_name>AudioManagerTest</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>0</dunnart:attr_section_height>
+      <dunnart:method_section_height>0</dunnart:method_section_height>
+    </rect>
+  </g>
+  <g>
+    <rect width="66" height="38" x="221" y="361" id="9" class="shape" dunnart:label="" dunnart:width="72" dunnart:height="44" dunnart:xPos="218" dunnart:yPos="358" dunnart:type="umlClass">
+      <dunnart:class_name>DebugLog</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>0</dunnart:attr_section_height>
+      <dunnart:method_section_height>0</dunnart:method_section_height>
+    </rect>
+  </g>
+  <g>
+    <rect width="94" height="38" x="210" y="477" id="10" class="shape" dunnart:label="" dunnart:width="100" dunnart:height="44" dunnart:xPos="207" dunnart:yPos="474" dunnart:type="umlClass">
+      <dunnart:class_name>DebugLogTest</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>0</dunnart:attr_section_height>
+      <dunnart:method_section_height>0</dunnart:method_section_height>
+    </rect>
+  </g>
+  <g>
+    <rect width="66" height="38" x="373" y="580" id="11" class="shape" dunnart:label="" dunnart:width="72" dunnart:height="44" dunnart:xPos="370" dunnart:yPos="577" dunnart:type="umlClass">
+      <dunnart:class_name>Security</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>-1250947552</dunnart:attr_section_height>
+      <dunnart:method_section_height>0</dunnart:method_section_height>
+    </rect>
+  </g>
+  <g>
+    <rect width="66" height="38" x="496" y="427" id="12" class="shape" dunnart:label="" dunnart:width="72" dunnart:height="44" dunnart:xPos="493" dunnart:yPos="424" dunnart:type="umlClass">
+      <dunnart:class_name>Playlist</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>13947080</dunnart:attr_section_height>
+      <dunnart:method_section_height>13947080</dunnart:method_section_height>
+    </rect>
+  </g>
+  <g>
+    <rect width="72" height="38" x="486" y="309" id="13" class="shape" dunnart:label="" dunnart:width="78" dunnart:height="44" dunnart:xPos="483" dunnart:yPos="306" dunnart:type="umlClass">
+      <dunnart:class_name>PlayOrder</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>-1250947552</dunnart:attr_section_height>
+      <dunnart:method_section_height>0</dunnart:method_section_height>
+    </rect>
+  </g>
+  <g>
+    <rect width="94" height="38" x="565" y="373" id="14" class="shape" dunnart:label="" dunnart:width="100" dunnart:height="44" dunnart:xPos="562" dunnart:yPos="370" dunnart:type="umlClass">
+      <dunnart:class_name>PlaylistTest</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>-1250809712</dunnart:attr_section_height>
+      <dunnart:method_section_height>-1</dunnart:method_section_height>
+    </rect>
+  </g>
+  <g>
+    <rect width="44" height="38" x="509" y="519" id="15" class="shape" dunnart:label="" dunnart:width="50" dunnart:height="44" dunnart:xPos="506" dunnart:yPos="516" dunnart:type="umlClass">
+      <dunnart:class_name>Audio</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>-1250726648</dunnart:attr_section_height>
+      <dunnart:method_section_height>135268352</dunnart:method_section_height>
+    </rect>
+  </g>
+</svg>

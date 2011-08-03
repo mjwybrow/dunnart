@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Created with Dunnart (http://www.csse.monash.edu.au/~mwybrow/dunnart/)-->
+<svg xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:dunnart="http://www.csse.monash.edu.au/~mwybrow/dunnart.dtd" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:proorigami="http://www.csse.unimelb.edu.au/~astivala/proorigami.dtd" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="190 18 484 646">
+  <proorigami:identification xmlns:proorigami="http://www.csse.unimelb.edu.au/~astivala/proorigami.dtd" pdbId="9RUB" outputFilename="9RUB.svg" numberOfDomains="4" totalDomains="4" creationTime="19Jul2008 11:08:19" program="ptgraph2" version="Revision 1700M, Sat Jul 19 10:23:02 EST 2008" commandLine="/home/astivala/phd/ptgraph/ptgraph2.py -r -35 -k purple -uw -l crossing:black,red,green,navy,blue -bsequential -j -eauto -fauto -ogradient /home/astivala/pdb/9RUB.pdb"/>
+  <dunnart:options useMultiway="1" instantFeedback="1" newConnType="53" orientation="0" graphMode="0" automaticGraphLayout="0" layoutMethod="0" layoutMode="0" layoutBeautify="1" avoidBuffer="4" downwardSeparation="0.5" pageBoundaryConstraints="0" defaultIdealConnectorLength="1" penaliseCrossings="0" colourInterferingConnectors="1" rubberBandRouting="0" interferingConnectorColours="000000,ff0000,008000,000080,0000ff"/>
+  <sodipodi:namedview showguides="false" guidetolerance="5.0" guidecolor="#000000ff" guideopacity="0.25" bordercolor="#000000" borderopacity="0.5" width="484px" height="646px">
+    <sodipodi:guide dunnart:type="indGuide" position="261" orientation="horizontal" dunnart:direction="101" id="124" dunnart:position="258">
+      <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="124" objOneID="125" alignmentPos="1"/>
+    </sodipodi:guide>
+    <sodipodi:guide dunnart:type="indGuide" position="306" orientation="horizontal" dunnart:direction="101" id="128" dunnart:position="303">
+      <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="128" objOneID="129" alignmentPos="1"/>
+    </sodipodi:guide>
+    <sodipodi:guide dunnart:type="indGuide" position="351" orientation="horizontal" dunnart:direction="101" id="132" dunnart:position="348">
+      <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="132" objOneID="133" alignmentPos="1"/>
+      <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="132" objOneID="167" alignmentPos="1"/>
+    </sodipodi:guide>
+    <sodipodi:guide dunnart:type="indGuide" position="396" orientation="horizontal" dunnart:direction="101" id="136" dunnart:position="393">
+      <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="136" objOneID="137" alignmentPos="1"/>
+      <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="136" objOneID="153" alignmentPos="1"/>
+    </sodipodi:guide>
+    <sodipodi:guide dunnart:type="indGuide" position="173" orientation="horizontal" dunnart:direction="101" id="149" dunnart:position="170">
+      <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="149" objOneID="151" alignmentPos="1"/>
+    </sodipodi:guide>
+    <sodipodi:guide dunnart:type="indGuide" position="218" orientation="horizontal" dunnart:direction="101" id="152" dunnart:position="215">
+      <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="152" objOneID="153" alignmentPos="1"/>
+    </sodipodi:guide>
+    <sodipodi:guide dunnart:type="indGuide" position="529" orientation="vertical" dunnart:direction="100" id="170" dunnart:position="526">
+      <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="170" objOneID="151" alignmentPos="3"/>
+      <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="170" objOneID="153" alignmentPos="3"/>
+    </sodipodi:guide>
+  </sodipodi:namedview>
+  <style type="text/css">.shape   { stroke:black; stroke-width:1px; fill:#f0f0d2; } .connector { fill:none; stroke:black; stroke-width:1px; stroke-linecap:butt; stroke-linejoin:miter; stroke-opacity:1; } .cluster { fill:#60cdf3; fill-opacity:0.33333333; } .tLabel { text-anchor:middle; text-align:center; } .tsLabel { font-size:11px; font-style:normal; font-weight:normal; fill:black; fill-opacity:1; stroke:none; font-family:DejaVu Sans; } .frLabel { font-size:11px; font-style:normal; font-weight:normal; fill:black; fill-opacity:1; stroke:none; stroke-width:1px; stroke-linecap:butt; stroke-linejoin:miter; stroke-opacity:1; font-family:DejaVu Sans; font-stretch:normal; font-variant:normal; text-anchor:middle; text-align:center; progression-align:center; writing-mode:lr; line-height:125%; } </style>
+  <defs>
+    <marker inkscape:stockid="ConnArrowEnd" orient="auto" refX="7.5" refY="0.0" id="ConnArrowEnd" style="overflow:visible;">
+      <path d="M 0.0,0.0 L 1.0,-5.0 L -12.5,0.0 L 1.0,5.0 L 0.0,0.0 z" style="fill-rule:evenodd; stroke:black; stroke-width:1px; marker-start:none;" transform="scale(0.6) rotate(180)"/>
+    </marker>
+    <marker inkscape:stockid="ConnArrowEndNormal" orient="auto" refX="7.5" refY="0.0" id="ConnArrowEndNormal" style="overflow:visible;">
+      <path d="M 1.0,-7.0 L -12.5,0.0 M 1.0,7.0 L -12.5,0.0 z" style="fill-rule:evenodd; fill:none; stroke:black; stroke-width:1px; marker-start:none;" transform="scale(0.6) rotate(180)"/>
+    </marker>
+    <marker inkscape:stockid="ConnArrowEndInheritance" orient="auto" refX="7.5" refY="0.0" id="ConnArrowEndInheritance" style="overflow:visible;">
+      <path d="M 0.0,0.0 L 1.0,-7.0 L -12.5,0.0 L 1.0,7.0 L 0.0,0.0 z" style="fill-rule:evenodd; fill:white; stroke:black; stroke-width:1px; marker-start:none;" transform="scale(0.6) rotate(180)"/>
+    </marker>
+    <marker inkscape:stockid="ConnArrowEndAggregation" orient="auto" refX="7.5" refY="0.0" id="ConnArrowEndAggregation" style="overflow:visible;">
+      <path d="M 6.0,0.0 L -3.25,-6.0 L -12.5,0.0 L -3.25,6.0 L 6.0,0.0 z" style="fill-rule:evenodd; fill:white; stroke:black; stroke-width:1px; marker-start:none;" transform="scale(0.6) rotate(180)"/>
+    </marker>
+    <marker inkscape:stockid="ConnArrowEndComposition" orient="auto" refX="7.5" refY="0.0" id="ConnArrowEndComposition" style="overflow:visible;">
+      <path d="M 6.0,0.0 L -3.25,-6.0 L -12.5,0.0 L -3.25,6.0 L 6.0,0.0 z" style="fill-rule:evenodd; fill:black; stroke:black; stroke-width:1px; marker-start:none;" transform="scale(0.6) rotate(180)"/>
+    </marker>
+  </defs>
+  <path dunnart:type="cluster" id="206" dunnart:contains="137 133 129 125" dunnart:rectangular="0" class="cluster" d="M 299,241 L 427,241 L 427,283 L 405,418 L 299,418 L 299,241"/>
+  <path dunnart:type="cluster" id="207" dunnart:contains="153 151" dunnart:fillColour="ff000055;" dunnart:rectangular="0" class="cluster" d="M 525,151 L 589,151 L 589,238 L 525,238 L 525,151" style="fill:#FF0000;fill-opacity:0.333333;"/>
+  <dunnart:node dunnart:type="distribution" dunnart:position="639" dunnart:direction="101" dunnart:sepDistance="45" id="148">
+    <dunnart:node dunnart:type="constraint" isMultiway="1" relType="distribution" constraintID="148" objOneID="149" objTwoID="152"/>
+  </dunnart:node>
+  <dunnart:node dunnart:type="distribution" dunnart:position="582" dunnart:direction="101" dunnart:sepDistance="45" id="172">
+    <dunnart:node dunnart:type="constraint" isMultiway="1" relType="distribution" constraintID="172" objOneID="124" objTwoID="128"/>
+    <dunnart:node dunnart:type="constraint" isMultiway="1" relType="distribution" constraintID="172" objOneID="128" objTwoID="132"/>
+    <dunnart:node dunnart:type="constraint" isMultiway="1" relType="distribution" constraintID="172" objOneID="132" objTwoID="136"/>
+  </dunnart:node>
+  <path dunnart:reversed="1" dunnart:type="bioStrand" id="125" dunnart:xPos="300" dunnart:yPos="242" dunnart:width="126" dunnart:height="40" dunnart:label="125" dunnart:fillColour="e1ff00ff;" dunnart:detailLevel="0" class="shape" style="fill:#E1FF00;" proorigami:residueNames="VAL ALA LEU LEU VAL ASP" proorigami:residueSeqNums="258 259 260 261 262 263" proorigami:hovertext="STRAND_B_4" onmousemove="updateHoverText(evt)" d="M 422,261.5 L 405.5,245 L 405.5,253.25 L 303,253.25 L 303,269.75 L 405.5,269.75 L 405.5,278 L 422,261.5 z"/>
+  <text id="text125" class="tLabel" x="363" y="266">
+    <tspan id="tspan125n0" class="tsLabel" x="363" y="266" sodipodi:role="line">50</tspan>
+  </text>
+  <path dunnart:reversed="1" dunnart:type="bioStrand" id="129" dunnart:xPos="300" dunnart:yPos="287" dunnart:width="104" dunnart:height="40" dunnart:label="129" dunnart:fillColour="ffff00ff;" dunnart:detailLevel="0" class="shape" style="fill:#FFFF00;" proorigami:residueNames="PHE LEU HIS TYR HIS" proorigami:residueSeqNums="283 284 285 286 287" proorigami:hovertext="STRAND_B_5" onmousemove="updateHoverText(evt)" d="M 400,306.5 L 383.5,290 L 383.5,298.25 L 303,298.25 L 303,314.75 L 383.5,314.75 L 383.5,323 L 400,306.5 z"/>
+  <text id="text129" class="tLabel" x="352" y="311">
+    <tspan id="tspan129n0" class="tsLabel" x="352" y="311" sodipodi:role="line">52</tspan>
+  </text>
+  <path dunnart:reversed="1" dunnart:type="bioStrand" id="133" dunnart:xPos="321" dunnart:yPos="332" dunnart:width="62" dunnart:height="40" dunnart:label="133" dunnart:fillColour="ffc300ff;" dunnart:detailLevel="0" class="shape" style="fill:#FFC300;" proorigami:residueNames="GLY ILE HIS" proorigami:residueSeqNums="319 320 321" proorigami:hovertext="STRAND_B_7" onmousemove="updateHoverText(evt)" d="M 379,351.5 L 362.5,335 L 362.5,343.25 L 324,343.25 L 324,359.75 L 362.5,359.75 L 362.5,368 L 379,351.5 z"/>
+  <text id="text133" class="tLabel" x="352" y="356">
+    <tspan id="tspan133n0" class="tsLabel" x="352" y="356" sodipodi:role="line">56</tspan>
+  </text>
+  <rect dunnart:type="bioHelix" id="167" dunnart:xPos="491" dunnart:yPos="330" dunnart:width="70" dunnart:height="30" dunnart:label="167" dunnart:fillColour="ffb400ff;" dunnart:detailLevel="0" class="shape" style="fill:#FFB400;" proorigami:reversed="1" proorigami:residueNames="ALA ILE ALA TYR MET LEU THR" proorigami:residueSeqNums="338 339 340 341 342 343 344" proorigami:helixType="alpha" proorigami:hovertext="ALPHAHELIX_B_9" onmousemove="updateHoverText(evt)" width="64" height="24" x="494" y="333" rx="6" ry="12"/>
+  <text id="text167" class="tLabel" x="526" y="349">
+    <tspan id="tspan167n0" class="tsLabel" x="526" y="349" sodipodi:role="line">57</tspan>
+  </text>
+  <rect width="12" height="24" x="494" y="333" rx="6" ry="12" class="shape" style="fill:#FFB400;"/>
+  <path dunnart:reversed="1" dunnart:type="bioStrand" id="153" dunnart:xPos="526" dunnart:yPos="197" dunnart:width="62" dunnart:height="40" dunnart:label="153" dunnart:fillColour="ffa500ff;" dunnart:detailLevel="0" class="shape" style="fill:#FFA500;" proorigami:residueNames="GLU ALA GLN" proorigami:residueSeqNums="347 348 349" proorigami:hovertext="STRAND_B_8" onmousemove="updateHoverText(evt)" d="M 584,216.5 L 567.5,200 L 567.5,208.25 L 529,208.25 L 529,224.75 L 567.5,224.75 L 567.5,233 L 584,216.5 z"/>
+  <text id="text153" class="tLabel" x="557" y="221">
+    <tspan id="tspan153n0" class="tsLabel" x="557" y="221" sodipodi:role="line">58</tspan>
+  </text>
+  <path dunnart:reversed="0" dunnart:type="bioStrand" id="151" dunnart:xPos="526" dunnart:yPos="152" dunnart:width="62" dunnart:height="40" dunnart:label="151" dunnart:fillColour="ff9600ff;" dunnart:detailLevel="0" class="shape" style="fill:#FF9600;" proorigami:residueNames="ARG GLN SER" proorigami:residueSeqNums="354 355 356" proorigami:hovertext="STRAND_B_9" onmousemove="updateHoverText(evt)" d="M 529,171.5 L 545.5,188 L 545.5,179.75 L 584,179.75 L 584,163.25 L 545.5,163.25 L 545.5,155 L 529,171.5 z"/>
+  <text id="text151" class="tLabel" x="557" y="176">
+    <tspan id="tspan151n0" class="tsLabel" x="557" y="176" sodipodi:role="line">59</tspan>
+  </text>
+  <path dunnart:reversed="1" dunnart:type="bioStrand" id="137" dunnart:xPos="300" dunnart:yPos="377" dunnart:width="104" dunnart:height="40" dunnart:label="137" dunnart:fillColour="ff8700ff;" dunnart:detailLevel="0" class="shape" style="fill:#FF8700;" proorigami:residueNames="THR PRO ILE ILE SER" proorigami:residueSeqNums="364 365 366 367 368" proorigami:hovertext="STRAND_B_10" onmousemove="updateHoverText(evt)" d="M 400,396.5 L 383.5,380 L 383.5,388.25 L 303,388.25 L 303,404.75 L 383.5,404.75 L 383.5,413 L 400,396.5 z"/>
+  <text id="text137" class="tLabel" x="352" y="401">
+    <tspan id="tspan137n0" class="tsLabel" x="352" y="401" sodipodi:role="line">60</tspan>
+  </text>
+</svg>

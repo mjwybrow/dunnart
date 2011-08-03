@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Created with Dunnart (http://www.csse.monash.edu.au/~mwybrow/dunnart/)-->
+<svg xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:dunnart="http://www.csse.monash.edu.au/~mwybrow/dunnart.dtd" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" width="1088.000000px" height="816.000000px" viewBox="18.000000 23.000000 1088.000000 816.000000">
+  <dunnart:options useMultiway="1" instantFeedback="1" newConnType="53" orientation="1" graphMode="0" layoutMode="0" nonOverlapConstraints="1" defaultIdealConnectorLength="0.953154"/>
+  <sodipodi:namedview showguides="false" guidetolerance="5.0" guidecolor="#000000ff" guideopacity="0.25" bordercolor="#000000" borderopacity="0.5" width="1088.000000px" height="816.000000px"/>
+  <style type="text/css">.shape   { stroke:black; stroke-width:1px; fill:#f0f0d2; } .connector { fill:none; stroke:black; stroke-width:1px; stroke-linecap:butt; stroke-linejoin:miter; stroke-opacity:1; } .cluster { fill:#60cdf3; fill-opacity:0.33333333; } .tLabel { text-anchor:middle; text-align:center; } .tsLabel { font-size:11px; font-style:normal; font-weight:normal; fill:black; fill-opacity:1; stroke:none; font-family:DejaVu Sans; } .frLabel { font-size:11px; font-style:normal; font-weight:normal; fill:black; fill-opacity:1; stroke:none; stroke-width:1px; stroke-linecap:butt; stroke-linejoin:miter; stroke-opacity:1; font-family:DejaVu Sans; font-stretch:normal; font-variant:normal; text-anchor:middle; text-align:center; progression-align:center; writing-mode:lr; line-height:125%; } </style>
+  <defs>
+    <marker inkscape:stockid="ConnArrowEnd" orient="auto" refX="7.5" refY="0.0" id="ConnArrowEnd" style="overflow:visible;">
+      <path d="M 0.0,0.0 L 1.0,-5.0 L -12.5,0.0 L 1.0,5.0 L 0.0,0.0 z" style="fill-rule:evenodd; stroke:#000000; stroke-width:1px; marker-start:none;" transform="scale(0.6) rotate(180)"/>
+    </marker>
+  </defs>
+  <path id="94" class="connector" dunnart:srcID="39" dunnart:srcFlags="544" dunnart:srcX="603" dunnart:srcY="792" dunnart:dstID="43" dunnart:dstFlags="544" dunnart:dstX="754" dunnart:dstY="848" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 452.000000,737.000000 L 567.000000,780.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="95" class="connector" dunnart:srcID="39" dunnart:srcFlags="544" dunnart:srcX="603" dunnart:srcY="792" dunnart:dstID="44" dunnart:dstFlags="544" dunnart:dstX="656" dunnart:dstY="854" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 452.000000,737.000000 L 491.000000,783.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="96" class="connector" dunnart:srcID="39" dunnart:srcFlags="544" dunnart:srcX="603" dunnart:srcY="792" dunnart:dstID="45" dunnart:dstFlags="544" dunnart:dstX="541" dunnart:dstY="854" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 452.000000,737.000000 L 406.000000,783.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="97" class="connector" dunnart:srcID="37" dunnart:srcFlags="544" dunnart:srcX="653" dunnart:srcY="746" dunnart:dstID="39" dunnart:dstFlags="544" dunnart:dstX="603" dunnart:dstY="792" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 502.000000,691.000000 L 469.000000,721.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="98" class="connector" dunnart:srcID="37" dunnart:srcFlags="544" dunnart:srcX="653" dunnart:srcY="746" dunnart:dstID="40" dunnart:dstFlags="544" dunnart:dstX="888" dunnart:dstY="792" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 502.000000,691.000000 L 655.000000,721.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="99" class="connector" dunnart:srcID="33" dunnart:srcFlags="544" dunnart:srcX="438" dunnart:srcY="707" dunnart:dstID="38" dunnart:dstFlags="544" dunnart:dstX="400" dunnart:dstY="784" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 287.000000,652.000000 L 257.000000,713.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="100" class="connector" dunnart:srcID="33" dunnart:srcFlags="544" dunnart:srcX="438" dunnart:srcY="707" dunnart:dstID="39" dunnart:dstFlags="544" dunnart:dstX="603" dunnart:dstY="792" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 287.000000,652.000000 L 421.000000,721.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="115" class="connector" dunnart:srcID="34" dunnart:srcFlags="544" dunnart:srcX="1078" dunnart:srcY="625" dunnart:dstID="40" dunnart:dstFlags="544" dunnart:dstX="888" dunnart:dstY="792" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 927.000000,570.000000 L 783.571429,696.070974 C 776.785714,702.035487 763.214286,713.880952 756.428571,719.761905L 755.000000,721.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="116" class="connector" dunnart:srcID="30" dunnart:srcFlags="544" dunnart:srcX="703" dunnart:srcY="697" dunnart:dstID="35" dunnart:dstFlags="544" dunnart:dstX="835" dunnart:dstY="741" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 552.000000,642.000000 L 636.000000,670.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="117" class="connector" dunnart:srcID="30" dunnart:srcFlags="544" dunnart:srcX="703" dunnart:srcY="697" dunnart:dstID="36" dunnart:dstFlags="544" dunnart:dstX="1097" dunnart:dstY="729" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 552.000000,642.000000 L 868.000000,668.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="118" class="connector" dunnart:srcID="30" dunnart:srcFlags="544" dunnart:srcX="703" dunnart:srcY="697" dunnart:dstID="37" dunnart:dstFlags="544" dunnart:dstX="653" dunnart:dstY="746" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 552.000000,642.000000 L 518.000000,675.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="119" class="connector" dunnart:srcID="28" dunnart:srcFlags="544" dunnart:srcX="1135" dunnart:srcY="461" dunnart:dstID="34" dunnart:dstFlags="544" dunnart:dstX="1078" dunnart:dstY="625" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 984.000000,406.000000 L 933.000000,554.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="120" class="connector" dunnart:srcID="25" dunnart:srcFlags="544" dunnart:srcX="644" dunnart:srcY="565" dunnart:dstID="29" dunnart:dstFlags="544" dunnart:dstX="887" dunnart:dstY="681" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 493.000000,510.000000 L 702.000000,610.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="121" class="connector" dunnart:srcID="25" dunnart:srcFlags="544" dunnart:srcX="644" dunnart:srcY="565" dunnart:dstID="30" dunnart:dstFlags="544" dunnart:dstX="703" dunnart:dstY="697" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 493.000000,510.000000 L 545.000000,626.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="122" class="connector" dunnart:srcID="23" dunnart:srcFlags="544" dunnart:srcX="764" dunnart:srcY="487" dunnart:dstID="24" dunnart:dstFlags="544" dunnart:dstX="848" dunnart:dstY="608" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 613.000000,432.000000 L 646.704433,476.428571 C 651.852217,483.214286 661.331307,496.785714 665.662614,503.571429L 687.000000,537.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="123" class="connector" dunnart:srcID="23" dunnart:srcFlags="544" dunnart:srcX="764" dunnart:srcY="487" dunnart:dstID="25" dunnart:dstFlags="544" dunnart:dstX="644" dunnart:dstY="565" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 613.000000,432.000000 L 518.000000,494.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="124" class="connector" dunnart:srcID="19" dunnart:srcFlags="544" dunnart:srcX="978" dunnart:srcY="530" dunnart:dstID="29" dunnart:dstFlags="544" dunnart:dstX="887" dunnart:dstY="681" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 827.000000,475.000000 L 746.000000,610.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="125" class="connector" dunnart:srcID="22" dunnart:srcFlags="544" dunnart:srcX="597" dunnart:srcY="381" dunnart:dstID="23" dunnart:dstFlags="544" dunnart:dstX="764" dunnart:dstY="487" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 446.000000,326.000000 L 588.000000,416.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="126" class="connector" dunnart:srcID="13" dunnart:srcFlags="544" dunnart:srcX="980" dunnart:srcY="376" dunnart:dstID="19" dunnart:dstFlags="544" dunnart:dstX="978" dunnart:dstY="530" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 829.000000,321.000000 L 827.000000,459.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="127" class="connector" dunnart:srcID="13" dunnart:srcFlags="544" dunnart:srcX="980" dunnart:srcY="376" dunnart:dstID="23" dunnart:dstFlags="544" dunnart:dstX="764" dunnart:dstY="487" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 829.000000,321.000000 L 644.000000,416.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="128" class="connector" dunnart:srcID="52" dunnart:srcFlags="544" dunnart:srcX="406" dunnart:srcY="644" dunnart:dstID="33" dunnart:dstFlags="544" dunnart:dstX="438" dunnart:dstY="707" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 255.000000,589.000000 L 279.000000,636.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="130" class="connector" dunnart:srcID="11" dunnart:srcFlags="544" dunnart:srcX="945" dunnart:srcY="271" dunnart:dstID="19" dunnart:dstFlags="544" dunnart:dstX="978" dunnart:dstY="530" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 794.000000,216.000000 L 763.747899,287.428571 C 760.873950,294.214286 758.000000,307.785714 758.000000,314.571429L 758.000000,329.428571 C 758.000000,336.214286 761.568350,349.785714 765.136700,356.571429L 819.000000,459.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="131" class="connector" dunnart:srcID="11" dunnart:srcFlags="544" dunnart:srcX="945" dunnart:srcY="271" dunnart:dstID="17" dunnart:dstFlags="544" dunnart:dstX="767" dunnart:dstY="418" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 794.000000,216.000000 L 635.000000,347.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="132" class="connector" dunnart:srcID="12" dunnart:srcFlags="544" dunnart:srcX="1139" dunnart:srcY="328" dunnart:dstID="13" dunnart:dstFlags="544" dunnart:dstX="980" dunnart:dstY="376" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 988.000000,273.000000 L 882.000000,305.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="133" class="connector" dunnart:srcID="12" dunnart:srcFlags="544" dunnart:srcX="1139" dunnart:srcY="328" dunnart:dstID="15" dunnart:dstFlags="544" dunnart:dstX="1151" dunnart:dstY="410" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 988.000000,273.000000 L 998.000000,339.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="135" class="connector" dunnart:srcID="9" dunnart:srcFlags="544" dunnart:srcX="751" dunnart:srcY="324" dunnart:dstID="17" dunnart:dstFlags="544" dunnart:dstX="767" dunnart:dstY="418" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 600.000000,269.000000 L 613.000000,347.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="136" class="connector" dunnart:srcID="9" dunnart:srcFlags="544" dunnart:srcX="751" dunnart:srcY="324" dunnart:dstID="19" dunnart:dstFlags="544" dunnart:dstX="978" dunnart:dstY="530" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 600.000000,269.000000 L 679.428571,332.201229 C 686.214286,337.600614 699.785714,349.670702 706.571429,356.341404L 811.000000,459.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="137" class="connector" dunnart:srcID="9" dunnart:srcFlags="544" dunnart:srcX="751" dunnart:srcY="324" dunnart:dstID="21" dunnart:dstFlags="544" dunnart:dstX="596" dunnart:dstY="329" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 600.000000,269.000000 L 498.000000,272.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="138" class="connector" dunnart:srcID="9" dunnart:srcFlags="544" dunnart:srcX="751" dunnart:srcY="324" dunnart:dstID="22" dunnart:dstFlags="544" dunnart:dstX="597" dunnart:dstY="381" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 600.000000,269.000000 L 489.000000,310.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="139" class="connector" dunnart:srcID="55" dunnart:srcFlags="544" dunnart:srcX="327" dunnart:srcY="574" dunnart:dstID="52" dunnart:dstFlags="544" dunnart:dstX="406" dunnart:dstY="644" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 176.000000,519.000000 L 239.000000,575.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="140" class="connector" dunnart:srcID="7" dunnart:srcFlags="544" dunnart:srcX="1150" dunnart:srcY="285" dunnart:dstID="11" dunnart:dstFlags="544" dunnart:dstX="945" dunnart:dstY="271" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 999.000000,230.000000 L 896.000000,223.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="141" class="connector" dunnart:srcID="7" dunnart:srcFlags="544" dunnart:srcX="1150" dunnart:srcY="285" dunnart:dstID="12" dunnart:dstFlags="544" dunnart:dstX="1139" dunnart:dstY="328" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 999.000000,230.000000 L 992.000000,257.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="142" class="connector" dunnart:srcID="8" dunnart:srcFlags="544" dunnart:srcX="917" dunnart:srcY="187" dunnart:dstID="9" dunnart:dstFlags="544" dunnart:dstX="751" dunnart:dstY="324" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 766.000000,132.000000 L 697.571429,189.580139 C 690.785714,195.290070 677.214286,206.513393 670.428571,212.026786L 620.000000,253.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="143" class="connector" dunnart:srcID="51" dunnart:srcFlags="544" dunnart:srcX="710" dunnart:srcY="236" dunnart:dstID="13" dunnart:dstFlags="544" dunnart:dstX="980" dunnart:dstY="376" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 559.000000,181.000000 L 798.000000,305.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="144" class="connector" dunnart:srcID="51" dunnart:srcFlags="544" dunnart:srcX="710" dunnart:srcY="236" dunnart:dstID="9" dunnart:dstFlags="544" dunnart:dstX="751" dunnart:dstY="324" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 559.000000,181.000000 L 593.000000,253.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="146" class="connector" dunnart:srcID="6" dunnart:srcFlags="544" dunnart:srcX="446" dunnart:srcY="330" dunnart:dstID="25" dunnart:dstFlags="544" dunnart:dstX="644" dunnart:dstY="565" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 295.000000,275.000000 L 343.845401,334.428571 C 349.422701,341.214286 360.763209,354.785714 366.526419,361.571429L 479.000000,494.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="147" class="connector" dunnart:srcID="1" dunnart:srcFlags="544" dunnart:srcX="1031" dunnart:srcY="114" dunnart:dstID="7" dunnart:dstFlags="544" dunnart:dstX="1150" dunnart:dstY="285" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 880.000000,59.000000 L 988.000000,214.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="148" class="connector" dunnart:srcID="1" dunnart:srcFlags="544" dunnart:srcX="1031" dunnart:srcY="114" dunnart:dstID="8" dunnart:dstFlags="544" dunnart:dstX="917" dunnart:dstY="187" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 880.000000,59.000000 L 791.000000,116.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="149" class="connector" dunnart:srcID="4" dunnart:srcFlags="544" dunnart:srcX="683" dunnart:srcY="136" dunnart:dstID="51" dunnart:dstFlags="544" dunnart:dstX="710" dunnart:dstY="236" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 532.000000,81.000000 L 555.000000,167.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="150" class="connector" dunnart:srcID="4" dunnart:srcFlags="544" dunnart:srcX="683" dunnart:srcY="136" dunnart:dstID="6" dunnart:dstFlags="544" dunnart:dstX="446" dunnart:dstY="330" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 532.000000,81.000000 L 315.000000,259.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="151" class="connector" dunnart:srcID="15" dunnart:srcFlags="544" dunnart:srcX="1151" dunnart:srcY="410" dunnart:dstID="28" dunnart:dstFlags="544" dunnart:dstX="1135" dunnart:dstY="461" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 1000.000000,355.000000 L 989.000000,389.000000 " dunnart:type="connAvoidPoly"/>
+  <rect width="184" height="34" x="789" y="43" id="1" class="shape" dunnart:label="Mahaut de Brabant=Robert I d'Artois" dunnart:width="190" dunnart:height="40" dunnart:xPos="786" dunnart:yPos="40" dunnart:type="rect"/>
+  <text id="text1" class="tLabel" x="881.000000" y="57.000000">
+    <tspan id="tspan1n0" class="tsLabel" x="881.000000" y="57.000000" sodipodi:role="line">Mahaut de Brabant=Robert I</tspan>
+    <tspan id="tspan1n1" class="tsLabel" x="881.000000" y="71.000000" sodipodi:role="line">d'Artois</tspan>
+  </text>
+  <rect width="120" height="34" x="473" y="65" id="4" class="shape" dunnart:label="St Louis IX=Marguerite" dunnart:width="126" dunnart:height="40" dunnart:xPos="470" dunnart:yPos="62" dunnart:type="rect"/>
+  <text id="text4" class="tLabel" x="533.000000" y="79.000000">
+    <tspan id="tspan4n0" class="tsLabel" x="533.000000" y="79.000000" sodipodi:role="line">St Louis</tspan>
+    <tspan id="tspan4n1" class="tsLabel" x="533.000000" y="93.000000" sodipodi:role="line">IX=Marguerite</tspan>
+  </text>
+  <rect width="240" height="30" x="440" y="167" id="51" class="shape" dunnart:label="Marie de Brabante=Phillipe III=Isabelle d'Aragon" dunnart:width="246" dunnart:height="36" dunnart:xPos="437" dunnart:yPos="164" dunnart:type="rect"/>
+  <text id="text51" class="tLabel" x="560.000000" y="179.000000">
+    <tspan id="tspan51n0" class="tsLabel" x="560.000000" y="179.000000" sodipodi:role="line">Marie de Brabante=Phillipe III=Isabelle</tspan>
+    <tspan id="tspan51n1" class="tsLabel" x="560.000000" y="193.000000" sodipodi:role="line">d'Aragon</tspan>
+  </text>
+  <rect width="180" height="30" x="166" y="575" id="52" class="shape" dunnart:label="Robert III d'Artois=Jeanne de Valois" dunnart:width="186" dunnart:height="36" dunnart:xPos="163" dunnart:yPos="572" dunnart:type="rect"/>
+  <text id="text52" class="tLabel" x="256.000000" y="587.000000">
+    <tspan id="tspan52n0" class="tsLabel" x="256.000000" y="587.000000" sodipodi:role="line">Robert III d'Artois=Jeanne de</tspan>
+    <tspan id="tspan52n1" class="tsLabel" x="256.000000" y="601.000000" sodipodi:role="line">Valois</tspan>
+  </text>
+  <rect width="150" height="34" x="221" y="259" id="6" class="shape" dunnart:label="Agnes =Robert de Bourgogne" dunnart:width="156" dunnart:height="40" dunnart:xPos="218" dunnart:yPos="256" dunnart:type="rect"/>
+  <text id="text6" class="tLabel" x="296.000000" y="273.000000">
+    <tspan id="tspan6n0" class="tsLabel" x="296.000000" y="273.000000" sodipodi:role="line">Agnes =Robert de</tspan>
+    <tspan id="tspan6n1" class="tsLabel" x="296.000000" y="287.000000" sodipodi:role="line">Bourgogne</tspan>
+  </text>
+  <rect width="188" height="34" x="906" y="214" id="7" class="shape" dunnart:label="Robert II d'Artois=Amicie de Conches" dunnart:width="194" dunnart:height="40" dunnart:xPos="903" dunnart:yPos="211" dunnart:type="rect"/>
+  <text id="text7" class="tLabel" x="1000.000000" y="228.000000">
+    <tspan id="tspan7n0" class="tsLabel" x="1000.000000" y="228.000000" sodipodi:role="line">Robert II d'Artois=Amicie de</tspan>
+    <tspan id="tspan7n1" class="tsLabel" x="1000.000000" y="242.000000" sodipodi:role="line">Conches</tspan>
+  </text>
+  <rect width="238" height="34" x="648" y="116" id="8" class="shape" dunnart:label="Blanche=Henri de Navarre Edmund Lancaster" dunnart:width="244" dunnart:height="40" dunnart:xPos="645" dunnart:yPos="113" dunnart:type="rect"/>
+  <text id="text8" class="tLabel" x="767.000000" y="130.000000">
+    <tspan id="tspan8n0" class="tsLabel" x="767.000000" y="130.000000" sodipodi:role="line">Blanche=Henri de Navarre Edmund</tspan>
+    <tspan id="tspan8n1" class="tsLabel" x="767.000000" y="144.000000" sodipodi:role="line">Lancaster</tspan>
+  </text>
+  <rect width="150" height="34" x="526" y="253" id="9" class="shape" dunnart:label="Jeanne de Navarro=Philip IV" dunnart:width="156" dunnart:height="40" dunnart:xPos="523" dunnart:yPos="250" dunnart:type="rect"/>
+  <text id="text9" class="tLabel" x="601.000000" y="267.000000">
+    <tspan id="tspan9n0" class="tsLabel" x="601.000000" y="267.000000" sodipodi:role="line">Jeanne de Navarro=Philip</tspan>
+    <tspan id="tspan9n1" class="tsLabel" x="601.000000" y="281.000000" sodipodi:role="line">IV</tspan>
+  </text>
+  <rect width="296" height="34" x="29" y="503" id="55" class="shape" dunnart:label="Catherine Coutenay=Charles de Valois=Marguerite d'Anjou" dunnart:width="302" dunnart:height="40" dunnart:xPos="26" dunnart:yPos="500" dunnart:type="rect"/>
+  <text id="text55" class="tLabel" x="177.000000" y="517.000000">
+    <tspan id="tspan55n0" class="tsLabel" x="177.000000" y="517.000000" sodipodi:role="line">Catherine Coutenay=Charles de Valois=Marguerite</tspan>
+    <tspan id="tspan55n1" class="tsLabel" x="177.000000" y="531.000000" sodipodi:role="line">d'Anjou</tspan>
+  </text>
+  <rect width="202" height="34" x="694" y="200" id="11" class="shape" dunnart:label="Mahaut d'Artois=Othon V de Bourgogne" dunnart:width="208" dunnart:height="40" dunnart:xPos="691" dunnart:yPos="197" dunnart:type="rect"/>
+  <text id="text11" class="tLabel" x="795.000000" y="214.000000">
+    <tspan id="tspan11n0" class="tsLabel" x="795.000000" y="214.000000" sodipodi:role="line">Mahaut d'Artois=Othon V de</tspan>
+    <tspan id="tspan11n1" class="tsLabel" x="795.000000" y="228.000000" sodipodi:role="line">Bourgogne</tspan>
+  </text>
+  <rect width="210" height="34" x="884" y="257" id="12" class="shape" dunnart:label="Philippe III d'Artois=Blanche de Bretagne" dunnart:width="216" dunnart:height="40" dunnart:xPos="881" dunnart:yPos="254" dunnart:type="rect"/>
+  <text id="text12" class="tLabel" x="989.000000" y="271.000000">
+    <tspan id="tspan12n0" class="tsLabel" x="989.000000" y="271.000000" sodipodi:role="line">Philippe III d'Artois=Blanche de</tspan>
+    <tspan id="tspan12n1" class="tsLabel" x="989.000000" y="285.000000" sodipodi:role="line">Bretagne</tspan>
+  </text>
+  <rect width="136" height="34" x="762" y="305" id="13" class="shape" dunnart:label="Marguerite=Louis d'Evreux" dunnart:width="142" dunnart:height="40" dunnart:xPos="759" dunnart:yPos="302" dunnart:type="rect"/>
+  <text id="text13" class="tLabel" x="830.000000" y="319.000000">
+    <tspan id="tspan13n0" class="tsLabel" x="830.000000" y="319.000000" sodipodi:role="line">Marguerite=Louis</tspan>
+    <tspan id="tspan13n1" class="tsLabel" x="830.000000" y="333.000000" sodipodi:role="line">d'Evreux</tspan>
+  </text>
+  <rect width="186" height="34" x="908" y="339" id="15" class="shape" dunnart:label="Catherine d'Artois=Jean de Ponthieu" dunnart:width="192" dunnart:height="40" dunnart:xPos="905" dunnart:yPos="336" dunnart:type="rect"/>
+  <text id="text15" class="tLabel" x="1001.000000" y="353.000000">
+    <tspan id="tspan15n0" class="tsLabel" x="1001.000000" y="353.000000" sodipodi:role="line">Catherine d'Artois=Jean de</tspan>
+    <tspan id="tspan15n1" class="tsLabel" x="1001.000000" y="367.000000" sodipodi:role="line">Ponthieu</tspan>
+  </text>
+  <rect width="144" height="34" x="545" y="347" id="17" class="shape" dunnart:label="Jeanne d'Artois=Phillipe V" dunnart:width="150" dunnart:height="40" dunnart:xPos="542" dunnart:yPos="344" dunnart:type="rect"/>
+  <text id="text17" class="tLabel" x="617.000000" y="368.000000">
+    <tspan id="tspan17n0" class="tsLabel" x="617.000000" y="368.000000" sodipodi:role="line">Jeanne d'Artois=Phillipe V</tspan>
+  </text>
+  <rect width="234" height="34" x="711" y="459" id="19" class="shape" dunnart:label="Blanche d'Artois=Charles IV=Jeanne d'Evraux" dunnart:width="240" dunnart:height="40" dunnart:xPos="708" dunnart:yPos="456" dunnart:type="rect"/>
+  <text id="text19" class="tLabel" x="828.000000" y="473.000000">
+    <tspan id="tspan19n0" class="tsLabel" x="828.000000" y="473.000000" sodipodi:role="line">Blanche d'Artois=Charles IV=Jeanne</tspan>
+    <tspan id="tspan19n1" class="tsLabel" x="828.000000" y="487.000000" sodipodi:role="line">d'Evraux</tspan>
+  </text>
+  <rect width="104" height="34" x="394" y="258" id="21" class="shape" dunnart:label="Isabelle=Edward II" dunnart:width="110" dunnart:height="40" dunnart:xPos="391" dunnart:yPos="255" dunnart:type="rect"/>
+  <text id="text21" class="tLabel" x="446.000000" y="279.000000">
+    <tspan id="tspan21n0" class="tsLabel" x="446.000000" y="279.000000" sodipodi:role="line">Isabelle=Edward II</tspan>
+  </text>
+  <rect width="176" height="34" x="359" y="310" id="22" class="shape" dunnart:label="Louis X=Marguerite de Bourgogne" dunnart:width="182" dunnart:height="40" dunnart:xPos="356" dunnart:yPos="307" dunnart:type="rect"/>
+  <text id="text22" class="tLabel" x="447.000000" y="324.000000">
+    <tspan id="tspan22n0" class="tsLabel" x="447.000000" y="324.000000" sodipodi:role="line">Louis X=Marguerite de</tspan>
+    <tspan id="tspan22n1" class="tsLabel" x="447.000000" y="338.000000" sodipodi:role="line">Bourgogne</tspan>
+  </text>
+  <rect width="204" height="34" x="512" y="416" id="23" class="shape" dunnart:label="Philippe III d'Evraux=Jeanne de Navarre" dunnart:width="210" dunnart:height="40" dunnart:xPos="509" dunnart:yPos="413" dunnart:type="rect"/>
+  <text id="text23" class="tLabel" x="614.000000" y="430.000000">
+    <tspan id="tspan23n0" class="tsLabel" x="614.000000" y="430.000000" sodipodi:role="line">Philippe III d'Evraux=Jeanne de</tspan>
+    <tspan id="tspan23n1" class="tsLabel" x="614.000000" y="444.000000" sodipodi:role="line">Navarre</tspan>
+  </text>
+  <rect width="128" height="34" x="634" y="537" id="24" class="shape" dunnart:label="Charles de Navarre" dunnart:width="134" dunnart:height="40" dunnart:xPos="631" dunnart:yPos="534" dunnart:type="rect"/>
+  <text id="text24" class="tLabel" x="698.000000" y="558.000000">
+    <tspan id="tspan24n0" class="tsLabel" x="698.000000" y="558.000000" sodipodi:role="line">Charles de Navarre</tspan>
+  </text>
+  <rect width="318" height="34" x="335" y="494" id="25" class="shape" dunnart:label="Blanche de Navarre=Philippe VI=Jeanne la Boiteuse de Borgogne" dunnart:width="324" dunnart:height="40" dunnart:xPos="332" dunnart:yPos="491" dunnart:type="rect"/>
+  <text id="text25" class="tLabel" x="494.000000" y="508.000000">
+    <tspan id="tspan25n0" class="tsLabel" x="494.000000" y="508.000000" sodipodi:role="line">Blanche de Navarre=Philippe VI=Jeanne la Boiteuse de</tspan>
+    <tspan id="tspan25n1" class="tsLabel" x="494.000000" y="522.000000" sodipodi:role="line">Borgogne</tspan>
+  </text>
+  <rect width="214" height="36" x="878" y="389" id="28" class="shape" dunnart:label="Jean VI de Vendome=Jeanne de Ponthieu" dunnart:width="220" dunnart:height="42" dunnart:xPos="875" dunnart:yPos="386" dunnart:type="rect"/>
+  <text id="text28" class="tLabel" x="985.000000" y="404.000000">
+    <tspan id="tspan28n0" class="tsLabel" x="985.000000" y="404.000000" sodipodi:role="line">Jean VI de Vendome=Jeanne de</tspan>
+    <tspan id="tspan28n1" class="tsLabel" x="985.000000" y="418.000000" sodipodi:role="line">Ponthieu</tspan>
+  </text>
+  <rect width="192" height="34" x="641" y="610" id="29" class="shape" dunnart:label="Blanche de France=Phillipe d'Orleans" dunnart:width="198" dunnart:height="40" dunnart:xPos="638" dunnart:yPos="607" dunnart:type="rect"/>
+  <text id="text29" class="tLabel" x="737.000000" y="624.000000">
+    <tspan id="tspan29n0" class="tsLabel" x="737.000000" y="624.000000" sodipodi:role="line">Blanche de France=Phillipe</tspan>
+    <tspan id="tspan29n1" class="tsLabel" x="737.000000" y="638.000000" sodipodi:role="line">d'Orleans</tspan>
+  </text>
+  <rect width="140" height="34" x="483" y="626" id="30" class="shape" dunnart:label="Jean II=Bonne de Boheme" dunnart:width="146" dunnart:height="40" dunnart:xPos="480" dunnart:yPos="623" dunnart:type="rect"/>
+  <text id="text30" class="tLabel" x="553.000000" y="640.000000">
+    <tspan id="tspan30n0" class="tsLabel" x="553.000000" y="640.000000" sodipodi:role="line">Jean II=Bonne de</tspan>
+    <tspan id="tspan30n1" class="tsLabel" x="553.000000" y="654.000000" sodipodi:role="line">Boheme</tspan>
+  </text>
+  <rect width="230" height="34" x="173" y="636" id="33" class="shape" dunnart:label="Jean d'Eu=Isabelle de Melun=Pierre de Dreaux" dunnart:width="236" dunnart:height="40" dunnart:xPos="170" dunnart:yPos="633" dunnart:type="rect"/>
+  <text id="text33" class="tLabel" x="288.000000" y="650.000000">
+    <tspan id="tspan33n0" class="tsLabel" x="288.000000" y="650.000000" sodipodi:role="line">Jean d'Eu=Isabelle de Melun=Pierre de</tspan>
+    <tspan id="tspan33n1" class="tsLabel" x="288.000000" y="664.000000" sodipodi:role="line">Dreaux</tspan>
+  </text>
+  <rect width="216" height="34" x="820" y="554" id="34" class="shape" dunnart:label="Catherine de Vendome=Jean de Bourbone" dunnart:width="222" dunnart:height="40" dunnart:xPos="817" dunnart:yPos="551" dunnart:type="rect"/>
+  <text id="text34" class="tLabel" x="928.000000" y="568.000000">
+    <tspan id="tspan34n0" class="tsLabel" x="928.000000" y="568.000000" sodipodi:role="line">Catherine de Vendome=Jean de</tspan>
+    <tspan id="tspan34n1" class="tsLabel" x="928.000000" y="582.000000" sodipodi:role="line">Bourbone</tspan>
+  </text>
+  <rect width="162" height="34" x="604.00005" y="670" id="35" class="shape" dunnart:label="Charles V=Jeanne de Bourbon" dunnart:width="168" dunnart:height="40" dunnart:xPos="601" dunnart:yPos="667" dunnart:type="rect"/>
+  <text id="text35" class="tLabel" x="685.000050" y="684.000000">
+    <tspan id="tspan35n0" class="tsLabel" x="685.000050" y="684.000000" sodipodi:role="line">Charles V=Jeanne de</tspan>
+    <tspan id="tspan35n1" class="tsLabel" x="685.000050" y="698.000000" sodipodi:role="line">Bourbon</tspan>
+  </text>
+  <rect width="158" height="34" x="868" y="658" id="36" class="shape" dunnart:label="Louis d'Anjour=Marie de Blois" dunnart:width="164" dunnart:height="40" dunnart:xPos="865" dunnart:yPos="655" dunnart:type="rect"/>
+  <text id="text36" class="tLabel" x="947.000000" y="672.000000">
+    <tspan id="tspan36n0" class="tsLabel" x="947.000000" y="672.000000" sodipodi:role="line">Louis d'Anjour=Marie de</tspan>
+    <tspan id="tspan36n1" class="tsLabel" x="947.000000" y="686.000000" sodipodi:role="line">Blois</tspan>
+  </text>
+  <rect width="182" height="34" x="412.99995" y="675" id="37" class="shape" dunnart:label="Jean de Berry=Jeanne de Boulogne" dunnart:width="188" dunnart:height="40" dunnart:xPos="409" dunnart:yPos="672" dunnart:type="rect"/>
+  <text id="text37" class="tLabel" x="503.999950" y="689.000000">
+    <tspan id="tspan37n0" class="tsLabel" x="503.999950" y="689.000000" sodipodi:role="line">Jean de Berry=Jeanne de</tspan>
+    <tspan id="tspan37n1" class="tsLabel" x="503.999950" y="703.000000" sodipodi:role="line">Boulogne</tspan>
+  </text>
+  <rect width="136" height="34" x="182" y="713" id="38" class="shape" dunnart:label="Jeanne=Simon de Dreux" dunnart:width="142" dunnart:height="40" dunnart:xPos="179" dunnart:yPos="710" dunnart:type="rect"/>
+  <text id="text38" class="tLabel" x="250.000000" y="734.000000">
+    <tspan id="tspan38n0" class="tsLabel" x="250.000000" y="734.000000" sodipodi:role="line">Jeanne=Simon de Dreux</tspan>
+  </text>
+  <rect width="158" height="34" x="374" y="721" id="39" class="shape" dunnart:label="Philippe d'Eu=Marie de Berry" dunnart:width="164" dunnart:height="40" dunnart:xPos="371" dunnart:yPos="718" dunnart:type="rect"/>
+  <text id="text39" class="tLabel" x="453.000000" y="742.000000">
+    <tspan id="tspan39n0" class="tsLabel" x="453.000000" y="742.000000" sodipodi:role="line">Philippe d'Eu=Marie de Berry</tspan>
+  </text>
+  <rect width="294" height="34" x="591" y="721" id="40" class="shape" dunnart:label="Louis de Montpensier=Anne de Bourbon=Louis de Baviere" dunnart:width="300" dunnart:height="40" dunnart:xPos="588" dunnart:yPos="718" dunnart:type="rect"/>
+  <text id="text40" class="tLabel" x="738.000000" y="735.000000">
+    <tspan id="tspan40n0" class="tsLabel" x="738.000000" y="735.000000" sodipodi:role="line">Louis de Montpensier=Anne de Bourbon=Louis de</tspan>
+    <tspan id="tspan40n1" class="tsLabel" x="738.000000" y="749.000000" sodipodi:role="line">Baviere</tspan>
+  </text>
+  <rect width="74" height="34" x="567" y="777" id="43" class="shape" dunnart:label="Charles d'Eu" dunnart:width="80" dunnart:height="40" dunnart:xPos="564" dunnart:yPos="774" dunnart:type="rect"/>
+  <text id="text43" class="tLabel" x="604.000000" y="798.000000">
+    <tspan id="tspan43n0" class="tsLabel" x="604.000000" y="798.000000" sodipodi:role="line">Charles d'Eu</tspan>
+  </text>
+  <rect width="42" height="34" x="485" y="783" id="44" class="shape" dunnart:label="Bonne" dunnart:width="48" dunnart:height="40" dunnart:xPos="482" dunnart:yPos="780" dunnart:type="rect"/>
+  <text id="text44" class="tLabel" x="506.000000" y="804.000000">
+    <tspan id="tspan44n0" class="tsLabel" x="506.000000" y="804.000000" sodipodi:role="line">Bonne</tspan>
+  </text>
+  <rect width="64" height="34" x="359" y="783" id="45" class="shape" dunnart:label="Catherine" dunnart:width="70" dunnart:height="40" dunnart:xPos="356" dunnart:yPos="780" dunnart:type="rect"/>
+  <text id="text45" class="tLabel" x="391.000000" y="804.000000">
+    <tspan id="tspan45n0" class="tsLabel" x="391.000000" y="804.000000" sodipodi:role="line">Catherine</tspan>
+  </text>
+</svg>

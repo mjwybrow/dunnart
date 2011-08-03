@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Created with Dunnart (http://www.csse.monash.edu.au/~mwybrow/dunnart/)-->
+<svg xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:dunnart="http://www.csse.monash.edu.au/~mwybrow/dunnart.dtd" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd">
+  <dunnart:options useMultiway="1" instantFeedback="1" newConnType="53" orientation="0" graphMode="0"/>
+  <sodipodi:namedview showguides="false" guidetolerance="5.0" guidecolor="#000000ff" guideopacity="0.25">
+    <sodipodi:guide dunnart:type="indGuide" position="300" orientation="vertical" dunnart:position="297" dunnart:direction="100" id="11"/>
+    <sodipodi:guide dunnart:type="indGuide" position="447" orientation="horizontal" dunnart:position="444" dunnart:direction="101" id="12"/>
+  </sodipodi:namedview>
+  <style>.shape { stroke:black; stroke-width:1px; fill:#f0f0d2; } .connector { fill:none; stroke:black; stroke-width:1px; stroke-linecap:butt; stroke-linejoin:miter; stroke-opacity:1; } .cluster { fill:#60cdf3; fill-opacity:0.33333333; }</style>
+  <defs>
+    <marker inkscape:stockid="ConnArrowEnd" orient="auto" refX="7.5" refY="0.0" id="ConnArrowEnd" style="overflow:visible;">
+      <path d="M 0.0,0.0 L 1.0,-5.0 L -12.5,0.0 L 1.0,5.0 L 0.0,0.0 z" style="fill-rule:evenodd; stroke:#000000; stroke-width:1px; marker-start:none;" transform="scale(0.6) rotate(180)"/>
+    </marker>
+  </defs>
+  <path id="6" class="connector" dunnart:srcID="5" dunnart:srcFlags="544" dunnart:srcX="451" dunnart:srcY="209" dunnart:dstID="1" dunnart:dstFlags="544" dunnart:dstX="502" dunnart:dstY="429" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 300.000000,154.000000 L 347.000000,358.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="7" class="connector" dunnart:srcID="1" dunnart:srcFlags="544" dunnart:srcX="502" dunnart:srcY="429" dunnart:dstID="3" dunnart:dstFlags="544" dunnart:dstX="562" dunnart:dstY="502" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 351.000000,374.000000 L 398.000000,431.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="8" class="connector" dunnart:srcID="3" dunnart:srcFlags="544" dunnart:srcX="562" dunnart:srcY="502" dunnart:dstID="2" dunnart:dstFlags="544" dunnart:dstX="451" dunnart:dstY="474" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 411.000000,447.000000 L 327.000000,426.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="9" class="connector" dunnart:srcID="2" dunnart:srcFlags="544" dunnart:srcX="451" dunnart:srcY="474" dunnart:dstID="4" dunnart:dstFlags="544" dunnart:dstX="711" dunnart:dstY="502" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 300.000000,419.000000 L 442.000000,427.000000 L 534.000000,443.000000 " dunnart:type="connAvoidPoly"/>
+  <path id="10" class="connector" dunnart:srcID="4" dunnart:srcFlags="544" dunnart:srcX="711" dunnart:srcY="502" dunnart:dstID="1" dunnart:dstFlags="544" dunnart:dstX="502" dunnart:dstY="429" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 560.000000,447.000000 L 378.000000,383.000000 " dunnart:type="connAvoidPoly"/>
+  <rect width="52" height="32" x="325" y="358" id="1" class="shape" dunnart:label="" dunnart:width="60" dunnart:height="40" dunnart:xPos="322" dunnart:yPos="355" dunnart:type="rect"/>
+  <rect width="52" height="32" x="274" y="403" id="2" class="shape" dunnart:label="" dunnart:width="60" dunnart:height="40" dunnart:xPos="271" dunnart:yPos="400" dunnart:type="rect"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="11" objOneID="2" alignmentPos="4"/>
+  <rect width="52" height="32" x="385" y="431" id="3" class="shape" dunnart:label="" dunnart:width="60" dunnart:height="40" dunnart:xPos="382" dunnart:yPos="428" dunnart:type="rect"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="12" objOneID="3" alignmentPos="1"/>
+  <rect width="52" height="32" x="534" y="431" id="4" class="shape" dunnart:label="" dunnart:width="60" dunnart:height="40" dunnart:xPos="531" dunnart:yPos="428" dunnart:type="rect"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="12" objOneID="4" alignmentPos="1"/>
+  <rect width="52" height="32" x="274" y="138" id="5" class="shape" dunnart:label="" dunnart:width="60" dunnart:height="40" dunnart:xPos="271" dunnart:yPos="135" dunnart:type="rect"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="11" objOneID="5" alignmentPos="4"/>
+</svg>

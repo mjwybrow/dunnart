@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Created with Dunnart (http://www.csse.monash.edu.au/~mwybrow/dunnart/)-->
+<svg xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:dunnart="http://www.csse.monash.edu.au/~mwybrow/dunnart.dtd" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" width="484px" height="646px" viewBox="190 18 484 646">
+  <dunnart:options useMultiway="1" instantFeedback="1" newConnType="53" orientation="0" graphMode="0" automaticGraphLayout="1" layoutMethod="0" layoutMode="0" layoutBeautify="1" avoidBuffer="0" pageBoundaryConstraints="0" defaultIdealConnectorLength="1" penaliseCrossings="0" rubberBandRouting="0"/>
+  <sodipodi:namedview showguides="false" guidetolerance="5.0" guidecolor="#000000ff" guideopacity="0.25" bordercolor="#000000" borderopacity="0.5" width="484px" height="646px"/>
+  <style type="text/css">.shape   { stroke:black; stroke-width:1px; fill:#f0f0d2; } .connector { fill:none; stroke:black; stroke-width:1px; stroke-linecap:butt; stroke-linejoin:miter; stroke-opacity:1; } .cluster { fill:#60cdf3; fill-opacity:0.33333333; } .tLabel { text-anchor:middle; text-align:center; } .tsLabel { font-size:11px; font-style:normal; font-weight:normal; fill:black; fill-opacity:1; stroke:none; font-family:DejaVu Sans; } .frLabel { font-size:11px; font-style:normal; font-weight:normal; fill:black; fill-opacity:1; stroke:none; stroke-width:1px; stroke-linecap:butt; stroke-linejoin:miter; stroke-opacity:1; font-family:DejaVu Sans; font-stretch:normal; font-variant:normal; text-anchor:middle; text-align:center; progression-align:center; writing-mode:lr; line-height:125%; } </style>
+  <defs>
+    <marker inkscape:stockid="ConnArrowEnd" orient="auto" refX="7.5" refY="0.0" id="ConnArrowEnd" style="overflow:visible;">
+      <path d="M 0.0,0.0 L 1.0,-5.0 L -12.5,0.0 L 1.0,5.0 L 0.0,0.0 z" style="fill-rule:evenodd; stroke:black; stroke-width:1px; marker-start:none;" transform="scale(0.6) rotate(180)"/>
+    </marker>
+  </defs>
+  <path dunnart:type="connAvoidPoly" id="6" dunnart:directed="1" dunnart:libavoidPath="2 455.851 165.533 1 4 459.397 238.669 3 4 " dunnart:srcID="1" dunnart:srcFlags="544" dunnart:srcX="601" dunnart:srcY="324" dunnart:dstID="3" dunnart:dstFlags="544" dunnart:dstX="528" dunnart:dstY="333" class="connector" d="M 455,165 L 457,226 " style="marker-end:url(#ConnArrowEnd);"/>
+  <path dunnart:type="connAvoidPoly" id="7" dunnart:directed="1" dunnart:libavoidPath="2 459.397 238.669 3 4 386.262 242.216 5 4 " dunnart:srcID="3" dunnart:srcFlags="544" dunnart:srcX="528" dunnart:srcY="333" dunnart:dstID="5" dunnart:dstFlags="544" dunnart:dstX="519" dunnart:dstY="260" class="connector" d="M 459,238 L 396,240 " style="marker-end:url(#ConnArrowEnd);"/>
+  <path dunnart:type="connAvoidPoly" id="8" dunnart:directed="1" dunnart:libavoidPath="2 386.262 242.216 5 4 382.715 169.08 4 4 " dunnart:srcID="5" dunnart:srcFlags="544" dunnart:srcX="519" dunnart:srcY="260" dunnart:dstID="4" dunnart:dstFlags="544" dunnart:dstX="592" dunnart:dstY="251" class="connector" d="M 386,242 L 383,179 " style="marker-end:url(#ConnArrowEnd);"/>
+  <path dunnart:type="connAvoidPoly" id="9" dunnart:directed="1" dunnart:libavoidPath="2 382.715 169.08 4 4 455.851 165.533 1 4 " dunnart:srcID="4" dunnart:srcFlags="544" dunnart:srcX="592" dunnart:srcY="251" dunnart:dstID="1" dunnart:dstFlags="544" dunnart:dstX="601" dunnart:dstY="324" class="connector" d="M 382,169 L 443,166 " style="marker-end:url(#ConnArrowEnd);"/>
+  <rect dunnart:type="rect" id="1" dunnart:xPos="441" dunnart:yPos="151" dunnart:width="28" dunnart:height="28" dunnart:label="4" class="shape" width="22" height="22" x="444.850595" y="154.5330823"/>
+  <text id="text1" class="tLabel" x="455.851" y="169.533">
+    <tspan id="tspan1n0" class="tsLabel" x="455.851" y="169.533" sodipodi:role="line">4</tspan>
+  </text>
+  <rect dunnart:type="rect" id="3" dunnart:xPos="445" dunnart:yPos="224" dunnart:width="28" dunnart:height="28" dunnart:label="3" class="shape" width="22" height="22" x="448.3973534" y="227.6687928"/>
+  <text id="text3" class="tLabel" x="459.397" y="242.669">
+    <tspan id="tspan3n0" class="tsLabel" x="459.397" y="242.669" sodipodi:role="line">3</tspan>
+  </text>
+  <rect dunnart:type="rect" id="4" dunnart:xPos="368" dunnart:yPos="155" dunnart:width="28" dunnart:height="28" dunnart:label="2" class="shape" width="22" height="22" x="371.7148845" y="158.0798407"/>
+  <text id="text4" class="tLabel" x="382.715" y="173.08">
+    <tspan id="tspan4n0" class="tsLabel" x="382.715" y="173.08" sodipodi:role="line">2</tspan>
+  </text>
+  <rect dunnart:type="rect" id="5" dunnart:xPos="372" dunnart:yPos="228" dunnart:width="28" dunnart:height="28" dunnart:label="1" class="shape" width="22" height="22" x="375.2616429" y="231.2155512"/>
+  <text id="text5" class="tLabel" x="386.262" y="246.216">
+    <tspan id="tspan5n0" class="tsLabel" x="386.262" y="246.216" sodipodi:role="line">1</tspan>
+  </text>
+  <rect dunnart:type="rect" id="10" dunnart:xPos="403" dunnart:yPos="187" dunnart:width="36" dunnart:height="30" dunnart:label="0" class="shape" width="30" height="24" x="406" y="190"/>
+  <text id="text10" class="tLabel" x="421" y="206">
+    <tspan id="tspan10n0" class="tsLabel" x="421" y="206" sodipodi:role="line">0</tspan>
+  </text>
+</svg>

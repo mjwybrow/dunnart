@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Created with Dunnart (http://www.csse.monash.edu.au/~mwybrow/dunnart/)-->
+<svg xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:dunnart="http://www.csse.monash.edu.au/~mwybrow/dunnart.dtd" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd">
+  <dunnart:options useMultiway="1" instantFeedback="1" newConnType="53" orientation="0" graphMode="0"/>
+  <sodipodi:namedview showguides="false" guidetolerance="5.0" guidecolor="#000000ff" guideopacity="0.25">
+    <sodipodi:guide dunnart:type="indGuide" position="631" orientation="vertical" dunnart:position="628" dunnart:direction="100" id="5"/>
+    <sodipodi:guide dunnart:type="indGuide" position="515" orientation="vertical" dunnart:position="512" dunnart:direction="100" id="6"/>
+    <sodipodi:guide dunnart:type="indGuide" position="348" orientation="vertical" dunnart:position="345" dunnart:direction="100" id="7"/>
+    <sodipodi:guide dunnart:type="indGuide" position="244" orientation="vertical" dunnart:position="241" dunnart:direction="100" id="8"/>
+  </sodipodi:namedview>
+  <style>.shape { stroke:black; stroke-width:1px; fill:#f0f0d2; } .connector { fill:none; stroke:black; stroke-width:1px; stroke-linecap:butt; stroke-linejoin:miter; stroke-opacity:1; } .cluster { fill:#60cdf3; fill-opacity:0.33333333; }</style>
+  <defs>
+    <marker inkscape:stockid="ConnArrowEnd" orient="auto" refX="7.5" refY="0.0" id="ConnArrowEnd" style="overflow:visible;">
+      <path d="M 0.0,0.0 L 1.0,-5.0 L -12.5,0.0 L 1.0,5.0 L 0.0,0.0 z" style="fill-rule:evenodd; stroke:#000000; stroke-width:1px; marker-start:none;" transform="scale(0.6) rotate(180)"/>
+    </marker>
+  </defs>
+  <dunnart:node dunnart:type="separation" dunnart:position="4" dunnart:direction="0" dunnart:sepDistance="50.000000" id="9"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="separation" constraintID="9" objOneID="8" objTwoID="7"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="separation" constraintID="9" objOneID="7" objTwoID="6"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="separation" constraintID="9" objOneID="6" objTwoID="5"/>
+  <dunnart:node dunnart:type="separation" dunnart:position="4" dunnart:direction="0" dunnart:sepDistance="50.000000" id="10"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="separation" constraintID="10" objOneID="8" objTwoID="7"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="separation" constraintID="10" objOneID="7" objTwoID="6"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="separation" constraintID="10" objOneID="6" objTwoID="5"/>
+  <rect width="52" height="32" x="218" y="124" id="1" class="shape" dunnart:label="" dunnart:width="60" dunnart:height="40" dunnart:xPos="215" dunnart:yPos="121" dunnart:type="rect"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="8" objOneID="1" alignmentPos="4"/>
+  <rect width="52" height="32" x="322" y="194" id="2" class="shape" dunnart:label="" dunnart:width="60" dunnart:height="40" dunnart:xPos="319" dunnart:yPos="191" dunnart:type="rect"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="7" objOneID="2" alignmentPos="4"/>
+  <rect width="52" height="32" x="489" y="263" id="3" class="shape" dunnart:label="" dunnart:width="60" dunnart:height="40" dunnart:xPos="486" dunnart:yPos="260" dunnart:type="rect"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="6" objOneID="3" alignmentPos="4"/>
+  <rect width="52" height="32" x="605" y="361" id="4" class="shape" dunnart:label="" dunnart:width="60" dunnart:height="40" dunnart:xPos="602" dunnart:yPos="358" dunnart:type="rect"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="5" objOneID="4" alignmentPos="4"/>
+</svg>

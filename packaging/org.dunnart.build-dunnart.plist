@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>org.dunnart.build-dunnart.plist</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/Users/mjwybrow/ws-builds/dunnart/editor/osx-build.sh</string>
+	</array>
+	<key>QueueDirectories</key>
+	<array/>
+	<key>StartCalendarInterval</key>
+	<dict>
+		<key>Hour</key>
+		<integer>12</integer>
+		<key>Minute</key>
+		<integer>45</integer>
+	</dict>
+	<key>UserName</key>
+	<string>mjwybrow</string>
+	<key>WatchPaths</key>
+	<array/>
+</dict>
+</plist>

@@ -1,0 +1,26 @@
+# Apple directory files.
+.DS_Store
+
+# Build Qt build directories.
+gen-obj/
+gen-moc/
+gen-ui/
+gen-rcc/
+
+# Ignore libs directory.
+build/
+Dunnart.app/
+
+githash.h
+
+# Makefiles are generated, so ignore.
+Makefile*
+
+Dunnart.pro.user
+
+tags
+log
+diff
+
+#ignore the executable
+

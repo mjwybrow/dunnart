@@ -1,0 +1,61 @@
+Bernardo,Francisco
+Bernardo,Horatio
+Bernardo,Marcellus
+Francisco,Horatio
+Francisco,Marcellus
+Horatio,Marcellus
+King Claudius,Cornelius
+King Claudius,Voltimand
+King Claudius,Laertes
+King Claudius,Polonius
+King Claudius,Hamlet
+Queen Gertrude,Hamlet
+Hamlet,Horatio
+Hamlet,Marcellus
+Hamlet,Bernardo
+Laertes,Ophelia
+Polonius,Laertes
+Polonius,Ophelia
+Hamlet,Polonius
+Hamlet,Ghost
+Polonius,Reynaldo
+King Claudius,Rosencrantz
+King Claudius,Guildenstern
+Queen Gertrude,Rosencrantz
+Queen Gertrude,Guildenstern
+King Claudius,Queen Gertrude
+Polonius,Queen Gertrude
+Polonius,Hamlet
+Polonius,Rosencrantz
+Polonius,Guildenstern
+Hamlet,Rosencrantz
+Hamlet,Guildenstern
+Hamlet,First Player
+Polonius,First Player
+Queen Gertrude,Ophelia
+Hamlet,Ophelia
+Player King,Player Queen
+Lucianus,Lucianus
+Prologue,Prologue
+Hamlet,Captain
+Prince Fortinbras,Captain
+Queen Gertrude,Gentleman
+Horatio,Queen Gertrude
+Horatio,Ophelia
+Laertes,Danes
+Laertes,Queen Gertrude
+Horatio,Servant
+Horatio,First Sailor
+First Clown,Second Clown
+Hamlet,First Clown
+Hamlet,Second Clown
+Horatio,First Clown
+Horatio,Second Clown
+Laertes,Hamlet
+Laertes,First Priest
+Hamlet,Osric
+Horatio,Osric
+Horatio,Prince Fortinbras
+First Ambassador,Prince Fortinbras
+First Ambassador,Horatio
+

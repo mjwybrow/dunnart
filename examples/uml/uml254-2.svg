@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Created with Dunnart (http://www.csse.monash.edu.au/~mwybrow/dunnart/)-->
+<svg xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:dunnart="http://www.csse.monash.edu.au/~mwybrow/dunnart.dtd" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd">
+  <dunnart:options useMultiway="1" instantFeedback="1" newConnType="53" orientation="0" graphMode="0"/>
+  <sodipodi:namedview showguides="false" guidetolerance="5.0" guidecolor="#000000ff" guideopacity="0.25">
+    <sodipodi:guide dunnart:type="indGuide" position="587" orientation="horizontal" dunnart:position="584" dunnart:direction="101" id="39"/>
+    <sodipodi:guide dunnart:type="indGuide" position="328" orientation="horizontal" dunnart:position="325" dunnart:direction="101" id="40"/>
+    <sodipodi:guide dunnart:type="indGuide" position="825" orientation="vertical" dunnart:position="822" dunnart:direction="100" id="41"/>
+    <sodipodi:guide dunnart:type="indGuide" position="316" orientation="vertical" dunnart:position="313" dunnart:direction="100" id="42"/>
+  </sodipodi:namedview>
+  <style>.shape { stroke:black; stroke-width:1px; fill:#f0f0d2; } .connector { fill:none; stroke:black; stroke-width:1px; stroke-linecap:butt; stroke-linejoin:miter; stroke-opacity:1; } .cluster { fill:#60cdf3; fill-opacity:0.33333333; }</style>
+  <defs>
+    <marker inkscape:stockid="ConnArrowEnd" orient="auto" refX="7.5" refY="0.0" id="ConnArrowEnd" style="overflow:visible;">
+      <path d="M 0.0,0.0 L 1.0,-5.0 L -12.5,0.0 L 1.0,5.0 L 0.0,0.0 z" style="fill-rule:evenodd; stroke:#000000; stroke-width:1px; marker-start:none;" transform="scale(0.6) rotate(180)"/>
+    </marker>
+  </defs>
+  <path id="24" class="connector" dunnart:srcID="19" dunnart:srcFlags="544" dunnart:srcX="467" dunnart:srcY="383" dunnart:dstID="16" dunnart:dstFlags="544" dunnart:dstX="467" dunnart:dstY="643" dunnart:directed="0" d="M 316.000000,328.000000 L 316.000000,588.000000 " dunnart:ArrowType="0" dunnart:type="connAvoidPoly"/>
+  <path id="25" class="connector" dunnart:srcID="13" dunnart:srcFlags="544" dunnart:srcX="976" dunnart:srcY="642" dunnart:dstID="16" dunnart:dstFlags="544" dunnart:dstX="467" dunnart:dstY="643" dunnart:directed="0" d="M 825.000000,587.000000 L 316.000000,588.000000 " dunnart:ArrowType="0" dunnart:type="connAvoidPoly"/>
+  <path id="26" class="connector" dunnart:srcID="19" dunnart:srcFlags="544" dunnart:srcX="467" dunnart:srcY="383" dunnart:dstID="13" dunnart:dstFlags="544" dunnart:dstX="976" dunnart:dstY="642" dunnart:directed="0" d="M 316.000000,328.000000 L 825.000000,587.000000 " dunnart:ArrowType="0" dunnart:type="connAvoidPoly"/>
+  <path id="27" class="connector" dunnart:srcID="19" dunnart:srcFlags="544" dunnart:srcX="467" dunnart:srcY="383" dunnart:dstID="11" dunnart:dstFlags="544" dunnart:dstX="150" dunnart:dstY="642" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 316.000000,328.000000 L 67.000000,482.000000 L 18.000000,557.000000 " dunnart:ArrowType="1" dunnart:type="connAvoidPoly"/>
+  <path id="28" class="connector" dunnart:srcID="1" dunnart:srcFlags="544" dunnart:srcX="976" dunnart:srcY="109" dunnart:dstID="2" dunnart:dstFlags="544" dunnart:dstX="1090" dunnart:dstY="383" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 825.000000,54.000000 L 919.000000,280.000000 " dunnart:ArrowType="0" dunnart:type="connAvoidPoly"/>
+  <path id="29" class="connector" dunnart:srcID="2" dunnart:srcFlags="544" dunnart:srcX="1090" dunnart:srcY="383" dunnart:dstID="4" dunnart:dstFlags="544" dunnart:dstX="1252" dunnart:dstY="642" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 939.000000,328.000000 L 1039.000000,433.000000 L 1089.000000,557.000000 " dunnart:ArrowType="1" dunnart:type="connAvoidPoly"/>
+  <path id="30" class="connector" dunnart:srcID="2" dunnart:srcFlags="544" dunnart:srcX="1090" dunnart:srcY="383" dunnart:dstID="13" dunnart:dstFlags="544" dunnart:dstX="976" dunnart:dstY="642" dunnart:directed="0" d="M 939.000000,328.000000 L 825.000000,587.000000 " dunnart:ArrowType="0" dunnart:type="connAvoidPoly"/>
+  <path id="31" class="connector" dunnart:srcID="4" dunnart:srcFlags="544" dunnart:srcX="1252" dunnart:srcY="642" dunnart:dstID="9" dunnart:dstFlags="544" dunnart:dstX="976" dunnart:dstY="850" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 1101.000000,587.000000 L 1039.000000,742.000000 L 894.000000,778.000000 " dunnart:ArrowType="1" dunnart:type="connAvoidPoly"/>
+  <path id="32" class="connector" dunnart:srcID="1" dunnart:srcFlags="544" dunnart:srcX="976" dunnart:srcY="109" dunnart:dstID="13" dunnart:dstFlags="544" dunnart:dstX="976" dunnart:dstY="642" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 825.000000,54.000000 L 612.000000,276.000000 L 612.000000,381.000000 L 670.000000,437.000000 " dunnart:ArrowType="0" dunnart:type="connAvoidPoly"/>
+  <path id="33" class="connector" dunnart:srcID="11" dunnart:srcFlags="544" dunnart:srcX="150" dunnart:srcY="642" dunnart:dstID="9" dunnart:dstFlags="544" dunnart:dstX="976" dunnart:dstY="850" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M -1.000000,587.000000 L 67.000000,695.000000 L 757.000000,786.000000 " dunnart:ArrowType="1" dunnart:type="connAvoidPoly"/>
+  <path id="34" class="connector" dunnart:srcID="1" dunnart:srcFlags="544" dunnart:srcX="976" dunnart:srcY="109" dunnart:dstID="19" dunnart:dstFlags="544" dunnart:dstX="467" dunnart:dstY="383" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 825.000000,54.000000 L 505.000000,226.000000 " dunnart:ArrowType="0" dunnart:type="connAvoidPoly"/>
+  <g>
+    <rect width="766" height="324" x="442" y="-108" id="1" class="shape" dunnart:label="" dunnart:width="774" dunnart:height="332" dunnart:xPos="439" dunnart:yPos="-111" dunnart:type="umlClass">
+      <dunnart:class_name>CTSSystem</dunnart:class_name>
+      <dunnart:mode>0</dunnart:mode>
+      <dunnart:attr_section_height>59</dunnart:attr_section_height>
+      <dunnart:method_section_height>251</dunnart:method_section_height>
+      <dunnart:attribute private="yes" name="state" type="String"/>
+      <dunnart:attribute private="yes" name="storedApplicants" type="Applicant[*]"/>
+      <dunnart:attribute private="yes" name="storedCoordinators" type="SubjectCoordinator[*]"/>
+      <dunnart:attribute private="yes" name="storedSubjects" type="Subject[*]"/>
+      <dunnart:method private="yes" name="getSubject" return_type="Subject">
+        <dunnart:parameter name="subjectID" type="Stirng"/>
+      </dunnart:method>
+      <dunnart:method private="yes" name="storeSubject" return_type="">
+        <dunnart:parameter name="subject" type="Subject"/>
+      </dunnart:method>
+      <dunnart:method private="yes" name="getApplicant" return_type="Applicant">
+        <dunnart:parameter name="studentID" type="String"/>
+      </dunnart:method>
+      <dunnart:method private="yes" name="getCoordinator" return_type="">
+        <dunnart:parameter name="subjectCoordinator" type="SubjectCoordinator"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="changeState" return_type=""/>
+      <dunnart:method private="no" name="addSubject" return_type="">
+        <dunnart:parameter name="subjectID" type="String"/>
+        <dunnart:parameter name="subjectName" type="String"/>
+        <dunnart:parameter name="tutorialDuration" type="int"/>
+        <dunnart:parameter name="labDuration" type="int"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="addCoordinator" return_type="">
+        <dunnart:parameter name="staffID" type="String"/>
+        <dunnart:parameter name="surname" type="String"/>
+        <dunnart:parameter name="firstName" type="String"/>
+        <dunnart:parameter name="phone" type="String"/>
+        <dunnart:parameter name="email" type="String"/>
+        <dunnart:parameter name="subjectIDs" type="String[*]"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="addLabTute" return_type="">
+        <dunnart:parameter name="subjectID" type="String"/>
+        <dunnart:parameter name="type" type="String"/>
+        <dunnart:parameter name="day" type="String"/>
+        <dunnart:parameter name="startTime" type="int"/>
+        <dunnart:parameter name="roomNumber" type="String"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="submitApplication" return_type="">
+        <dunnart:parameter name="studentID" type="String"/>
+        <dunnart:parameter name="surname" type="Stirng"/>
+        <dunnart:parameter name="firstName" type="String"/>
+        <dunnart:parameter name="phone" type="String"/>
+        <dunnart:parameter name="email" type="String"/>
+        <dunnart:parameter name="preferences" type="String[*]"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="allocateStaff" return_type="">
+        <dunnart:parameter name="subjectID" type="String"/>
+        <dunnart:parameter name="type" type="String"/>
+        <dunnart:parameter name="day" type="String"/>
+        <dunnart:parameter name="startTime" type="int"/>
+        <dunnart:parameter name="roomNumber" type="String"/>
+        <dunnart:parameter name="studentID" type="Stirng"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="displayStaff" return_type="">
+        <dunnart:parameter name="SubjectID" type="String"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="displayLabsTutorials" return_type="">
+        <dunnart:parameter name="subjectID" type="String"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="viewAllocations" return_type="">
+        <dunnart:parameter name="studentID" type="String"/>
+      </dunnart:method>
+      <dunnart:method private="yes" name="storeApplicant" return_type="">
+        <dunnart:parameter name="applicant" type="Applicant"/>
+      </dunnart:method>
+      <dunnart:method private="yes" name="checkSubjectsExist" return_type="boolean">
+        <dunnart:parameter name="subjectIDs" type="String[1..*]"/>
+      </dunnart:method>
+      <dunnart:method private="yes" name="checkApplicantExists" return_type="boolean">
+        <dunnart:parameter name="studentID" type="String"/>
+      </dunnart:method>
+      <dunnart:method private="yes" name="checkCoordinatorExists" return_type="boolean">
+        <dunnart:parameter name="staffID" type="int"/>
+      </dunnart:method>
+      <dunnart:method private="yes" name="checkArrayLength" return_type="boolean">
+        <dunnart:parameter name="array" type="String[*]"/>
+        <dunnart:parameter name="minSize" type="int"/>
+        <dunnart:parameter name="maxSize" type="int"/>
+      </dunnart:method>
+      <dunnart:method private="yes" name="removeApplicant" return_type="">
+        <dunnart:parameter name="studentID" type="String"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="listApplicaints" return_type="">
+        <dunnart:parameter name="SubjectID" type="String"/>
+      </dunnart:method>
+    </rect>
+    <line x1="442" y1="-94" x2="1208" y2="-94" style="stroke:rgb(0,0,0);stroke-width:1px"/>
+    <line x1="442" y1="-35" x2="1208" y2="-35" style="stroke:rgb(0,0,0);stroke-width:1px"/>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="796.5" y="-97">CTSSystem</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="448" y="-82">-state:String</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="448" y="-70">-storedApplicants:Applicant[*]</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="448" y="-58">-storedCoordinators:SubjectCoordinator[*]</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="448" y="-46">-storedSubjects:Subject[*]</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="448" y="-23">-getSubject(subjectID:Stirng):Subject</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="448" y="-11">-storeSubject(subject:Subject):</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="448" y="1">-getApplicant(studentID:String):Applicant</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="448" y="13">-getCoordinator(subjectCoordinator:SubjectCoordinator):</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="448" y="25">+changeState():</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="448" y="37">+addSubject(subjectID:String, subjectName:String, tutorialDuration:int, labDuration:int):</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="448" y="49">+addCoordinator(staffID:String, surname:String, firstName:String, phone:String, email:String, subjectIDs:String[*]):</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="448" y="61">+addLabTute(subjectID:String, type:String, day:String, startTime:int, roomNumber:String):</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="448" y="73">+submitApplication(studentID:String, surname:Stirng, firstName:String, phone:String, email:String, preferences:String[*]):</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="448" y="85">+allocateStaff(subjectID:String, type:String, day:String, startTime:int, roomNumber:String, studentID:Stirng):</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="448" y="97">+displayStaff(SubjectID:String):</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="448" y="109">+displayLabsTutorials(subjectID:String):</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="448" y="121">+viewAllocations(studentID:String):</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="448" y="133">-storeApplicant(applicant:Applicant):</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="448" y="145">-checkSubjectsExist(subjectIDs:String[1..*]):boolean</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="448" y="157">-checkApplicantExists(studentID:String):boolean</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="448" y="169">-checkCoordinatorExists(staffID:int):boolean</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="448" y="181">-checkArrayLength(array:String[*], minSize:int, maxSize:int):boolean</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="448" y="193">-removeApplicant(studentID:String):</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="448" y="205">+listApplicaints(SubjectID:String):</text>
+  </g>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="41" objOneID="1" alignmentPos="4"/>
+  <g>
+    <rect width="646" height="96" x="616" y="280" id="2" class="shape" dunnart:label="" dunnart:width="654" dunnart:height="104" dunnart:xPos="613" dunnart:yPos="277" dunnart:type="umlClass">
+      <dunnart:class_name>SubjectCoordinator</dunnart:class_name>
+      <dunnart:mode>0</dunnart:mode>
+      <dunnart:attr_section_height>23</dunnart:attr_section_height>
+      <dunnart:method_section_height>59</dunnart:method_section_height>
+      <dunnart:attribute private="yes" name="subjectsCoordinated" type="Subject[1..3]"/>
+      <dunnart:method private="no" name="displayDetails" return_type=""/>
+      <dunnart:method private="no" name="SubjectCoordinator" return_type="">
+        <dunnart:parameter name="staffID" type="String"/>
+        <dunnart:parameter name="surname" type="String"/>
+        <dunnart:parameter name="firstNmae" type="String"/>
+        <dunnart:parameter name="telephone" type="String"/>
+        <dunnart:parameter name="email" type="String"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="addCoordinatedSubject" return_type="">
+        <dunnart:parameter name="subject" type="Subject"/>
+      </dunnart:method>
+      <dunnart:method private="yes" name="SubjectCoordinator" return_type=""/>
+    </rect>
+    <line x1="616" y1="294" x2="1262" y2="294" style="stroke:rgb(0,0,0);stroke-width:1px"/>
+    <line x1="616" y1="317" x2="1262" y2="317" style="stroke:rgb(0,0,0);stroke-width:1px"/>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="883" y="291">SubjectCoordinator</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="622" y="306">-subjectsCoordinated:Subject[1..3]</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="622" y="329">+displayDetails():</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="622" y="341">+SubjectCoordinator(staffID:String, surname:String, firstNmae:String, telephone:String, email:String):</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="622" y="353">+addCoordinatedSubject(subject:Subject):</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="622" y="365">-SubjectCoordinator():</text>
+  </g>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="40" objOneID="2" alignmentPos="1"/>
+  <g>
+    <rect width="112" height="60" x="1045" y="557" id="4" class="shape" dunnart:label="" dunnart:width="120" dunnart:height="68" dunnart:xPos="1042" dunnart:yPos="554" dunnart:type="umlClass">
+      <dunnart:class_name>StaffMember</dunnart:class_name>
+      <dunnart:mode>2</dunnart:mode>
+      <dunnart:attr_section_height>23</dunnart:attr_section_height>
+      <dunnart:method_section_height>23</dunnart:method_section_height>
+      <dunnart:attribute private="yes" name="staffID" type="String"/>
+    </rect>
+    <line x1="1045" y1="571" x2="1157" y2="571" style="stroke:rgb(0,0,0);stroke-width:1px"/>
+    <line x1="1045" y1="594" x2="1157" y2="594" style="stroke:rgb(0,0,0);stroke-width:1px"/>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="1066" y="568">StaffMember</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="1051" y="583">-staffID:String</text>
+  </g>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="39" objOneID="4" alignmentPos="1"/>
+  <g>
+    <rect width="136" height="96" x="757" y="747" id="9" class="shape" dunnart:label="" dunnart:width="144" dunnart:height="104" dunnart:xPos="754" dunnart:yPos="744" dunnart:type="umlClass">
+      <dunnart:class_name>Person</dunnart:class_name>
+      <dunnart:mode>1</dunnart:mode>
+      <dunnart:attr_section_height>59</dunnart:attr_section_height>
+      <dunnart:method_section_height>23</dunnart:method_section_height>
+      <dunnart:attribute private="yes" name="surname" type="Stirng"/>
+      <dunnart:attribute private="yes" name="firstname" type="Stirng"/>
+      <dunnart:attribute private="yes" name="telephone" type="String"/>
+      <dunnart:attribute private="yes" name="email" type="String"/>
+      <dunnart:method private="no" name="displayDetails" return_type=""/>
+    </rect>
+    <line x1="757" y1="761" x2="893" y2="761" style="stroke:rgb(0,0,0);stroke-width:1px"/>
+    <line x1="757" y1="820" x2="893" y2="820" style="stroke:rgb(0,0,0);stroke-width:1px"/>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="805.5" y="758">Person</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="763" y="773">-surname:Stirng</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="763" y="785">-firstname:Stirng</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="763" y="797">-telephone:String</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="763" y="809">-email:String</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="763" y="832">+displayDetails():</text>
+  </g>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="41" objOneID="9" alignmentPos="4"/>
+  <g>
+    <rect width="124" height="60" x="-63" y="557" id="11" class="shape" dunnart:label="" dunnart:width="132" dunnart:height="68" dunnart:xPos="-66" dunnart:yPos="554" dunnart:type="umlClass">
+      <dunnart:class_name>Student</dunnart:class_name>
+      <dunnart:mode>1</dunnart:mode>
+      <dunnart:attr_section_height>23</dunnart:attr_section_height>
+      <dunnart:method_section_height>23</dunnart:method_section_height>
+      <dunnart:attribute private="yes" name="studentID" type="String"/>
+    </rect>
+    <line x1="-63" y1="571" x2="61" y2="571" style="stroke:rgb(0,0,0);stroke-width:1px"/>
+    <line x1="-63" y1="594" x2="61" y2="594" style="stroke:rgb(0,0,0);stroke-width:1px"/>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="-23.5" y="568">Student</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="-57" y="583">-studentID:String</text>
+  </g>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="39" objOneID="11" alignmentPos="1"/>
+  <g>
+    <rect width="418" height="300" x="616" y="437" id="13" class="shape" dunnart:label="" dunnart:width="426" dunnart:height="308" dunnart:xPos="613" dunnart:yPos="434" dunnart:type="umlClass">
+      <dunnart:class_name>Subject</dunnart:class_name>
+      <dunnart:mode>1</dunnart:mode>
+      <dunnart:attr_section_height>119</dunnart:attr_section_height>
+      <dunnart:method_section_height>167</dunnart:method_section_height>
+      <dunnart:attribute private="yes" name="subjectID" type="String"/>
+      <dunnart:attribute private="yes" name="subjectName" type="String"/>
+      <dunnart:attribute private="yes" name="tutorialDuration" type="int"/>
+      <dunnart:attribute private="yes" name="labDuration" type="int"/>
+      <dunnart:attribute private="yes" name="preferencingApplicants" type="Applicant[*]"/>
+      <dunnart:attribute private="yes" name="preferences" type="int[*]"/>
+      <dunnart:attribute private="yes" name="subjectCoordinator" type="SubjectCOordinator[0..1]"/>
+      <dunnart:attribute private="yes" name="tutorials" type="LabTute[*]"/>
+      <dunnart:attribute private="yes" name="labs" type="LabTute[*]"/>
+      <dunnart:method private="no" name="addLabTute" return_type="">
+        <dunnart:parameter name="type" type="String"/>
+        <dunnart:parameter name="day" type="String"/>
+        <dunnart:parameter name="startTime" type="int"/>
+        <dunnart:parameter name="roomNumber" type="String"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="getLabTuteDuration" return_type="int">
+        <dunnart:parameter name="type" type="String"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="hasCoordinator" return_type="boolean"/>
+      <dunnart:method private="no" name="Subject" return_type="">
+        <dunnart:parameter name="subjectID" type="String"/>
+        <dunnart:parameter name="subjectName" type="String"/>
+        <dunnart:parameter name="tutorialDuration" type="int"/>
+        <dunnart:parameter name="labDuration" type="int"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="addPreferencingApplicant" return_type="">
+        <dunnart:parameter name="applicant" type="Applicant"/>
+        <dunnart:parameter name="preference" type="int"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="removePreferencingApplicant" return_type="">
+        <dunnart:parameter name="applicant" type="Applicant"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="displaySubjectID" return_type=""/>
+      <dunnart:method private="no" name="displayApplicants" return_type=""/>
+      <dunnart:method private="no" name="setCoordinator" return_type="">
+        <dunnart:parameter name="subjectCoordinator" type="SubjectCoordinator"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="getLabTute" return_type="">
+        <dunnart:parameter name="type" type="String"/>
+        <dunnart:parameter name="day" type="String"/>
+        <dunnart:parameter name="startTime" type="int"/>
+        <dunnart:parameter name="roomNumber" type="String"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="displaySubjectName" return_type=""/>
+      <dunnart:method private="no" name="storeLabTute" return_type="">
+        <dunnart:parameter name="type" type="String"/>
+        <dunnart:parameter name="labTute" type="LabTute"/>
+      </dunnart:method>
+      <dunnart:method private="yes" name="Subject" return_type=""/>
+    </rect>
+    <line x1="616" y1="451" x2="1034" y2="451" style="stroke:rgb(0,0,0);stroke-width:1px"/>
+    <line x1="616" y1="570" x2="1034" y2="570" style="stroke:rgb(0,0,0);stroke-width:1px"/>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="802.5" y="448">Subject</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="622" y="463">-subjectID:String</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="622" y="475">-subjectName:String</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="622" y="487">-tutorialDuration:int</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="622" y="499">-labDuration:int</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="622" y="511">-preferencingApplicants:Applicant[*]</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="622" y="523">-preferences:int[*]</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="622" y="535">-subjectCoordinator:SubjectCOordinator[0..1]</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="622" y="547">-tutorials:LabTute[*]</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="622" y="559">-labs:LabTute[*]</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="622" y="582">+addLabTute(type:String, day:String, startTime:int, roomNumber:String):</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="622" y="594">+getLabTuteDuration(type:String):int</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="622" y="606">+hasCoordinator():boolean</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="622" y="618">+Subject(subjectID:String, subjectName:String, tutorialDuration:int, labDuration:int):</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="622" y="630">+addPreferencingApplicant(applicant:Applicant, preference:int):</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="622" y="642">+removePreferencingApplicant(applicant:Applicant):</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="622" y="654">+displaySubjectID():</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="622" y="666">+displayApplicants():</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="622" y="678">+setCoordinator(subjectCoordinator:SubjectCoordinator):</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="622" y="690">+getLabTute(type:String, day:String, startTime:int, roomNumber:String):</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="622" y="702">+displaySubjectName():</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="622" y="714">+storeLabTute(type:String, labTute:LabTute):</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="622" y="726">-Subject():</text>
+  </g>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="39" objOneID="13" alignmentPos="1"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="41" objOneID="13" alignmentPos="4"/>
+  <g>
+    <rect width="490" height="204" x="71" y="486" id="16" class="shape" dunnart:label="" dunnart:width="498" dunnart:height="212" dunnart:xPos="68" dunnart:yPos="483" dunnart:type="umlClass">
+      <dunnart:class_name>LabTute</dunnart:class_name>
+      <dunnart:mode>0</dunnart:mode>
+      <dunnart:attr_section_height>83</dunnart:attr_section_height>
+      <dunnart:method_section_height>107</dunnart:method_section_height>
+      <dunnart:attribute private="yes" name="day" type="Stirng"/>
+      <dunnart:attribute private="yes" name="startTime" type="int"/>
+      <dunnart:attribute private="yes" name="roomNumber" type="String"/>
+      <dunnart:attribute private="yes" name="type" type="String"/>
+      <dunnart:attribute private="yes" name="endTime" type="int"/>
+      <dunnart:attribute private="yes" name="casualStaff" type="Applicant[0..3]"/>
+      <dunnart:method private="no" name="addCasualStaffMember" return_type="">
+        <dunnart:parameter name="member" type="Applicant"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="clashesWith" return_type="boolean">
+        <dunnart:parameter name="day" type="String"/>
+        <dunnart:parameter name="startTime" type="int"/>
+        <dunnart:parameter name="endTime" type="int"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="LabTute" return_type="">
+        <dunnart:parameter name="type" type="String"/>
+        <dunnart:parameter name="day" type="String"/>
+        <dunnart:parameter name="startTime" type="int"/>
+        <dunnart:parameter name="duration" type="int"/>
+        <dunnart:parameter name="room" type="String"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="hasMaximumStaff" return_type="boolean"/>
+      <dunnart:method private="no" name="displayDetails" return_type=""/>
+      <dunnart:method private="no" name="getEndTime" return_type="int"/>
+      <dunnart:method private="no" name="displayCasualStaffDetails" return_type=""/>
+      <dunnart:method private="yes" name="LabTute" return_type=""/>
+    </rect>
+    <line x1="71" y1="500" x2="561" y2="500" style="stroke:rgb(0,0,0);stroke-width:1px"/>
+    <line x1="71" y1="583" x2="561" y2="583" style="stroke:rgb(0,0,0);stroke-width:1px"/>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="293.5" y="497">LabTute</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="77" y="512">-day:Stirng</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="77" y="524">-startTime:int</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="77" y="536">-roomNumber:String</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="77" y="548">-type:String</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="77" y="560">-endTime:int</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="77" y="572">-casualStaff:Applicant[0..3]</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="77" y="595">+addCasualStaffMember(member:Applicant):</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="77" y="607">+clashesWith(day:String, startTime:int, endTime:int):boolean</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="77" y="619">+LabTute(type:String, day:String, startTime:int, duration:int, room:String):</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="77" y="631">+hasMaximumStaff():boolean</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="77" y="643">+displayDetails():</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="77" y="655">+getEndTime():int</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="77" y="667">+displayCasualStaffDetails():</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="77" y="679">-LabTute():</text>
+  </g>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="39" objOneID="16" alignmentPos="1"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="42" objOneID="16" alignmentPos="4"/>
+  <g>
+    <rect width="580" height="204" x="26" y="226" id="19" class="shape" dunnart:label="" dunnart:width="588" dunnart:height="212" dunnart:xPos="23" dunnart:yPos="223" dunnart:type="umlClass">
+      <dunnart:class_name>Applicant</dunnart:class_name>
+      <dunnart:mode>0</dunnart:mode>
+      <dunnart:attr_section_height>59</dunnart:attr_section_height>
+      <dunnart:method_section_height>131</dunnart:method_section_height>
+      <dunnart:attribute private="yes" name="hoursOfTeaching" type="int"/>
+      <dunnart:attribute private="yes" name="preferencedSubjects" type="Subject[1..5]"/>
+      <dunnart:attribute private="yes" name="labsTaken" type="LabTute"/>
+      <dunnart:attribute private="yes" name="tutesTaken" type="LabTute"/>
+      <dunnart:method private="no" name="displayDetails" return_type=""/>
+      <dunnart:method private="no" name="checkTeachingLoad" return_type="boolean">
+        <dunnart:parameter name="newLabTuteType" type="String"/>
+        <dunnart:parameter name="extraHours" type="int"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="Applicant" return_type="">
+        <dunnart:parameter name="studentID" type="String"/>
+        <dunnart:parameter name="surname" type="String"/>
+        <dunnart:parameter name="firstName" type="string"/>
+        <dunnart:parameter name="phone" type="String"/>
+        <dunnart:parameter name="email" type="String"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="addPreferencedSubject" return_type="">
+        <dunnart:parameter name="subject" type="Subject"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="removePreferences" return_type=""/>
+      <dunnart:method private="no" name="preferenced" return_type="boolean">
+        <dunnart:parameter name="subject" type="Subject"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="hasClash" return_type="boolean">
+        <dunnart:parameter name="day" type="String"/>
+        <dunnart:parameter name="startTime" type="int"/>
+        <dunnart:parameter name="endTime" type="int"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="addLabTuteTaken" return_type="">
+        <dunnart:parameter name="type" type="String"/>
+        <dunnart:parameter name="labTute" type="LabTute"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="addToHoursOfTeaching" return_type="">
+        <dunnart:parameter name="amount" type="int"/>
+      </dunnart:method>
+      <dunnart:method private="yes" name="Applicant" return_type=""/>
+    </rect>
+    <line x1="26" y1="240" x2="606" y2="240" style="stroke:rgb(0,0,0);stroke-width:1px"/>
+    <line x1="26" y1="299" x2="606" y2="299" style="stroke:rgb(0,0,0);stroke-width:1px"/>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="287.5" y="237">Applicant</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="32" y="252">-hoursOfTeaching:int</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="32" y="264">-preferencedSubjects:Subject[1..5]</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="32" y="276">-labsTaken:LabTute</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="32" y="288">-tutesTaken:LabTute</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="32" y="311">+displayDetails():</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="32" y="323">+checkTeachingLoad(newLabTuteType:String, extraHours:int):boolean</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="32" y="335">+Applicant(studentID:String, surname:String, firstName:string, phone:String, email:String):</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="32" y="347">+addPreferencedSubject(subject:Subject):</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="32" y="359">+removePreferences():</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="32" y="371">+preferenced(subject:Subject):boolean</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="32" y="383">+hasClash(day:String, startTime:int, endTime:int):boolean</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="32" y="395">+addLabTuteTaken(type:String, labTute:LabTute):</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="32" y="407">+addToHoursOfTeaching(amount:int):</text>
+    <text style="font-size:11px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono" x="32" y="419">-Applicant():</text>
+  </g>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="40" objOneID="19" alignmentPos="1"/>
+  <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="42" objOneID="19" alignmentPos="4"/>
+</svg>

@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Created with Dunnart (http://www.csse.monash.edu.au/~mwybrow/dunnart/)-->
+<svg xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:dunnart="http://www.csse.monash.edu.au/~mwybrow/dunnart.dtd" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd">
+  <dunnart:options useMultiway="1" instantFeedback="1" newConnType="53" orientation="0" graphMode="0"/>
+  <sodipodi:namedview showguides="false" guidetolerance="5.0" guidecolor="#000000ff" guideopacity="0.25"/>
+  <style>.shape { stroke:black; stroke-width:1px; fill:#f0f0d2; } .connector { fill:none; stroke:black; stroke-width:1px; stroke-linecap:butt; stroke-linejoin:miter; stroke-opacity:1; } .cluster { fill:#60cdf3; fill-opacity:0.33333333; }</style>
+  <defs>
+    <marker inkscape:stockid="ConnArrowEnd" orient="auto" refX="7.5" refY="0.0" id="ConnArrowEnd" style="overflow:visible;">
+      <path d="M 0.0,0.0 L 1.0,-5.0 L -12.5,0.0 L 1.0,5.0 L 0.0,0.0 z" style="fill-rule:evenodd; stroke:#000000; stroke-width:1px; marker-start:none;" transform="scale(0.6) rotate(180)"/>
+    </marker>
+  </defs>
+  <path id="24" class="connector" dunnart:srcID="19" dunnart:srcFlags="544" dunnart:srcX="449" dunnart:srcY="378" dunnart:dstID="16" dunnart:dstFlags="544" dunnart:dstX="454" dunnart:dstY="506" dunnart:directed="0" d="M 298.000000,323.000000 L 303.000000,451.000000 " dunnart:ArrowType="0" dunnart:type="connAvoidPoly"/>
+  <path id="25" class="connector" dunnart:srcID="13" dunnart:srcFlags="544" dunnart:srcX="572" dunnart:srcY="498" dunnart:dstID="16" dunnart:dstFlags="544" dunnart:dstX="454" dunnart:dstY="506" dunnart:directed="0" d="M 421.000000,443.000000 L 303.000000,451.000000 " dunnart:ArrowType="0" dunnart:type="connAvoidPoly"/>
+  <path id="26" class="connector" dunnart:srcID="19" dunnart:srcFlags="544" dunnart:srcX="449" dunnart:srcY="378" dunnart:dstID="13" dunnart:dstFlags="544" dunnart:dstX="572" dunnart:dstY="498" dunnart:directed="0" d="M 298.000000,323.000000 L 421.000000,443.000000 " dunnart:ArrowType="0" dunnart:type="connAvoidPoly"/>
+  <path id="27" class="connector" dunnart:srcID="19" dunnart:srcFlags="544" dunnart:srcX="449" dunnart:srcY="378" dunnart:dstID="11" dunnart:dstFlags="544" dunnart:dstX="429" dunnart:dstY="236" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 298.000000,323.000000 L 280.000000,200.000000 " dunnart:ArrowType="1" dunnart:type="connAvoidPoly"/>
+  <path id="28" class="connector" dunnart:srcID="1" dunnart:srcFlags="544" dunnart:srcX="700" dunnart:srcY="496" dunnart:dstID="2" dunnart:dstFlags="544" dunnart:dstX="698" dunnart:dstY="368" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 549.000000,441.000000 L 546.000000,332.000000 " dunnart:ArrowType="0" dunnart:type="connAvoidPoly"/>
+  <path id="29" class="connector" dunnart:srcID="2" dunnart:srcFlags="544" dunnart:srcX="698" dunnart:srcY="368" dunnart:dstID="4" dunnart:dstFlags="544" dunnart:dstX="692" dunnart:dstY="218" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 547.000000,313.000000 L 541.000000,182.000000 " dunnart:ArrowType="1" dunnart:type="connAvoidPoly"/>
+  <path id="30" class="connector" dunnart:srcID="2" dunnart:srcFlags="544" dunnart:srcX="698" dunnart:srcY="368" dunnart:dstID="13" dunnart:dstFlags="544" dunnart:dstX="572" dunnart:dstY="498" dunnart:directed="0" d="M 547.000000,313.000000 L 421.000000,443.000000 " dunnart:ArrowType="0" dunnart:type="connAvoidPoly"/>
+  <path id="31" class="connector" dunnart:srcID="4" dunnart:srcFlags="544" dunnart:srcX="692" dunnart:srcY="218" dunnart:dstID="9" dunnart:dstFlags="544" dunnart:dstX="573" dunnart:dstY="129" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 541.000000,163.000000 L 447.000000,93.000000 " dunnart:ArrowType="1" dunnart:type="connAvoidPoly"/>
+  <path id="32" class="connector" dunnart:srcID="1" dunnart:srcFlags="544" dunnart:srcX="700" dunnart:srcY="496" dunnart:dstID="13" dunnart:dstFlags="544" dunnart:dstX="572" dunnart:dstY="498" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 549.000000,441.000000 L 450.000000,443.000000 " dunnart:ArrowType="0" dunnart:type="connAvoidPoly"/>
+  <path id="33" class="connector" dunnart:srcID="11" dunnart:srcFlags="544" dunnart:srcX="429" dunnart:srcY="236" dunnart:dstID="9" dunnart:dstFlags="544" dunnart:dstX="573" dunnart:dstY="129" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 278.000000,181.000000 L 398.000000,91.000000 " dunnart:ArrowType="1" dunnart:type="connAvoidPoly"/>
+  <path id="34" class="connector" dunnart:srcID="1" dunnart:srcFlags="544" dunnart:srcX="700" dunnart:srcY="496" dunnart:dstID="19" dunnart:dstFlags="544" dunnart:dstX="449" dunnart:dstY="378" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 549.000000,441.000000 L 334.000000,340.000000 " dunnart:ArrowType="0" dunnart:type="connAvoidPoly"/>
+  <g>
+    <rect width="70" height="36" x="514" y="423" id="1" class="shape" dunnart:label="" dunnart:width="78" dunnart:height="44" dunnart:xPos="511" dunnart:yPos="420" dunnart:type="umlClass">
+      <dunnart:class_name>CTSSystem</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>59</dunnart:attr_section_height>
+      <dunnart:method_section_height>251</dunnart:method_section_height>
+      <dunnart:attribute private="yes" name="state" type="String"/>
+      <dunnart:attribute private="yes" name="storedApplicants" type="Applicant[*]"/>
+      <dunnart:attribute private="yes" name="storedCoordinators" type="SubjectCoordinator[*]"/>
+      <dunnart:attribute private="yes" name="storedSubjects" type="Subject[*]"/>
+      <dunnart:method private="yes" name="getSubject" return_type="Subject">
+        <dunnart:parameter name="subjectID" type="Stirng"/>
+      </dunnart:method>
+      <dunnart:method private="yes" name="storeSubject" return_type="">
+        <dunnart:parameter name="subject" type="Subject"/>
+      </dunnart:method>
+      <dunnart:method private="yes" name="getApplicant" return_type="Applicant">
+        <dunnart:parameter name="studentID" type="String"/>
+      </dunnart:method>
+      <dunnart:method private="yes" name="getCoordinator" return_type="">
+        <dunnart:parameter name="subjectCoordinator" type="SubjectCoordinator"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="changeState" return_type=""/>
+      <dunnart:method private="no" name="addSubject" return_type="">
+        <dunnart:parameter name="subjectID" type="String"/>
+        <dunnart:parameter name="subjectName" type="String"/>
+        <dunnart:parameter name="tutorialDuration" type="int"/>
+        <dunnart:parameter name="labDuration" type="int"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="addCoordinator" return_type="">
+        <dunnart:parameter name="staffID" type="String"/>
+        <dunnart:parameter name="surname" type="String"/>
+        <dunnart:parameter name="firstName" type="String"/>
+        <dunnart:parameter name="phone" type="String"/>
+        <dunnart:parameter name="email" type="String"/>
+        <dunnart:parameter name="subjectIDs" type="String[*]"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="addLabTute" return_type="">
+        <dunnart:parameter name="subjectID" type="String"/>
+        <dunnart:parameter name="type" type="String"/>
+        <dunnart:parameter name="day" type="String"/>
+        <dunnart:parameter name="startTime" type="int"/>
+        <dunnart:parameter name="roomNumber" type="String"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="submitApplication" return_type="">
+        <dunnart:parameter name="studentID" type="String"/>
+        <dunnart:parameter name="surname" type="Stirng"/>
+        <dunnart:parameter name="firstName" type="String"/>
+        <dunnart:parameter name="phone" type="String"/>
+        <dunnart:parameter name="email" type="String"/>
+        <dunnart:parameter name="preferences" type="String[*]"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="allocateStaff" return_type="">
+        <dunnart:parameter name="subjectID" type="String"/>
+        <dunnart:parameter name="type" type="String"/>
+        <dunnart:parameter name="day" type="String"/>
+        <dunnart:parameter name="startTime" type="int"/>
+        <dunnart:parameter name="roomNumber" type="String"/>
+        <dunnart:parameter name="studentID" type="Stirng"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="displayStaff" return_type="">
+        <dunnart:parameter name="SubjectID" type="String"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="displayLabsTutorials" return_type="">
+        <dunnart:parameter name="subjectID" type="String"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="viewAllocations" return_type="">
+        <dunnart:parameter name="studentID" type="String"/>
+      </dunnart:method>
+      <dunnart:method private="yes" name="storeApplicant" return_type="">
+        <dunnart:parameter name="applicant" type="Applicant"/>
+      </dunnart:method>
+      <dunnart:method private="yes" name="checkSubjectsExist" return_type="boolean">
+        <dunnart:parameter name="subjectIDs" type="String[1..*]"/>
+      </dunnart:method>
+      <dunnart:method private="yes" name="checkApplicantExists" return_type="boolean">
+        <dunnart:parameter name="studentID" type="String"/>
+      </dunnart:method>
+      <dunnart:method private="yes" name="checkCoordinatorExists" return_type="boolean">
+        <dunnart:parameter name="staffID" type="int"/>
+      </dunnart:method>
+      <dunnart:method private="yes" name="checkArrayLength" return_type="boolean">
+        <dunnart:parameter name="array" type="String[*]"/>
+        <dunnart:parameter name="minSize" type="int"/>
+        <dunnart:parameter name="maxSize" type="int"/>
+      </dunnart:method>
+      <dunnart:method private="yes" name="removeApplicant" return_type="">
+        <dunnart:parameter name="studentID" type="String"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="listApplicaints" return_type="">
+        <dunnart:parameter name="SubjectID" type="String"/>
+      </dunnart:method>
+    </rect>
+  </g>
+  <g>
+    <rect width="132" height="36" x="481" y="295" id="2" class="shape" dunnart:label="" dunnart:width="140" dunnart:height="44" dunnart:xPos="478" dunnart:yPos="292" dunnart:type="umlClass">
+      <dunnart:class_name>SubjectCoordinator</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>23</dunnart:attr_section_height>
+      <dunnart:method_section_height>59</dunnart:method_section_height>
+      <dunnart:attribute private="yes" name="subjectsCoordinated" type="Subject[1..3]"/>
+      <dunnart:method private="no" name="displayDetails" return_type=""/>
+      <dunnart:method private="no" name="SubjectCoordinator" return_type="">
+        <dunnart:parameter name="staffID" type="String"/>
+        <dunnart:parameter name="surname" type="String"/>
+        <dunnart:parameter name="firstNmae" type="String"/>
+        <dunnart:parameter name="telephone" type="String"/>
+        <dunnart:parameter name="email" type="String"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="addCoordinatedSubject" return_type="">
+        <dunnart:parameter name="subject" type="Subject"/>
+      </dunnart:method>
+      <dunnart:method private="yes" name="SubjectCoordinator" return_type=""/>
+    </rect>
+  </g>
+  <g>
+    <rect width="84" height="36" x="499" y="145" id="4" class="shape" dunnart:label="" dunnart:width="92" dunnart:height="44" dunnart:xPos="496" dunnart:yPos="142" dunnart:type="umlClass">
+      <dunnart:class_name>StaffMember</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>23</dunnart:attr_section_height>
+      <dunnart:method_section_height>23</dunnart:method_section_height>
+      <dunnart:attribute private="yes" name="staffID" type="String"/>
+    </rect>
+  </g>
+  <g>
+    <rect width="48" height="36" x="398" y="56" id="9" class="shape" dunnart:label="" dunnart:width="56" dunnart:height="44" dunnart:xPos="395" dunnart:yPos="53" dunnart:type="umlClass">
+      <dunnart:class_name>Person</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>59</dunnart:attr_section_height>
+      <dunnart:method_section_height>23</dunnart:method_section_height>
+      <dunnart:attribute private="yes" name="surname" type="Stirng"/>
+      <dunnart:attribute private="yes" name="firstname" type="Stirng"/>
+      <dunnart:attribute private="yes" name="telephone" type="String"/>
+      <dunnart:attribute private="yes" name="email" type="String"/>
+      <dunnart:method private="no" name="displayDetails" return_type=""/>
+    </rect>
+  </g>
+  <g>
+    <rect width="56" height="36" x="250" y="163" id="11" class="shape" dunnart:label="" dunnart:width="64" dunnart:height="44" dunnart:xPos="247" dunnart:yPos="160" dunnart:type="umlClass">
+      <dunnart:class_name>Student</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>23</dunnart:attr_section_height>
+      <dunnart:method_section_height>23</dunnart:method_section_height>
+      <dunnart:attribute private="yes" name="studentID" type="String"/>
+    </rect>
+  </g>
+  <g>
+    <rect width="56" height="36" x="393" y="425" id="13" class="shape" dunnart:label="" dunnart:width="64" dunnart:height="44" dunnart:xPos="390" dunnart:yPos="422" dunnart:type="umlClass">
+      <dunnart:class_name>Subject</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>119</dunnart:attr_section_height>
+      <dunnart:method_section_height>167</dunnart:method_section_height>
+      <dunnart:attribute private="yes" name="subjectID" type="String"/>
+      <dunnart:attribute private="yes" name="subjectName" type="String"/>
+      <dunnart:attribute private="yes" name="tutorialDuration" type="int"/>
+      <dunnart:attribute private="yes" name="labDuration" type="int"/>
+      <dunnart:attribute private="yes" name="preferencingApplicants" type="Applicant[*]"/>
+      <dunnart:attribute private="yes" name="preferences" type="int[*]"/>
+      <dunnart:attribute private="yes" name="subjectCoordinator" type="SubjectCOordinator[0..1]"/>
+      <dunnart:attribute private="yes" name="tutorials" type="LabTute[*]"/>
+      <dunnart:attribute private="yes" name="labs" type="LabTute[*]"/>
+      <dunnart:method private="no" name="addLabTute" return_type="">
+        <dunnart:parameter name="type" type="String"/>
+        <dunnart:parameter name="day" type="String"/>
+        <dunnart:parameter name="startTime" type="int"/>
+        <dunnart:parameter name="roomNumber" type="String"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="getLabTuteDuration" return_type="int">
+        <dunnart:parameter name="type" type="String"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="hasCoordinator" return_type="boolean"/>
+      <dunnart:method private="no" name="Subject" return_type="">
+        <dunnart:parameter name="subjectID" type="String"/>
+        <dunnart:parameter name="subjectName" type="String"/>
+        <dunnart:parameter name="tutorialDuration" type="int"/>
+        <dunnart:parameter name="labDuration" type="int"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="addPreferencingApplicant" return_type="">
+        <dunnart:parameter name="applicant" type="Applicant"/>
+        <dunnart:parameter name="preference" type="int"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="removePreferencingApplicant" return_type="">
+        <dunnart:parameter name="applicant" type="Applicant"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="displaySubjectID" return_type=""/>
+      <dunnart:method private="no" name="displayApplicants" return_type=""/>
+      <dunnart:method private="no" name="setCoordinator" return_type="">
+        <dunnart:parameter name="subjectCoordinator" type="SubjectCoordinator"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="getLabTute" return_type="">
+        <dunnart:parameter name="type" type="String"/>
+        <dunnart:parameter name="day" type="String"/>
+        <dunnart:parameter name="startTime" type="int"/>
+        <dunnart:parameter name="roomNumber" type="String"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="displaySubjectName" return_type=""/>
+      <dunnart:method private="no" name="storeLabTute" return_type="">
+        <dunnart:parameter name="type" type="String"/>
+        <dunnart:parameter name="labTute" type="LabTute"/>
+      </dunnart:method>
+      <dunnart:method private="yes" name="Subject" return_type=""/>
+    </rect>
+  </g>
+  <g>
+    <rect width="56" height="36" x="275" y="433" id="16" class="shape" dunnart:label="" dunnart:width="64" dunnart:height="44" dunnart:xPos="272" dunnart:yPos="430" dunnart:type="umlClass">
+      <dunnart:class_name>LabTute</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>83</dunnart:attr_section_height>
+      <dunnart:method_section_height>107</dunnart:method_section_height>
+      <dunnart:attribute private="yes" name="day" type="Stirng"/>
+      <dunnart:attribute private="yes" name="startTime" type="int"/>
+      <dunnart:attribute private="yes" name="roomNumber" type="String"/>
+      <dunnart:attribute private="yes" name="type" type="String"/>
+      <dunnart:attribute private="yes" name="endTime" type="int"/>
+      <dunnart:attribute private="yes" name="casualStaff" type="Applicant[0..3]"/>
+      <dunnart:method private="no" name="addCasualStaffMember" return_type="">
+        <dunnart:parameter name="member" type="Applicant"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="clashesWith" return_type="boolean">
+        <dunnart:parameter name="day" type="String"/>
+        <dunnart:parameter name="startTime" type="int"/>
+        <dunnart:parameter name="endTime" type="int"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="LabTute" return_type="">
+        <dunnart:parameter name="type" type="String"/>
+        <dunnart:parameter name="day" type="String"/>
+        <dunnart:parameter name="startTime" type="int"/>
+        <dunnart:parameter name="duration" type="int"/>
+        <dunnart:parameter name="room" type="String"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="hasMaximumStaff" return_type="boolean"/>
+      <dunnart:method private="no" name="displayDetails" return_type=""/>
+      <dunnart:method private="no" name="getEndTime" return_type="int"/>
+      <dunnart:method private="no" name="displayCasualStaffDetails" return_type=""/>
+      <dunnart:method private="yes" name="LabTute" return_type=""/>
+    </rect>
+  </g>
+  <g>
+    <rect width="70" height="36" x="263" y="305" id="19" class="shape" dunnart:label="" dunnart:width="78" dunnart:height="44" dunnart:xPos="260" dunnart:yPos="302" dunnart:type="umlClass">
+      <dunnart:class_name>Applicant</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>59</dunnart:attr_section_height>
+      <dunnart:method_section_height>131</dunnart:method_section_height>
+      <dunnart:attribute private="yes" name="hoursOfTeaching" type="int"/>
+      <dunnart:attribute private="yes" name="preferencedSubjects" type="Subject[1..5]"/>
+      <dunnart:attribute private="yes" name="labsTaken" type="LabTute"/>
+      <dunnart:attribute private="yes" name="tutesTaken" type="LabTute"/>
+      <dunnart:method private="no" name="displayDetails" return_type=""/>
+      <dunnart:method private="no" name="checkTeachingLoad" return_type="boolean">
+        <dunnart:parameter name="newLabTuteType" type="String"/>
+        <dunnart:parameter name="extraHours" type="int"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="Applicant" return_type="">
+        <dunnart:parameter name="studentID" type="String"/>
+        <dunnart:parameter name="surname" type="String"/>
+        <dunnart:parameter name="firstName" type="string"/>
+        <dunnart:parameter name="phone" type="String"/>
+        <dunnart:parameter name="email" type="String"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="addPreferencedSubject" return_type="">
+        <dunnart:parameter name="subject" type="Subject"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="removePreferences" return_type=""/>
+      <dunnart:method private="no" name="preferenced" return_type="boolean">
+        <dunnart:parameter name="subject" type="Subject"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="hasClash" return_type="boolean">
+        <dunnart:parameter name="day" type="String"/>
+        <dunnart:parameter name="startTime" type="int"/>
+        <dunnart:parameter name="endTime" type="int"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="addLabTuteTaken" return_type="">
+        <dunnart:parameter name="type" type="String"/>
+        <dunnart:parameter name="labTute" type="LabTute"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="addToHoursOfTeaching" return_type="">
+        <dunnart:parameter name="amount" type="int"/>
+      </dunnart:method>
+      <dunnart:method private="yes" name="Applicant" return_type=""/>
+    </rect>
+  </g>
+</svg>

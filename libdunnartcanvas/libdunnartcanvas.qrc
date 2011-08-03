@@ -1,0 +1,38 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resources/DejaVuSans.ttf</file>
+        <file>resources/nuvola_icons/editcopy.png</file>
+        <file>resources/nuvola_icons/editcut.png</file>
+        <file>resources/nuvola_icons/editpaste.png</file>
+        <file>resources/nuvola_icons/redo.png</file>
+        <file>resources/nuvola_icons/undo.png</file>
+        <file>resources/nuvola_icons/kfig.png</file>
+        <file>resources/images/flowlayout.png</file>
+        <file>resources/images/layeredlayout.png</file>
+        <file>resources/images/organiclayout.png</file>
+        <file>resources/images/layout.png</file>
+        <file>resources/images/align1.png</file>
+        <file>resources/images/align2.png</file>
+        <file>resources/images/align3.png</file>
+        <file>resources/images/align4.png</file>
+        <file>resources/images/align5.png</file>
+        <file>resources/images/align6.png</file>
+        <file>resources/images/dist1.png</file>
+        <file>resources/images/dist2.png</file>
+        <file>resources/images/dist3.png</file>
+        <file>resources/images/dist4.png</file>
+        <file>resources/images/dist5.png</file>
+        <file>resources/images/dist6.png</file>
+        <file>resources/images/horizontalsep.png</file>
+        <file>resources/images/verticalsep.png</file>
+        <file>resources/images/bringtop.png</file>
+        <file>resources/images/bringbot.png</file>
+        <file>resources/images/locklayout.png</file>
+        <file>resources/images/branched_templ_horiz.png</file>
+        <file>resources/images/branched_templ_vert.png</file>
+        <file>resources/images/cycle_templ.png</file>
+        <file>resources/images/linear_templ_horiz.png</file>
+        <file>resources/images/linear_templ_vert.png</file>
+        <file>resources/images/pushpin.svg</file>
+    </qresource>
+</RCC>

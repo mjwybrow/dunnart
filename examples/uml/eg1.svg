@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Created with Dunnart (http://www.csse.monash.edu.au/~mwybrow/dunnart/)-->
+<svg xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:dunnart="http://www.csse.monash.edu.au/~mwybrow/dunnart.dtd" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" width="484.000000px" height="646.000000px" viewBox="190.000000 18.000000 484.000000 646.000000">
+  <dunnart:options useMultiway="1" instantFeedback="1" newConnType="53" orientation="0" graphMode="0" layoutMode="0" nonOverlapConstraints="0" defaultIdealConnectorLength="1.000000"/>
+  <sodipodi:namedview showguides="false" guidetolerance="5.0" guidecolor="#000000ff" guideopacity="0.25" bordercolor="#000000" borderopacity="0.5" width="484.000000px" height="646.000000px"/>
+  <style type="text/css">.shape   { stroke:black; stroke-width:1px; fill:#f0f0d2; } .connector { fill:none; stroke:black; stroke-width:1px; stroke-linecap:butt; stroke-linejoin:miter; stroke-opacity:1; } .cluster { fill:#60cdf3; fill-opacity:0.33333333; } .tLabel { text-anchor:middle; text-align:center; } .tsLabel { font-size:11px; font-style:normal; font-weight:normal; fill:black; fill-opacity:1; stroke:none; font-family:DejaVu Sans; } .frLabel { font-size:11px; font-style:normal; font-weight:normal; fill:black; fill-opacity:1; stroke:none; stroke-width:1px; stroke-linecap:butt; stroke-linejoin:miter; stroke-opacity:1; font-family:DejaVu Sans; font-stretch:normal; font-variant:normal; text-anchor:middle; text-align:center; progression-align:center; writing-mode:lr; line-height:125%; } </style>
+  <defs>
+    <marker inkscape:stockid="ConnArrowEnd" orient="auto" refX="7.5" refY="0.0" id="ConnArrowEnd" style="overflow:visible;">
+      <path d="M 0.0,0.0 L 1.0,-5.0 L -12.5,0.0 L 1.0,5.0 L 0.0,0.0 z" style="fill-rule:evenodd; stroke:#000000; stroke-width:1px; marker-start:none;" transform="scale(0.6) rotate(180)"/>
+    </marker>
+  </defs>
+  <path id="10" class="connector" dunnart:idealLength=",109.297070" dunnart:srcID="1" dunnart:srcFlags="544" dunnart:srcX="398" dunnart:srcY="106" dunnart:dstID="2" dunnart:dstFlags="544" dunnart:dstX="455" dunnart:dstY="307" dunnart:directed="0" d="M 247.000000,51.000000 L 304.000000,252.000000 " dunnart:ArrowType="0" dunnart:type="connAvoidPoly"/>
+  <path id="11" class="connector" dunnart:idealLength=",146.541361" dunnart:srcID="3" dunnart:srcFlags="544" dunnart:srcX="683" dunnart:srcY="179" dunnart:dstID="2" dunnart:dstFlags="544" dunnart:dstX="455" dunnart:dstY="307" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 532.000000,124.000000 L 334.000000,235.000000 " dunnart:ArrowType="1" dunnart:type="connAvoidPoly"/>
+  <path id="12" class="connector" dunnart:idealLength=",150.815843" dunnart:srcID="4" dunnart:srcFlags="544" dunnart:srcX="689" dunnart:srcY="254" dunnart:dstID="2" dunnart:dstFlags="544" dunnart:dstX="455" dunnart:dstY="307" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 538.000000,199.000000 L 334.000000,245.000000 " dunnart:ArrowType="1" dunnart:type="connAvoidPoly"/>
+  <path id="13" class="connector" dunnart:idealLength=",149.515607" dunnart:srcID="5" dunnart:srcFlags="544" dunnart:srcX="725" dunnart:srcY="332" dunnart:dstID="2" dunnart:dstFlags="544" dunnart:dstX="455" dunnart:dstY="307" dunnart:directed="1" style="marker-end:url(#ConnArrowEnd);" d="M 574.000000,277.000000 L 334.000000,255.000000 " dunnart:ArrowType="1" dunnart:type="connAvoidPoly"/>
+  <path id="14" class="connector" dunnart:idealLength=",108.027756" dunnart:srcID="2" dunnart:srcFlags="544" dunnart:srcX="455" dunnart:srcY="307" dunnart:dstID="9" dunnart:dstFlags="544" dunnart:dstX="477" dunnart:dstY="603" dunnart:directed="0" d="M 304.000000,252.000000 L 326.000000,548.000000 " dunnart:ArrowType="0" dunnart:type="connAvoidPoly"/>
+  <path id="15" class="connector" dunnart:idealLength=",112.951940" dunnart:srcID="6" dunnart:srcFlags="544" dunnart:srcX="402" dunnart:srcY="466" dunnart:dstID="9" dunnart:dstFlags="544" dunnart:dstX="477" dunnart:dstY="603" dunnart:directed="0" d="M 251.000000,411.000000 L 326.000000,548.000000 " dunnart:ArrowType="0" dunnart:type="connAvoidPoly"/>
+  <path id="17" class="connector" dunnart:idealLength=",161.221073" dunnart:srcID="8" dunnart:srcFlags="544" dunnart:srcX="709" dunnart:srcY="549" dunnart:dstID="9" dunnart:dstFlags="544" dunnart:dstX="477" dunnart:dstY="603" dunnart:directed="0" d="M 558.000000,494.000000 L 326.000000,548.000000 " dunnart:ArrowType="0" dunnart:type="connAvoidPoly"/>
+  <path id="18" class="connector" dunnart:idealLength=",137.677791" dunnart:srcID="7" dunnart:srcFlags="544" dunnart:srcX="684" dunnart:srcY="461" dunnart:dstID="2" dunnart:dstFlags="544" dunnart:dstX="455" dunnart:dstY="307" dunnart:directed="0" d="M 533.000000,406.000000 L 304.000000,252.000000 " dunnart:ArrowType="0" dunnart:type="connAvoidPoly"/>
+  <g>
+    <rect width="64" height="38" x="216" y="33" id="1" class="shape" dunnart:label="" dunnart:width="70" dunnart:height="44" dunnart:xPos="213" dunnart:yPos="30" dunnart:type="umlClass">
+      <dunnart:class_name>Customer</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>95</dunnart:attr_section_height>
+      <dunnart:method_section_height>179</dunnart:method_section_height>
+      <dunnart:attribute private="yes" name="customerID" type="int"/>
+      <dunnart:attribute private="yes" name="firstName" type="String"/>
+      <dunnart:attribute private="yes" name="lastName" type="String"/>
+      <dunnart:attribute private="yes" name="birthDate" type="Date"/>
+      <dunnart:attribute private="yes" name="emailAddress" type="String"/>
+      <dunnart:attribute private="yes" name="telephoneNumber" type="int"/>
+      <dunnart:attribute private="no" name="maximumAccount" type="int"/>
+      <dunnart:method private="no" name="Customer" return_type=""/>
+      <dunnart:method private="no" name="Customer" return_type="">
+        <dunnart:parameter name="customerID" type="int"/>
+        <dunnart:parameter name="firstName" type="String"/>
+        <dunnart:parameter name="lastName" type="String"/>
+        <dunnart:parameter name="birthDate" type="Date"/>
+        <dunnart:parameter name="emailAddress" type="String"/>
+        <dunnart:parameter name="telephoneNumber" type="int"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="getCustomerID" return_type="int"/>
+      <dunnart:method private="no" name="getFirstName" return_type="String"/>
+      <dunnart:method private="no" name="getLastName" return_type="String"/>
+      <dunnart:method private="no" name="getBirthDate" return_type="Date"/>
+      <dunnart:method private="no" name="getEmailAddress" return_type="String"/>
+      <dunnart:method private="no" name="getTelephoneNumber" return_type="int"/>
+      <dunnart:method private="no" name="setCustomerID" return_type="void">
+        <dunnart:parameter name="customerID" type="int"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="setFirstName" return_type="void">
+        <dunnart:parameter name="firstName" type="String"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="setLastName" return_type="void">
+        <dunnart:parameter name="lastName" type="String"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="setBirthDate" return_type="void">
+        <dunnart:parameter name="birthDate" type="Date"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="setEmailAddress" return_type="void">
+        <dunnart:parameter name="emailAddress" type="String"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="setTelephoneNumber" return_type="void">
+        <dunnart:parameter name="telephoneNumber" type="int"/>
+      </dunnart:method>
+    </rect>
+  </g>
+  <g>
+    <rect width="58" height="38" x="276" y="234" id="2" class="shape" dunnart:label="" dunnart:width="64" dunnart:height="44" dunnart:xPos="273" dunnart:yPos="231" dunnart:type="umlClass">
+      <dunnart:class_name>Account</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>107</dunnart:attr_section_height>
+      <dunnart:method_section_height>227</dunnart:method_section_height>
+      <dunnart:attribute private="yes" name="accountNumber" type="int"/>
+      <dunnart:attribute private="yes" name="accountBalance" type="double"/>
+      <dunnart:attribute private="yes" name="accountOwner" type="Customer[]"/>
+      <dunnart:attribute private="yes" name="transactionHistory" type="Transaction[][]"/>
+      <dunnart:attribute private="yes" name="openeingBalance" type="double"/>
+      <dunnart:attribute private="yes" name="status" type="char"/>
+      <dunnart:attribute private="yes" name="indexOfTransaction" type="int"/>
+      <dunnart:attribute private="no" name="maximumAccountOwner" type="int"/>
+      <dunnart:method private="no" name="Account" return_type="void"/>
+      <dunnart:method private="no" name="deposit" return_type="void"/>
+      <dunnart:method private="no" name="withdraw" return_type="void"/>
+      <dunnart:method private="no" name="transaction" return_type="void">
+        <dunnart:parameter name="accountNumber" type="int"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="getAccountNumber" return_type="int"/>
+      <dunnart:method private="no" name="getAccountBalance" return_type="double"/>
+      <dunnart:method private="no" name="getAccountOwner" return_type="Customer[]"/>
+      <dunnart:method private="no" name="getTransactionHistory" return_type="Transaction[][]"/>
+      <dunnart:method private="no" name="getOpeningBalance" return_type="double"/>
+      <dunnart:method private="no" name="getStatus" return_type="char"/>
+      <dunnart:method private="no" name="getIndexOfTransaction" return_type="int"/>
+      <dunnart:method private="no" name="setAccountNumber" return_type="void">
+        <dunnart:parameter name="accountNumber" type="int"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="setAccountBalance" return_type="void">
+        <dunnart:parameter name="accountBalance" type="double"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="setAccountOwner" return_type="void">
+        <dunnart:parameter name="accountOwner" type="Customer[]"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="setTransactionHistory" return_type="void">
+        <dunnart:parameter name="transactionHistory" type="Transaction[][]"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="setOpeningBalance" return_type="void">
+        <dunnart:parameter name="amount" type="double"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="setStatus" return_type="void">
+        <dunnart:parameter name="status" type="char"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="setIndexOfTransaction" return_type="void">
+        <dunnart:parameter name="indexOfTransaction" type="int"/>
+      </dunnart:method>
+    </rect>
+  </g>
+  <g>
+    <rect width="86" height="38" x="490" y="106" id="3" class="shape" dunnart:label="" dunnart:width="92" dunnart:height="44" dunnart:xPos="487" dunnart:yPos="103" dunnart:type="umlClass">
+      <dunnart:class_name>LoanAccount</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>71</dunnart:attr_section_height>
+      <dunnart:method_section_height>179</dunnart:method_section_height>
+      <dunnart:attribute private="yes" name="minimumLoanAmount" type="double"/>
+      <dunnart:attribute private="yes" name="openingLoanAmount" type="double"/>
+      <dunnart:attribute private="yes" name="loanAmountBalance" type="double"/>
+      <dunnart:attribute private="yes" name="fixedInterestRate" type="double"/>
+      <dunnart:attribute private="yes" name="loanRepaymentAmount" type="double"/>
+      <dunnart:method private="no" name="LoanAccount" return_type=""/>
+      <dunnart:method private="no" name="LoanAccount" return_type="">
+        <dunnart:parameter name="accountNumber" type="int"/>
+        <dunnart:parameter name="loanOpeningBalance" type="double"/>
+        <dunnart:parameter name="interestRate" type="double"/>
+        <dunnart:parameter name="numberOfYear" type="int"/>
+        <dunnart:parameter name="accountOwner" type="customerI[]"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="deposit" return_type="void">
+        <dunnart:parameter name="accountNumber" type="int"/>
+        <dunnart:parameter name="amount" type="double"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="getMinimumLoanAmount" return_type="double"/>
+      <dunnart:method private="no" name="getOpeningLoanAmount" return_type="double"/>
+      <dunnart:method private="no" name="getLoanAmountBalance" return_type="double"/>
+      <dunnart:method private="no" name="getFixedInterestRate" return_type="double"/>
+      <dunnart:method private="no" name="getLoanRepaymentAmount" return_type="double"/>
+      <dunnart:method private="no" name="setMinimumLoanAmount" return_type="void">
+        <dunnart:parameter name="minimumLoanAmount" type="double"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="setOpeningLoanAmount" return_type="void">
+        <dunnart:parameter name="openingLoanAmount" type="double"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="setLoanAmountBalance" return_type="void">
+        <dunnart:parameter name="loanAmountBalance" type="doubel"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="setFixedInterestRate" return_type="void">
+        <dunnart:parameter name="fixedInterestRate" type="double"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="setLoanRepaymentAmount" return_type="void">
+        <dunnart:parameter name="loanRepaymentAmount" type="double"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="checkLoanAmountBalance" return_type="boolean">
+        <dunnart:parameter name="repaymentAmount" type="double"/>
+      </dunnart:method>
+    </rect>
+  </g>
+  <g>
+    <rect width="100" height="38" x="489" y="181" id="4" class="shape" dunnart:label="" dunnart:width="106" dunnart:height="44" dunnart:xPos="486" dunnart:yPos="178" dunnart:type="umlClass">
+      <dunnart:class_name>CreditAccount</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>47</dunnart:attr_section_height>
+      <dunnart:method_section_height>95</dunnart:method_section_height>
+      <dunnart:attribute private="yes" name="limitAmount" type="double"/>
+      <dunnart:attribute private="no" name="creditLimit" type="double"/>
+      <dunnart:attribute private="no" name="minimumCreditAge" type="int"/>
+      <dunnart:method private="no" name="CreditAccount" return_type=""/>
+      <dunnart:method private="no" name="creditAccount" return_type="">
+        <dunnart:parameter name="accountNumber" type="int"/>
+        <dunnart:parameter name="limitAmount" type="double"/>
+        <dunnart:parameter name="accountOwner" type="Customer[]"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="deposit" return_type="void">
+        <dunnart:parameter name="accoutnNumber" type="int"/>
+        <dunnart:parameter name="amount" type="double"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="withdraw" return_type="void">
+        <dunnart:parameter name="accountNumber" type="int"/>
+        <dunnart:parameter name="amount" type="double"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="getLimitAmount" return_type="double"/>
+      <dunnart:method private="no" name="setLimitAmount" return_type="void">
+        <dunnart:parameter name="limitAmount" type="double"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="checkAvailableBalance" return_type="boolean">
+        <dunnart:parameter name="withdrawAmount" type="double"/>
+      </dunnart:method>
+    </rect>
+  </g>
+  <g>
+    <rect width="100" height="38" x="525" y="259" id="5" class="shape" dunnart:label="" dunnart:width="106" dunnart:height="44" dunnart:xPos="522" dunnart:yPos="256" dunnart:type="umlClass">
+      <dunnart:class_name>SavingAccount</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>23</dunnart:attr_section_height>
+      <dunnart:method_section_height>71</dunnart:method_section_height>
+      <dunnart:attribute private="no" name="minimumBalance" type="double"/>
+      <dunnart:method private="no" name="SavingAccount" return_type=""/>
+      <dunnart:method private="no" name="SavingAccount" return_type="">
+        <dunnart:parameter name="accountNumber" type="int"/>
+        <dunnart:parameter name="openingBalance" type="double"/>
+        <dunnart:parameter name="accountOwner" type="Customer[]"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="deposit" return_type="void">
+        <dunnart:parameter name="accountNumber" type="int"/>
+        <dunnart:parameter name="amount" type="double"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="withdraw" return_type="void">
+        <dunnart:parameter name="accountNumber" type="int"/>
+        <dunnart:parameter name="amount" type="double"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="checkAvailableBalance" return_type="boolean">
+        <dunnart:parameter name="withdrawAmount" type="double"/>
+      </dunnart:method>
+    </rect>
+  </g>
+  <g>
+    <rect width="58" height="38" x="223" y="393" id="6" class="shape" dunnart:label="" dunnart:width="64" dunnart:height="44" dunnart:xPos="220" dunnart:yPos="390" dunnart:type="umlClass">
+      <dunnart:class_name>BankSys</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>23</dunnart:attr_section_height>
+      <dunnart:method_section_height>23</dunnart:method_section_height>
+      <dunnart:method private="no" name="main" return_type="void"/>
+    </rect>
+  </g>
+  <g>
+    <rect width="86" height="38" x="491" y="388" id="7" class="shape" dunnart:label="" dunnart:width="92" dunnart:height="44" dunnart:xPos="488" dunnart:yPos="385" dunnart:type="umlClass">
+      <dunnart:class_name>Transaction</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>47</dunnart:attr_section_height>
+      <dunnart:method_section_height>83</dunnart:method_section_height>
+      <dunnart:attribute private="yes" name="transactionType" type="String"/>
+      <dunnart:attribute private="yes" name="amount" type="double"/>
+      <dunnart:attribute private="yes" name="balance" type="double"/>
+      <dunnart:method private="no" name="getTransactionType" return_type="String"/>
+      <dunnart:method private="no" name="getAmount" return_type="double"/>
+      <dunnart:method private="no" name="getBalance" return_type="double"/>
+      <dunnart:method private="no" name="setTransactionType" return_type="void">
+        <dunnart:parameter name="transactionType" type="String"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="setAmount" return_type="void">
+        <dunnart:parameter name="amount" type="double"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="setBalance" return_type="void">
+        <dunnart:parameter name="balance" type="double"/>
+      </dunnart:method>
+    </rect>
+  </g>
+  <g>
+    <rect width="120" height="38" x="499" y="476" id="8" class="shape" dunnart:label="" dunnart:width="126" dunnart:height="44" dunnart:xPos="496" dunnart:yPos="473" dunnart:type="umlClass">
+      <dunnart:class_name>CommandException</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>23</dunnart:attr_section_height>
+      <dunnart:method_section_height>35</dunnart:method_section_height>
+      <dunnart:method private="no" name="CommandException" return_type=""/>
+      <dunnart:method private="no" name="CommandException" return_type="">
+        <dunnart:parameter name="message" type="String"/>
+      </dunnart:method>
+    </rect>
+  </g>
+  <g>
+    <rect width="58" height="38" x="298" y="530" id="9" class="shape" dunnart:label="" dunnart:width="64" dunnart:height="44" dunnart:xPos="295" dunnart:yPos="527" dunnart:type="umlClass">
+      <dunnart:class_name>Command</dunnart:class_name>
+      <dunnart:mode>4</dunnart:mode>
+      <dunnart:attr_section_height>-103</dunnart:attr_section_height>
+      <dunnart:method_section_height>124</dunnart:method_section_height>
+      <dunnart:attribute private="yes" name="inputCommand" type="String"/>
+      <dunnart:attribute private="yes" name="indexOfAccount" type="int"/>
+      <dunnart:attribute private="yes" name="indexofCustomer" type="int"/>
+      <dunnart:method private="no" name="readInput" return_type="void"/>
+      <dunnart:method private="no" name="searchAccount" return_type="int">
+        <dunnart:parameter name="accountNumber" type="int"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="searchCustomer" return_type="int">
+        <dunnart:parameter name="customerID" type="int"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="checkAccountStatus" return_type="boolean">
+        <dunnart:parameter name="accountNumber" type="int"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="checkExistingAccount" return_type="boolean">
+        <dunnart:parameter name="accountNumber" type="int"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="checkExistingCustomer" return_type="boolean">
+        <dunnart:parameter name="customerID" type="int"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="checkNumberOfAccountOwn" return_type="boolean">
+        <dunnart:parameter name="customerID" type="int"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="getInputCommand" return_type="String"/>
+      <dunnart:method private="no" name="getIndexOfAccount" return_type="int"/>
+      <dunnart:method private="no" name="getIndexOfCustomer" return_type="int"/>
+      <dunnart:method private="no" name="setInputCommand" return_type="void">
+        <dunnart:parameter name="inputCommand" type="String"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="setIndexOfAccount" return_type="void">
+        <dunnart:parameter name="indexOfAccount" type="int"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="setIndexOfCustomer" return_type="void">
+        <dunnart:parameter name="indexOfCustomer" type="int"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="getCustomerObject" return_type="Customer[]">
+        <dunnart:parameter name="customerID" type="int"/>
+        <dunnart:parameter name="customerObject" type="Customer[]"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="newCustomer" return_type="void">
+        <dunnart:parameter name="commandFactory" type="StringTokenizer"/>
+        <dunnart:parameter name="customerObject" type="Customer[]"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="openSavingAccount" return_type="void">
+        <dunnart:parameter name="commandFactory" type="StringTokenizer"/>
+        <dunnart:parameter name="accountObject" type="Account[]"/>
+        <dunnart:parameter name="savingAccountObject" type="SavingAccount"/>
+        <dunnart:parameter name="customerObject" type="Customer[]"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="openCreditAccount" return_type="void">
+        <dunnart:parameter name="commandFactory" type="StringTokenizer"/>
+        <dunnart:parameter name="accountObject" type="Account[]"/>
+        <dunnart:parameter name="creditAccountObject" type="CreditAccount"/>
+        <dunnart:parameter name="customerObject" type="Customer[]"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="closeAccount" return_type="void">
+        <dunnart:parameter name="commandFactory" type="StringTokenizer"/>
+        <dunnart:parameter name="accountObject" type="Account[]"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="depositAccount" return_type="void">
+        <dunnart:parameter name="commandFactory" type="StringTokenizer"/>
+        <dunnart:parameter name="accountObject" type="Account[]"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="withdrawAccount" return_type="void">
+        <dunnart:parameter name="commandFactory" type="StringTokenizer"/>
+        <dunnart:parameter name="accountObject" type="Account[]"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="accountTransaction" return_type="void">
+        <dunnart:parameter name="commandFactory" type="StringTokenizer"/>
+        <dunnart:parameter name="accountObject" type="Account[]"/>
+      </dunnart:method>
+      <dunnart:method private="no" name="accountBalance" return_type="void">
+        <dunnart:parameter name="commandFactory" type="StringTokenizer"/>
+        <dunnart:parameter name="accountObject" type="Account[]"/>
+      </dunnart:method>
+    </rect>
+  </g>
+  <text id="text19" class="tLabel" x="488.000000" y="360.000000">
+    <tspan id="tspan19n0" class="tsLabel" x="488.000000" y="360.000000" sodipodi:role="line">0..n</tspan>
+  </text>
+  <text id="text20" class="tLabel" x="365.000000" y="277.000000">
+    <tspan id="tspan20n0" class="tsLabel" x="365.000000" y="277.000000" sodipodi:role="line">1</tspan>
+  </text>
+  <text id="text22" class="tLabel" x="466.000000" y="390.000000">
+    <tspan id="tspan22n0" class="tsLabel" x="466.000000" y="390.000000" sodipodi:role="line">Has</tspan>
+  </text>
+</svg>

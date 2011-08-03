@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Created with Dunnart (http://www.csse.monash.edu.au/~mwybrow/dunnart/)-->
+<svg xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:dunnart="http://www.csse.monash.edu.au/~mwybrow/dunnart.dtd" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="18 30.5 828 621">
+  <dunnart:options useMultiway="1" instantFeedback="1" newConnType="53" orientation="0" graphMode="0" automaticGraphLayout="0" layoutMethod="0" layoutMode="0" layoutBeautify="1" avoidBuffer="0" downwardSeparation="0.5" pageBoundaryConstraints="0" defaultIdealConnectorLength="1" penaliseCrossings="0" colourInterferingConnectors="0" rubberBandRouting="0" interferingConnectorColours=""/>
+  <sodipodi:namedview showguides="false" guidetolerance="5.0" guidecolor="#000000ff" guideopacity="0.25" bordercolor="#000000" borderopacity="0.5" width="828px" height="621px"/>
+  <style type="text/css">.shape   { stroke:black; stroke-width:1px; fill:#f0f0d2; } .connector { fill:none; stroke:black; stroke-width:1px; stroke-linecap:butt; stroke-linejoin:miter; stroke-opacity:1; } .cluster { fill:#60cdf3; fill-opacity:0.33333333; } .tLabel { text-anchor:middle; text-align:center; } .tsLabel { font-size:11px; font-style:normal; font-weight:normal; fill:black; fill-opacity:1; stroke:none; font-family:DejaVu Sans; } .frLabel { font-size:11px; font-style:normal; font-weight:normal; fill:black; fill-opacity:1; stroke:none; stroke-width:1px; stroke-linecap:butt; stroke-linejoin:miter; stroke-opacity:1; font-family:DejaVu Sans; font-stretch:normal; font-variant:normal; text-anchor:middle; text-align:center; progression-align:center; writing-mode:lr; line-height:125%; } </style>
+  <defs>
+    <marker inkscape:stockid="ConnArrowEnd" orient="auto" refX="7.5" refY="0.0" id="ConnArrowEnd" style="overflow:visible;">
+      <path d="M 0.0,0.0 L 1.0,-5.0 L -12.5,0.0 L 1.0,5.0 L 0.0,0.0 z" style="fill-rule:evenodd; stroke:black; stroke-width:1px; marker-start:none;" transform="scale(0.6) rotate(180)"/>
+    </marker>
+    <marker inkscape:stockid="ConnArrowEndNormal" orient="auto" refX="7.5" refY="0.0" id="ConnArrowEndNormal" style="overflow:visible;">
+      <path d="M 1.0,-7.0 L -12.5,0.0 M 1.0,7.0 L -12.5,0.0 z" style="fill-rule:evenodd; fill:none; stroke:black; stroke-width:1px; marker-start:none;" transform="scale(0.6) rotate(180)"/>
+    </marker>
+    <marker inkscape:stockid="ConnArrowEndInheritance" orient="auto" refX="7.5" refY="0.0" id="ConnArrowEndInheritance" style="overflow:visible;">
+      <path d="M 0.0,0.0 L 1.0,-7.0 L -12.5,0.0 L 1.0,7.0 L 0.0,0.0 z" style="fill-rule:evenodd; fill:white; stroke:black; stroke-width:1px; marker-start:none;" transform="scale(0.6) rotate(180)"/>
+    </marker>
+    <marker inkscape:stockid="ConnArrowEndAggregation" orient="auto" refX="7.5" refY="0.0" id="ConnArrowEndAggregation" style="overflow:visible;">
+      <path d="M 6.0,0.0 L -3.25,-6.0 L -12.5,0.0 L -3.25,6.0 L 6.0,0.0 z" style="fill-rule:evenodd; fill:white; stroke:black; stroke-width:1px; marker-start:none;" transform="scale(0.6) rotate(180)"/>
+    </marker>
+    <marker inkscape:stockid="ConnArrowEndComposition" orient="auto" refX="7.5" refY="0.0" id="ConnArrowEndComposition" style="overflow:visible;">
+      <path d="M 6.0,0.0 L -3.25,-6.0 L -12.5,0.0 L -3.25,6.0 L 6.0,0.0 z" style="fill-rule:evenodd; fill:black; stroke:black; stroke-width:1px; marker-start:none;" transform="scale(0.6) rotate(180)"/>
+    </marker>
+  </defs>
+  <path dunnart:type="connAvoidPoly" id="3" dunnart:directed="1" dunnart:libavoidPath="2 159 77.0014 -2147483645 8 155 190 3 8 " dunnart:ArrowType="5" dunnart:srcID="1" dunnart:srcFlags="544" dunnart:srcX="310" dunnart:srcY="132.001" dunnart:dstID="2" dunnart:dstFlags="544" dunnart:dstX="306" dunnart:dstY="245" class="connector" d="M 159,77 L 155,185 " style="marker-end:url(#ConnArrowEnd);"/>
+  <path dunnart:type="connAvoidPoly" id="5" dunnart:directed="0" dunnart:libavoidPath="2 101 235 -2147483643 8 155 190 5 8 " dunnart:ArrowType="4" dunnart:srcID="4" dunnart:srcFlags="544" dunnart:srcX="252" dunnart:srcY="290" dunnart:dstID="2" dunnart:dstFlags="544" dunnart:dstX="306" dunnart:dstY="245" class="connector" d="M 101,235 L 155,190 "/>
+  <path dunnart:type="connAvoidPoly" id="7" dunnart:directed="1" dunnart:libavoidPath="2 155 190 -2147483641 8 188 236 7 8 " dunnart:ArrowType="4" dunnart:srcID="2" dunnart:srcFlags="544" dunnart:srcX="306" dunnart:srcY="245" dunnart:dstID="6" dunnart:dstFlags="544" dunnart:dstX="339" dunnart:dstY="291" class="connector" d="M 155,190 L 172,214 " style="marker-end:url(#ConnArrowEnd);"/>
+  <path dunnart:type="connAvoidPoly" id="9" dunnart:directed="0" dunnart:libavoidPath="2 46.0014 188 -2147483639 8 155 190 9 8 " dunnart:srcID="60" dunnart:srcFlags="544" dunnart:srcX="197.001" dunnart:srcY="243" dunnart:dstID="2" dunnart:dstFlags="544" dunnart:dstX="306" dunnart:dstY="245" class="connector" d="M 46,188 L 155,190 "/>
+  <path dunnart:type="connAvoidPoly" id="17" dunnart:directed="1" dunnart:libavoidPath="2 155 190 -2147483631 8 239 185 17 8 " dunnart:ArrowType="4" dunnart:srcID="2" dunnart:srcFlags="544" dunnart:srcX="306" dunnart:srcY="245" dunnart:dstID="61" dunnart:dstFlags="544" dunnart:dstX="390" dunnart:dstY="240" class="connector" d="M 155,190 L 212,186 " style="marker-end:url(#ConnArrowEnd);"/>
+  <path dunnart:type="connAvoidPoly" id="65" dunnart:directed="0" dunnart:libavoidPath="2 308 182 -2147483583 8 239 185 65 8 " dunnart:srcID="66" dunnart:srcFlags="544" dunnart:srcX="459" dunnart:srcY="237" dunnart:dstID="61" dunnart:dstFlags="544" dunnart:dstX="390" dunnart:dstY="240" class="connector" d="M 308,182 L 239,185 "/>
+  <path dunnart:type="connAvoidPoly" id="68" dunnart:directed="1" dunnart:libavoidPath="2 312 81 -2147483580 8 308 182 68 8 " dunnart:ArrowType="5" dunnart:srcID="67" dunnart:srcFlags="544" dunnart:srcX="463" dunnart:srcY="136" dunnart:dstID="66" dunnart:dstFlags="544" dunnart:dstX="459" dunnart:dstY="237" class="connector" d="M 312,81 L 308,177 " style="marker-end:url(#ConnArrowEnd);"/>
+  <path dunnart:type="connAvoidPoly" id="69" dunnart:directed="1" dunnart:libavoidPath="2 308 182 -2147483579 8 381 176 69 8 " dunnart:ArrowType="4" dunnart:srcID="66" dunnart:srcFlags="544" dunnart:srcX="459" dunnart:srcY="237" dunnart:dstID="62" dunnart:dstFlags="544" dunnart:dstX="532" dunnart:dstY="231" class="connector" d="M 308,182 L 354,178 " style="marker-end:url(#ConnArrowEnd);"/>
+  <path dunnart:type="connAvoidPoly" id="74" dunnart:directed="0" dunnart:libavoidPath="2 381 176 -2147483574 8 482 182 74 8 " dunnart:srcID="62" dunnart:srcFlags="544" dunnart:srcX="532" dunnart:srcY="231" dunnart:dstID="72" dunnart:dstFlags="544" dunnart:dstX="633" dunnart:dstY="237" class="connector" d="M 381,176 L 482,182 "/>
+  <path dunnart:type="connAvoidPoly" id="75" dunnart:directed="1" dunnart:libavoidPath="2 482 182 -2147483573 8 517 232 75 8 " dunnart:ArrowType="4" dunnart:srcID="72" dunnart:srcFlags="544" dunnart:srcX="633" dunnart:srcY="237" dunnart:dstID="70" dunnart:dstFlags="544" dunnart:dstX="668" dunnart:dstY="287" class="connector" d="M 482,182 L 501,210 " style="marker-end:url(#ConnArrowEnd);"/>
+  <path dunnart:type="connAvoidPoly" id="76" dunnart:directed="0" dunnart:libavoidPath="2 428 234 -2147483572 8 482 182 76 8 " dunnart:ArrowType="4" dunnart:srcID="71" dunnart:srcFlags="544" dunnart:srcX="579" dunnart:srcY="289" dunnart:dstID="72" dunnart:dstFlags="544" dunnart:dstX="633" dunnart:dstY="237" class="connector" d="M 428,234 L 482,182 "/>
+  <path dunnart:type="connAvoidPoly" id="77" dunnart:directed="1" dunnart:libavoidPath="2 483 79 -2147483571 8 482 182 77 8 " dunnart:ArrowType="5" dunnart:srcID="73" dunnart:srcFlags="544" dunnart:srcX="634" dunnart:srcY="134" dunnart:dstID="72" dunnart:dstFlags="544" dunnart:dstX="633" dunnart:dstY="237" class="connector" d="M 483,79 L 482,177 " style="marker-end:url(#ConnArrowEnd);"/>
+  <path dunnart:type="connAvoidPoly" id="78" dunnart:directed="1" dunnart:libavoidPath="2 482 182 -2147483570 8 586 182 78 8 " dunnart:ArrowType="4" dunnart:srcID="72" dunnart:srcFlags="544" dunnart:srcX="633" dunnart:srcY="237" dunnart:dstID="63" dunnart:dstFlags="544" dunnart:dstX="737" dunnart:dstY="237" class="connector" d="M 482,182 L 559,182 " style="marker-end:url(#ConnArrowEnd);"/>
+  <path dunnart:type="connAvoidPoly" id="81" dunnart:directed="1" dunnart:libavoidPath="2 699 182 -2147483567 8 784 127 81 8 " dunnart:ArrowType="4" dunnart:srcID="80" dunnart:srcFlags="544" dunnart:srcX="850" dunnart:srcY="237" dunnart:dstID="84" dunnart:dstFlags="544" dunnart:dstX="935" dunnart:dstY="182" class="connector" d="M 699,182 L 757,144 " style="marker-end:url(#ConnArrowEnd);"/>
+  <path dunnart:type="connAvoidPoly" id="82" dunnart:directed="1" dunnart:libavoidPath="2 703 81 -2147483566 8 699 182 82 8 " dunnart:ArrowType="5" dunnart:srcID="79" dunnart:srcFlags="544" dunnart:srcX="854" dunnart:srcY="136" dunnart:dstID="80" dunnart:dstFlags="544" dunnart:dstX="850" dunnart:dstY="237" class="connector" d="M 703,81 L 699,177 " style="marker-end:url(#ConnArrowEnd);"/>
+  <path dunnart:type="connAvoidPoly" id="83" dunnart:directed="0" dunnart:libavoidPath="2 699 182 -2147483565 8 586 182 83 8 " dunnart:srcID="80" dunnart:srcFlags="544" dunnart:srcX="850" dunnart:srcY="237" dunnart:dstID="63" dunnart:dstFlags="544" dunnart:dstX="737" dunnart:dstY="237" class="connector" d="M 699,182 L 586,182 "/>
+  <path dunnart:type="connAvoidPoly" id="87" dunnart:directed="1" dunnart:libavoidPath="2 869.999 187 -2147483561 8 784 190 87 8 " dunnart:ArrowType="5" dunnart:srcID="64" dunnart:srcFlags="544" dunnart:srcX="1021" dunnart:srcY="242" dunnart:dstID="86" dunnart:dstFlags="544" dunnart:dstX="935" dunnart:dstY="245" class="connector" d="M 869,187 L 789,189 " style="marker-end:url(#ConnArrowEnd);"/>
+  <path dunnart:type="connAvoidPoly" id="88" dunnart:directed="1" dunnart:libavoidPath="2 699 182 -2147483560 8 784 253 88 8 " dunnart:ArrowType="4" dunnart:srcID="80" dunnart:srcFlags="544" dunnart:srcX="850" dunnart:srcY="237" dunnart:dstID="85" dunnart:dstFlags="544" dunnart:dstX="935" dunnart:dstY="308" class="connector" d="M 699,182 L 757,230 " style="marker-end:url(#ConnArrowEnd);"/>
+  <path dunnart:type="connAvoidPoly" id="89" dunnart:directed="1" dunnart:libavoidPath="2 784 190 -2147483559 8 784 127 89 8 " dunnart:ArrowType="4" dunnart:srcID="86" dunnart:srcFlags="544" dunnart:srcX="935" dunnart:srcY="245" dunnart:dstID="84" dunnart:dstFlags="544" dunnart:dstX="935" dunnart:dstY="182" class="connector" d="M 784,190 L 784,154 " style="marker-end:url(#ConnArrowEnd);"/>
+  <path dunnart:type="connAvoidPoly" id="90" dunnart:directed="1" dunnart:libavoidPath="2 784 190 -2147483558 8 784 253 90 8 " dunnart:ArrowType="4" dunnart:srcID="86" dunnart:srcFlags="544" dunnart:srcX="935" dunnart:srcY="245" dunnart:dstID="85" dunnart:dstFlags="544" dunnart:dstX="935" dunnart:dstY="308" class="connector" d="M 784,190 L 784,226 " style="marker-end:url(#ConnArrowEnd);"/>
+  <path dunnart:type="connAvoidPoly" id="107" dunnart:directed="1" dunnart:libavoidPath="2 481 517 -2147483541 8 387 513 107 8 " dunnart:ArrowType="4" dunnart:srcID="91" dunnart:srcFlags="544" dunnart:srcX="632" dunnart:srcY="572" dunnart:dstID="100" dunnart:dstFlags="544" dunnart:dstX="538" dunnart:dstY="568" class="connector" d="M 481,517 L 414,514 " style="marker-end:url(#ConnArrowEnd);"/>
+  <path dunnart:type="connAvoidPoly" id="108" dunnart:directed="1" dunnart:libavoidPath="2 481 606.999 -2147483540 8 481 517 108 8 " dunnart:ArrowType="5" dunnart:srcID="92" dunnart:srcFlags="544" dunnart:srcX="632" dunnart:srcY="661.999" dunnart:dstID="91" dunnart:dstFlags="544" dunnart:dstX="632" dunnart:dstY="572" class="connector" d="M 481,606 L 481,522 " style="marker-end:url(#ConnArrowEnd);"/>
+  <path dunnart:type="connAvoidPoly" id="109" dunnart:directed="0" dunnart:libavoidPath="2 633 511 -2147483539 8 766 502 109 8 " dunnart:ArrowType="4" dunnart:srcID="94" dunnart:srcFlags="544" dunnart:srcX="784" dunnart:srcY="566" dunnart:dstID="125" dunnart:dstFlags="544" dunnart:dstX="917" dunnart:dstY="557" class="connector" d="M 633,511 L 766,502 "/>
+  <path dunnart:type="connAvoidPoly" id="110" dunnart:directed="1" dunnart:libavoidPath="2 635 606.999 -2147483538 8 633 511 110 8 " dunnart:ArrowType="5" dunnart:srcID="93" dunnart:srcFlags="544" dunnart:srcX="786" dunnart:srcY="661.999" dunnart:dstID="94" dunnart:dstFlags="544" dunnart:dstX="784" dunnart:dstY="566" class="connector" d="M 635,606 L 633,516 " style="marker-end:url(#ConnArrowEnd);"/>
+  <path dunnart:type="connAvoidPoly" id="111" dunnart:directed="1" dunnart:libavoidPath="2 633 511 -2147483537 8 594 454 111 8 " dunnart:ArrowType="4" dunnart:srcID="94" dunnart:srcFlags="544" dunnart:srcX="784" dunnart:srcY="566" dunnart:dstID="95" dunnart:dstFlags="544" dunnart:dstX="745" dunnart:dstY="509" class="connector" d="M 633,511 L 609,476 " style="marker-end:url(#ConnArrowEnd);"/>
+  <path dunnart:type="connAvoidPoly" id="112" dunnart:directed="0" dunnart:libavoidPath="2 633 511 -2147483536 8 690 456 112 8 " dunnart:ArrowType="4" dunnart:srcID="94" dunnart:srcFlags="544" dunnart:srcX="784" dunnart:srcY="566" dunnart:dstID="96" dunnart:dstFlags="544" dunnart:dstX="841" dunnart:dstY="511" class="connector" d="M 633,511 L 690,456 "/>
+  <path dunnart:type="connAvoidPoly" id="113" dunnart:directed="1" dunnart:libavoidPath="2 633 511 -2147483535 8 543 512 113 8 " dunnart:ArrowType="4" dunnart:srcID="94" dunnart:srcFlags="544" dunnart:srcX="784" dunnart:srcY="566" dunnart:dstID="99" dunnart:dstFlags="544" dunnart:dstX="694" dunnart:dstY="567" class="connector" d="M 633,511 L 570,511 " style="marker-end:url(#ConnArrowEnd);"/>
+  <path dunnart:type="connAvoidPoly" id="114" dunnart:directed="0" dunnart:libavoidPath="2 314 519 -2147483534 8 387 513 114 8 " dunnart:ArrowType="4" dunnart:srcID="98" dunnart:srcFlags="544" dunnart:srcX="465" dunnart:srcY="574" dunnart:dstID="100" dunnart:dstFlags="544" dunnart:dstX="538" dunnart:dstY="568" class="connector" d="M 314,519 L 387,513 "/>
+  <path dunnart:type="connAvoidPoly" id="115" dunnart:directed="1" dunnart:libavoidPath="2 315 605 -2147483533 8 314 519 115 8 " dunnart:ArrowType="5" dunnart:srcID="97" dunnart:srcFlags="544" dunnart:srcX="466" dunnart:srcY="660" dunnart:dstID="98" dunnart:dstFlags="544" dunnart:dstX="465" dunnart:dstY="574" class="connector" d="M 315,605 L 314,524 " style="marker-end:url(#ConnArrowEnd);"/>
+  <path dunnart:type="connAvoidPoly" id="116" dunnart:directed="1" dunnart:libavoidPath="2 314 519 -2147483532 8 246 527 116 8 " dunnart:ArrowType="4" dunnart:srcID="98" dunnart:srcFlags="544" dunnart:srcX="465" dunnart:srcY="574" dunnart:dstID="101" dunnart:dstFlags="544" dunnart:dstX="397" dunnart:dstY="582" class="connector" d="M 314,519 L 273,523 " style="marker-end:url(#ConnArrowEnd);"/>
+  <path dunnart:type="connAvoidPoly" id="117" dunnart:directed="0" dunnart:libavoidPath="2 159 527 -2147483531 8 246 527 117 8 " dunnart:ArrowType="4" dunnart:srcID="105" dunnart:srcFlags="544" dunnart:srcX="310" dunnart:srcY="582" dunnart:dstID="101" dunnart:dstFlags="544" dunnart:dstX="397" dunnart:dstY="582" class="connector" d="M 159,527 L 246,527 "/>
+  <path dunnart:type="connAvoidPoly" id="118" dunnart:directed="1" dunnart:libavoidPath="2 159 527 -2147483530 8 53 525 118 8 " dunnart:ArrowType="4" dunnart:srcID="105" dunnart:srcFlags="544" dunnart:srcX="310" dunnart:srcY="582" dunnart:dstID="102" dunnart:dstFlags="544" dunnart:dstX="204" dunnart:dstY="580" class="connector" d="M 159,527 L 80,525 " style="marker-end:url(#ConnArrowEnd);"/>
+  <path dunnart:type="connAvoidPoly" id="119" dunnart:directed="0" dunnart:libavoidPath="2 159 527 -2147483529 8 191 453 119 8 " dunnart:ArrowType="4" dunnart:srcID="105" dunnart:srcFlags="544" dunnart:srcX="310" dunnart:srcY="582" dunnart:dstID="103" dunnart:dstFlags="544" dunnart:dstX="342" dunnart:dstY="508" class="connector" d="M 159,527 L 191,453 "/>
+  <path dunnart:type="connAvoidPoly" id="120" dunnart:directed="1" dunnart:libavoidPath="2 159 527 -2147483528 8 87 455 120 8 " dunnart:ArrowType="4" dunnart:srcID="105" dunnart:srcFlags="544" dunnart:srcX="310" dunnart:srcY="582" dunnart:dstID="104" dunnart:dstFlags="544" dunnart:dstX="238" dunnart:dstY="510" class="connector" d="M 159,527 L 109,477 " style="marker-end:url(#ConnArrowEnd);"/>
+  <path dunnart:type="connAvoidPoly" id="121" dunnart:directed="1" dunnart:libavoidPath="2 158 606 -2147483527 8 159 527 121 8 " dunnart:ArrowType="5" dunnart:srcID="106" dunnart:srcFlags="544" dunnart:srcX="309" dunnart:srcY="661" dunnart:dstID="105" dunnart:dstFlags="544" dunnart:dstX="310" dunnart:dstY="582" class="connector" d="M 158,606 L 158,532 " style="marker-end:url(#ConnArrowEnd);"/>
+  <path dunnart:type="connAvoidPoly" id="123" dunnart:directed="1" dunnart:libavoidPath="2 314 519 -2147483525 8 275 443 123 8 " dunnart:ArrowType="4" dunnart:srcID="98" dunnart:srcFlags="544" dunnart:srcX="465" dunnart:srcY="574" dunnart:dstID="122" dunnart:dstFlags="544" dunnart:dstX="426" dunnart:dstY="498" class="connector" d="M 314,519 L 288,470 " style="marker-end:url(#ConnArrowEnd);"/>
+  <path dunnart:type="connAvoidPoly" id="124" dunnart:directed="0" dunnart:libavoidPath="2 543 512 -2147483524 8 481 517 124 8 " dunnart:srcID="99" dunnart:srcFlags="544" dunnart:srcX="694" dunnart:srcY="567" dunnart:dstID="91" dunnart:dstFlags="544" dunnart:dstX="632" dunnart:dstY="572" class="connector" d="M 543,512 L 481,517 "/>
+  <path dunnart:type="connAvoidPoly" id="132" dunnart:directed="1" dunnart:libavoidPath="2 779 372 -2147483516 8 766 502 132 8 " dunnart:ArrowType="4" dunnart:srcID="130" dunnart:srcFlags="544" dunnart:srcX="930" dunnart:srcY="427" dunnart:dstID="125" dunnart:dstFlags="544" dunnart:dstX="917" dunnart:dstY="557" class="connector" d="M 779,372 L 768,475 " style="marker-end:url(#ConnArrowEnd);"/>
+  <path dunnart:type="connAvoidPoly" id="133" dunnart:directed="0" dunnart:libavoidPath="2 779 372 -2147483515 8 784 253 133 8 " dunnart:ArrowType="4" dunnart:srcID="130" dunnart:srcFlags="544" dunnart:srcX="930" dunnart:srcY="427" dunnart:dstID="85" dunnart:dstFlags="544" dunnart:dstX="935" dunnart:dstY="308" class="connector" d="M 779,372 L 784,253 "/>
+  <path dunnart:type="connAvoidPoly" id="134" dunnart:directed="1" dunnart:libavoidPath="2 866 369 -2147483514 8 779 372 134 8 " dunnart:ArrowType="5" dunnart:srcID="131" dunnart:srcFlags="544" dunnart:srcX="1017" dunnart:srcY="424" dunnart:dstID="130" dunnart:dstFlags="544" dunnart:dstX="930" dunnart:dstY="427" class="connector" d="M 866,369 L 784,371 " style="marker-end:url(#ConnArrowEnd);"/>
+  <path dunnart:type="connAvoidPoly" id="135" dunnart:directed="0" dunnart:libavoidPath="2 866 283 -2147483513 8 779 372 135 8 " dunnart:srcID="127" dunnart:srcFlags="544" dunnart:srcX="1017" dunnart:srcY="338" dunnart:dstID="130" dunnart:dstFlags="544" dunnart:dstX="930" dunnart:dstY="427" class="connector" d="M 866,283 L 779,372 "/>
+  <path dunnart:type="connAvoidPoly" id="136" dunnart:directed="0" dunnart:libavoidPath="2 705 283 -2147483512 8 779 372 136 8 " dunnart:srcID="126" dunnart:srcFlags="544" dunnart:srcX="856" dunnart:srcY="338" dunnart:dstID="130" dunnart:dstFlags="544" dunnart:dstX="930" dunnart:dstY="427" class="connector" d="M 705,283 L 779,372 "/>
+  <path dunnart:type="connAvoidPoly" id="137" dunnart:directed="1" dunnart:libavoidPath="2 779 372 -2147483511 8 869 440 137 8 " dunnart:ArrowType="4" dunnart:srcID="130" dunnart:srcFlags="544" dunnart:srcX="930" dunnart:srcY="427" dunnart:dstID="128" dunnart:dstFlags="544" dunnart:dstX="1020" dunnart:dstY="495" class="connector" d="M 779,372 L 842,419 " style="marker-end:url(#ConnArrowEnd);"/>
+  <path dunnart:type="connAvoidPoly" id="138" dunnart:directed="1" dunnart:libavoidPath="2 779 372 -2147483510 8 835 495 138 8 " dunnart:ArrowType="4" dunnart:srcID="130" dunnart:srcFlags="544" dunnart:srcX="930" dunnart:srcY="427" dunnart:dstID="129" dunnart:dstFlags="544" dunnart:dstX="986" dunnart:dstY="550" class="connector" d="M 779,372 L 822,468 " style="marker-end:url(#ConnArrowEnd);"/>
+  <rect dunnart:type="flowEndOProc" id="1" dunnart:xPos="116" dunnart:yPos="57" dunnart:width="86" dunnart:height="40" dunnart:label="hexokinase" dunnart:detailLevel="0" dunnart:sbgnShape="1" class="shape" width="80" height="34" x="119" y="60.00139986" rx="17" ry="17"/>
+  <text id="text1" class="tLabel" x="159" y="81.0014">
+    <tspan id="tspan1n0" class="tsLabel" x="159" y="81.0014" sodipodi:role="line">hexokinase</tspan>
+  </text>
+  <rect dunnart:type="rect" id="2" dunnart:xPos="147" dunnart:yPos="182" dunnart:width="16" dunnart:height="16" dunnart:label="" dunnart:detailLevel="0" class="shape" width="10" height="10" x="150" y="185"/>
+  <rect dunnart:type="flowEndOProc" id="4" dunnart:xPos="76" dunnart:yPos="210" dunnart:width="50" dunnart:height="50" dunnart:label="ATP" dunnart:detailLevel="0" dunnart:sbgnShape="1" dunnart:sbgnClone="1" class="shape" width="44" height="44" x="79" y="213" rx="22" ry="22"/>
+  <text id="text4" class="tLabel" x="101" y="239">
+    <tspan id="tspan4n0" class="tsLabel" x="101" y="239" sodipodi:role="line">ATP</tspan>
+  </text>
+  <rect dunnart:type="flowEndOProc" id="6" dunnart:xPos="163" dunnart:yPos="211" dunnart:width="50" dunnart:height="50" dunnart:label="ADP" dunnart:detailLevel="0" dunnart:sbgnShape="1" dunnart:sbgnClone="1" class="shape" width="44" height="44" x="166" y="214" rx="22" ry="22"/>
+  <text id="text6" class="tLabel" x="188" y="240">
+    <tspan id="tspan6n0" class="tsLabel" x="188" y="240" sodipodi:role="line">ADP</tspan>
+  </text>
+  <rect dunnart:type="flowEndOProc" id="60" dunnart:xPos="16" dunnart:yPos="158" dunnart:width="60" dunnart:height="60" dunnart:label="glucose" dunnart:detailLevel="0" dunnart:sbgnShape="1" class="shape" width="54" height="54" x="19.00140026" y="161" rx="27" ry="27"/>
+  <text id="text60" class="tLabel" x="46.0014" y="192">
+    <tspan id="tspan60n0" class="tsLabel" x="46.0014" y="192" sodipodi:role="line">glucose</tspan>
+  </text>
+  <rect dunnart:type="flowEndOProc" id="61" dunnart:xPos="209" dunnart:yPos="155" dunnart:width="60" dunnart:height="60" dunnart:label="glucose 6P" dunnart:detailLevel="0" dunnart:sbgnShape="1" class="shape" width="54" height="54" x="212" y="158" rx="27" ry="27"/>
+  <text id="text61" class="tLabel" x="239" y="182">
+    <tspan id="tspan61n0" class="tsLabel" x="239" y="182" sodipodi:role="line">glucose</tspan>
+    <tspan id="tspan61n1" class="tsLabel" x="239" y="196" sodipodi:role="line">6P</tspan>
+  </text>
+  <rect dunnart:type="flowEndOProc" id="62" dunnart:xPos="351" dunnart:yPos="146" dunnart:width="60" dunnart:height="60" dunnart:label="fructose 6P" dunnart:detailLevel="0" dunnart:sbgnShape="1" class="shape" width="54" height="54" x="354" y="149" rx="27" ry="27"/>
+  <text id="text62" class="tLabel" x="381" y="173">
+    <tspan id="tspan62n0" class="tsLabel" x="381" y="173" sodipodi:role="line">fructose</tspan>
+    <tspan id="tspan62n1" class="tsLabel" x="381" y="187" sodipodi:role="line">6P</tspan>
+  </text>
+  <rect dunnart:type="flowEndOProc" id="63" dunnart:xPos="556" dunnart:yPos="152" dunnart:width="60" dunnart:height="60" dunnart:label="fructose 1.6P" dunnart:detailLevel="0" dunnart:sbgnShape="1" class="shape" width="54" height="54" x="559" y="155" rx="27" ry="27"/>
+  <text id="text63" class="tLabel" x="586" y="179">
+    <tspan id="tspan63n0" class="tsLabel" x="586" y="179" sodipodi:role="line">fructose</tspan>
+    <tspan id="tspan63n1" class="tsLabel" x="586" y="193" sodipodi:role="line">1.6P</tspan>
+  </text>
+  <rect dunnart:type="flowEndOProc" id="64" dunnart:xPos="826" dunnart:yPos="167" dunnart:width="86" dunnart:height="40" dunnart:label="triose-P isomerase" dunnart:detailLevel="0" dunnart:sbgnShape="1" class="shape" width="80" height="34" x="829.9985997" y="170" rx="17" ry="17"/>
+  <text id="text64" class="tLabel" x="869.999" y="184">
+    <tspan id="tspan64n0" class="tsLabel" x="869.999" y="184" sodipodi:role="line">triose-P</tspan>
+    <tspan id="tspan64n1" class="tsLabel" x="869.999" y="198" sodipodi:role="line">isomerase</tspan>
+  </text>
+  <rect dunnart:type="rect" id="66" dunnart:xPos="300" dunnart:yPos="174" dunnart:width="16" dunnart:height="16" dunnart:label="" dunnart:detailLevel="0" class="shape" width="10" height="10" x="303" y="177"/>
+  <rect dunnart:type="flowEndOProc" id="67" dunnart:xPos="269" dunnart:yPos="61" dunnart:width="86" dunnart:height="40" dunnart:label="glucose-6P isomerase" dunnart:detailLevel="0" dunnart:sbgnShape="1" class="shape" width="80" height="34" x="272" y="64" rx="17" ry="17"/>
+  <text id="text67" class="tLabel" x="312" y="78">
+    <tspan id="tspan67n0" class="tsLabel" x="312" y="78" sodipodi:role="line">glucose-6P</tspan>
+    <tspan id="tspan67n1" class="tsLabel" x="312" y="92" sodipodi:role="line">isomerase</tspan>
+  </text>
+  <rect dunnart:type="flowEndOProc" id="70" dunnart:xPos="492" dunnart:yPos="207" dunnart:width="50" dunnart:height="50" dunnart:label="ADP" dunnart:detailLevel="0" dunnart:sbgnShape="1" dunnart:sbgnClone="1" class="shape" width="44" height="44" x="495" y="210" rx="22" ry="22"/>
+  <text id="text70" class="tLabel" x="517" y="236">
+    <tspan id="tspan70n0" class="tsLabel" x="517" y="236" sodipodi:role="line">ADP</tspan>
+  </text>
+  <rect dunnart:type="flowEndOProc" id="71" dunnart:xPos="403" dunnart:yPos="209" dunnart:width="50" dunnart:height="50" dunnart:label="ATP" dunnart:detailLevel="0" dunnart:sbgnShape="1" dunnart:sbgnClone="1" class="shape" width="44" height="44" x="406" y="212" rx="22" ry="22"/>
+  <text id="text71" class="tLabel" x="428" y="238">
+    <tspan id="tspan71n0" class="tsLabel" x="428" y="238" sodipodi:role="line">ATP</tspan>
+  </text>
+  <rect dunnart:type="rect" id="72" dunnart:xPos="474" dunnart:yPos="174" dunnart:width="16" dunnart:height="16" dunnart:label="" dunnart:detailLevel="0" class="shape" width="10" height="10" x="477" y="177"/>
+  <rect dunnart:type="flowEndOProc" id="73" dunnart:xPos="440" dunnart:yPos="59" dunnart:width="86" dunnart:height="40" dunnart:label="phospho fructokinase" dunnart:detailLevel="0" dunnart:sbgnShape="1" class="shape" width="80" height="34" x="443" y="62" rx="17" ry="17"/>
+  <text id="text73" class="tLabel" x="483" y="76">
+    <tspan id="tspan73n0" class="tsLabel" x="483" y="76" sodipodi:role="line">phospho</tspan>
+    <tspan id="tspan73n1" class="tsLabel" x="483" y="90" sodipodi:role="line">fructokinase</tspan>
+  </text>
+  <rect dunnart:type="flowEndOProc" id="79" dunnart:xPos="660" dunnart:yPos="61" dunnart:width="86" dunnart:height="40" dunnart:label="aldolase" dunnart:detailLevel="0" dunnart:sbgnShape="1" class="shape" width="80" height="34" x="663" y="64" rx="17" ry="17"/>
+  <text id="text79" class="tLabel" x="703" y="85">
+    <tspan id="tspan79n0" class="tsLabel" x="703" y="85" sodipodi:role="line">aldolase</tspan>
+  </text>
+  <rect dunnart:type="rect" id="80" dunnart:xPos="691" dunnart:yPos="174" dunnart:width="16" dunnart:height="16" dunnart:label="" dunnart:detailLevel="0" class="shape" width="10" height="10" x="694" y="177"/>
+  <rect dunnart:type="flowEndOProc" id="84" dunnart:xPos="754" dunnart:yPos="97" dunnart:width="60" dunnart:height="60" dunnart:label="DHA-P" dunnart:detailLevel="0" dunnart:sbgnShape="1" class="shape" width="54" height="54" x="757" y="100" rx="27" ry="27"/>
+  <text id="text84" class="tLabel" x="784" y="131">
+    <tspan id="tspan84n0" class="tsLabel" x="784" y="131" sodipodi:role="line">DHA-P</tspan>
+  </text>
+  <rect dunnart:type="flowEndOProc" id="85" dunnart:xPos="754" dunnart:yPos="223" dunnart:width="60" dunnart:height="60" dunnart:label="GA-3P" dunnart:detailLevel="0" dunnart:sbgnShape="1" class="shape" width="54" height="54" x="757" y="226" rx="27" ry="27"/>
+  <text id="text85" class="tLabel" x="784" y="257">
+    <tspan id="tspan85n0" class="tsLabel" x="784" y="257" sodipodi:role="line">GA-3P</tspan>
+  </text>
+  <rect dunnart:type="rect" id="86" dunnart:xPos="776" dunnart:yPos="182" dunnart:width="16" dunnart:height="16" dunnart:label="" dunnart:detailLevel="0" class="shape" width="10" height="10" x="779" y="185"/>
+  <rect dunnart:type="rect" id="91" dunnart:xPos="473" dunnart:yPos="509" dunnart:width="16" dunnart:height="16" dunnart:label="" dunnart:detailLevel="0" class="shape" width="10" height="10" x="476" y="512"/>
+  <rect dunnart:type="flowEndOProc" id="92" dunnart:xPos="438" dunnart:yPos="586" dunnart:width="86" dunnart:height="40" dunnart:label="PG mutase" dunnart:detailLevel="0" dunnart:sbgnShape="1" class="shape" width="80" height="34" x="441" y="589.9993" rx="17" ry="17"/>
+  <text id="text92" class="tLabel" x="481" y="610.999">
+    <tspan id="tspan92n0" class="tsLabel" x="481" y="610.999" sodipodi:role="line">PG mutase</tspan>
+  </text>
+  <rect dunnart:type="flowEndOProc" id="93" dunnart:xPos="592" dunnart:yPos="586" dunnart:width="86" dunnart:height="40" dunnart:label="PGK1" dunnart:detailLevel="0" dunnart:sbgnShape="1" class="shape" width="80" height="34" x="595" y="589.9993" rx="17" ry="17"/>
+  <text id="text93" class="tLabel" x="635" y="610.999">
+    <tspan id="tspan93n0" class="tsLabel" x="635" y="610.999" sodipodi:role="line">PGK1</tspan>
+  </text>
+  <rect dunnart:type="rect" id="94" dunnart:xPos="625" dunnart:yPos="503" dunnart:width="16" dunnart:height="16" dunnart:label="" dunnart:detailLevel="0" class="shape" width="10" height="10" x="628" y="506"/>
+  <rect dunnart:type="flowEndOProc" id="95" dunnart:xPos="569" dunnart:yPos="429" dunnart:width="50" dunnart:height="50" dunnart:label="ATP" dunnart:detailLevel="0" dunnart:sbgnShape="1" dunnart:sbgnClone="1" class="shape" width="44" height="44" x="572" y="432" rx="22" ry="22"/>
+  <text id="text95" class="tLabel" x="594" y="458">
+    <tspan id="tspan95n0" class="tsLabel" x="594" y="458" sodipodi:role="line">ATP</tspan>
+  </text>
+  <rect dunnart:type="flowEndOProc" id="96" dunnart:xPos="665" dunnart:yPos="431" dunnart:width="50" dunnart:height="50" dunnart:label="ADP" dunnart:detailLevel="0" dunnart:sbgnShape="1" dunnart:sbgnClone="1" class="shape" width="44" height="44" x="668" y="434" rx="22" ry="22"/>
+  <text id="text96" class="tLabel" x="690" y="460">
+    <tspan id="tspan96n0" class="tsLabel" x="690" y="460" sodipodi:role="line">ADP</tspan>
+  </text>
+  <rect dunnart:type="flowEndOProc" id="97" dunnart:xPos="272" dunnart:yPos="585" dunnart:width="86" dunnart:height="40" dunnart:label="enolase" dunnart:detailLevel="0" dunnart:sbgnShape="1" class="shape" width="80" height="34" x="275" y="588" rx="17" ry="17"/>
+  <text id="text97" class="tLabel" x="315" y="609">
+    <tspan id="tspan97n0" class="tsLabel" x="315" y="609" sodipodi:role="line">enolase</tspan>
+  </text>
+  <rect dunnart:type="rect" id="98" dunnart:xPos="306" dunnart:yPos="511" dunnart:width="16" dunnart:height="16" dunnart:label="" dunnart:detailLevel="0" class="shape" width="10" height="10" x="309" y="514"/>
+  <rect dunnart:type="flowEndOProc" id="99" dunnart:xPos="513" dunnart:yPos="482" dunnart:width="60" dunnart:height="60" dunnart:label="fructose 1.6P" dunnart:detailLevel="0" dunnart:sbgnShape="1" class="shape" width="54" height="54" x="516" y="485" rx="27" ry="27"/>
+  <text id="text99" class="tLabel" x="543" y="509">
+    <tspan id="tspan99n0" class="tsLabel" x="543" y="509" sodipodi:role="line">fructose</tspan>
+    <tspan id="tspan99n1" class="tsLabel" x="543" y="523" sodipodi:role="line">1.6P</tspan>
+  </text>
+  <rect dunnart:type="flowEndOProc" id="100" dunnart:xPos="357" dunnart:yPos="483" dunnart:width="60" dunnart:height="60" dunnart:label="2 PG" dunnart:detailLevel="0" dunnart:sbgnShape="1" class="shape" width="54" height="54" x="360" y="486" rx="27" ry="27"/>
+  <text id="text100" class="tLabel" x="387" y="517">
+    <tspan id="tspan100n0" class="tsLabel" x="387" y="517" sodipodi:role="line">2 PG</tspan>
+  </text>
+  <rect dunnart:type="flowEndOProc" id="102" dunnart:xPos="23" dunnart:yPos="495" dunnart:width="60" dunnart:height="60" dunnart:label="pyruvate" dunnart:detailLevel="0" dunnart:sbgnShape="1" class="shape" width="54" height="54" x="26" y="498" rx="27" ry="27"/>
+  <text id="text102" class="tLabel" x="53" y="529">
+    <tspan id="tspan102n0" class="tsLabel" x="53" y="529" sodipodi:role="line">pyruvate</tspan>
+  </text>
+  <rect dunnart:type="flowEndOProc" id="103" dunnart:xPos="166" dunnart:yPos="428" dunnart:width="50" dunnart:height="50" dunnart:label="ADP" dunnart:detailLevel="0" dunnart:sbgnShape="1" dunnart:sbgnClone="1" class="shape" width="44" height="44" x="169" y="431" rx="22" ry="22"/>
+  <text id="text103" class="tLabel" x="191" y="457">
+    <tspan id="tspan103n0" class="tsLabel" x="191" y="457" sodipodi:role="line">ADP</tspan>
+  </text>
+  <rect dunnart:type="flowEndOProc" id="104" dunnart:xPos="62" dunnart:yPos="430" dunnart:width="50" dunnart:height="50" dunnart:label="ATP" dunnart:detailLevel="0" dunnart:sbgnShape="1" dunnart:sbgnClone="1" class="shape" width="44" height="44" x="65" y="433" rx="22" ry="22"/>
+  <text id="text104" class="tLabel" x="87" y="459">
+    <tspan id="tspan104n0" class="tsLabel" x="87" y="459" sodipodi:role="line">ATP</tspan>
+  </text>
+  <rect dunnart:type="rect" id="105" dunnart:xPos="151" dunnart:yPos="519" dunnart:width="16" dunnart:height="16" dunnart:label="" dunnart:detailLevel="0" class="shape" width="10" height="10" x="154" y="522"/>
+  <rect dunnart:type="flowEndOProc" id="106" dunnart:xPos="115" dunnart:yPos="586" dunnart:width="86" dunnart:height="40" dunnart:label="pyruvate kinase" dunnart:detailLevel="0" dunnart:sbgnShape="1" class="shape" width="80" height="34" x="118" y="589" rx="17" ry="17"/>
+  <text id="text106" class="tLabel" x="158" y="603">
+    <tspan id="tspan106n0" class="tsLabel" x="158" y="603" sodipodi:role="line">pyruvate</tspan>
+    <tspan id="tspan106n1" class="tsLabel" x="158" y="617" sodipodi:role="line">kinase</tspan>
+  </text>
+  <rect dunnart:type="flowEndOProc" id="101" dunnart:xPos="216" dunnart:yPos="497" dunnart:width="60" dunnart:height="60" dunnart:label="PEP" dunnart:detailLevel="0" dunnart:sbgnShape="1" class="shape" width="54" height="54" x="219" y="500" rx="27" ry="27"/>
+  <text id="text101" class="tLabel" x="246" y="531">
+    <tspan id="tspan101n0" class="tsLabel" x="246" y="531" sodipodi:role="line">PEP</tspan>
+  </text>
+  <rect dunnart:type="flowEndOProc" id="122" dunnart:xPos="245" dunnart:yPos="413" dunnart:width="60" dunnart:height="60" dunnart:label="H2O" dunnart:detailLevel="0" dunnart:sbgnShape="1" class="shape" width="54" height="54" x="248" y="416" rx="27" ry="27"/>
+  <text id="text122" class="tLabel" x="275" y="447">
+    <tspan id="tspan122n0" class="tsLabel" x="275" y="447" sodipodi:role="line">H2O</tspan>
+  </text>
+  <rect dunnart:type="flowEndOProc" id="125" dunnart:xPos="736" dunnart:yPos="472" dunnart:width="60" dunnart:height="60" dunnart:label="1.3 BPG" dunnart:detailLevel="0" dunnart:sbgnShape="1" class="shape" width="54" height="54" x="739" y="475" rx="27" ry="27"/>
+  <text id="text125" class="tLabel" x="766" y="506">
+    <tspan id="tspan125n0" class="tsLabel" x="766" y="506" sodipodi:role="line">1.3 BPG</tspan>
+  </text>
+  <rect dunnart:type="flowEndOProc" id="126" dunnart:xPos="675" dunnart:yPos="253" dunnart:width="60" dunnart:height="60" dunnart:label="Pi" dunnart:detailLevel="0" dunnart:sbgnShape="1" class="shape" width="54" height="54" x="678" y="256" rx="27" ry="27"/>
+  <text id="text126" class="tLabel" x="705" y="287">
+    <tspan id="tspan126n0" class="tsLabel" x="705" y="287" sodipodi:role="line">Pi</tspan>
+  </text>
+  <rect dunnart:type="flowEndOProc" id="127" dunnart:xPos="836" dunnart:yPos="253" dunnart:width="60" dunnart:height="60" dunnart:label="NAD" dunnart:detailLevel="0" dunnart:sbgnShape="1" class="shape" width="54" height="54" x="839" y="256" rx="27" ry="27"/>
+  <text id="text127" class="tLabel" x="866" y="287">
+    <tspan id="tspan127n0" class="tsLabel" x="866" y="287" sodipodi:role="line">NAD</tspan>
+  </text>
+  <rect dunnart:type="flowEndOProc" id="128" dunnart:xPos="839" dunnart:yPos="410" dunnart:width="60" dunnart:height="60" dunnart:label="H+" dunnart:detailLevel="0" dunnart:sbgnShape="1" class="shape" width="54" height="54" x="842" y="413" rx="27" ry="27"/>
+  <text id="text128" class="tLabel" x="869" y="444">
+    <tspan id="tspan128n0" class="tsLabel" x="869" y="444" sodipodi:role="line">H+</tspan>
+  </text>
+  <rect dunnart:type="flowEndOProc" id="129" dunnart:xPos="805" dunnart:yPos="465" dunnart:width="60" dunnart:height="60" dunnart:label="NADH" dunnart:detailLevel="0" dunnart:sbgnShape="1" class="shape" width="54" height="54" x="808" y="468" rx="27" ry="27"/>
+  <text id="text129" class="tLabel" x="835" y="499">
+    <tspan id="tspan129n0" class="tsLabel" x="835" y="499" sodipodi:role="line">NADH</tspan>
+  </text>
+  <rect dunnart:type="rect" id="130" dunnart:xPos="771" dunnart:yPos="364" dunnart:width="16" dunnart:height="16" dunnart:label="" dunnart:detailLevel="0" class="shape" width="10" height="10" x="774" y="367"/>
+  <rect dunnart:type="flowEndOProc" id="131" dunnart:xPos="823" dunnart:yPos="349" dunnart:width="86" dunnart:height="40" dunnart:label="GAPDH" dunnart:detailLevel="0" dunnart:sbgnShape="1" class="shape" width="80" height="34" x="826" y="352" rx="17" ry="17"/>
+  <text id="text131" class="tLabel" x="866" y="373">
+    <tspan id="tspan131n0" class="tsLabel" x="866" y="373" sodipodi:role="line">GAPDH</tspan>
+  </text>
+</svg>

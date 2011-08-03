@@ -1,0 +1,25 @@
+Instructions for building and packaging on Windows:
+
+
+- Install the Qt SDK.  Take note the Qt ver number.
+- Install PuTTY tools in C:\WINDOWS:
+    plink.exe
+    pageant.exe
+    putty.exe
+    pscp.exe
+- Install 7-Zip in the default place.
+- Install msys-git.  Select for it not to change line endings when it
+  check out.
+- mkdir C:\ws-git
+- Copy generator-private.ppk to C:\ws-git
+- Clone Dunnart to C:\ws-git\dunnart:
+  	GIT_SSH="C:\WINDOWS\plink.exe"
+	C:\WINDOWS\pageant generator-private.ppk
+	C:\Program Files\Git\bin\git clone git@hewy.infotech.monash.edu.au:dunnart
+- Move the .ppk file into the dunnart\editor directory.
+
+- Update the Qt version number in the editor/*.bat scripts.
+
+- Add the C:\ws-git\dunnart\editor\build-win.bat command to the Task
+  Scheduler (through control panel.
+

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Created with Dunnart (http://www.csse.monash.edu.au/~mwybrow/dunnart/)-->
+<svg xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:dunnart="http://www.csse.monash.edu.au/~mwybrow/dunnart.dtd" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:proorigami="http://www.csse.unimelb.edu.au/~astivala/proorigami.dtd" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="190 18 484 646">
+  <proorigami:identification xmlns:proorigami="http://www.csse.unimelb.edu.au/~astivala/proorigami.dtd" pdbId="1ARB" outputFilename="1ARB.svg" numberOfDomains="1" totalDomains="1" creationTime="19Jul2008 10:57:23" program="ptgraph2" version="Revision 1700M, Sat Jul 19 10:23:02 EST 2008" commandLine="/home/astivala/phd/ptgraph/ptgraph2.py -r -35 -k purple -uw -l crossing:black,red,green,navy,blue -bsequential -j -eauto -fauto -ogradient /home/astivala/pdb/1ARB.pdb"/>
+  <dunnart:options useMultiway="1" instantFeedback="1" newConnType="53" orientation="0" graphMode="0" automaticGraphLayout="0" layoutMethod="0" layoutMode="0" layoutBeautify="1" avoidBuffer="4" downwardSeparation="0.5" pageBoundaryConstraints="0" defaultIdealConnectorLength="1" penaliseCrossings="1" colourInterferingConnectors="1" rubberBandRouting="0" interferingConnectorColours="000000,ff0000,008000,000080,0000ff"/>
+  <sodipodi:namedview showguides="false" guidetolerance="5.0" guidecolor="#000000ff" guideopacity="0.25" bordercolor="#000000" borderopacity="0.5" width="484px" height="646px">
+    <sodipodi:guide dunnart:type="indGuide" position="593" orientation="horizontal" dunnart:direction="101" id="68" dunnart:position="590">
+      <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="68" objOneID="70" alignmentPos="4"/>
+      <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="68" objOneID="80" alignmentPos="4"/>
+    </sodipodi:guide>
+    <sodipodi:guide dunnart:type="indGuide" position="524" orientation="vertical" dunnart:direction="100" id="69" dunnart:position="521">
+      <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="69" objOneID="70" alignmentPos="3"/>
+    </sodipodi:guide>
+    <sodipodi:guide dunnart:type="indGuide" position="638" orientation="horizontal" dunnart:direction="101" id="71" dunnart:position="635">
+      <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="71" objOneID="72" alignmentPos="4"/>
+      <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="71" objOneID="81" alignmentPos="4"/>
+    </sodipodi:guide>
+    <sodipodi:guide dunnart:type="indGuide" position="524" orientation="vertical" dunnart:direction="100" id="73" dunnart:position="521">
+      <dunnart:node dunnart:type="constraint" isMultiway="1" relType="alignment" constraintID="73" objOneID="72" alignmentPos="3"/>
+    </sodipodi:guide>
+  </sodipodi:namedview>
+  <style type="text/css">.shape   { stroke:black; stroke-width:1px; fill:#f0f0d2; } .connector { fill:none; stroke:black; stroke-width:1px; stroke-linecap:butt; stroke-linejoin:miter; stroke-opacity:1; } .cluster { fill:#60cdf3; fill-opacity:0.33333333; } .tLabel { text-anchor:middle; text-align:center; } .tsLabel { font-size:11px; font-style:normal; font-weight:normal; fill:black; fill-opacity:1; stroke:none; font-family:DejaVu Sans; } .frLabel { font-size:11px; font-style:normal; font-weight:normal; fill:black; fill-opacity:1; stroke:none; stroke-width:1px; stroke-linecap:butt; stroke-linejoin:miter; stroke-opacity:1; font-family:DejaVu Sans; font-stretch:normal; font-variant:normal; text-anchor:middle; text-align:center; progression-align:center; writing-mode:lr; line-height:125%; } </style>
+  <defs>
+    <marker inkscape:stockid="ConnArrowEnd" orient="auto" refX="7.5" refY="0.0" id="ConnArrowEnd" style="overflow:visible;">
+      <path d="M 0.0,0.0 L 1.0,-5.0 L -12.5,0.0 L 1.0,5.0 L 0.0,0.0 z" style="fill-rule:evenodd; stroke:black; stroke-width:1px; marker-start:none;" transform="scale(0.6) rotate(180)"/>
+    </marker>
+    <marker inkscape:stockid="ConnArrowEndNormal" orient="auto" refX="7.5" refY="0.0" id="ConnArrowEndNormal" style="overflow:visible;">
+      <path d="M 1.0,-7.0 L -12.5,0.0 M 1.0,7.0 L -12.5,0.0 z" style="fill-rule:evenodd; fill:none; stroke:black; stroke-width:1px; marker-start:none;" transform="scale(0.6) rotate(180)"/>
+    </marker>
+    <marker inkscape:stockid="ConnArrowEndInheritance" orient="auto" refX="7.5" refY="0.0" id="ConnArrowEndInheritance" style="overflow:visible;">
+      <path d="M 0.0,0.0 L 1.0,-7.0 L -12.5,0.0 L 1.0,7.0, L 0.0,0.0 z" style="fill-rule:evenodd; fill:white; stroke:black; stroke-width:1px; marker-start:none;" transform="scale(0.6) rotate(180)"/>
+    </marker>
+    <marker inkscape:stockid="ConnArrowEndAggregation" orient="auto" refX="7.5" refY="0.0" id="ConnArrowEndAggregation" style="overflow:visible;">
+      <path d="M 6.0,0.0 L -3.25,-6.0 L -12.5,0.0 L -3.25,6.0, L 6.0,0.0 z" style="fill-rule:evenodd; fill:white; stroke:black; stroke-width:1px; marker-start:none;" transform="scale(0.6) rotate(180)"/>
+    </marker>
+    <marker inkscape:stockid="ConnArrowEndComposition" orient="auto" refX="7.5" refY="0.0" id="ConnArrowEndComposition" style="overflow:visible;">
+      <path d="M 6.0,0.0 L -3.25,-6.0 L -12.5,0.0 L -3.25,6.0, L 6.0,0.0 z" style="fill-rule:evenodd; fill:black; stroke:black; stroke-width:1px; marker-start:none;" transform="scale(0.6) rotate(180)"/>
+    </marker>
+  </defs>
+  <path dunnart:type="cluster" id="121" dunnart:contains="70 72" dunnart:fillColour="ff000055;" dunnart:rectangular="0" class="cluster" d="M 524.014,572.009 L 568.014,572.009 L 568.014,659.009 L 524.014,659.009 L 524.014,572.009" style="fill:#FF0000;fill-opacity:0.333333;"/>
+  <path dunnart:type="cluster" id="122" dunnart:contains="121 120" dunnart:rectangular="0" class="cluster" d="M 215.024,234.511 L 339.024,234.511 L 339.024,276.511 L 215.024,276.511 L 215.024,234.511"/>
+  <dunnart:node dunnart:type="distribution" dunnart:position="540" dunnart:direction="101" dunnart:sepDistance="45" id="67">
+    <dunnart:node dunnart:type="constraint" isMultiway="1" relType="distribution" constraintID="67" objOneID="68" objTwoID="71"/>
+  </dunnart:node>
+  <path dunnart:type="connAvoidPoly" id="103" dunnart:directed="0" dunnart:libavoidPath="4 558 673 -2147483545 8 568.014 659.009 72 1 568.014 593.009 103 8 546.014 593.009 0 0 " dunnart:srcID="0" dunnart:srcX="709" dunnart:srcY="728" dunnart:dstID="70" dunnart:dstFlags="56" dunnart:dstX="715.014" dunnart:dstY="648.009" class="connector" d="M 558,673 L 568,659 L 568,593 L 546,593 " proorigami:residueNames="ASN LEU" proorigami:residueSeqNums="128 129" proorigami:hovertext="128 ASN LEU 129"/>
+  <path dunnart:type="connAvoidPoly" id="104" dunnart:directed="0" dunnart:libavoidPath="4 546.014 593.009 0 0 524.014 593.009 -2147483544 8 524.014 572.009 70 3 576.032 148.005 104 8 " dunnart:srcID="70" dunnart:srcFlags="52" dunnart:srcX="679.014" dunnart:srcY="648.009" dunnart:dstID="0" dunnart:dstX="727.032" dunnart:dstY="203.005" class="connector" d="M 546,593 L 524,593 L 524,572 L 576,148 " proorigami:residueNames="ALA GLY" proorigami:residueSeqNums="132 133" proorigami:hovertext="132 ALA GLY 133"/>
+  <path dunnart:type="connAvoidPoly" id="118" dunnart:directed="0" dunnart:lineColour="ff0000ff;" dunnart:libavoidPath="4 618.032 148.005 -2147483530 8 524.014 572.009 70 3 524.014 638.009 118 8 546.014 638.009 0 0 " dunnart:srcID="0" dunnart:srcX="769.032" dunnart:srcY="203.005" dunnart:dstID="72" dunnart:dstFlags="52" dunnart:dstX="679.014" dunnart:dstY="693.009" class="connector" d="M 618,148 L 524,572 L 524,638 L 546,638 " style="stroke:#FF0000;" proorigami:residueNames="ASP GLY" proorigami:residueSeqNums="259 260" proorigami:hovertext="259 ASP GLY 260"/>
+  <path dunnart:type="connAvoidPoly" id="119" dunnart:directed="0" dunnart:lineColour="ff0000ff;" dunnart:libavoidPath="4 546.014 638.009 0 0 568.014 638.009 -2147483529 8 568.014 659.009 72 1 537 670 119 8 " dunnart:srcID="72" dunnart:srcFlags="56" dunnart:srcX="715.014" dunnart:srcY="693.009" dunnart:dstID="0" dunnart:dstX="688" dunnart:dstY="725" class="connector" d="M 546,638 L 568,638 L 568,659 L 537,670 " style="stroke:#FF0000;" proorigami:residueNames="SER" proorigami:residueSeqNums="263" proorigami:hovertext="SER 263"/>
+  <path dunnart:type="connAvoidPoly" id="123" dunnart:directed="1" dunnart:libavoidPath="4 246.024 255.511 0 0 246.024 234.511 -2147483525 8 339.024 234.511 121 0 408 262 123 8 " dunnart:srcID="120" dunnart:srcFlags="49" dunnart:srcX="397.024" dunnart:srcY="293.511" dunnart:dstID="0" dunnart:dstX="559" dunnart:dstY="317" class="connector" d="M 246,255 L 246,234 L 339,234 L 408,262 " style="marker-end:url(#ConnArrowEndNormal);"/>
+  <path dunnart:type="connAvoidPoly" id="124" dunnart:directed="1" dunnart:lineColour="ff0000ff;" dunnart:libavoidPath="4 308.024 255.511 0 0 308.024 234.511 -2147483524 8 339.024 234.511 121 0 382 265 124 8 " dunnart:srcID="121" dunnart:srcFlags="49" dunnart:srcX="459.024" dunnart:srcY="293.511" dunnart:dstID="0" dunnart:dstX="533" dunnart:dstY="320" class="connector" d="M 308,255 L 308,234 L 339,234 L 382,265 " style="marker-end:url(#ConnArrowEndNormal);stroke:#FF0000;"/>
+  <path dunnart:type="connAvoidPoly" id="125" dunnart:directed="1" dunnart:libavoidPath="4 308.024 255.511 0 0 308.024 276.511 -2147483523 8 215.024 276.511 120 2 170 256 125 8 " dunnart:srcID="121" dunnart:srcFlags="50" dunnart:srcX="459.024" dunnart:srcY="327.511" dunnart:dstID="0" dunnart:dstX="321" dunnart:dstY="311" class="connector" d="M 308,255 L 308,276 L 215,276 L 170,256 " style="marker-end:url(#ConnArrowEndNormal);"/>
+  <path dunnart:type="connAvoidPoly" id="126" dunnart:directed="1" dunnart:lineColour="ff0000ff;" dunnart:libavoidPath="4 246.024 255.511 0 0 246.024 276.511 -2147483522 8 215.024 276.511 120 2 190 240 126 8 " dunnart:srcID="120" dunnart:srcFlags="50" dunnart:srcX="397.024" dunnart:srcY="327.511" dunnart:dstID="0" dunnart:dstX="341" dunnart:dstY="295" class="connector" d="M 246,255 L 246,276 L 215,276 L 190,240 " style="marker-end:url(#ConnArrowEndNormal);stroke:#FF0000;"/>
+  <rect dunnart:type="bioHelix" id="80" dunnart:xPos="726" dunnart:yPos="578" dunnart:width="32" dunnart:height="30" dunnart:label="14" dunnart:fillColour="00ff44ff;" dunnart:detailLevel="0" class="shape" style="fill:#00FF44;" proorigami:reversed="0" proorigami:residueNames="PRO ALA PHE" proorigami:residueSeqNums="125 126 127" proorigami:helixType="310" proorigami:hovertext="310HELIX_-_6" onmousemove="updateHoverText(evt)" width="26" height="24" x="729.9961491" y="581.0091558" rx="6" ry="12"/>
+  <text id="text80" class="tLabel" x="742.996" y="597.009">
+    <tspan id="tspan80n0" class="tsLabel" x="742.996" y="597.009" sodipodi:role="line">14</tspan>
+  </text>
+  <rect width="12" height="24" x="729.9961491" y="581.0091558" rx="6" ry="12" class="shape" style="fill:#00FF44;"/>
+  <path dunnart:reversed="0" dunnart:type="bioStrand" id="70" dunnart:xPos="525" dunnart:yPos="573" dunnart:width="42" dunnart:height="40" dunnart:label="15" dunnart:fillColour="00ff22ff;" dunnart:detailLevel="0" class="shape" style="fill:#00FF22;" proorigami:residueNames="PHE TRP" proorigami:residueSeqNums="130 131" proorigami:hovertext="STRAND_-_9" onmousemove="updateHoverText(evt)" d="M 528.0143433,592.5091553 L 544.5143433,609.0091553 L 544.5143433,600.7591553 L 563.0143433,600.7591553 L 563.0143433,584.2591553 L 544.5143433,584.2591553 L 544.5143433,576.0091553 L 528.0143433,592.5091553 z"/>
+  <text id="text70" class="tLabel" x="546.014" y="597.009">
+    <tspan id="tspan70n0" class="tsLabel" x="546.014" y="597.009" sodipodi:role="line">15</tspan>
+  </text>
+  <path dunnart:reversed="1" dunnart:type="bioStrand" id="72" dunnart:xPos="525" dunnart:yPos="618" dunnart:width="42" dunnart:height="40" dunnart:label="30" dunnart:fillColour="ff2200ff;" dunnart:detailLevel="0" class="shape" style="fill:#FF2200;" proorigami:residueNames="LEU ASP" proorigami:residueSeqNums="261 262" proorigami:hovertext="STRAND_-_19" onmousemove="updateHoverText(evt)" d="M 563.0143433,637.5091553 L 546.5143433,621.0091553 L 546.5143433,629.2591553 L 528.0143433,629.2591553 L 528.0143433,645.7591553 L 546.5143433,645.7591553 L 546.5143433,654.0091553 L 563.0143433,637.5091553 z"/>
+  <text id="text72" class="tLabel" x="546.014" y="642.009">
+    <tspan id="tspan72n0" class="tsLabel" x="546.014" y="642.009" sodipodi:role="line">30</tspan>
+  </text>
+  <rect dunnart:type="rect" id="81" dunnart:xPos="726" dunnart:yPos="622" dunnart:width="32" dunnart:height="32" dunnart:label="C" dunnart:fillColour="ff2200ff;" dunnart:detailLevel="0" class="shape" style="fill:#FF2200;" proorigami:hovertext="chain -" width="26" height="26" x="729.9961491" y="625.0091558"/>
+  <text id="text81" class="tLabel" x="742.996" y="642.009">
+    <tspan id="tspan81n0" class="tsLabel" x="742.996" y="642.009" sodipodi:role="line">C</tspan>
+  </text>
+  <rect dunnart:type="rect" id="120" dunnart:xPos="216" dunnart:yPos="235" dunnart:width="60" dunnart:height="40" dunnart:label="" dunnart:detailLevel="0" class="shape" width="54" height="34" x="219.0238478" y="238.5112232"/>
+  <rect dunnart:type="rect" id="121" dunnart:xPos="278" dunnart:yPos="235" dunnart:width="60" dunnart:height="40" dunnart:label="" dunnart:detailLevel="0" class="shape" width="54" height="34" x="281.0238479" y="238.5112232"/>
+</svg>

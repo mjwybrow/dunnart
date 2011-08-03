@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Created with Dunnart (http://www.csse.monash.edu.au/~mwybrow/dunnart/)-->
+<svg xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:dunnart="http://www.csse.monash.edu.au/~mwybrow/dunnart.dtd" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="190 18 484 646">
+  <dunnart:options useMultiway="1" instantFeedback="1" newConnType="53" orientation="0" graphMode="0" automaticGraphLayout="1" layoutMethod="0" layoutMode="0" layoutBeautify="1" avoidBuffer="0" pageBoundaryConstraints="0" defaultIdealConnectorLength="1" penaliseCrossings="0" colourInterferingConnectors="0" rubberBandRouting="0"/>
+  <sodipodi:namedview showguides="false" guidetolerance="5.0" guidecolor="#000000ff" guideopacity="0.25" bordercolor="#000000" borderopacity="0.5" width="484px" height="646px"/>
+  <style type="text/css">.shape   { stroke:black; stroke-width:1px; fill:#f0f0d2; } .connector { fill:none; stroke:black; stroke-width:1px; stroke-linecap:butt; stroke-linejoin:miter; stroke-opacity:1; } .cluster { fill:#60cdf3; fill-opacity:0.33333333; } .tLabel { text-anchor:middle; text-align:center; } .tsLabel { font-size:11px; font-style:normal; font-weight:normal; fill:black; fill-opacity:1; stroke:none; font-family:DejaVu Sans; } .frLabel { font-size:11px; font-style:normal; font-weight:normal; fill:black; fill-opacity:1; stroke:none; stroke-width:1px; stroke-linecap:butt; stroke-linejoin:miter; stroke-opacity:1; font-family:DejaVu Sans; font-stretch:normal; font-variant:normal; text-anchor:middle; text-align:center; progression-align:center; writing-mode:lr; line-height:125%; } </style>
+  <defs>
+    <marker inkscape:stockid="ConnArrowEnd" orient="auto" refX="7.5" refY="0.0" id="ConnArrowEnd" style="overflow:visible;">
+      <path d="M 0.0,0.0 L 1.0,-5.0 L -12.5,0.0 L 1.0,5.0 L 0.0,0.0 z" style="fill-rule:evenodd; stroke:black; stroke-width:1px; marker-start:none;" transform="scale(0.6) rotate(180)"/>
+    </marker>
+    <marker inkscape:stockid="ConnArrowEndNormal" orient="auto" refX="7.5" refY="0.0" id="ConnArrowEndNormal" style="overflow:visible;">
+      <path d="M 1.0,-7.0 L -12.5,0.0 M 1.0,7.0 L -12.5,0.0 z" style="fill-rule:evenodd; fill:none; stroke:black; stroke-width:1px; marker-start:none;" transform="scale(0.6) rotate(180)"/>
+    </marker>
+    <marker inkscape:stockid="ConnArrowEndInheritance" orient="auto" refX="7.5" refY="0.0" id="ConnArrowEndInheritance" style="overflow:visible;">
+      <path d="M 0.0,0.0 L 1.0,-7.0 L -12.5,0.0 L 1.0,7.0, L 0.0,0.0 z" style="fill-rule:evenodd; fill:white; stroke:black; stroke-width:1px; marker-start:none;" transform="scale(0.6) rotate(180)"/>
+    </marker>
+    <marker inkscape:stockid="ConnArrowEndAggregation" orient="auto" refX="7.5" refY="0.0" id="ConnArrowEndAggregation" style="overflow:visible;">
+      <path d="M 6.0,0.0 L -3.25,-6.0 L -12.5,0.0 L -3.25,6.0, L 6.0,0.0 z" style="fill-rule:evenodd; fill:white; stroke:black; stroke-width:1px; marker-start:none;" transform="scale(0.6) rotate(180)"/>
+    </marker>
+    <marker inkscape:stockid="ConnArrowEndComposition" orient="auto" refX="7.5" refY="0.0" id="ConnArrowEndComposition" style="overflow:visible;">
+      <path d="M 6.0,0.0 L -3.25,-6.0 L -12.5,0.0 L -3.25,6.0, L 6.0,0.0 z" style="fill-rule:evenodd; fill:black; stroke:black; stroke-width:1px; marker-start:none;" transform="scale(0.6) rotate(180)"/>
+    </marker>
+  </defs>
+  <path dunnart:type="cluster" id="7" dunnart:contains="4 2 1" dunnart:rectangular="0" class="cluster" d="M 427,191 L 427,191 L 481,191 L 482,258 L 482,292 L 428,292 L 370,259 L 370,225 L 427,191 L 427,191"/>
+  <path dunnart:type="connAvoidPoly" id="3" dunnart:directed="1" dunnart:libavoidPath="2 397.08 242.757 1 4 455.527 275.607 2 4 " dunnart:srcID="1" dunnart:srcFlags="544" dunnart:srcX="488" dunnart:srcY="300" dunnart:dstID="2" dunnart:dstFlags="544" dunnart:dstX="551.999" dunnart:dstY="334" class="connector" d="M 397,242 L 428,259 " style="marker-end:url(#ConnArrowEndNormal);"/>
+  <path dunnart:type="connAvoidPoly" id="5" dunnart:directed="1" dunnart:libavoidPath="2 397.08 242.757 1 4 454.753 208.566 4 4 " dunnart:srcID="1" dunnart:srcFlags="544" dunnart:srcX="488" dunnart:srcY="300" dunnart:dstID="4" dunnart:dstFlags="544" dunnart:dstX="549" dunnart:dstY="260" class="connector" d="M 397,242 L 427,223 " style="marker-end:url(#ConnArrowEndNormal);"/>
+  <path dunnart:type="connAvoidPoly" id="6" dunnart:directed="1" dunnart:libavoidPath="2 454.753 208.566 4 4 455.527 275.607 2 4 " dunnart:srcID="4" dunnart:srcFlags="544" dunnart:srcX="526.511" dunnart:srcY="198.053" dunnart:dstID="2" dunnart:dstFlags="544" dunnart:dstX="533.443" dunnart:dstY="397.925" class="connector" d="M 454,208 L 454,258 " style="marker-end:url(#ConnArrowEndNormal);"/>
+  <rect dunnart:type="rect" id="1" dunnart:xPos="367" dunnart:yPos="222" dunnart:width="60" dunnart:height="40" dunnart:label="" dunnart:detailLevel="0" class="shape" width="54" height="34" x="370.0804345" y="225.7570483"/>
+  <rect dunnart:type="rect" id="2" dunnart:xPos="425" dunnart:yPos="255" dunnart:width="60" dunnart:height="40" dunnart:label="" dunnart:detailLevel="0" class="shape" width="54" height="34" x="428.5266286" y="258.6074141"/>
+  <rect dunnart:type="rect" id="4" dunnart:xPos="424" dunnart:yPos="188" dunnart:width="60" dunnart:height="40" dunnart:label="" dunnart:detailLevel="0" class="shape" width="54" height="34" x="427.7527828" y="191.5663424"/>
+  <rect dunnart:type="rect" id="8" dunnart:xPos="262" dunnart:yPos="215" dunnart:width="60" dunnart:height="40" dunnart:label="" dunnart:detailLevel="0" class="shape" width="54" height="34" x="265" y="218"/>
+  <rect dunnart:type="rect" id="9" dunnart:xPos="532" dunnart:yPos="212" dunnart:width="60" dunnart:height="40" dunnart:label="" dunnart:detailLevel="0" class="shape" width="54" height="34" x="535.9971995" y="215"/>
+</svg>
