@@ -65,7 +65,7 @@ Adaptagrams is a library of tools and reusable code for adaptive diagramming
 applications, for example: drawing tools, automated document and diagram
 layout, smart presentation software, graph drawing, chart layout, etc.
 
-<img src"https://raw.github.com/mjwybrow/dunnart/master/libdunnartcanvas/doc/DunnartStructure.png" alt="Dunnart architecture" class="width: 700px; margin-left: 100px;" />
+<img src="https://raw.github.com/mjwybrow/dunnart/master/libdunnartcanvas/doc/DunnartStructure.png" alt="Dunnart architecture" class="width: 700px; margin-left: 100px;" />
 
 ### Authors ###
 
