@@ -81,9 +81,9 @@ The latest Adaptagrams source code can be found in the github repository:
 
 ### License ###
 
-Dunnart and `libdunnartcanvas` are available as open source under the terms of 
-the GNU GPL.  We are also open to dual-licensing `libdunartcanvas` for 
-commercial use.
+Dunnart and `libdunnartcanvas` are available as open source under the 
+terms of the GNU GPL version 2.  We are also open to dual-licensing parts
+of Dunnart's constraint-based layout technology for commercial use.
 
 Copyright (C) 2003-2007  Michael Wybrow  
 Copyright (C) 2006-2011  Monash University
