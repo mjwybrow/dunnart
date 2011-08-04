@@ -310,7 +310,7 @@ void Separation::recreate(void)
     }
 
     setPos(bx, by);
-    setSize(bw, bh);
+    setSizeAndUpdatePainterPath(QSizeF(bw, bh));
 
     space = (last - first) / trels.size();
 }
@@ -332,12 +332,6 @@ void Separation::updateFromLayout(double newsep)
     {
         handles[i]->reposition();
     }
-    
-    // Reconstruct the drawing path given new guideline positions.
-    this->setPainterPath(buildPainterPath());
-
-    // Repaint
-    update();
 }
 
 void Separation::userMoveBy(qreal dx, qreal dy)

@@ -149,7 +149,6 @@ CanvasItem::CanvasItem(QGraphicsItem *parent, QString id, unsigned int lev)
     // so disable this for our normal CanvasItems.
     setCacheMode(QGraphicsItem::NoCache);
 
-    m_width = m_height = DBL_MAX;
     setZValue(lev);
     connectedObjs[0] = connectedObjs[1] = NULL;
 
@@ -265,7 +264,7 @@ void CanvasItem::setConstraintConflict(const bool conflict)
 
 QSizeF CanvasItem::size(void) const
 {
-    return QSizeF(m_width, m_height);
+    return m_size;
 }
 
 void CanvasItem::dragReleaseEvent(QGraphicsSceneMouseEvent *event)
@@ -683,20 +682,38 @@ void CanvasItem::setPainterPath(QPainterPath path)
     m_painter_path = path;
 }
 
+
+void CanvasItem::setSizeAndUpdatePainterPath(const QSizeF& newSize)
+{
+    if (newSize == size())
+    {
+        // setSize won't update the painter path if the shape size
+        // hasn't changed, so force that here.
+        m_painter_path = buildPainterPath();
+        update();
+    }
+    else
+    {
+        // If the size is different, then let setSize do the work.
+        setSize(newSize);
+    }
+}
+
 void CanvasItem::setSize(const QSizeF& newSize)
 {
     if (newSize == size())
     {
+        // Don't do anything if the size hasn't changed.
         return;
     }
     prepareGeometryChange();
-    m_width = newSize.width();
-    m_height = newSize.height();
+    m_size = newSize;
+    // Update the painter path used to draw the shape.
     m_painter_path = buildPainterPath();
 
     //assert(m_painter_path.boundingRect().isNull() == false);
 
-    // Visibility graph stuff:
+    // Update visibility graph for connector routing.
     routerResize();
 }
 
@@ -707,12 +724,12 @@ void CanvasItem::setSize(const double w, const double h)
 
 double CanvasItem::width(void) const
 {
-    return m_width;
+    return m_size.width();
 }
 
 double CanvasItem::height(void) const
 {
-    return m_height;
+    return m_size.height();
 }
 
 QAction *CanvasItem::buildAndExecContextMenu(QGraphicsSceneMouseEvent *event,

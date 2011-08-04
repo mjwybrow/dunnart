@@ -321,7 +321,7 @@ void Distribution::recreate(void)
     }
 
     setPos(bx, by);
-    setSize(bw, bh);
+    setSizeAndUpdatePainterPath(QSizeF(bw, bh));
 
     // Should be in initialiser
     setHoverMessage("Distribution Indicator \"%1\" - Drag to move distribution "

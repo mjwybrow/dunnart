@@ -243,6 +243,11 @@ class CanvasItem: public QGraphicsSvgItem
         virtual QPainterPath buildPainterPath(void);
         QPainterPath painterPath(void) const;
         virtual void setPainterPath(QPainterPath path);
+
+        // This method resizes the canvas item and also triggers the
+        // painter path used for drawing to be recreated.
+        void setSizeAndUpdatePainterPath(const QSizeF& newSize);
+
         QVariant itemChange(QGraphicsItem::GraphicsItemChange change,
                 const QVariant &value);
         void addXmlProps(const unsigned int subset, QDomElement& node,
@@ -265,8 +270,7 @@ class CanvasItem: public QGraphicsSvgItem
         virtual void userMoveBy(qreal dx, qreal dy);
 
         QPainterPath m_painter_path;
-        double m_width;
-        double m_height;
+        QSizeF m_size;
         QString m_hover_message;
         bool m_constraint_conflict;
 };
