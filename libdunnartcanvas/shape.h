@@ -119,7 +119,7 @@ class ShapeObj: public CanvasItem
         virtual void setCentrePos(const QPointF & pos);
         virtual Avoid::Polygon *poly(const double buffer,
                 Avoid::Polygon *poly = NULL);
-        void write_label(QPainter *painter);
+        void paintLabel(QPainter *painter);
         virtual QRectF labelBoundingRect(void) const;
         void drawLabelAndImage(QPixmap *target, const int x, const int y);
         virtual void change_label(void);
@@ -159,7 +159,7 @@ class ShapeObj: public CanvasItem
         virtual QAction *buildAndExecContextMenu(
                 QGraphicsSceneMouseEvent *event, QMenu& menu);
         virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-        void common_draw(QPainter *painter);
+        void paintShapeDecorations(QPainter *painter);
         void move_to(const int x, const int y, bool store_undo,
                 bool from_solver, bool from_cider);
 

@@ -213,6 +213,12 @@ void Indicator::paint(QPainter *painter,
     Q_UNUSED (widget)
     assert(painter->isActive());
 
+    if (canvas()->isRenderingForPrinting())
+    {
+        // Don't display indicators if rendering for printing.
+        return;
+    }
+
     qreal onePixel = painter->transform().inverted().m11();
     if (m_curr_path_one_pixel != onePixel)
     {

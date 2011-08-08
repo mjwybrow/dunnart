@@ -563,8 +563,9 @@ void ShapeObj::paint(QPainter *painter,
     Q_UNUSED (option)
     Q_UNUSED (widget)
     assert(painter->isActive());
+    bool showDecorations = canvas() && ! canvas()->isRenderingForPrinting();
 
-    if (isSelected())
+    if ( isSelected() && showDecorations )
     {
         QColor colour(0, 255, 255, 100);
         QPen highlight;
@@ -573,7 +574,6 @@ void ShapeObj::paint(QPainter *painter,
         highlight.setCosmetic(true);
         // Draw selection cue.
         painter->setPen(highlight);
-
         painter->drawPath(painterPath());
     }
 
@@ -592,7 +592,7 @@ void ShapeObj::paint(QPainter *painter,
     
     painter->drawPath(painterPath());
 
-    common_draw(painter);
+    paintShapeDecorations(painter);
 }
 
 
@@ -1066,22 +1066,9 @@ void ShapeObj::setSize(const QSizeF& newSize)
     CanvasItem::setSize(newSize);
 }
 
-void ShapeObj::common_draw(QPainter *painter)
+void ShapeObj::paintShapeDecorations(QPainter *painter)
 {
 #if 0
-    if (isSelected())
-    {
-        QColor highlight = QColor(0, 255, 255);
-        // Draw selection cue.
-        QPen pen(highlight);
-        QVector<qreal> dashes;
-        dashes << 4 << 4;
-        pen.setDashPattern(dashes);
-        painter->setPen(pen);
-        painter->setBrush(QBrush());
-
-        painter->drawRect(-width() / 2, -height() / 2, width(), height());
-    }
     // QT
     if (decorativeImage) 
     {
@@ -1090,13 +1077,16 @@ void ShapeObj::common_draw(QPainter *painter)
     }
 #endif
 
-    if (!_collapsed)
+    if ( ! m_is_collapsed )
     {
-        write_label(painter);
+        paintLabel(painter);
     }
+
+    bool showDecorations = canvas() && ! canvas()->isRenderingForPrinting();
+
     if (this == queryObj)
     {
-        if (!infoIcon)
+        if ( showDecorations && ! infoIcon )
         {
             infoIcon = new QPixmap();
             infoIcon->load("nuvola_icons/info_small.png");
@@ -1105,10 +1095,10 @@ void ShapeObj::common_draw(QPainter *painter)
                 -(height() / 2), *infoIcon);
     }
 
-    if (m_has_locked_position)
+    if ( m_has_locked_position && showDecorations )
     {
         double iconSize = 25;
-        if (!m_lock_icon)
+        if ( ! m_lock_icon )
         {
             m_lock_icon = new QGraphicsSvgItem(
                     ":/resources/images/pushpin.svg", this);
@@ -1116,11 +1106,10 @@ void ShapeObj::common_draw(QPainter *painter)
             QSizeF s =  m_lock_icon->sceneBoundingRect().size() / iconSize;
             m_lock_icon->scale( 1 / s.rwidth(), 1 / s.rheight() );
         }
-        m_lock_icon->setPos((width() / 2) - iconSize + 6,
-                -4 - (height() / 2));
+        m_lock_icon->setPos((width() / 2) - iconSize + 6, -4 - (height() / 2));
         m_lock_icon->show();
     }
-    else if (m_lock_icon)
+    else if ( m_lock_icon )
     {
         m_lock_icon->hide();
     }
@@ -1698,7 +1687,7 @@ QRectF ShapeObj::labelBoundingRect(void) const
 }
 
 
-void ShapeObj::write_label(QPainter *painter)
+void ShapeObj::paintLabel(QPainter *painter)
 {
     painter->setPen(Qt::black);
     painter->setFont(*shapeFont);

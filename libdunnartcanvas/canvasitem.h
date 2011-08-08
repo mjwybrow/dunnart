@@ -90,7 +90,7 @@ extern const char *x_dstPinID;
 extern const char *x_directed;
 extern const char *x_reversed;
 extern const char *x_rectangular;
-extern const char *x_inEa;
+extern const char *x_obeysDirEdgeConstraints;
 extern const char *x_orthogonalConstraint;
 extern const char *x_indGuideline;
 extern const char *x_indDistribution;
@@ -263,7 +263,7 @@ class CanvasItem: public QGraphicsSvgItem
 
         QString m_string_id;
         uint m_internal_id;
-        bool _collapsed;
+        bool m_is_collapsed;
         bool _inactive;
     private:
         friend class AlterCanvasItemProperty;

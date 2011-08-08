@@ -177,7 +177,8 @@ Canvas::Canvas()
       m_current_undo_macro(NULL),
       m_overlay_router_obstacles(false),
       m_overlay_router_visgraph(false),
-      m_overlay_router_orthogonal_visgraph(false)
+      m_overlay_router_orthogonal_visgraph(false),
+      m_rendering_for_printing(false)
 {
     m_ideal_connector_length = 100;
     m_directed_edge_height_modifier = 0.5;
@@ -521,8 +522,9 @@ void Canvas::setExpandedPage(const QRectF newExpandedPage)
 
 void Canvas::drawBackground(QPainter *painter, const QRectF& rect)
 {
-    if (m_expanded_page.isNull())
+    if ( m_expanded_page.isNull() || m_rendering_for_printing)
     {
+        // No expanded page: effectively show just the normal page.
         m_expanded_page = m_page;
     }
 
@@ -1236,6 +1238,15 @@ bool Canvas::hasVisibleOverlays(void) const
             m_overlay_router_orthogonal_visgraph;
 }
 
+void Canvas::setRenderingForPrinting(const bool printingMode)
+{
+    m_rendering_for_printing = printingMode;
+}
+
+bool Canvas::isRenderingForPrinting(void) const
+{
+    return m_rendering_for_printing;
+}
 void Canvas::setOverlayRouterObstacles(const bool value)
 {
     m_overlay_router_obstacles = value;

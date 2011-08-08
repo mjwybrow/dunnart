@@ -161,14 +161,13 @@ class Connector : public CanvasItem
         //QT virtual void changeContextMenuState(Menu *menu);
         Avoid::ConnRef *avoidRef;
         void updateFromPathChange(void);
-        bool isCyclic();
-        void isCyclic(bool value);
-        bool isInEa();
-        void isInEa(bool value);
+        bool isCycleMember(void) const;
+        void setCycleMember(const bool value);
+        bool obeysDirectedEdgeConstraints(void) const;
+        void setObeysDirectedEdgeConstraints(const bool value);
         void overrideColour(QColor col);
         void restoreColour();
         void setDotted(bool dotted) {this->dotted = dotted;}
-        void setInEa(bool value);
         virtual void move_diff_points(int diff_x, int diff_y);
         void adjust_endpoint_for_vis(int type, Avoid::Point& adjpt,
                 Avoid::Vector slp = Avoid::Vector());
@@ -227,8 +226,8 @@ class Connector : public CanvasItem
         int bbx, bby, bbw, bbh;
         bool m_directed;
         RoutingType m_routing_type;
-        bool cyclic;
-        bool inEa;
+        bool m_is_cycle_member;
+        bool m_obeys_directed_edge_constraints;
         ArrowHeadType m_arrow_head_type;
         bool m_arrow_head_outline;
         bool dotted;

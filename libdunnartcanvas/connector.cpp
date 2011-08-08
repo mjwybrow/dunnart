@@ -79,8 +79,8 @@ Connector::Connector()
       m_colour(defaultConnLineCol),
       m_saved_colour(defaultConnLineCol),
       m_directed(false),
-      cyclic(false),
-      inEa(true),
+      m_is_cycle_member(false),
+      m_obeys_directed_edge_constraints(true),
       m_arrow_head_type(normal),
       dotted(false)
 {
@@ -232,7 +232,8 @@ void Connector::initWithXMLProperties(Canvas *canvas,
     }
     
     optionalProp(node, x_idealLength, m_ideal_length, ns);
-    optionalProp(node, x_inEa, inEa, ns);
+    optionalProp(node, x_obeysDirEdgeConstraints,
+            m_obeys_directed_edge_constraints, ns);
     int oc=NONE;
     if (optionalProp(node, x_orthogonalConstraint, oc, ns)) 
     {
@@ -436,9 +437,10 @@ void Connector::addXmlProps(const unsigned int subset, QDomElement& node,
             newNsProp(node, x_dunnartNs, x_idealLength, m_ideal_length);
         }
 
-        if (inEa != true)
+        if ( ! m_obeys_directed_edge_constraints)
         {
-            newNsProp(node, x_dunnartNs, x_inEa, inEa);
+            newNsProp(node, x_dunnartNs, x_obeysDirEdgeConstraints,
+                    m_obeys_directed_edge_constraints);
         }
 
         if (orthogonalConstraint != NONE)
@@ -776,18 +778,26 @@ bool Connector::isDirected(void) const
     return m_directed;
 }
 
-bool Connector::isCyclic()  { return cyclic; }
-void Connector::isCyclic(bool value)  {
-  cyclic = value;
-
-  update();
+bool Connector::isCycleMember(void) const
+{
+    return m_is_cycle_member;
 }
 
-bool Connector::isInEa()  { return inEa; }
-void Connector::isInEa(bool value)  {
-  setInEa(value);
+void Connector::setCycleMember(const bool value)
+{
+    m_is_cycle_member = value;
+    update();
+}
 
-  update();
+bool Connector::obeysDirectedEdgeConstraints(void) const
+{
+    return m_obeys_directed_edge_constraints;
+}
+
+void Connector::setObeysDirectedEdgeConstraints(const bool value)
+{
+    m_obeys_directed_edge_constraints = value;
+    update();
 }
 
 QColor Connector::colour(void) const
@@ -1647,8 +1657,9 @@ void Connector::paint(QPainter *painter,
     
     painter->drawRect(boundingRect());
 #endif
+    bool showDecorations = canvas() && ! canvas()->isRenderingForPrinting();
 
-    if (isSelected())
+    if ( isSelected() && showDecorations )
     {
         QColor colour(0, 255, 255, 70);
         QPen highlight;
@@ -1662,7 +1673,7 @@ void Connector::paint(QPainter *painter,
     }
 
     // Debug.
-    if (!isSelected())
+    if ( ! isSelected() && showDecorations )
     {
         std::vector<Avoid::Point> checkpoints = avoidRef->routingCheckpoints();
         for (size_t i = 0; i < checkpoints.size(); ++i)
@@ -1676,7 +1687,8 @@ void Connector::paint(QPainter *painter,
     }
 
     QColor col = m_colour;
-    if (m_directed && cyclic && inEa)
+    if ( m_directed && m_is_cycle_member &&
+         m_obeys_directed_edge_constraints && showDecorations )
     { 
         col = QColor(180, 0, 255);
     }
@@ -1688,7 +1700,6 @@ void Connector::paint(QPainter *painter,
         pen.setDashPattern(dashes); 
     }
     painter->setPen(pen);
-
     painter->drawPath(painterPath());
     
     // Add the Arrowhead.
@@ -1706,19 +1717,6 @@ void Connector::paint(QPainter *painter,
         }
         painter->drawPath(m_arrow_path);
     }
-#if 0
-    if (isSelected())
-    {
-        col = QColor(0, 255, 255);
-        QPen pen(col);
-        QVector<qreal> dashes;
-        dashes << 3 << 3;
-        pen.setDashPattern(dashes); 
-        painter->setPen(pen);
-        painter->setBrush(QBrush());
-        painter->drawPath(painterPath());
-    }
-#endif
 }
 
 
@@ -1857,12 +1855,6 @@ void Connector::write_libavoid_path(QDomElement& node, QDomDocument& doc)
     {
         newNsProp(node, x_dunnartNs, x_libavoidPath, pathStr);
     }
-}
-
-
-void Connector::setInEa(bool value)
-{
-  inEa = value;
 }
 
 

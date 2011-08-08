@@ -689,7 +689,8 @@ void GraphData::connectorToEdge(Connector* conn,GraphLayout::Mode mode)
         // a constraint.
 #ifdef DIRECTED_CONSTRAINT_DEBUG
         cout << "conn(" << conn->getId() << ") cyclic: "
-             << conn->isCyclic() << " inEa: " << conn->isInEa();
+             << conn->isCycleMember() << " obeysDirEdgeConstraints: "
+             << conn->obeysDirectedEdgeConstraints();
         
         // Get the shapes that the connector is connecting
         pair<ShapeObj *, ShapeObj*> endPoints = conn->getAttachedShapes();
@@ -706,8 +707,8 @@ void GraphData::connectorToEdge(Connector* conn,GraphLayout::Mode mode)
         }
         cout << endl;
 #endif
-        if ((!conn->isCyclic() && conn->isInEa()) || 
-                (conn->isCyclic() && conn->isInEa()))
+        if ((!conn->isCycleMember() && conn->obeysDirectedEdgeConstraints()) || 
+                (conn->isCycleMember() && conn->obeysDirectedEdgeConstraints()))
         {
 #ifdef DIRECTED_CONSTRAINT_DEBUG
             cout << "generating directed constraint for conn(" 

@@ -532,9 +532,11 @@ void MainWindow::documentExport(void)
         if (painter.begin(&generator))
         {
             painter.setRenderHint(QPainter::Antialiasing);
+            currCanvas->setRenderingForPrinting(true);
             currCanvas->render(&painter, targetRect,
                     currCanvas->sceneRect(),
                     Qt::IgnoreAspectRatio);
+            currCanvas->setRenderingForPrinting(false);
 
             painter.end();
         }
@@ -554,9 +556,11 @@ void MainWindow::documentExport(void)
         if (painter.begin(&printer))
         {
             painter.setRenderHint(QPainter::Antialiasing);
+            currCanvas->setRenderingForPrinting(true);
             currCanvas->render(&painter, QRectF(),
                     currCanvas->pageRect().adjusted(+3, +3, -3, -3),
                     Qt::IgnoreAspectRatio);
+            currCanvas->setRenderingForPrinting(false);
         }
         else
         {
@@ -576,8 +580,10 @@ void MainWindow::documentPrint(void)
     {
         QPainter painter(&printer);
         painter.setRenderHint(QPainter::Antialiasing);
+        currCanvas->setRenderingForPrinting(true);
         currCanvas->render(&painter, QRectF(),
                 currCanvas->pageRect());
+        currCanvas->setRenderingForPrinting(false);
     }
 }
 

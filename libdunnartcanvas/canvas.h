@@ -213,6 +213,12 @@ class Canvas : public QGraphicsScene
         void setOverlayRouterVisGraph(const bool value);
         void setOverlayRouterOrthogonalVisGraph(const bool value);
 
+        // When rendering for printing, constraint indicators, selection
+        // cues and other decorations are not painted.  This mode is used
+        // for printing documents as well as exporting SVG, PDF and PS files.
+        bool isRenderingForPrinting(void) const;
+        void setRenderingForPrinting(const bool printingMode);
+
     signals:
         void diagramFilenameChanged(const QFileInfo& title);
         void optChangedAutomaticLayout(bool checked);
@@ -323,6 +329,7 @@ class Canvas : public QGraphicsScene
         bool m_overlay_router_obstacles;
         bool m_overlay_router_visgraph;
         bool m_overlay_router_orthogonal_visgraph;
+        bool m_rendering_for_printing;
 
 #ifdef FPSTIMER
         clock_t startTime;

@@ -108,7 +108,7 @@ const char *x_dstPinID =         "dstPinID";
 const char *x_directed =         "directed";
 const char *x_reversed =         "reversed";
 const char *x_rectangular =      "rectangular";
-const char *x_inEa =             "inEa";
+const char *x_obeysDirEdgeConstraints = "obeysDirEdgeConstraints";
 const char *x_orthogonalConstraint = "orthogonalConstraint";
 const char *x_contains =         "contains";
 const char *x_constraint =       "constraint";
@@ -139,7 +139,7 @@ CanvasItem::CanvasItem(QGraphicsItem *parent, QString id, unsigned int lev)
           cascade_glow(false),
           m_string_id(id),
           m_internal_id(0),
-          _collapsed(false),
+          m_is_collapsed(false),
           _inactive(false),
           m_constraint_conflict(false)
 {
@@ -778,14 +778,14 @@ bool CanvasItem::canBe(const unsigned int flags)
 
 bool CanvasItem::isCollapsed(void)
 {
-    return _collapsed;
+    return m_is_collapsed;
 }
 
 
 void CanvasItem::setAsCollapsed(bool collapsed)
 {
-    _collapsed = collapsed;
-    if (_collapsed)
+    m_is_collapsed = collapsed;
+    if (m_is_collapsed)
     {
         setSelected(false);
     }

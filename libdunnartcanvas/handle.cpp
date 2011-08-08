@@ -108,6 +108,12 @@ void Handle::paint(QPainter *painter,
     Q_UNUSED (widget)
     assert(painter->isActive());
 
+    if (canvas()->isRenderingForPrinting())
+    {
+        // Don't display handles if rendering for printing.
+        return;
+    }
+
     QColor highlight = QColor(0, 255, 255);
     painter->setPen(QPen(QBrush(Qt::black), 1));
     painter->setBrush(QBrush(QColor(highlight)));

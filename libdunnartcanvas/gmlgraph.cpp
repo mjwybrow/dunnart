@@ -942,7 +942,7 @@ void Graph::createConnector(ogdf::edge e) {
         if(conn==NULL) {
             Connector* conn = new Connector();
             conn->initWithConnection(start,end);
-            conn->setInEa(false);
+            conn->setObeysDirectedEdgeConstraints(false);
             connectors[e] = conn;
             if(UML) {
                 if(GA.type(e)==ogdf::Graph::generalization) {

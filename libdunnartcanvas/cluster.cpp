@@ -333,7 +333,7 @@ void Cluster::changeDetailLevel(bool expand)
         // Make it appear as if nothing moved.
         canvas()->getActions().clear();
         routerRemove();
-        _collapsed = false;
+        m_is_collapsed = false;
         routerAdd();
         setZValue(ZORD_Cluster);
         // Restart graph layout so it no longer sees collapsed cluster
@@ -386,7 +386,7 @@ void Cluster::changeDetailLevel(bool expand)
         recomputeBoundary();
         // Add center handle.
         routerRemove();
-        _collapsed = true;
+        m_is_collapsed = true;
         routerRemove();
         setZValue(ZORD_Shape);
 
@@ -728,7 +728,7 @@ void Cluster::calculateBoundary(void)
 
 void Cluster::setNewBoundary(std::vector<Avoid::Point>& points)
 {
-    if (_collapsed)
+    if (m_is_collapsed)
     {
         return;
     }
@@ -754,7 +754,7 @@ void Cluster::setNewBoundary(std::vector<Avoid::Point>& points)
 void Cluster::setCentrePos(const QPointF& newPos)
 {
     // This is only used for collapsed clusters.
-    assert(_collapsed);
+    assert(m_is_collapsed);
 
     // Adjust the boundary.
     QPointF diff = pos() - newPos;
