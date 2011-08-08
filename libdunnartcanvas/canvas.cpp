@@ -522,7 +522,13 @@ void Canvas::setExpandedPage(const QRectF newExpandedPage)
 
 void Canvas::drawBackground(QPainter *painter, const QRectF& rect)
 {
-    if ( m_expanded_page.isNull() || m_rendering_for_printing)
+    if ( m_rendering_for_printing )
+    {
+        // Don't draw any background at all.
+        return;
+    }
+
+    if ( m_expanded_page.isNull() )
     {
         // No expanded page: effectively show just the normal page.
         m_expanded_page = m_page;
@@ -539,6 +545,12 @@ void Canvas::drawBackground(QPainter *painter, const QRectF& rect)
 void Canvas::drawForeground(QPainter *painter, const QRectF& rect)
 {
     Q_UNUSED(rect);
+
+    if ( m_rendering_for_printing )
+    {
+        // Don't draw any foreground at all.
+        return;
+    }
 
     if (m_overlay_router_obstacles)
     {
