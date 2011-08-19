@@ -1007,7 +1007,7 @@ void GraphData::distroToDistributionConstraint(Distribution* distro)
  */
 void GraphData::separationToMultiSeparationConstraint(Separation* sep)
 {
-    if (sep->rels.size() < 2)
+    if (sep->rels.empty())
     {
         // Empty distribution.
         return;
