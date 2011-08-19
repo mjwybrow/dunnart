@@ -26,6 +26,7 @@
 #include <QApplication>
 #include <QPainter>
 #include <QGraphicsSceneMouseEvent>
+#include <QSvgGenerator>
 
 #include "libdunnartcanvas/oldcanvas.h"
 #include "libdunnartcanvas/shape.h"
@@ -854,7 +855,7 @@ void CanvasItem::setAsInactive(bool inactive, CanvasItemSet fullSet)
     _inactive = inactive;
     if (_inactive)
     {
-        QDomElement xn = to_QDomElement(XMLSS_DUNNART, doc);
+        QDomElement xn = to_QDomElement(XMLSS_ALL, doc);
         assert(!xn.isNull());
 
         inactiveObjXml[this] = xn;
@@ -1052,6 +1053,52 @@ void CanvasItem::loneSelectedChange(const bool value)
     Q_UNUSED(value)
 
     // Nothing.
+}
+
+
+// This method returns the SVG tags that can be used to draw the CanvasItem
+// in an output SVG file.  It does this by outputing the canvas with just the
+// one item and them stripping the header and footer SVG tags.  Doing this
+// allows us to know the SVG for individual CanvasItems and transform it by
+// injecting object IDs or onHover code if we desire.
+// This is required because the QSvgGenerator just uses QPainter instructions
+// to generate the SVG and this has now information about the objects that
+// were the source of the drawing instructions.
+//
+QString CanvasItem::svgCodeAsString(const QSize& size, const QRectF& viewBox)
+{
+    // Write SVG to a QBuffer.
+    QBuffer buffer;
+    buffer.open(QBuffer::WriteOnly);
+    QSvgGenerator generator;
+    generator.setOutputDevice(&buffer);
+
+    // The the generator size and view the same as the set for the
+    // wrapper SVG.
+    generator.setSize(size);
+    generator.setViewBox(viewBox);
+
+    // Do the actual painting (output of SVG code)
+    QPainter painter;
+    if (painter.begin(&generator))
+    {        
+        painter.setRenderHint(QPainter::Antialiasing);
+        painter.setMatrix(this->sceneMatrix(), true);
+        this->paint(&painter, NULL, NULL);
+        painter.end();
+    }
+    buffer.close();
+
+    QString svgStr(buffer.data());
+
+    // Remove SVG tags up to beginning of first group tag, which will be
+    // the beginning of the definition of the object.
+    svgStr = svgStr.remove(0, svgStr.indexOf("<g "));
+
+    // Remove "</svg>\n" from end of string.
+    svgStr.chop(7);
+
+    return svgStr;
 }
 
 

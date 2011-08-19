@@ -53,7 +53,7 @@ QPainterPath DiamondShape::buildPainterPath(void)
 QDomElement DiamondShape::to_QDomElement(const unsigned int subset,
         QDomDocument& doc)
 {
-    QDomElement node = doc.createElement("path");
+    QDomElement node = doc.createElement("dunnart:node");
 
     if (subset & XMLSS_IOTHER)
     {
@@ -61,29 +61,6 @@ QDomElement DiamondShape::to_QDomElement(const unsigned int subset,
     }
 
     addXmlProps(subset, node, doc);
-
-    if (subset & XMLSS_ISVG)
-    {
-        QRectF rect = shapeRect();
-
-        float hw = rect.width()  / 2;
-        float hh = rect.height() / 2;
-
-        float x1 = rect.x();
-        float y1 = rect.y() - hh;
-        float x2 = rect.x() + hw;
-        float y2 = rect.y();
-        float x3 = rect.x();
-        float y3 = rect.y() + hh;
-        float x4 = rect.x() - hw;
-        float y4 = rect.y();
-
-        QString value;
-        value = value.sprintf("M %.10g,%.10g L %.10g,%.10g L %.10g,%.10g "
-                "L %.10g,%.10g L %.10g,%.10g z",
-                x1, y1, x2, y2, x3, y3, x4, y4, x1, y1);
-        newProp(node, "d", value);
-    }
 
     return node;
 }

@@ -96,75 +96,14 @@ QRectF BioHelix::labelBoundingRect(void) const
 QDomElement BioHelix::to_QDomElement(const unsigned int subset, 
         QDomDocument& doc)
 {
-    QDomElement node = doc.createElement("rect");
-   
+    QDomElement node = doc.createElement("dunnart:node");
+
     if (subset & XMLSS_IOTHER)
     {
         newNsProp(node, x_dunnartNs, x_type, x_shBioHelix);
     }
 
     addXmlProps(subset, node, doc);
-
-    if (subset & XMLSS_ISVG)
-    {
-        char value[50];
-
-        QDomElement node2 = doc.createElement("rect");
-        node.appendChild(node2);
-
-        QRectF rect = shapeRect();
-        double yround = rect.height() / 2;
-        double xround = rect.width()  / 2;
-
-        if (xround <= yround)
-        {
-            yround = xround / 2;
-            
-            sprintf(value, "%.10g", rect.width());
-            newProp(node2, "width", value);
-            sprintf(value, "%.10g", yround * 2);
-            newProp(node2, "height", value);
-        }
-        else
-        {
-            xround = yround / 2;
-            
-            sprintf(value, "%.10g", xround * 2);
-            newProp(node2, "width", value);
-            sprintf(value, "%.10g", rect.height());
-            newProp(node2, "height", value);
-        }
-
-        //double radius = std::min(w, h) / 2;
-
-        sprintf(value, "%.10g", rect.width());
-        newProp(node, "width", value);
-        sprintf(value, "%.10g", rect.height());
-        newProp(node, "height", value);
-        sprintf(value, "%.10g", rect.x());
-        newProp(node, "x", value);
-        newProp(node2, "x", value);
-        sprintf(value, "%.10g", rect.y());
-        newProp(node, "y", value);
-        newProp(node2, "y", value);
-        
-        sprintf(value, "%.10g", xround);
-        newProp(node, "rx", value);
-        newProp(node2, "rx", value);
-        sprintf(value, "%.10g", yround);
-        newProp(node, "ry", value);
-        newProp(node2, "ry", value);
-
-        newProp(node2, "class", "shape");
-        QColor fillCol = fillColour();
-        if (fillCol != shFillCol)
-        {
-            QString value;
-            value = value.sprintf("fill:#%02X%02X%02X;", fillCol.red(),
-                    fillCol.green(), fillCol.blue());
-            newProp(node2, "style", value);
-        }
-    }
  
     return node;
 }

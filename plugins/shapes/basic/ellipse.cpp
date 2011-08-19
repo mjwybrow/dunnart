@@ -61,7 +61,7 @@ QPainterPath EllipseShape::buildPainterPath(void)
 QDomElement EllipseShape::to_QDomElement(const unsigned int subset,
         QDomDocument& doc)
 {
-    QDomElement node = doc.createElement("rect");
+    QDomElement node = doc.createElement("dunnart:node");
 
     if (subset & XMLSS_IOTHER)
     {
@@ -69,26 +69,6 @@ QDomElement EllipseShape::to_QDomElement(const unsigned int subset,
     }
 
     addXmlProps(subset, node, doc);
-
-    if (subset & XMLSS_ISVG)
-    {
-        char value[50];
-        QRectF rect = shapeRect();
-        double radius = std::min(rect.width(), rect.height()) / 2;
-
-        sprintf(value, "%.10g", rect.width());
-        newProp(node, "width", value);
-        sprintf(value, "%.10g", rect.height());
-        newProp(node, "height", value);
-        sprintf(value, "%.10g", rect.x());
-        newProp(node, "x", value);
-        sprintf(value, "%.10g", rect.y());
-        newProp(node, "y", value);
-
-        sprintf(value, "%.10g", radius);
-        newProp(node, "rx", value);
-        newProp(node, "ry", value);
-    }
 
     return node;
 }

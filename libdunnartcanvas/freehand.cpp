@@ -355,38 +355,14 @@ void FreehandShape::setPosition(int x, int y, bool from_cider)
 QDomElement FreehandShape::to_QDomElement(const unsigned int subset,
         QDomDocument& doc)
 {
-    QDomElement node = doc.createElement("path");
-  
+    QDomElement node = doc.createElement("dunnart:node");
+
     if (subset & XMLSS_IOTHER)
     {
         newNsProp(node, x_dunnartNs, x_type, x_shFreehand);
     }
     
     addXmlProps(subset, node, doc);
-
-    if (subset & XMLSS_ISVG)
-    {
-        QString geomStr, str;
-
-        geomStr += str.sprintf("%d", (int) _geometry.strokes.size());
-
-        StlStrokeList::iterator sEnd = _geometry.strokes.end();
-        for (StlStrokeList::iterator s = _geometry.strokes.begin(); 
-                s != sEnd; ++s)
-        {
-            geomStr += str.sprintf(" %d", (int) (*s).size());
-            StlStroke::iterator pBegin = (*s).begin();
-            StlStroke::iterator pEnd = (*s).end();
-            for (StlStroke::iterator p = pBegin; p != pEnd; ++p)
-            {
-                geomStr += str.sprintf(" %g,%g,%u", (*p).x, (*p).y, (*p).milliTime);
-            }
-        }
-        geomStr += str.sprintf(" %g,%g", _geometry.initialOffsetX,
-                _geometry.initialOffsetY);
-    
-        newNsProp(node, x_dunnartNs, x_geometry, geomStr);
-    }
 
     return node;
 }

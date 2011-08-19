@@ -58,7 +58,6 @@ class Cluster: public ShapeObj
         }
         Cluster(CanvasItemList& memberList, QString id);
         Cluster(Canvas *canvas, const QDomElement& node, const QString& ns);
-        void write_svg_path(QDomElement& node);
         QDomElement to_QDomElement(const unsigned int subset, 
                 QDomDocument& doc);
         Avoid::Polygon *poly(const double buffer, Avoid::Polygon *poly = NULL);

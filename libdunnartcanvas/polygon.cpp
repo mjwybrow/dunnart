@@ -280,42 +280,14 @@ void PolygonShape::set_label(const char *l)
 QDomElement PolygonShape::to_QDomElement(const unsigned int subset,
         QDomDocument& doc)
 {
-    QDomElement node = doc.createElement("path");
-   
+    QDomElement node = doc.createElement("dunnart:node");
+
     if (subset & XMLSS_IOTHER)
     {
         newNsProp(node, x_dunnartNs, x_type, x_shPolygon);
     }
     
     addXmlProps(subset, node, doc);
-
-    if (subset & XMLSS_ISVG)
-    {
-        QString pathStr;
-        QString pointsStr;
-        QString str;
-        pointsStr = str.sprintf("%d ", _psn);
-        
-        for (int i = 0; i <= _psn; ++i)
-        {
-            if (i == _psn)
-            {
-                // Last point.
-                double x1 = _xps[0] + x() + 3;
-                double y1 = _yps[0] + y() + 3;
-                pathStr += str.sprintf("L %g,%g ", x1, y1);
-                continue;
-            }
-
-            double x1 = _xps[i] + x() + 3;
-            double y1 = _yps[i] + y() + 3;
-            pathStr += str.sprintf("%c %g,%g ", ((i == 0) ? 'M' : 'L'), x1, y1);
-            
-            pointsStr += str.sprintf("%d,%d ", _xps[i], _yps[i]);
-        }
-        newProp(node, "d", pathStr);
-        newNsProp(node, x_dunnartNs, x_geometry, pointsStr);
-    }
 
     return node;
 }

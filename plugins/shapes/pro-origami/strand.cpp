@@ -104,8 +104,8 @@ QPainterPath BioStrand::buildPainterPath(void)
 QDomElement BioStrand::to_QDomElement(const unsigned int subset, 
         QDomDocument& doc)
 {
-    QDomElement node = doc.createElement("path");
-   
+    QDomElement node = doc.createElement("dunnart:node");
+
     if (subset & XMLSS_IOTHER)
     {
         newNsProp(node, x_dunnartNs, x_reversed, m_direction_reversed);
@@ -114,106 +114,6 @@ QDomElement BioStrand::to_QDomElement(const unsigned int subset,
     }
     
     addXmlProps(subset, node, doc);
-
-    if (subset & XMLSS_ISVG)
-    {
-        QRectF rect = shapeRect();
-
-        double x = rect.x();
-        double y = rect.y();
-        double ex = rect.right();
-        double ey = rect.bottom();
-
-        double hw = rect.width() / 2;
-        double qw = rect.width() / 4;
-        double midx = rect.x() + hw;
-        
-        double hh = rect.height() / 2;
-        double qh = rect.height() / 4;
-        double midy = rect.y() + hh;
-
-        bool rotated = (rect.width() > rect.height());
-
-        float xs[7];
-        float ys[7];
-
-        if (!rotated && !m_direction_reversed)
-        {
-            xs[0] = midx;
-            ys[0] = y;
-            xs[1] = ex;
-            ys[1] = y + hw;
-            xs[2] = midx + qw;
-            ys[2] = y + hw;
-            xs[3] = midx + qw;
-            ys[3] = ey;
-            xs[4] = midx - qw;
-            ys[4] = ey;
-            xs[5] = midx - qw;
-            ys[5] = y + hw;
-            xs[6] = x;
-            ys[6] = y + hw;
-        }
-        else if (!rotated && m_direction_reversed)
-        {
-            xs[0] = midx;
-            ys[0] = ey;
-            xs[1] = x;
-            ys[1] = ey - hw;
-            xs[2] = midx - qw;
-            ys[2] = ey - hw;
-            xs[3] = midx - qw;
-            ys[3] = y;
-            xs[4] = midx + qw;
-            ys[4] = y;
-            xs[5] = midx + qw;
-            ys[5] = ey - hw;
-            xs[6] = ex;
-            ys[6] = ey - hw;
-        }
-        else if (rotated && m_direction_reversed)
-        {
-            xs[0] = ex;
-            ys[0] = midy;
-            xs[1] = ex - hh;
-            ys[1] = y;
-            xs[2] = ex - hh;
-            ys[2] = midy - qh;
-            xs[3] = x;
-            ys[3] = midy - qh;
-            xs[4] = x;
-            ys[4] = midy + qh;
-            xs[5] = ex - hh;
-            ys[5] = midy + qh;
-            xs[6] = ex - hh;
-            ys[6] = ey;
-        }
-        else if (rotated && !m_direction_reversed)
-        {
-            xs[0] = x;
-            ys[0] = midy;
-            xs[1] = x + hh;
-            ys[1] = ey;
-            xs[2] = x + hh;
-            ys[2] = midy + qh;
-            xs[3] = ex;
-            ys[3] = midy + qh;
-            xs[4] = ex;
-            ys[4] = midy - qh;
-            xs[5] = x + hh;
-            ys[5] = midy - qh;
-            xs[6] = x + hh;
-            ys[6] = y;
-        }
-
-        QString value;
-        value = value.sprintf("M %.10g,%.10g L %.10g,%.10g "
-                "L %.10g,%.10g L %.10g,%.10g L %.10g,%.10g L %.10g,%.10g "
-                "L %.10g,%.10g L %.10g,%.10g z",
-                xs[0], ys[0], xs[1], ys[1], xs[2], ys[2], xs[3], ys[3], 
-                xs[4], ys[4], xs[5], ys[5], xs[6], ys[6], xs[0], ys[0]);
-        newProp(node, "d", value);
-    }
 
     return node;
 }

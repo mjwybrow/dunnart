@@ -51,7 +51,7 @@ QPainterPath UserInterationShape::buildPainterPath(void)
 QDomElement UserInterationShape::to_QDomElement(const unsigned int subset,
         QDomDocument& doc)
 {
-    QDomElement node = doc.createElement("path");
+    QDomElement node = doc.createElement("dunnart:node");
 
     if (subset & XMLSS_IOTHER)
     {
@@ -59,26 +59,6 @@ QDomElement UserInterationShape::to_QDomElement(const unsigned int subset,
     }
 
     addXmlProps(subset, node, doc);
-
-    if (subset & XMLSS_ISVG)
-    {
-        QRectF rect = shapeRect();
-
-        float x1 = rect.left();
-        float y1 = rect.top();
-        float x2 = rect.right();
-        float y2 = rect.top();
-        float x3 = rect.right() - 12;
-        float y3 = rect.bottom();
-        float x4 = rect.left() + 12;
-        float y4 = rect.bottom();
-
-        QString value;
-        value = value.sprintf("M %.10g,%.10g L %.10g,%.10g L %.10g,%.10g "
-                "L %.10g,%.10g L %.10g,%.10g z",
-                x1, y1, x2, y2, x3, y3, x4, y4, x1, y1);
-        newProp(node, "d", value);
-    }
 
     return node;
 }

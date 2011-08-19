@@ -176,7 +176,6 @@ class Connector : public CanvasItem
         void applyNewRoute(const Avoid::Polygon& route);
         void applyNewRoute(const Avoid::PolyLine& route, bool updateLibavoid);
         void updateFromLibavoid(void);
-        virtual void write_svg_path(QDomElement& node);
         virtual void write_libavoid_path(QDomElement& node,
                 QDomDocument& doc);
         virtual QDomElement to_QDomElement(const unsigned int subset,

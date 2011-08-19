@@ -128,7 +128,6 @@ extern const char *x_libavoidPath;
 //-------------------------------------------------
 
 static const unsigned int XMLSS_INONE    = 0;
-static const unsigned int XMLSS_ISVG     = 1;
 static const unsigned int XMLSS_IOTHER   = 2;
 static const unsigned int XMLSS_IMOVE    = 4;
 static const unsigned int XMLSS_IRESIZE  = 8;
@@ -139,8 +138,6 @@ static const unsigned int XMLSS_XMOVE    = 64;
 
 // XMLSS_ALL should be all of XMLSS_I*:
 static const unsigned int XMLSS_ALL      = XMLSS_XMOVE - 1;
-// XMLSS_ALL should be all of XMLSS_I* except XMLSS_ISVG:
-static const unsigned int XMLSS_DUNNART  = XMLSS_ALL - XMLSS_ISVG;
 
 //-------------------------------------------------
 
@@ -229,6 +226,7 @@ class CanvasItem: public QGraphicsSvgItem
         void setConstraintConflict(const bool conflict);
         bool constraintConflict(void) const;
         virtual void loneSelectedChange(const bool value);
+        QString svgCodeAsString(const QSize& size, const QRectF& viewBox);
 
         int distance;
         int cascade_glow;

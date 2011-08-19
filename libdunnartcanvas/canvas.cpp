@@ -31,6 +31,7 @@
 #include <QSvgRenderer>
 #include <QGraphicsSceneMouseEvent>
 #include <QUndoStack>
+#include <QSvgGenerator>
 
 #include "libdunnartcanvas/canvas.h"
 #include "libdunnartcanvas/shape.h"
@@ -1034,7 +1035,7 @@ QString Canvas::saveConstraintInfoToString(void) const
     QDomElement svg = doc.createElement("svg");
     doc.appendChild(svg);
 
-    writeLayoutOptionsToDomDocument(doc);
+    writeLayoutOptionsToDomElement(doc);
 
     // Put things into a multimap before outputting them,
     // so that they will be sorted in the correct Z-order.
@@ -1387,7 +1388,7 @@ void Canvas::copySelection(void)
     for (int i = 0; i < selected_items.size(); ++i)
     {
         QDomElement elem =
-                selected_items.at(i)->to_QDomElement(XMLSS_DUNNART, m_clipboard);
+                selected_items.at(i)->to_QDomElement(XMLSS_ALL, m_clipboard);
 
         svg.appendChild(elem);
     }
@@ -2594,304 +2595,125 @@ static const char *x_rubberBandRouting =
 static const char *x_interferingConnectorColours =
         "interferingConnectorColours";
 
-void Canvas::saveDiagramAsSVG(QString save_filename)
+static QString nodeToString(const QDomNode& node)
 {
-    assert(!save_filename.isEmpty());
-    char *diagram_name = save_filename.toAscii().data();
+    QString nodeString;
+    QTextStream nodeTextStream(&nodeString);
+    node.save(nodeTextStream, 4);
 
-    char save_name[strlen(diagram_name) + 5];
-    char basename[strlen(diagram_name) + 1];
-    char *ext = &(diagram_name[strlen(diagram_name) - 4]);
-    if ((strlen(diagram_name) >= 5) &&
-            ((strstr(ext, ".gml") == ext) || (strstr(ext, ".svg") == ext)))
+    return nodeString;
+}
+
+void Canvas::saveDiagramAsSVG(QString outputFilename)
+{
+    QSize size = pageRect().size().toSize();
+    QRectF viewBox = pageRect();
+
+    QBuffer buffer;
+    buffer.open(QBuffer::WriteOnly);
+
+    QSvgGenerator generator;
+    generator.setOutputDevice(&buffer);
+
+    generator.setSize(size);
+    generator.setViewBox(viewBox);
+    generator.setDescription(tr("This SVG file was exported from "
+            "Dunnart, a constraint-based diagram editor."));
+
+    QPainter painter;
+    if (painter.begin(&generator))
     {
-        strcpy(basename, diagram_name);
-        char *ext = &(basename[strlen(basename) - 4]);
-        *ext = '\0';
-
-        sprintf(save_name, "%s.svg", basename);
+        // Don't paint any objects into the generator, be just want to capture
+        // the header and footer SVG tags, that we can later wrap around the
+        // individual drawing tags for all canvas items.
+        painter.end();
     }
-    else
-    {
-        qFatal("Error: with file '%s' in export_diagram_svg().",
-                diagram_name);
-    }
+    buffer.close();
 
+    // Remove SVG tags up to beginning of first group tag, which will be
+    // the beginning of the definition of the
+    QString svgStr(buffer.data());
+    int contentStart = svgStr.indexOf("<g ");
+    int contentEnd = svgStr.indexOf("</g>") + 5;
+    svgStr = svgStr.remove(contentStart, svgStr.length() - contentStart);
 
-    QDomDocument doc("svg");
-
-    QDomProcessingInstruction declaration = doc.createProcessingInstruction(
-            "xml", "version='1.0' encoding='UTF-8'");
-    doc.appendChild(declaration);
-
-    QDomComment comment = doc.createComment(
-            "Created with Dunnart (http://www.dunnart.org/)");
-    doc.appendChild(comment);
-
-    QDomElement svg = doc.createElement("svg");
-    doc.appendChild(svg);
-
-    // Namespace declarations
-    newProp(svg, "xmlns:inkscape", "http://www.inkscape.org/namespaces/inkscape");
-    newProp(svg, "xmlns:dunnart", x_dunnartURI);
-    newProp(svg, "xmlns", "http://www.w3.org/2000/svg");
-    newProp(svg, "xmlns:sodipodi",
-            "http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd");
-    newProp(svg, "xmlns:xlink", "http://www.w3.org/1999/xlink");
-
+    // Add namespaces.
+    int namespaceInsertPos = svgStr.indexOf(" xmlns");
+    // Add Dunnart namespace.
+    svgStr.insert(namespaceInsertPos,
+            QString(" xmlns:dunnart=\"%1\"\n").arg(x_dunnartURI));
     // Now, add any namespaces used in the input document that we don't use
     // (since we will be copying properties in such namespaces straight
     // through).
-    QMap<QString, QString>::const_iterator i = m_extra_namespaces_map.constBegin();
+    QMap<QString, QString>::const_iterator i =
+            m_extra_namespaces_map.constBegin();
     while (i != m_extra_namespaces_map.constEnd())
     {
         const QString& nsName = i.key();
         const QString& nsURI  = i.value();
 
-        newProp(svg, "xmlns:" + nsName, nsURI);
+        svgStr.insert(namespaceInsertPos,
+                QString(" xmlns:%1=\"%2\"\n").arg(nsName).arg(nsURI));
         ++i;
     }
 
-    // Copy XML for any external namespaces we have saved
-    // [ADS] FIXME: these are all just made children of the root SVG node
-    // for now.
-    QDomNode externalNode;
-    foreach (externalNode, m_external_node_list)
-    {
-        svg.appendChild(externalNode);
-    }
+    QFile svgFile(outputFilename);
+    svgFile.open(QIODevice::WriteOnly);
+    svgFile.write(svgStr.toUtf8());
 
-    // Inkscape keeps guidelines in the sodipodi namedview.
-    QDomElement spNamedview = doc.createElement("sodipodi:namedview");
-    svg.appendChild(spNamedview);
-
-    spNamedview.setAttribute("showguides", "false");
-    spNamedview.setAttribute("guidetolerance", "5.0");
-    spNamedview.setAttribute("guidecolor", "#000000ff");
-    spNamedview.setAttribute("guideopacity", "0.25");
-    spNamedview.setAttribute("bordercolor", "#000000");
-    spNamedview.setAttribute("borderopacity", "0.5");
-
-    QRectF page = this->pageRect();
-
-    newProp(spNamedview,x_width,page.width(),"px");
-    newProp(spNamedview,x_height,page.height(),"px");
-    newProp(svg,x_width,"100%");
-    newProp(svg,x_height,"100%");
-
-    QString value;
-    value = value.sprintf("%g %g %g %g", page.x(), page.y(),
-            page.width(), page.height());
-    svg.setAttribute("viewBox", value);
-
-    this->writeLayoutOptionsToDomDocument(doc);
-
-    char globalStyle[2000];
-    sprintf(globalStyle,
-            ".shape   { "
-                        "stroke:black; "
-                        "stroke-width:1px; "
-                        "fill:#f0f0d2; "
-                        "} "
-            ".connector { "
-                        "fill:none; "
-                        "stroke:black; "
-                        "stroke-width:1px; "
-                        "stroke-linecap:butt; "
-                        "stroke-linejoin:miter; "
-                        "stroke-opacity:1; "
-                        "} "
-            ".connector:hover { "
-                        "stroke-width:5px; "
-                        "} "
-            ".cluster { "
-                        "fill:#60cdf3; "
-                        "fill-opacity:0.33333333; "
-                        "} "
-            ".tLabel { "
-                        "text-anchor:middle; "
-                        "text-align:center; "
-                        "} "
-            ".tsLabel { "
-                        "font-size:%dpx; "
-                        "font-style:normal; "
-                        "font-weight:normal; "
-                        "fill:black; "
-                        "fill-opacity:1; "
-                        "stroke:none; "
-                        "font-family:DejaVu Sans; "
-                        "} "
-            ".frLabel { "
-                        "font-size:%dpx; "
-                        "font-style:normal; "
-                        "font-weight:normal; "
-                        "fill:black; "
-                        "fill-opacity:1; "
-                        "stroke:none; "
-                        "stroke-width:1px; "
-                        "stroke-linecap:butt; "
-                        "stroke-linejoin:miter; "
-                        "stroke-opacity:1; "
-                        "font-family:DejaVu Sans; "
-                        "font-stretch:normal; "
-                        "font-variant:normal; "
-                        "text-anchor:middle; "
-                        "text-align:center; "
-                        "progression-align:center; "
-                        "writing-mode:lr; "
-                        "line-height:125%%; "
-                        "} ",
-            shapeFontSize, shapeFontSize);
-    QDomElement styleNode = doc.createElement("style");
-    styleNode.setAttribute(x_type, "text/css");
-    svg.appendChild(styleNode);
-    QDomText styleText = doc.createTextNode(globalStyle);
-    styleNode.appendChild(styleText);
-
-    QDomElement defs = doc.createElement("defs");
-    svg.appendChild(defs);
-
-    // Default arrow end
-    QDomElement marker = doc.createElement("marker");
-    defs.appendChild(marker);
-    newProp(marker, "inkscape:stockid", "ConnArrowEnd");
-    newProp(marker, "orient", "auto");
-    newProp(marker, "refX", "7.5");
-    newProp(marker, "refY", "0.0");
-    newProp(marker, "id", "ConnArrowEnd");
-    newProp(marker, "style", "overflow:visible;");
-
-    QDomElement node = doc.createElement("path");
-    marker.appendChild(node);
-    newProp(node, "d",
-            "M 0.0,0.0 L 1.0,-5.0 L -12.5,0.0 L 1.0,5.0 L 0.0,0.0 z");
-    newProp(node, "style",
-            "fill-rule:evenodd; stroke:black; stroke-width:1px; marker-start:none;");
-    newProp(node, "transform", "scale(0.6) rotate(180)");
-
-    // UML 'Normal' Arrow end (for association)
-    marker = doc.createElement("marker");
-    defs.appendChild(marker);
-    newProp(marker, "inkscape:stockid", "ConnArrowEndNormal");
-    newProp(marker, "orient", "auto");
-    newProp(marker, "refX", "7.5");
-    newProp(marker, "refY", "0.0");
-    newProp(marker, "id", "ConnArrowEndNormal");
-    newProp(marker, "style", "overflow:visible;");
-
-    node = doc.createElement("path");
-    marker.appendChild(node);
-    newProp(node, "d",
-            "M 1.0,-7.0 L -12.5,0.0 M 1.0,7.0 L -12.5,0.0 z");
-    newProp(node, "style",
-            "fill-rule:evenodd; fill:none; stroke:black; stroke-width:1px; marker-start:none;");
-    newProp(node, "transform", "scale(0.6) rotate(180)");
-
-    // UML Inheritance arrow end
-    marker = doc.createElement("marker");
-    defs.appendChild(marker);
-    newProp(marker, "inkscape:stockid",
-            "ConnArrowEndInheritance");
-    newProp(marker, "orient", "auto");
-    newProp(marker, "refX", "7.5");
-    newProp(marker, "refY", "0.0");
-    newProp(marker, "id", "ConnArrowEndInheritance");
-    newProp(marker, "style", "overflow:visible;");
-
-    node = doc.createElement("path");
-    marker.appendChild(node);
-    newProp(node, "d",
-            "M 0.0,0.0 L 1.0,-7.0 L -12.5,0.0 L 1.0,7.0 L 0.0,0.0 z");
-    newProp(node, "style",
-            "fill-rule:evenodd; fill:white; stroke:black; stroke-width:1px; marker-start:none;");
-    newProp(node, "transform", "scale(0.6) rotate(180)");
-
-    // UML Aggregation arrow end (hollow diamond)
-    marker = doc.createElement("marker");
-    defs.appendChild(marker);
-    newProp(marker, "inkscape:stockid",
-            "ConnArrowEndAggregation");
-    newProp(marker, "orient", "auto");
-    newProp(marker, "refX", "7.5");
-    newProp(marker, "refY", "0.0");
-    newProp(marker, "id", "ConnArrowEndAggregation");
-    newProp(marker, "style", "overflow:visible;");
-
-    node = doc.createElement("path");
-    marker.appendChild(node);
-    newProp(node, "d",
-            "M 6.0,0.0 L -3.25,-6.0 L -12.5,0.0 L -3.25,6.0 L 6.0,0.0 z");
-    newProp(node, "style",
-            "fill-rule:evenodd; fill:white; stroke:black; stroke-width:1px; marker-start:none;");
-    newProp(node, "transform", "scale(0.6) rotate(180)");
-
-    // UML Composition arrow end (filed diamond)
-    marker = doc.createElement("marker");
-    defs.appendChild(marker);
-    newProp(marker, "inkscape:stockid",
-            "ConnArrowEndComposition");
-    newProp(marker, "orient", "auto");
-    newProp(marker, "refX", "7.5");
-    newProp(marker, "refY", "0.0");
-    newProp(marker, "id", "ConnArrowEndComposition");
-    newProp(marker, "style", "overflow:visible;");
-
-    node = doc.createElement("path");
-    marker.appendChild(node);
-    newProp(node, "d",
-            "M 6.0,0.0 L -3.25,-6.0 L -12.5,0.0 L -3.25,6.0 L 6.0,0.0 z");
-    newProp(node, "style",
-            "fill-rule:evenodd; fill:black; stroke:black; stroke-width:1px; marker-start:none;");
-    newProp(node, "transform", "scale(0.6) rotate(180)");
-
-    // Put things into a multimap before outputting them,
-    // so that they will be sorted in the correct Z-order.
-    std::multimap<qreal, CanvasItem *> ordered_canvas_items;
+    setRenderingForPrinting(true);
     QList<CanvasItem *> canvas_items = items();
-    for (int i = 0; i < canvas_items.size(); ++i)
+    int canvas_count = canvas_items.size();
+    for (int i = 0; i < canvas_count; ++i)
     {
+        // Consider all the canvas items in reverse order, so they get drawn
+        // into the SVG file with the correct z-order.
+        CanvasItem *cobj = canvas_items.at(canvas_count - 1 - i);
+        QString svg = cobj->svgCodeAsString(size, viewBox);
+
+        // Less than three lines represents a open and close group tag
+        // (setting style), with no content between, so only output it if
+        // there are more than three lines.
+        int lines = svg.count('\n');
+        if (lines > 3)
+        {
+            svgFile.write(svg.toUtf8());
+        }
+    }
+    setRenderingForPrinting(false);
+
+    svgFile.write("<!-- Dunnart description -->\n");
+    QDomDocument doc("svg");
+
+    QDomElement optionsNode = this->writeLayoutOptionsToDomElement(doc);
+    QString optionsNodeString = nodeToString(optionsNode);
+    svgFile.write(optionsNodeString.toUtf8());
+
+    for (int i = 0; i < canvas_count; ++i)
+    {
+        // Consider all the canvas items in reverse order, so they get drawn
+        // into the SVG file with the correct z-order.
         CanvasItem *canvasObj = canvas_items.at(i);
-        ordered_canvas_items.insert(
-                std::make_pair(canvasObj->zValue(), canvasObj));
+
+        QDomNode node = canvasObj->to_QDomElement(XMLSS_ALL, doc);
+        QString svgNodeString = nodeToString(node);
+        svgFile.write(svgNodeString.toUtf8());
     }
 
-    for (std::multimap<qreal, CanvasItem *>::iterator curr =
-            ordered_canvas_items.begin(); curr != ordered_canvas_items.end();
-            ++curr)
+    // Copy XML for any external namespaces we have saved
+    if ( ! m_external_node_list.empty() )
     {
-        CanvasItem *canvasObj = curr->second;
-
-        QDomElement node = canvasObj->to_QDomElement(XMLSS_ALL, doc);
-        if (dynamic_cast<Guideline *> (canvasObj) != NULL)
+        svgFile.write("<!-- External namespace nodes -->\n");
+        QDomNode externalNode;
+        foreach (externalNode, m_external_node_list)
         {
-            // Store guide in sodipodi namedview
-            //XML xmlSetNs(node, sodipodiNS);
-            spNamedview.appendChild(node);
-        }
-        else
-        {
-            QDomNode parent = node.parentNode();
-            if (!parent.isNull())
-            {
-                // The constructed node will have a parent if it was placed
-                // in a group.  In this case, add the group node to the tree.
-                svg.appendChild(node.parentNode());
-            }
-            else
-            {
-                svg.appendChild(node);
-            }
+            QString externalNodeString = nodeToString(externalNode);
+            svgFile.write(externalNodeString.toUtf8());
         }
     }
 
-    // Save the QDomDocument to the disk.
-    QFile file;
-    file.setFileName(save_name);;
-    file.open(QIODevice::WriteOnly);
-    file.write(doc.toByteArray(2));
-    file.close();
-
-    saveConstraintInfoToString();
+    svgFile.write(QByteArray("</svg>\n"));
+    svgFile.close();
 }
 
 
@@ -2977,11 +2799,10 @@ void Canvas::loadLayoutOptionsFromDomElement(const QDomElement& options)
 
 
 
-void Canvas::writeLayoutOptionsToDomDocument(QDomDocument& doc) const
+QDomElement Canvas::writeLayoutOptionsToDomElement(QDomDocument& doc) const
 {
     // Store Dunnart options.
     QDomElement dunOpts = doc.createElement("dunnart:options");
-    doc.documentElement().appendChild(dunOpts);
 
     // layout properties
     GraphLayout* gl = this->layout();
@@ -3024,6 +2845,8 @@ void Canvas::writeLayoutOptionsToDomDocument(QDomDocument& doc) const
     {
         newProp(dunOpts,x_fontSize,shapeFontSize);
     }
+
+    return dunOpts;
 }
 
 

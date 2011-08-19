@@ -1250,120 +1250,6 @@ void ShapeObj::addXmlProps(const unsigned int subset, QDomElement& node,
             newNsProp(node, x_dunnartNs, x_connectionPins, pinRepStr);
         }
     }
-
-     if (subset & XMLSS_ISVG)
-     {
-        newProp(node, "class", "shape");
-
-        if (m_fill_colour != shFillCol)
-        {
-            QString value;
-            value = value.sprintf("fill:#%02X%02X%02X;", m_fill_colour.red(),
-                    m_fill_colour.green(), m_fill_colour.blue());
-            newProp(node, "style", value);
-        }
-
-        // Handle shape text;
-        if (m_label.length() > 0)
-        {
-            QRectF text_rect = labelBoundingRect();
-
-            double xp = x();
-            double yp = y();
-            //double w = text_rect.width();
-            //double h = text_rect.height();
-
-            // XXX This memory may be lost, but we need to allocate it so
-            // the group element doesn't go out of scope when the function
-            // exits.  This needs to be rethought so the group can be easily
-            // passed back.
-            QDomElement *groupnode = new QDomElement(doc.createElement("g"));
-            groupnode->appendChild(node);
-#if 1 
-            // Output wrapped text as individual lines.
-            QDomElement tnode = doc.createElement("text");
-            groupnode->appendChild(tnode);
-            
-            QString idValue = QString("_text_%1").arg(getIdString());
-            newProp(tnode, "id", idValue);
-
-            newProp(tnode, "class", "tLabel");
-
-            // Get the wrapped lines for the shape.
-            QStringList lines;
-            QFontMetrics metrics(*shapeFont);
-            int lnsh = wrapQString(m_label, width() - 8, metrics, lines);
-            int shapeFontHeight = metrics.height();
-
-            newProp(tnode, "x", xp);
-            
-            double textY = yp - (lnsh / 2.0) + shapeFontSize;
-            
-            newProp(tnode, "y", textY);
-
-            int n = 0;
-            for (QStringList::iterator curr = lines.begin(); curr != lines.end();
-                    ++curr)
-            {
-                QString& line = *curr;
-
-                QDomElement tsnode = doc.createElement("tspan");
-                tnode.appendChild(tsnode);
-
-                QString idValue = QString("_tspan_%1_%2").arg(getIdString()).arg(n);
-                newProp(tsnode, "id", idValue);
-
-                newProp(tsnode, "class", "tsLabel");
-
-                newProp(tsnode, "x", xp);
-                newProp(tsnode, "y", textY + (n * shapeFontHeight));
-                newProp(tsnode, "sodipodi:role", "line");
-
-                QDomText text = doc.createTextNode(line);
-                tsnode.appendChild(text);
-
-                n++;
-            }
-#else
-            QDomElement froot = doc.createElement("flowRoot");
-            groupnode->appendChild(froot);
-
-            sprintf(value, "flowRoot%d", id);
-            newProp(froot, "id", value);
-
-            //newProp(froot, "xml:space", "preserve");
-            
-            newProp(froot, "class", "frLabel");
-
-            QDomElement fregion = doc.createElement("flowRegion");
-            froot.appendChild(fregion);
-
-            sprintf(value, "flowRegion%d", id);
-            newProp(fregion, "id", value);
-            
-            QDomElement use = doc.createElement("use");
-            fregion.appendChild(use);
-            
-            newProp(use, "x", "0");
-            newProp(use, "y", "0");
-            
-            sprintf(value, "#%d", id);
-            newProp(use, "xlink:href", value);
-            
-            sprintf(value, "use%d", id);
-            newProp(use, "id", value);
-            
-            QDomElement fpara = doc.createElement("flowPara");
-            froot.appendChild(fpara);
-            
-            sprintf(value, "flowPara%d", id);
-            newProp(fpara, "id", value);
-
-            QDomText text = doc.createTextNode(label_);
-            fpara.appendChild(text);
-#endif
-        }
-    }
 }
 
 //===========================================================================
@@ -1373,29 +1259,14 @@ void ShapeObj::addXmlProps(const unsigned int subset, QDomElement& node,
 QDomElement RectangleShape::to_QDomElement(const unsigned int subset,
         QDomDocument& doc)
 {
-    QDomElement node = doc.createElement("rect");
-   
+    QDomElement node = doc.createElement("dunnart:node");
+
     if (subset & XMLSS_IOTHER)
     {
         newNsProp(node, x_dunnartNs, x_type, x_shRect);
     }
 
     addXmlProps(subset, node, doc);
-
-    if (subset & XMLSS_ISVG)
-    {
-        char value[50];
-        QRectF rect = shapeRect();
-
-        sprintf(value, "%.10g", rect.width());
-        newProp(node, "width", value);
-        sprintf(value, "%.10g", rect.height());
-        newProp(node, "height", value);
-        sprintf(value, "%.10g", rect.x());
-        newProp(node, "x", value);
-        sprintf(value, "%.10g", rect.y());
-        newProp(node, "y", value);
-    }
 
     return node;
 }

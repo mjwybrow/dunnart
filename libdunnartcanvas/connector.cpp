@@ -524,54 +524,6 @@ void Connector::addXmlProps(const unsigned int subset, QDomElement& node,
         newNsProp(node, x_dunnartNs, x_xPos, x());
         newNsProp(node, x_dunnartNs, x_yPos, y());
     }
-
-    if (subset & XMLSS_ISVG)
-    {
-        newProp(node, "class", "connector");
-
-        QString style;
-        if (m_directed)
-        {
-            switch (m_arrow_head_type)
-            {
-                case normal:
-                    style = "marker-end:url(#ConnArrowEndNormal);";
-                    break;
-                case triangle_outline:
-                    style = "marker-end:url(#ConnArrowEndInheritance);";
-                    break;
-                case diamond_filled:
-                    style = "marker-end:url(#ConnArrowEndComposition);";
-                    break;
-                case diamond_outline:
-                    style = "marker-end:url(#ConnArrowEndAggregation);";
-                    break;
-                // XXX Add ARROW_CIRCLE_OUTLINE and ARROW_TRIANGLE_FILLED
-                default:
-                    style = "marker-end:url(#ConnArrowEnd);";
-                    break;
-            }
-        }
-    
-        if (dotted)
-        {
-            style += "stroke-dasharray:8 6;";
-        }
-
-        write_svg_path(node);
-
-        if (m_colour != defaultConnLineCol)
-        {
-            QString value;
-            value = value.sprintf("stroke:#%02X%02X%02X;", m_colour.red(),
-                    m_colour.green(), m_colour.blue());
-            style += value;
-        }
-        if (style.size() > 0)
-        {
-            newProp(node, "style", style);
-        }
-    }
 }
 
 
@@ -1288,7 +1240,7 @@ void Connector::UpdateEndptVis(const int type)
 QDomElement Connector::to_QDomElement(const unsigned int subset,
         QDomDocument& doc)
 {
-    QDomElement node = doc.createElement("path");
+    QDomElement node = doc.createElement("dunnart:node");
 
     if (subset & XMLSS_IOTHER)
     {
@@ -1716,70 +1668,6 @@ void Connector::paint(QPainter *painter,
             painter->setBrush(QBrush(col));
         }
         painter->drawPath(m_arrow_path);
-    }
-}
-
-
-void Connector::write_svg_path(QDomElement& node)
-{
-    QString pathStr;
-    QString str;
-
-    QPainterPath outputPath = m_conn_path;
-
-    if (dstpt.shape)
-    {
-        // Cut path at intersection point with shape.
-        QPolygonF polygon = dstpt.shape->shape().toFillPolygon();
-        polygon.translate(dstpt.shape->pos());
-        outputPath = cutPainterPathEnd(outputPath, pos(), polygon);
-    }
-    if (srcpt.shape)
-    {
-        // Cut path at intersection point with shape.
-        QPolygonF polygon = srcpt.shape->shape().toFillPolygon();
-        polygon.translate(srcpt.shape->pos());
-        outputPath = outputPath.toReversed();
-        outputPath = cutPainterPathEnd(outputPath, pos(), polygon);
-        outputPath = outputPath.toReversed();
-    }
-
-    int num_of_points = outputPath.elementCount();
-    QVector<QPointF> points(num_of_points);
-    for (int j = 0; j < num_of_points; ++j)
-    {
-        const QPainterPath::Element& element = outputPath.elementAt(j);
-        points[j] = QPointF(element.x + x(), element.y + y());
-    }
-
-    for (int j = 0; j < num_of_points; ++j)
-    {
-        const QPainterPath::Element& element = outputPath.elementAt(j);
-        if (element.isMoveTo())
-        {
-            pathStr += str.sprintf("M %g,%g ", points[j].x(), points[j].y());
-        }
-        else if (element.isLineTo())
-        {
-            pathStr += str.sprintf("L %g,%g ", points[j].x(), points[j].y());
-        }
-        else if (element.isCurveTo())
-        {
-            assert((j + 2) < num_of_points);
-            assert(outputPath.elementAt(j + 1).type == 
-                    QPainterPath::CurveToDataElement);
-            assert(outputPath.elementAt(j + 2).type == 
-                    QPainterPath::CurveToDataElement);
-            pathStr += str.sprintf("C %g,%g %g,%g %g,%g ",
-                        points[j].x(), points[j].y(),
-                        points[j + 1].x(), points[j + 1].y(), 
-                        points[j + 2].x(), points[j + 2].y());
-            j += 2;
-        }
-    }
-    if (!pathStr.isEmpty())
-    {
-        newProp(node, "d", pathStr);
     }
 }
 

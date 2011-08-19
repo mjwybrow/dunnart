@@ -903,58 +903,12 @@ void Cluster::set_label(const char *l)
 }
 
 
-void Cluster::write_svg_path(QDomElement& node)
-{
-    bool perform_rounding = true;
-    double rounding_dist = 5.0;
-    Avoid::Polygon route = 
-            Polygon(avoidClusterRef->polygon());
-
-    if (perform_rounding)
-    {
-        bool closed = true;
-        route = route.curvedPolyline(rounding_dist, closed);
-    }
- 
-    QString pathStr;
-    QString value;
-    for (size_t j = 0; j < route.size(); ++j)
-    {
-        const Point& p1 = route.at(j);
-        if (j == 0)
-        {
-            pathStr += value.sprintf("M %g,%g ", p1.x, p1.y);
-        }
-        else if (perform_rounding && (route.ts[j] == 'C'))
-        {
-            const Point& p2 = route.at(j + 1);
-            const Point& p3 = route.at(j + 2);
-            pathStr += value.sprintf("C %g,%g %g,%g %g,%g ", p1.x, p1.y,
-                    p2.x, p2.y, p3.x, p3.y);
-            j += 2;
-        }
-        else if (perform_rounding && (route.ts[j] == 'Z'))
-        {
-            pathStr += value.append("Z");
-        }
-        else
-        {
-            pathStr += value.sprintf("L %g,%g ", p1.x, p1.y);
-        }
-    }
-    if (!pathStr.isEmpty())
-    {
-        newProp(node, "d", pathStr);
-    }
-}
-
-
 QDomElement Cluster::to_QDomElement(const unsigned int subset, 
         QDomDocument& doc)
 {
     QString value, str;
 
-    QDomElement node = doc.createElement("path");
+    QDomElement node = doc.createElement("dunnart:node");
 
     if (subset & XMLSS_IOTHER)
     {
@@ -986,20 +940,6 @@ QDomElement Cluster::to_QDomElement(const unsigned int subset,
         newNsProp(node, x_dunnartNs, x_rectangular, rectangular);
     }
 
-    if (subset & XMLSS_ISVG)
-    {
-        newProp(node, "class", "cluster");
-
-        write_svg_path(node);
-
-        if (m_fill_colour != clusterFillCol)
-        {
-            value = value.sprintf("fill:#%02X%02X%02X;fill-opacity:%g;",
-                    m_fill_colour.red(), m_fill_colour.green(), m_fill_colour.blue(),
-                    m_fill_colour.alphaF());
-            newProp(node, "style", value);
-        }
-    }
     return node;
 }
 

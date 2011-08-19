@@ -515,9 +515,6 @@ void MainWindow::documentExport(void)
 
         generator.setSize(currCanvas->pageRect().size().toSize());
         QRectF targetRect(QPointF(0, 0), QSizeF(currCanvas->sceneRect().size()));
-        QTransform transform;
-        //QTransform::quadToQuad(QPolygonF(currCanvas->sceneRect()),
-        //        QPolygonF(targetRect), transform);
 
         QRectF viewbox(currCanvas->pageRect().topLeft() -
                 currCanvas->sceneRect().topLeft(),

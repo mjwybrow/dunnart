@@ -173,68 +173,6 @@ xmlNodePtr PDEPN::to_xmlNode(const unsigned int subset, xmlNs *dunnartNs)
 
     //     addXmlProps(subset, node, dunnartNs);
 
-    //     if (subset & XMLSS_ISVG)
-    //     {
-    //         char value[50];
-
-    //         xmlNodePtr node2 = xmlNewNode(NULL, BAD_CAST("rect"));
-    //         xmlAddSibling(node, node2);
-
-    //         double x, y, w, h;
-    //         getPosAndSize(x, y, w, h);
-
-    //         double yround = h / 2;
-    //         double xround = w / 2;
-
-    //         if (xround <= yround)
-    //         {
-    //             yround = xround / 2;
-
-    //             sprintf(value, "%.10g", w);
-    //             xmlNewProp(node2, BAD_CAST("width"), BAD_CAST(value));
-    //             sprintf(value, "%.10g", yround * 2);
-    //             xmlNewProp(node2, BAD_CAST("height"), BAD_CAST(value));
-    //         }
-    //         else
-    //         {
-    //             xround = yround / 2;
-
-    //             sprintf(value, "%.10g", xround * 2);
-    //             xmlNewProp(node2, BAD_CAST("width"), BAD_CAST(value));
-    //             sprintf(value, "%.10g", h);
-    //             xmlNewProp(node2, BAD_CAST("height"), BAD_CAST(value));
-    //         }
-
-    //         //double radius = std::min(w, h) / 2;
-
-    //         sprintf(value, "%.10g", w);
-    //         xmlNewProp(node, BAD_CAST("width"), BAD_CAST(value));
-    //         sprintf(value, "%.10g", h);
-    //         xmlNewProp(node, BAD_CAST("height"), BAD_CAST(value));
-    //         sprintf(value, "%.10g", x);
-    //         xmlNewProp(node, BAD_CAST("x"), BAD_CAST(value));
-    //         xmlNewProp(node2, BAD_CAST("x"), BAD_CAST(value));
-    //         sprintf(value, "%.10g", y);
-    //         xmlNewProp(node, BAD_CAST("y"), BAD_CAST(value));
-    //         xmlNewProp(node2, BAD_CAST("y"), BAD_CAST(value));
-
-    //         sprintf(value, "%.10g", xround);
-    //         xmlNewProp(node, BAD_CAST("rx"), BAD_CAST(value));
-    //         xmlNewProp(node2, BAD_CAST("rx"), BAD_CAST(value));
-    //         sprintf(value, "%.10g", yround);
-    //         xmlNewProp(node, BAD_CAST("ry"), BAD_CAST(value));
-    //         xmlNewProp(node2, BAD_CAST("ry"), BAD_CAST(value));
-
-    //         newProp(node2, BAD_CAST("class"), "shape");
-    //         if (colour != shFillCol)
-    //         {
-    //             char* s;
-    //             asprintf(&s, "fill:#%06X;", colour >> 8);
-    //             newProp(node2, BAD_CAST("style"), s);
-    //             std::free(s);
-    //         }
-    //     }
-
     return node;
 }
 

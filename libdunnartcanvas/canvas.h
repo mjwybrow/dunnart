@@ -244,7 +244,7 @@ class Canvas : public QGraphicsScene
         void recursiveMapIDs(QDomNode start, const QString& ns, int pass);
         bool singlePropUpdateID(QDomElement& node, const QString& prop,
                 const QString ns = QString());
-        void writeLayoutOptionsToDomDocument(QDomDocument& doc) const;
+        QDomElement writeLayoutOptionsToDomElement(QDomDocument& doc) const;
         void loadLayoutOptionsFromDomElement(const QDomElement& options);
         void setInterferingConnectorColours(const QString colourListString);
         void hideSelectionResizeHandles(void);

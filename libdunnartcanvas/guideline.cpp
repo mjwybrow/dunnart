@@ -780,17 +780,17 @@ QDomElement Guideline::to_QDomElement(const unsigned int subset,
 {
     double position = (type == GUIDE_TYPE_VERT) ? x(): y();
 
-    QDomElement node = doc.createElement("guide");
-   
+    QDomElement node = doc.createElement("dunnart:node");
+
     if (subset & XMLSS_IOTHER)
     {
+        newNsProp(node, x_dunnartNs, x_direction, (int) type);
+
         newNsProp(node, x_dunnartNs, x_type, x_indGuideline);
 
         newProp(node, "position", position);
         newProp(node, "orientation",
                 (type == GUIDE_TYPE_VERT) ? "vertical" : "horizontal");
-        
-        newNsProp(node, x_dunnartNs, x_direction, (int) type);
 
         newProp(node, "id",getIdString());
     }
