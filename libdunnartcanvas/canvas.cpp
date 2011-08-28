@@ -1035,7 +1035,8 @@ QString Canvas::saveConstraintInfoToString(void) const
     QDomElement svg = doc.createElement("svg");
     doc.appendChild(svg);
 
-    writeLayoutOptionsToDomElement(doc);
+    QDomElement options = writeLayoutOptionsToDomElement(doc);
+    doc.appendChild(options);
 
     // Put things into a multimap before outputting them,
     // so that they will be sorted in the correct Z-order.

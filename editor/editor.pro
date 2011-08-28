@@ -74,7 +74,7 @@ linux-g++ {
 
 EXTRA_BINFILES += Dunnart.sh
 for(FILE,EXTRA_BINFILES){
-    QMAKE_POST_LINK += $$quote(cp $${FILE} $${DESTDIR}$$escape_expand(\n\t))
+    QMAKE_POST_LINK += $$quote(cp $${FILE} $${DESTDIR}$$escape_expand(\\n\\t))
 }
 
 QMAKE_CLEAN = dunnart-linux.tar.gz
