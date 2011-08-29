@@ -48,7 +48,6 @@ namespace Avoid {
 
   #ifdef _MSC_VER
     // Compiling with Microsoft Visual C++ compiler
-
     #define db_printf  ATL::AtlTrace
   #else
     inline void db_printf(const char *fmt, ...)
@@ -71,15 +70,8 @@ namespace Avoid {
 // err_printf are critical errors that mean something pretty bad has happened:
 #ifdef _MSC_VER
 
-  // For Microsoft Visual C++ compiler we only display them if LIBAVOID_DEBUG
-  // is defined.
-  #ifdef LIBAVOID_DEBUG
+    // Compiling with Microsoft Visual C++ compiler
     #define err_printf ATL::AtlTrace
-  #else
-    inline void err_printf(const char *, ...)
-    {
-    }
-  #endif
 
 #else
 
