@@ -362,8 +362,6 @@ void newNsProp(QDomElement& node, const QString& ns, const QString& prop,
 }
 
 
-extern char *strSetEnd(char *sStart);
-extern char *strSetStart(char *sStart, char *sEnd);
 extern void returnAllInactive(void);
 extern void returnAppropriateConnectors(void);
 extern QColor QColorFromRRGGBBAA(char *str);

@@ -260,48 +260,25 @@ void Connector::initWithXMLProperties(Canvas *canvas,
     if (canvas->optAutomaticGraphLayout() &&
             canvas->optPreserveTopology() && !value.isNull())
     {
-        char *str_copy = qstrdup(value.toLatin1().data());
-        char *sStart = str_copy;
-        char *sEnd = NULL;
+        QStringList strings =
+                value.split(QRegExp("[, ]"), QString::SkipEmptyParts);
+        int stringIndex = 0;
 
-        sEnd = strSetEnd(sStart);
-        int psn = atoi(sStart);
-        sStart = strSetStart(sStart, sEnd);
+        // Read the number of points.
+        int totalPoints = strings.at(stringIndex++).toInt();
 
-        Avoid::PolyLine initialPath(psn);
+        Avoid::PolyLine initialPath(totalPoints);
 
-        int pt = 0;
         // Read a space separated list of coordinates.
-        while (1)
+        for (int ptNum = 0; ptNum < totalPoints; ++ptNum)
         {
-            sEnd = strSetEnd(sStart);
-            initialPath.ps[pt].x = atof(sStart);
-            sStart = strSetStart(sStart, sEnd);
-
-            sEnd = strSetEnd(sStart);
-            initialPath.ps[pt].y = atof(sStart);
-            sStart = strSetStart(sStart, sEnd);
-
-            sEnd = strSetEnd(sStart);
-            initialPath.ps[pt].id = atoi(sStart);
-            sStart = strSetStart(sStart, sEnd);
-
-            sEnd = strSetEnd(sStart);
-            initialPath.ps[pt].vn = atoi(sStart);
-
-            pt++;
-            if (pt == psn)
-            {
-                // At end;
-                break;
-            }
-            sStart = strSetStart(sStart, sEnd);
+            initialPath.ps[ptNum].x  = strings.at(stringIndex++).toDouble();
+            initialPath.ps[ptNum].y  = strings.at(stringIndex++).toDouble();
+            initialPath.ps[ptNum].id = strings.at(stringIndex++).toInt();
+            initialPath.ps[ptNum].vn = strings.at(stringIndex++).toInt();
         }
-
-        delete[] str_copy;
     }
 }
-
 
 
 void Connector::routerAdd(void)

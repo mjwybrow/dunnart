@@ -58,49 +58,25 @@ void PolygonShape::initWithXMLProperties(Canvas *canvas,
     QString value = nodeAttribute(node, ns, x_geometry);
     if (!value.isNull())
     {
-        char *str_copy = qstrdup(value.toLatin1().data());
-        char *sStart = str_copy;
-        char *sEnd = NULL;
-       
-        sEnd = strSetEnd(sStart);
-        int psn = atoi(sStart);
-        sStart = strSetStart(sStart, sEnd);
+        QStringList strings =
+                value.split(QRegExp("[, ]"), QString::SkipEmptyParts);
+        int stringIndex = 0;
+
+        // Read the number of points.
+        int totalPoints = strings.at(stringIndex++).toInt();
         
-        int geometry[2][psn];
+        int geometry[2][totalPoints];
 
         int xp = essentialProp<int>(node, x_xPos, ns);
         int yp = essentialProp<int>(node, x_yPos, ns);
 
-        int xy = 0;
-        int pt = 0;
         // Read a space separated list of coordinates. 
-        while (1)
+        for (int ptNum = 0; ptNum < totalPoints; ++ptNum)
         {
-            sEnd = strSetEnd(sStart);
-
-            geometry[xy][pt] = atoi(sStart) + ((xy == 0) ? xp : yp) + 3;
-            
-            xy++;
-            if (xy == 2)
-            {
-                pt++;
-                xy = 0;
-                if (pt == psn)
-                {
-                    // At end;
-                    break;
-                }
-            }
-
-            sStart = strSetStart(sStart, sEnd);
-            if (sEnd == NULL)
-            {
-                break;
-            }
+            geometry[0][ptNum] = strings.at(stringIndex++).toInt() + xp;
+            geometry[1][ptNum] = strings.at(stringIndex++).toInt() + yp;
         }
-        setBoundaryInternal(geometry[0], geometry[1], psn);
-    
-        delete[] str_copy;
+        setBoundaryInternal(geometry[0], geometry[1], totalPoints);
     }
     else
     {

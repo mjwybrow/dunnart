@@ -214,24 +214,19 @@ void FreehandShape::initWithXMLProperties(Canvas *canvas,
     QString value = nodeAttribute(node, ns, x_geometry);
     if (!value.isNull())
     {
-        char *str_copy = qstrdup(value.toLatin1().data());
-        char *sStart = str_copy;
-        char *sEnd = NULL;
-       
-        sEnd = strSetEnd(sStart);
-        int strokes = atoi(sStart);
-        sStart = strSetStart(sStart, sEnd);
+        QStringList strings =
+                value.split(QRegExp("[, ]"), QString::SkipEmptyParts);
+        int stringIndex = 0;
+
+        // Read the number of points.
+        int strokes = strings.at(stringIndex++).toInt();
 
         bool first = true;
         for (int c = 0; c < strokes; ++c)
         {
-            sEnd = strSetEnd(sStart);
-            int points = atoi(sStart);
-            sStart = strSetStart(sStart, sEnd);
-            if (first)
-            {
-            }
-            else
+            int points = strings.at(stringIndex++).toInt();
+
+            if (first == false)
             {
                 // XXX: hint vector size?
                 _geometry.startNewStroke();
@@ -239,35 +234,18 @@ void FreehandShape::initWithXMLProperties(Canvas *canvas,
 
             for (int p = 0; p < points; ++p)
             {
-                sEnd = strSetEnd(sStart);
-                double x = atof(sStart);
-                sStart = strSetStart(sStart, sEnd);
-
-                sEnd = strSetEnd(sStart);
-                double y = atof(sStart);
-                sStart = strSetStart(sStart, sEnd);
-
-                sEnd = strSetEnd(sStart);
-                unsigned int t = atoi(sStart);
-                sStart = strSetStart(sStart, sEnd);
-
+                double x = strings.at(stringIndex++).toDouble();
+                double y = strings.at(stringIndex++).toDouble();
+                unsigned int t = strings.at(stringIndex++).toUInt();
                 _geometry.addPoint(x, y, t);
             }
             first = false;
         }
-        sEnd = strSetEnd(sStart);
-        double initOffX = atof(sStart);
-        sStart = strSetStart(sStart, sEnd);
-        
-        sEnd = strSetEnd(sStart);
-        double initOffY = atof(sStart);
-        sStart = strSetStart(sStart, sEnd);
-    
-        _geometry.setInitialOffset(initOffX, initOffY);
-    
-        delete[] str_copy;
-    }
 
+        double initOffX = strings.at(stringIndex++).toDouble();
+        double initOffY = strings.at(stringIndex++).toDouble();
+        _geometry.setInitialOffset(initOffX, initOffY);
+    }
     setPainterPath(buildPainterPath());
 }
 

@@ -1102,38 +1102,6 @@ QString CanvasItem::svgCodeAsString(const QSize& size, const QRectF& viewBox)
 }
 
 
-char *strSetEnd(char *sStart)
-{
-    char *sEnd = sStart;
-    while ((sEnd != NULL) &&
-            (*sEnd != '\0') && (*sEnd != ' ') && (*sEnd != ','))
-    {
-        sEnd++;
-    }
-    if (*sEnd == '\0')
-    {
-        return NULL;
-    }
-
-    if (sEnd)
-    {
-        *sEnd = '\0';
-    }
-    return sEnd;
-}
-
-
-char *strSetStart(char *sStart, char *sEnd)
-{
-    if (sEnd != NULL)
-    {
-        sStart = sEnd;
-        sStart++;
-    }
-    return sStart;
-}
-
-
 }
 // vim: filetype=cpp ts=4 sw=4 et tw=0 wm=0 cindent
 
