@@ -21,19 +21,40 @@
  * 
 */
 
+#include <QSignalMapper>
+
 #include "layoutproperties.h"
 #include "canvas.h"
-
 #include "canvasview.h"
+
 
 namespace dunnart {
 
 
 LayoutPropertiesDialog::LayoutPropertiesDialog(Canvas *canvas, QWidget *parent)
     : QDockWidget(parent),
-      m_canvas(NULL)
+      m_canvas(NULL),
+      m_mode_signal_mapper(NULL)
 {
     setupUi(this);
+
+    m_mode_signal_mapper = new QSignalMapper(this);
+    m_mode_signal_mapper->setMapping(
+            organicStructureButton, LAYOUT_STRUCTURE_ORGANIC);
+    m_mode_signal_mapper->setMapping(
+            flowStructureButton, LAYOUT_STRUCTURE_FLOW);
+    m_mode_signal_mapper->setMapping(
+            layeredStuctureButton, LAYOUT_STRUCTURE_LAYERED);
+
+    connect(m_mode_signal_mapper, SIGNAL(mapped(int)),
+            this, SIGNAL(setOptStructuralLayoutMode(int)));
+
+    connect(organicStructureButton, SIGNAL(clicked()),
+            m_mode_signal_mapper, SLOT(map()));
+    connect(flowStructureButton, SIGNAL(clicked()),
+            m_mode_signal_mapper, SLOT(map()));
+    connect(layeredStuctureButton, SIGNAL(clicked()),
+            m_mode_signal_mapper, SLOT(map()));
 
     connect(layoutButton, SIGNAL(clicked(bool) ),
             this, SIGNAL(setOptAutomaticGraphLayout(bool)));
@@ -96,6 +117,11 @@ void LayoutPropertiesDialog::changeCanvas(Canvas *canvas)
     connect(m_canvas, SIGNAL(optChangedAutomaticLayout(bool) ),
             this, SLOT(changeAutomaticLayoutMode(bool)));
 
+    connect(this, SIGNAL(setOptStructuralLayoutMode(int)),
+            m_canvas, SLOT(setOptLayoutMode(int)));
+    connect(m_canvas, SIGNAL(optChangedLayoutMode(int)),
+            this, SLOT(changeStructuralLayoutMode(int)));
+
     connect(this, SIGNAL(setOptPreventOverlaps(bool)),
             m_canvas, SLOT(setOptPreventOverlaps(bool)));
     connect(m_canvas, SIGNAL(optChangedPreventOverlaps(bool) ),
@@ -141,6 +167,38 @@ void LayoutPropertiesDialog::changeCanvas(Canvas *canvas)
 #ifdef NOGRAPHVIZ
     layeredStuctureButton->setDisabled(true);
 #endif
+
+    changeStructuralLayoutMode(m_canvas->optLayoutMode());
+}
+
+void LayoutPropertiesDialog::changeStructuralLayoutMode(int mode)
+{
+    switch(mode)
+    {
+        case LAYOUT_STRUCTURE_ORGANIC:
+            organicStructureButton->setChecked(true);
+            flowStructureButton->setChecked(false);
+            layeredStuctureButton->setChecked(false);
+            downwardSeparationLabel->setEnabled(false);
+            downwardSeparationSlider->setEnabled(false);
+            break;
+        case LAYOUT_STRUCTURE_FLOW:
+            organicStructureButton->setChecked(false);
+            flowStructureButton->setChecked(true);
+            layeredStuctureButton->setChecked(false);
+            downwardSeparationLabel->setEnabled(true);
+            downwardSeparationSlider->setEnabled(true);
+            break;
+        case LAYOUT_STRUCTURE_LAYERED:
+            organicStructureButton->setChecked(false);
+            flowStructureButton->setChecked(false);
+            layeredStuctureButton->setChecked(true);
+            downwardSeparationLabel->setEnabled(false);
+            downwardSeparationSlider->setEnabled(false);
+            break;
+        default:
+            break;
+    }
 }
 
 void LayoutPropertiesDialog::changeAutomaticLayoutMode(bool auto_layout)

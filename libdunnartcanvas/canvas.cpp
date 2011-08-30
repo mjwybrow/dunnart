@@ -1111,6 +1111,11 @@ bool Canvas::optAutomaticGraphLayout(void) const
     return m_opt_automatic_graph_layout;
 }
 
+uint Canvas::optLayoutMode(void) const
+{
+    return (uint) m_graphlayout->mode;
+}
+
 bool Canvas::optPreventOverlaps(void) const
 {
     return m_opt_prevent_overlaps;
@@ -1161,6 +1166,13 @@ void Canvas::setOptAutomaticGraphLayout(const bool value)
     {
         reroute_connectors(this, true);
     }
+}
+
+void Canvas::setOptLayoutMode(const int mode)
+{
+    m_graphlayout->setLayoutMode((GraphLayout::Mode) mode);
+    emit optChangedLayoutMode(mode);
+    fully_restart_graph_layout();
 }
 
 bool Canvas::optStructuralEditingDisabled(void) const
@@ -2635,7 +2647,6 @@ void Canvas::saveDiagramAsSVG(QString outputFilename)
     // the beginning of the definition of the
     QString svgStr(buffer.data());
     int contentStart = svgStr.indexOf("<g ");
-    int contentEnd = svgStr.indexOf("</g>") + 5;
     svgStr = svgStr.remove(contentStart, svgStr.length() - contentStart);
 
     // Add namespaces.
@@ -2730,10 +2741,9 @@ void Canvas::loadLayoutOptionsFromDomElement(const QDomElement& options)
         gl->setOptimizationMethod((GraphLayout::OptimizationMethod)method);
     }
     int mode = gl->mode;
-    if(optionalProp(options,x_layoutMode,mode)) {
-        GraphLayout::Mode gmode=static_cast<GraphLayout::Mode>(mode);
-        //QT selectModeButton(gmode);
-        gl->setLayoutMode(gmode);
+    if (optionalProp(options,x_layoutMode,mode))
+    {
+        setOptLayoutMode(mode);
     }
 
     bool booleanVal = false;

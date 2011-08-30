@@ -26,11 +26,11 @@
 
 #include "libdunnartcanvas/gen-ui/ui_LayoutProperties.h"
 
+class QSignalMapper;
+
 namespace dunnart {
 
-
 class Canvas;
-
 
 class LayoutPropertiesDialog : public QDockWidget, private Ui::LayoutProperties
 {
@@ -55,11 +55,14 @@ class LayoutPropertiesDialog : public QDockWidget, private Ui::LayoutProperties
         void setOptPreserveTopology(const bool value);
         void setOptRubberBandRouting(const bool value);
         void setOptFitWithinPage(const bool value);
+        void setOptStructuralLayoutMode(const int value);
     private slots:
+        void changeStructuralLayoutMode(int mode);
         void changeAutomaticLayoutMode(bool auto_layout);
         void changeCanvas(Canvas *canvas);
     private:
         Canvas *m_canvas;
+        QSignalMapper *m_mode_signal_mapper;
 };
 
 

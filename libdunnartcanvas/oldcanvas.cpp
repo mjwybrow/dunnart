@@ -840,57 +840,6 @@ static void createIndicatorPropertiesDialog(QWidget **c)
 }
 
 
-static void selectModeButton(GraphLayout::Mode mode)
-{
-    SDLGui::changeWidgetStates(BUT_L_ORGANIC, SDLGui::WIDGET_false);
-    SDLGui::changeWidgetStates(BUT_L_FLOW,    SDLGui::WIDGET_false);
-    SDLGui::changeWidgetStates(BUT_L_LAYERED, SDLGui::WIDGET_false);
-    switch(mode) {
-        case GraphLayout::ORGANIC:
-            SDLGui::changeWidgetStates(BUT_L_ORGANIC, SDLGui::WIDGET_true);
-            showDownwardSepSlider(false);
-            break;
-        case GraphLayout::FLOW:
-            SDLGui::changeWidgetStates(BUT_L_FLOW,    SDLGui::WIDGET_true);
-            showDownwardSepSlider(true);
-            break;
-        case GraphLayout::LAYERED:
-            SDLGui::changeWidgetStates(BUT_L_LAYERED, SDLGui::WIDGET_true);
-            showDownwardSepSlider(false);
-            break;
-        default:
-            break;
-    }
-}
-
-static void layoutModeButtonCallback(QWidget **c)
-{
-    assert(c != NULL);
-    Button *button = dynamic_cast<Button *> (*c);
-    int ID = button->getIdentifier();
-    GraphLayout::Mode mode = GraphLayout::ORGANIC;
-    GraphLayout* gl=GraphLayout::getInstance();
-    switch (ID)
-    {
-        case BUT_L_ORGANIC:
-            mode = GraphLayout::ORGANIC;
-            break;
-        case BUT_L_FLOW:
-            mode = GraphLayout::FLOW;
-            break;
-        case BUT_L_LAYERED:
-            mode = GraphLayout::LAYERED;
-            break;
-        default:
-            break;
-    }
-    
-    selectModeButton(mode);
-    gl->setLayoutMode(mode);
-    fully_restart_graph_layout(c);
-}
-
-
 static void visinfo_action(QWidget **c)
 {
     router->printInfo();

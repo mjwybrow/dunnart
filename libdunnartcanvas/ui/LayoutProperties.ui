@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>205</width>
-    <height>430</height>
+    <height>431</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,7 +19,7 @@
   <property name="minimumSize">
    <size>
     <width>205</width>
-    <height>430</height>
+    <height>431</height>
    </size>
   </property>
   <property name="allowedAreas">
@@ -232,6 +232,9 @@ Manual layout</string>
               <height>35</height>
              </size>
             </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
           <item>
@@ -261,6 +264,9 @@ Manual layout</string>
               <height>35</height>
              </size>
             </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
           <item>
@@ -289,6 +295,9 @@ Manual layout</string>
               <width>35</width>
               <height>35</height>
              </size>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -536,7 +545,6 @@ Manual layout</string>
   </action>
  </widget>
  <resources>
-  <include location="../libdunnartcanvas.qrc"/>
   <include location="../libdunnartcanvas.qrc"/>
  </resources>
  <connections/>

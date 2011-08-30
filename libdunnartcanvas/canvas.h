@@ -77,6 +77,10 @@ static const unsigned int ACTION_ADDITIONS      = 1;
 static const unsigned int ACTION_DELETIONS      = 2;
 static const unsigned int ACTION_MODIFICATIONS  = 4;
 
+static const int LAYOUT_STRUCTURE_ORGANIC = 0;
+static const int LAYOUT_STRUCTURE_FLOW    = 1;
+static const int LAYOUT_STRUCTURE_LAYERED = 2;
+
 
 class Canvas : public QGraphicsScene
 {
@@ -142,6 +146,7 @@ class Canvas : public QGraphicsScene
         double optIdealConnectorLengthModifier(void) const;
         int optConnectorRoundingDistance(void) const;
         int optConnPenaltySegment(void) const;
+        uint optLayoutMode(void) const;
 
         bool overlayRouterObstacles(void) const;
         bool overlayRouterVisGraph(void) const;
@@ -204,6 +209,7 @@ class Canvas : public QGraphicsScene
         void setOptConnPenaltySegment(const int value);
         void setOptConnRoundingDist(const int value);
         void setOptStructuralEditingDisabled(const bool value);
+        void setOptLayoutMode(const int mode);
 
         void processResponseTasks(void);
         void processUndoResponseTasks(void);
@@ -229,6 +235,7 @@ class Canvas : public QGraphicsScene
         void optChangedStructuralEditingDisabled(bool checked);
         void debugOverlayEnabled(bool enabled);
         void clipboardContentsChanged(void);
+        void optChangedLayoutMode(int mode);
 
     private slots:
         void processLayoutUpdateEvent(void);
