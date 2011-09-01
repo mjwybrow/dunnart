@@ -47,7 +47,7 @@ CanvasView::CanvasView(Canvas *canvas)
     // We'd like antialiasing.
     setRenderHints(QPainter::Antialiasing);
 
-    setViewportUpdateMode(QGraphicsView::MinimalViewportUpdate);
+    setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
 
     setDragMode(QGraphicsView::RubberBandDrag);
 

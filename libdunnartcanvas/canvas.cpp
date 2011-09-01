@@ -1580,7 +1580,7 @@ void Canvas::deleteSelection(void)
 
 // Delay, in milliseconds, to give the event loop time to respond to normal
 // events like mouse movements.  A delay of zero will flood the event queue.
-static const unsigned int updateEventDelay = 25;
+static const unsigned int updateEventDelay = 15;
 
 void Canvas::startLayoutUpdateTimer(void)
 {
