@@ -168,6 +168,7 @@ void LayoutPropertiesDialog::changeCanvas(Canvas *canvas)
     layeredStuctureButton->setDisabled(true);
 #endif
 
+    changeAutomaticLayoutMode(m_canvas->optAutomaticGraphLayout());
     changeStructuralLayoutMode(m_canvas->optLayoutMode());
 }
 
