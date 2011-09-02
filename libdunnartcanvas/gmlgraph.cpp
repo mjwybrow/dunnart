@@ -133,7 +133,7 @@ Graph::Graph(Canvas *canvas, string gmlFile, Page page, COff canvasOffset)
       UML(true),
       UseClusters(canvas->useGmlClusters())
 {
-    canvas->set_ideal_connector_length(scale);
+    canvas->setOptIdealEdgeLengthModifier(scale);
     avoidBuffer = 4;
     GA.initAttributes(
             ogdf::GraphAttributes::nodeGraphics |

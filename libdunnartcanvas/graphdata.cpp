@@ -717,13 +717,13 @@ void GraphData::connectorToEdge(Connector* conn,GraphLayout::Mode mode)
     
             ccs.push_back(new cola::SeparationConstraint(vpsc::YDIM, a, b,
                     (canvas_->m_ideal_connector_length *
-                     canvas_->optIdealConnectorLengthModifier() *
+                     canvas_->optIdealEdgeLengthModifier() *
                      canvas_->m_directed_edge_height_modifier)));
         }
     }
 
     double idealLength = conn->idealLength() *
-            canvas_->optIdealConnectorLengthModifier();
+            canvas_->optIdealEdgeLengthModifier();
     addEdge(a,b,idealLength);
 
     // dump dot format

@@ -171,7 +171,7 @@ Canvas::Canvas()
       m_gml_graph(NULL),
       m_use_gml_clusters(true),
       m_connector_nudge_distance(0),
-      m_opt_ideal_connector_length_modifier(1.0),
+      m_opt_ideal_edge_length_modifier(1.0),
       m_dragged_item(NULL),
       m_lone_selected_item(NULL),
       m_undo_stack(NULL),
@@ -1245,16 +1245,17 @@ void Canvas::setOptConnRoundingDist(const int value)
 }
 
 
-void Canvas::set_ideal_connector_length_from_slider(int int_modifier)
+void Canvas::setOptIdealEdgeLengthModifierFromSlider(int int_modifier)
 {
     double double_modifier = int_modifier / 100.0;
-    set_ideal_connector_length(double_modifier);
+    setOptIdealEdgeLengthModifier(double_modifier);
 }
 
 
-void Canvas::set_ideal_connector_length(double modifier)
+void Canvas::setOptIdealEdgeLengthModifier(double modifier)
 {
-    m_opt_ideal_connector_length_modifier = modifier;
+    m_opt_ideal_edge_length_modifier = modifier;
+    emit optChangedIdealEdgeLengthModifier(modifier);
     interrupt_graph_layout();
 }
 
@@ -1314,9 +1315,9 @@ bool Canvas::overlayRouterOrthogonalVisGraph(void) const
 }
 
 
-double Canvas::optIdealConnectorLengthModifier(void) const
+double Canvas::optIdealEdgeLengthModifier(void) const
 {
-    return m_opt_ideal_connector_length_modifier;
+    return m_opt_ideal_edge_length_modifier;
 }
 
 
@@ -1330,6 +1331,25 @@ int Canvas::optConnPenaltySegment(void) const
 {
     return (int) m_router->routingPenalty(Avoid::segmentPenalty);
 }
+
+double Canvas::optDirectedEdgeSeparationModifier(void) const
+{
+    return m_directed_edge_height_modifier;
+}
+
+void Canvas::setOptDirectedEdgeSeparationModifier(const double value)
+{
+    m_directed_edge_height_modifier = value;
+    emit optChangedDirectedEdgeSeparationModifier(value);
+    interrupt_graph_layout();
+}
+
+void Canvas::setOptDirectedEdgeSeparationModifierFromSlider(const int intValue)
+{
+    double doubleValue = intValue / 100.0;
+    setOptDirectedEdgeSeparationModifier(doubleValue);
+}
+
 
 void Canvas::bringToFront(void)
 {
@@ -2786,7 +2806,7 @@ void Canvas::loadLayoutOptionsFromDomElement(const QDomElement& options)
     if (optionalProp(options,x_defaultIdealConnectorLength,
            ideal_connector_length_modifier))
     {
-        set_ideal_connector_length(ideal_connector_length_modifier);
+        setOptIdealEdgeLengthModifier(ideal_connector_length_modifier);
     }
 
     optionalProp(options,x_penaliseCrossings,m_avoid_connector_crossings);
@@ -2830,7 +2850,7 @@ QDomElement Canvas::writeLayoutOptionsToDomElement(QDomDocument& doc) const
     newProp(dunOpts, x_downwardSeparation, m_directed_edge_height_modifier);
     newProp(dunOpts, x_pageBoundaryConstraints, optFitWithinPage());
     newProp(dunOpts, x_defaultIdealConnectorLength,
-            optIdealConnectorLengthModifier());
+            optIdealEdgeLengthModifier());
     newProp(dunOpts, x_penaliseCrossings, m_avoid_connector_crossings);
     newProp(dunOpts, x_segmentPenalty,
             router()->routingPenalty(Avoid::segmentPenalty));

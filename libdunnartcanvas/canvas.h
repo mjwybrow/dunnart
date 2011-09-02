@@ -92,10 +92,11 @@ class Canvas : public QGraphicsScene
     Q_PROPERTY (bool rubberBandRouting READ optRubberBandRouting WRITE setOptRubberBandRouting)
     Q_PROPERTY (bool fitDiagramWithinPage READ optFitWithinPage WRITE setOptFitWithinPage)
     //Q_PROPERTY (bool colourInterferingConnectors READ optColourInterferingConnectors)
-    Q_PROPERTY (double idealConnectorLengthModifier READ optIdealConnectorLengthModifier WRITE set_ideal_connector_length)
+    Q_PROPERTY (double ideaEdgeLengthModifier READ optIdealEdgeLengthModifier WRITE setOptIdealEdgeLengthModifier)
     Q_PROPERTY (int connectorRoundingDistance READ optConnectorRoundingDistance WRITE setOptConnRoundingDist)
     Q_PROPERTY (int connectorSegmentPenalty READ optConnPenaltySegment WRITE setOptConnPenaltySegment)
     Q_PROPERTY (bool structuralEditingDisabled READ optStructuralEditingDisabled WRITE setOptStructuralEditingDisabled)
+    Q_PROPERTY (double directedEdgeSeparationModifier READ optDirectedEdgeSeparationModifier WRITE setOptDirectedEdgeSeparationModifier)
 
     public:
         Canvas();
@@ -143,10 +144,11 @@ class Canvas : public QGraphicsScene
         bool optFitWithinPage(void) const;
         bool optColourInterferingConnectors(void) const;
         bool optStructuralEditingDisabled(void) const;
-        double optIdealConnectorLengthModifier(void) const;
+        double optIdealEdgeLengthModifier(void) const;
         int optConnectorRoundingDistance(void) const;
         int optConnPenaltySegment(void) const;
         uint optLayoutMode(void) const;
+        double optDirectedEdgeSeparationModifier(void) const;
 
         bool overlayRouterObstacles(void) const;
         bool overlayRouterVisGraph(void) const;
@@ -197,8 +199,8 @@ class Canvas : public QGraphicsScene
         void separateSelection(int type);
 
         void customEvent(QEvent *event);
-        void set_ideal_connector_length_from_slider(int int_modifier);
-        void set_ideal_connector_length(double modifier);
+        void setOptIdealEdgeLengthModifierFromSlider(int int_modifier);
+        void setOptIdealEdgeLengthModifier(double modifier);
 
         void setDebugCOLAOutput(const bool value);
         void setOptAutomaticGraphLayout(const bool value);
@@ -210,6 +212,8 @@ class Canvas : public QGraphicsScene
         void setOptConnRoundingDist(const int value);
         void setOptStructuralEditingDisabled(const bool value);
         void setOptLayoutMode(const int mode);
+        void setOptDirectedEdgeSeparationModifier(const double value);
+        void setOptDirectedEdgeSeparationModifierFromSlider(const int intValue);
 
         void processResponseTasks(void);
         void processUndoResponseTasks(void);
@@ -233,9 +237,11 @@ class Canvas : public QGraphicsScene
         void optChangedRubberBandRouting(bool checked);
         void optChangedFitWithinPage(bool checked);
         void optChangedStructuralEditingDisabled(bool checked);
+        void optChangedIdealEdgeLengthModifier(double value);
         void debugOverlayEnabled(bool enabled);
         void clipboardContentsChanged(void);
         void optChangedLayoutMode(int mode);
+        void optChangedDirectedEdgeSeparationModifier(double modifier);
 
     private slots:
         void processLayoutUpdateEvent(void);
@@ -294,7 +300,7 @@ class Canvas : public QGraphicsScene
         bool m_batch_diagram_layout;
         bool m_force_orthogonal_connectors;
 
-        double m_opt_ideal_connector_length_modifier;
+        double m_opt_ideal_edge_length_modifier;
         int  m_opt_connector_rounding_distance;
         bool m_opt_automatic_graph_layout;
         bool m_opt_prevent_overlaps;

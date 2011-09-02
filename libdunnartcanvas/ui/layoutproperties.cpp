@@ -143,11 +143,20 @@ void LayoutPropertiesDialog::changeCanvas(Canvas *canvas)
             this, SIGNAL(optChangedFitWithinPage(bool) ));
 
     connect(idealLengthSlider, SIGNAL(sliderMoved(int)),
-            m_canvas, SLOT(set_ideal_connector_length_from_slider(int)));
+            m_canvas, SLOT(setOptIdealEdgeLengthModifierFromSlider(int)));
+    connect(m_canvas, SIGNAL(optChangedIdealEdgeLengthModifier(double)),
+            this, SLOT(changeIdealEdgeLength(double)));
+
+    connect(downwardSeparationSlider, SIGNAL(sliderMoved(int)),
+            m_canvas, SLOT(setOptDirectedEdgeSeparationModifierFromSlider(int)));
+    connect(m_canvas, SIGNAL(optChangedDirectedEdgeSeparationModifier(double)),
+            this, SLOT(changeDirectedEdgeSeparationModifier(double)));
 
     // Set initial control values.
     idealLengthSlider->setSliderPosition(
-            m_canvas->optIdealConnectorLengthModifier() * 100);
+            m_canvas->optIdealEdgeLengthModifier() * 100);
+    downwardSeparationSlider->setSliderPosition(
+            m_canvas->optDirectedEdgeSeparationModifier() * 100);
     bool value = m_canvas->optPreventOverlaps();
     preventOverlapsCheckBox->setChecked(value);
     preventOverlapsCheckBox2->setChecked(value);
@@ -217,6 +226,15 @@ void LayoutPropertiesDialog::changeAutomaticLayoutMode(bool auto_layout)
     }
 }
 
+void LayoutPropertiesDialog::changeDirectedEdgeSeparationModifier(double value)
+{
+    downwardSeparationSlider->setSliderPosition(value * 100);
+}
+
+void LayoutPropertiesDialog::changeIdealEdgeLength(double value)
+{
+    idealLengthSlider->setSliderPosition(value * 100);
+}
 
 }
 // vim: filetype=cpp ts=4 sw=4 et tw=0 wm=0 cindent

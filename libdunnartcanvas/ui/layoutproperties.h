@@ -60,6 +60,8 @@ class LayoutPropertiesDialog : public QDockWidget, private Ui::LayoutProperties
         void changeStructuralLayoutMode(int mode);
         void changeAutomaticLayoutMode(bool auto_layout);
         void changeCanvas(Canvas *canvas);
+        void changeDirectedEdgeSeparationModifier(double value);
+        void changeIdealEdgeLength(double value);
     private:
         Canvas *m_canvas;
         QSignalMapper *m_mode_signal_mapper;

@@ -218,14 +218,6 @@ static void createOverviewDialog(QWidget **c)
     
 
 
-void change_downward_separation(QWidget **gobj)
-{
-    // Tick the checkbox when the slider moves.
-    //QT changeControlState(BUT_DOWNWARD, SDLGui::WIDGET_true);
-    interrupt_graph_layout();
-    restart_graph_layout();
-}
-
 #endif
 
 

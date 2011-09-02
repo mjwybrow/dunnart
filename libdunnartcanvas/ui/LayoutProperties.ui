@@ -501,6 +501,9 @@ Manual layout</string>
             <height>23</height>
            </size>
           </property>
+          <property name="maximum">
+           <number>300</number>
+          </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
