@@ -109,7 +109,7 @@ QDomElement BioStrand::to_QDomElement(const unsigned int subset,
     {
         newNsProp(node, x_dunnartNs, x_reversed, m_direction_reversed);
 
-        newNsProp(node, x_dunnartNs, x_type, x_shBioStrand);
+        newNsProp(node, x_dunnartNs, x_type, "bioStrand");
     }
     
     addXmlProps(subset, node, doc);

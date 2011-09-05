@@ -30,9 +30,7 @@
 using namespace dunnart;
 
 #include "diamond.h"
-#include "ellipse.h"
-#include "inputoutput.h"
-#include "userinteraction.h"
+#include "roundedrect.h"
 
 class BasicShapesPlugin : public QObject, public ShapePluginInterface
 {
@@ -50,29 +48,24 @@ class BasicShapesPlugin : public QObject, public ShapePluginInterface
         QStringList shapes() const
         {
             QStringList shapes;
-            shapes << "org.dunnart.shapes.flowDiamond";
-            shapes << "org.dunnart.shapes.flowInOutput";
-            shapes << "org.dunnart.shapes.flowEndOProc";
-            shapes << "org.dunnart.shapes.flowUserInt";
+            shapes << "org.dunnart.shapes.rect";
+            shapes << "org.dunnart.shapes.diamond";
+            shapes << "org.dunnart.shapes.roundedRect";
             return shapes;
         }
         ShapeObj *generateShape(QString shapeType)
         {
-            if (shapeType == "org.dunnart.shapes.flowDiamond")
+            if (shapeType == "org.dunnart.shapes.rect")
+            {
+                return new RectangleShape();
+            }
+            else if (shapeType == "org.dunnart.shapes.diamond")
             {
                 return new DiamondShape();
             }
-            else if (shapeType == "org.dunnart.shapes.flowInOutput")
+            else if (shapeType ==  "org.dunnart.shapes.roundedRect")
             {
-                return new InputOutputShape();
-            }
-            else if (shapeType ==  "org.dunnart.shapes.flowEndOProc")
-            {
-                return new EllipseShape();
-            }
-            else if (shapeType == "org.dunnart.shapes.flowUserInt")
-            {
-                return new UserInterationShape();
+                return new RoundedRectShape();
             }
             return NULL;
         }

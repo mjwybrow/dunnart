@@ -69,17 +69,7 @@ const char *x_type =             "type";
 // Dunnart types:
 const char *x_svgNode =          "svgNode";
 const char *x_connector =        "connector";
-const char *x_shRect =           "rect";
-const char *x_shUserInt =        "flowUserInt";
-const char *x_shInOutput =       "flowInOutput";
-const char *x_shDiamond =        "flowDiamond";
-const char *x_shEndOProc =       "flowEndOProc";
-const char *x_shUMLClass =       "umlClass";
-const char *x_shBioStrand =      "bioStrand";
-const char *x_shBioHelix =       "bioHelix";
-const char *x_indGuideline =     "indGuide";
-const char *x_indDistribution =  "indDistro";
-const char *x_indSeparation =    "indSeparation";
+const char *x_guideline =        "guideline";
 const char *x_cluster =          "cluster";
 const char *x_shPolygon =        "shPolygon";
 const char *x_shTextShape =      "shTextShape";
@@ -460,6 +450,20 @@ CanvasItem *CanvasItem::create(Canvas *canvas, const QDomElement& node,
 
     if (pass == PASS_SHAPES)
     {
+        // Support legacy shaes from Dunnart v1.
+        if (type == "flowEndOProc")
+        {
+            type = "roundedRect";
+        }
+        else if (type == "flowDiamond")
+        {
+            type = "diamond";
+        }
+        else if (type == "indGuide")
+        {
+            type = x_guideline;
+        }
+
         ShapeObj *shape = NULL;
         // Load this shape from a plugin if the factory supports it.
         PluginShapeFactory *factory = sharedPluginShapeFactory();
@@ -471,10 +475,6 @@ CanvasItem *CanvasItem::create(Canvas *canvas, const QDomElement& node,
             if (type == x_svgNode)
             {
                 shape = new SvgShape();
-            }
-            else if (type == "rect")
-            {
-                shape = new RectangleShape();
             }
             else if (type == x_shTextShape)
             {
@@ -488,7 +488,7 @@ CanvasItem *CanvasItem::create(Canvas *canvas, const QDomElement& node,
             {
                 shape = new FreehandShape();
             }
-            else if (type == x_indGuideline)
+            else if (type == x_guideline)
             {
                 newObj = new Guideline(canvas, node, dunnartURI);
             }

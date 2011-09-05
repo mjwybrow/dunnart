@@ -9,12 +9,8 @@ include(../shape_plugin_options.pri)
 
 HEADERS       = \
     diamond.h \
-    ellipse.h \
-    userinteraction.h \
-    inputoutput.h
+    roundedrect.h
 SOURCES       = plugin.cpp \
     diamond.cpp \
-    ellipse.cpp \
-    userinteraction.cpp \
-    inputoutput.cpp
+    roundedrect.cpp
 

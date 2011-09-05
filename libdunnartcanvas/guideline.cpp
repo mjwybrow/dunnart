@@ -526,7 +526,7 @@ QDomElement Guideline::to_QDomElement(const unsigned int subset,
     {
         newNsProp(node, x_dunnartNs, x_direction, (int) type);
 
-        newNsProp(node, x_dunnartNs, x_type, x_indGuideline);
+        newNsProp(node, x_dunnartNs, x_type, x_guideline);
 
         newProp(node, "position", position);
 

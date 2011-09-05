@@ -31,10 +31,10 @@
 #include "libdunnartcanvas/shape.h"
 using dunnart::ShapeObj;
 
-class EllipseShape: public ShapeObj
+class RoundedRectShape: public ShapeObj
 {
     public:
-        EllipseShape()
+        RoundedRectShape()
             : ShapeObj()
         {
         }

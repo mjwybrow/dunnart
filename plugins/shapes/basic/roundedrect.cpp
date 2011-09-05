@@ -28,13 +28,13 @@
 #include "libdunnartcanvas/canvasitem.h"
 using namespace dunnart;
 
-#include "ellipse.h"
+#include "roundedrect.h"
 
 //===========================================================================
-//  "Beginning or End of Process" shape code:
+//  "RoundedRect" shape code:
 
 
-QPainterPath EllipseShape::buildPainterPath(void)
+QPainterPath RoundedRectShape::buildPainterPath(void)
 {
     QPainterPath painter_path;
 
@@ -50,14 +50,14 @@ QPainterPath EllipseShape::buildPainterPath(void)
 }
 
 
-QDomElement EllipseShape::to_QDomElement(const unsigned int subset,
+QDomElement RoundedRectShape::to_QDomElement(const unsigned int subset,
         QDomDocument& doc)
 {
     QDomElement node = doc.createElement("dunnart:node");
 
     if (subset & XMLSS_IOTHER)
     {
-        newNsProp(node, x_dunnartNs, x_type, x_shEndOProc);
+        newNsProp(node, x_dunnartNs, x_type, "roundedRect");
     }
 
     addXmlProps(subset, node, doc);

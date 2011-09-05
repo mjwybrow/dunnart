@@ -786,7 +786,7 @@ QDomElement ClassShape::to_QDomElement(const unsigned int subset,
 
     if (subset & XMLSS_IOTHER)
     {
-        newNsProp(node, x_dunnartNs, x_type, x_shUMLClass);
+        newNsProp(node, x_dunnartNs, x_type, "umlClass");
     }
 
     addXmlProps(subset, node, doc);

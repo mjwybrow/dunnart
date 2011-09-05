@@ -31,7 +31,7 @@ using namespace dunnart;
 #include "diamond.h"
 
 //===========================================================================
-//  Diamond code ("Decision"):
+//  "Diamond" shape code:
 
 
 QPainterPath DiamondShape::buildPainterPath(void)
@@ -57,7 +57,7 @@ QDomElement DiamondShape::to_QDomElement(const unsigned int subset,
 
     if (subset & XMLSS_IOTHER)
     {
-        newNsProp(node, x_dunnartNs, x_type, x_shDiamond);
+        newNsProp(node, x_dunnartNs, x_type, "diamond");
     }
 
     addXmlProps(subset, node, doc);

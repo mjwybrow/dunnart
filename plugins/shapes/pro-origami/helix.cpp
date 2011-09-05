@@ -100,7 +100,7 @@ QDomElement BioHelix::to_QDomElement(const unsigned int subset,
 
     if (subset & XMLSS_IOTHER)
     {
-        newNsProp(node, x_dunnartNs, x_type, x_shBioHelix);
+        newNsProp(node, x_dunnartNs, x_type, "bioHelix");
     }
 
     addXmlProps(subset, node, doc);
