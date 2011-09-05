@@ -76,8 +76,6 @@ void Guideline::initialiser(double position)
     setHoverMessage("Guideline \"%1\" - Drag to move guideline and attached "
                     "objects. Hold ALT to drag free from separations or "
                     "distributions.");
-
-    //QT set_handler(handler);
 }
 
 
@@ -192,107 +190,45 @@ void Guideline::rangeOfAttachedObjects(double& min, double& max) const
 }
 
 
-#if 0
-void Guideline::handler(GuiObj **object_addr, int action)
+QAction *Guideline::buildAndExecContextMenu(QGraphicsSceneMouseEvent *event,
+        QMenu& menu)
 {
-    QWidget *object = *object_addr;
-    Guideline *guide = dynamic_cast<Guideline *> (object);
-    
-    switch (action)
+    if (!menu.isEmpty())
     {
-        case MOUSE_OVER: 
-            if (queryMode)
-                pair_query(object);
-            SDL_SetWindowsCursor(SDL_CUR_Move);
-            statusBar->setTempMessage("Guidelineline - Drag to "
-                    "move guideline and attached objects. "
-                    "Hold ALT to drag free from distributions.");
-            break;
-        case MOUSE_LEAVE: 
-            resetQueryModeIllumination(false);
-            SDL_SetWindowsCursor(SDL_CUR_NormalSelect);
-            statusBar->unsetTempMessage();
-            break;
-#if defined(__APPLE__)
-    case MOUSE_MCLICK:
-        // Apple counts Left click and Alt as a Middle click.
-        if (!(OurGetModState() & KMOD_ALT))
-        {
-            break;
-        }
-        // Fallthrough.
-#endif
-    case MOUSE_LCLICK:
-        resetQueryModeIllumination(false);
-        selection_object_lclick(object);
-        break;
-    case MOUSE_RCLICK:
-        // Highlight the guideline.
-        if (guide->get_active_image_n() == SHAPE_STATE_UNSELECTED)
-        {
-            canvas_deselect_shapes();
-            shape_select(guide);
-        }
-        repaint_canvas();
-
-        guide->displayContextMenu();
-        break;
-    default:
-        break;
-}
-}
-#endif
-
-
-#if 0
-static void breakFromDistribution(QWidget **c)
-{
-    Guideline *guide = (Guideline *) (*c)->get_parent()->get_ident();
-
-    canvas()->beginUndoMacro(tr("Remove From Distribution");
-    bool force = true;
-    guide->removeFromDistributions(force);
-}
-
-
-static const int DISTRELS = 200;
-
-void Guideline::addContextMenuItems(MenuItems& items)
-{
-items.push_back(
-        MenuItem(BUT_TYP_Button, DISTRELS, "Break from Distributions",
-                "Alt+Drag", NULL, breakFromDistribution));
-items.push_back(MenuSeparator());
-
-CanvasItem::addContextMenuItems(items);
-}
-
-
-void Guideline::changeContextMenuState(Menu *menu)
-{
-// Are we connected to any distributions?
-bool anyDists = false;
-for (RelsList::iterator r = rels.begin(); r != rels.end(); r++)
-{
-    Distribution *distro = dynamic_cast<Distribution *> ((*r)->distro);
-
-    if (distro)
-    {
-        anyDists = true;
-        break;
+        menu.addSeparator();
     }
-}
-if (!anyDists)
-{
-    // If not, disable the button.
-    menu->changeWidgetState(DISTRELS, SDLGui::WIDGET_disable);
-}
 
-CanvasItem::changeContextMenuState(menu);
+    QAction* breakDistrosAction =
+            menu.addAction(tr("Break from Distributions"));
+
+    // Hide the menu item if the guideline is not attached to any
+    // distribution relationships.
+    bool attachedToDistributions = false;
+    for (RelsList::iterator r = rels.begin(); r != rels.end(); r++)
+    {
+        if (dynamic_cast<Distribution *> ((*r)->distro))
+        {
+            attachedToDistributions = true;
+            break;
+        }
+    }
+    if ( ! attachedToDistributions )
+    {
+        breakDistrosAction->setVisible(false);
+    }
+
+    QAction *action = CanvasItem::buildAndExecContextMenu(event, menu);
+
+    if (action == breakDistrosAction)
+    {
+        canvas()->beginUndoMacro(tr("Remove From Distribution"));
+        bool force = true;
+        removeFromDistributions(force);
+        canvas()->interrupt_graph_layout();
+    }
+
+    return action;
 }
-
-#endif
-
 
 void Guideline::removeFromDistributions(const bool force)
 {
@@ -579,202 +515,6 @@ QVariant Guideline::itemChange(GraphicsItemChange change,
 }
 
 
-static const int ALBUT_L = 200 + ALIGN_LEFT;
-#if 0
-void Guideline::draw(QPixmap *surface, const int x, const int y, const int t)
-{
-    if (!surface)
-    {
-        return;
-    }
-
-    // Light highlight the rest of the indicator for queries.
-    if (cascade_glow)
-    {
-        QColor col = shLightGlow;
-
-        if (type == GUIDE_TYPE_VERT)
-        {
-            rectangleColor(surface, x + 2, y, x + 4, y + y + height - 3, col);
-        }
-        else // if (type == GUIDE_TYPE_HORI)
-        {
-            rectangleColor(surface, x, y + 2, x + x + width - 1, y + 4, col);
-        }
-    }
-
-    QColor light_blue = QColor(0, 0, 255, 35);
-    QColor highlight_col = 0;
-    if (two_tier_indicators)
-    {
-        switch (t)
-        {
-            case SHAPE_DRAW_HIGHLIGHTED:
-                if (highlight_col == 0)
-                {
-                    highlight_col = QColor(0, 255, 255, 65);
-                }
-                // No break
-            case SHAPE_STATE_GUIDE_CONNECT:
-                if (highlight_col == 0)
-                {
-                    highlight_col = QColor(255, 0, 220, 65);
-                }
-                // No break
-            case SHAPE_DRAW_LEAD_HIGHLIGHTED:
-                if (highlight_col == 0)
-                {
-                    highlight_col = QColor(0, 255, 0, 65);
-                }
-                if (type == GUIDE_TYPE_VERT)
-                {
-                    rectangleColor(surface, x + 2, y, x + 4, y + y + height - 3,
-                            highlight_col);
-                }
-                else // if (type == GUIDE_TYPE_HORI)
-                {
-                    rectangleColor(surface, x, y + 2, x + x + width - 1, y + 4,
-                            highlight_col);
-                }
-                // NOTE: Don't break;
-            case SHAPE_DRAW_NORMAL:
-                if (type == GUIDE_TYPE_VERT)
-                {
-                    for(int i = y + 1; i <= y + height - 4; i += 3)
-                    {
-                        vlineColor(surface, x + 3, i, i + 1, light_blue);
-                    }
-                }
-                else // if (type == GUIDE_TYPE_HORI)
-                {
-                    for(int i = x + 1; i <= x + width - 4; i += 3)
-                    {
-                        hlineColor(surface, i, i + 1, y + 3, light_blue);
-                    }
-                }
-                break;
-            case SHAPE_DRAW_OUTLINE:
-                if (type == GUIDE_TYPE_VERT)
-                {
-                    Draw_VLine(surface, x + 3, y, y + height - 3, BLACK);
-                    for(int i = y; i <= y + height - 3; i += 2)
-                    {
-                        putpixel(surface, x + 3, i, WHITE);
-                    }
-                }
-                else // if (type == GUIDE_TYPE_HORI)
-                {
-                    Draw_HLine(surface, x, y + 3, x + width - 3, BLACK);
-                    for(int i = x; i <= x + width - 3; i += 2)
-                    {
-                        putpixel(surface, i, y + 3, WHITE);
-                    }
-                }
-                break;
-            default:
-                break;
-        }
-    }
-
-    glowSetClipRect(surface);
-
-    QColor BLUE = QColor(0, 0, 255, alpha);
-    highlight_col = 0;
-
-    if (isGlow() || cascade_glow || constraint_conflict)
-    {
-        if (cascade_glow || constraint_conflict)
-        {
-            highlight_col = HAZARD_COLOUR;
-        }
-        else
-        {
-            highlight_col = QColor(255, 80, 0, 128);
-        }
-
-        if (type == GUIDE_TYPE_VERT)
-        {
-            rectangleColor(surface, x + 2, y, x + 4, y + y + height - 3,
-                    highlight_col);
-        }
-        else // if (type == GUIDE_TYPE_HORI)
-        {
-            rectangleColor(surface, x, y + 2, x + x + width - 1, y + 4,
-                    highlight_col);
-        }
-        highlight_col = 0;
-    }
-    glowClearClipRect(surface);
-    
-    if (isLocked())
-    {
-        highlight_col = QColor(0, 0, 255, 150);
-        if (type == GUIDE_TYPE_VERT)
-        {
-            rectangleColor(surface, x + 2, y, x + 4, y + y + height - 3,
-                    highlight_col);
-        }
-        else // if (type == GUIDE_TYPE_HORI)
-        {
-            rectangleColor(surface, x, y + 2, x + x + width - 1, y + 4,
-                    highlight_col);
-        }
-    }
-    switch (t)
-    {
-        case SHAPE_DRAW_HIGHLIGHTED:
-            if (highlight_col == 0)
-            {
-                highlight_col = QColor(0, 255, 255, 255);
-            }
-            // No break
-        case SHAPE_STATE_GUIDE_CONNECT:
-            if (highlight_col == 0)
-            {
-                highlight_col = QColor(255, 0, 220, 255);
-            }
-            // No break
-        case SHAPE_DRAW_LEAD_HIGHLIGHTED:
-            if (highlight_col == 0)
-            {
-                highlight_col = QColor(0, 255, 0, 255);
-            }
-            if (type == GUIDE_TYPE_VERT)
-            {
-                rectangleColor(surface, x + 2, y, x + 4, y + y + height - 3,
-                        highlight_col);
-            }
-            else // if (type == GUIDE_TYPE_HORI)
-            {
-                rectangleColor(surface, x, y + 2, x + x + width - 1, y + 4,
-                        highlight_col);
-            }
-            // NOTE: Don't break;
-        case SHAPE_DRAW_NORMAL:
-            if (type == GUIDE_TYPE_VERT)
-            {
-                for(int i = y + 1; i <= y + height - 4; i += 3)
-                {
-                    vlineColor(surface, x + 3, i, i + 1, BLUE);
-                }
-            }
-            else // if (type == GUIDE_TYPE_HORI)
-            {
-                for(int i = x + 1; i <= x + width - 4; i += 3)
-                {
-                    hlineColor(surface, i, i + 1, y + 3, BLUE);
-                }
-            }
-            break;
-        default:
-            break;
-    }
-}
-
-
-#endif
-
-
 QDomElement Guideline::to_QDomElement(const unsigned int subset, 
         QDomDocument& doc)
 {
@@ -789,8 +529,6 @@ QDomElement Guideline::to_QDomElement(const unsigned int subset,
         newNsProp(node, x_dunnartNs, x_type, x_indGuideline);
 
         newProp(node, "position", position);
-        newProp(node, "orientation",
-                (type == GUIDE_TYPE_VERT) ? "vertical" : "horizontal");
 
         newProp(node, "id",getIdString());
     }
@@ -840,237 +578,6 @@ dirctn atypes_to_dirctn(atypes atype)
         return GUIDE_TYPE_HORI;
     }
 }
-
-
-Ring::Ring(Relationship *r, int ind):QGraphicsItem(r->shape)
-{
-    Q_UNUSED (ind)
-
-#if 0
-    // QT
-    QColor ORANGE = QColor(255, 134, 33);
-    if (rimage[0] == NULL)
-    {
-        rimage[0] = my_create_coloured_bitmap(7, 7, Qt::transparent);
-        Draw_VLine(rimage[0], 0, 2, 4, ORANGE);
-        Draw_VLine(rimage[0], 6, 2, 4, ORANGE);
-        putpixel(rimage[0], 1, 1, ORANGE);
-        putpixel(rimage[0], 1, 5, ORANGE);
-        putpixel(rimage[0], 5, 1, ORANGE);
-        putpixel(rimage[0], 5, 5, ORANGE);
-    }
-    if (rimage[1] == NULL)
-    {
-        rimage[1] = my_create_coloured_bitmap(7, 7, QColor(255, 0, 0));
-        Draw_VLine(rimage[1], 0, 2, 4, BLACK);
-        Draw_VLine(rimage[1], 6, 2, 4, BLACK);
-        putpixel(rimage[1], 1, 1, BLACK);
-        putpixel(rimage[1], 1, 5, BLACK);
-        putpixel(rimage[1], 5, 1, BLACK);
-        putpixel(rimage[1], 5, 5, BLACK);
-    }
-    if (rimage[2] == NULL)
-    {
-        rimage[2] = my_create_coloured_bitmap(7, 7, Qt::transparent);
-        Draw_HLine(rimage[2], 2, 0, 4, ORANGE);
-        Draw_HLine(rimage[2], 2, 6, 4, ORANGE);
-        putpixel(rimage[2], 1, 1, ORANGE);
-        putpixel(rimage[2], 5, 1, ORANGE);
-        putpixel(rimage[2], 1, 5, ORANGE);
-        putpixel(rimage[2], 5, 5, ORANGE);
-    }
-    if (rimage[3] == NULL)
-    {
-        rimage[3] = my_create_coloured_bitmap(7, 7,
-                SDL_MapRGB(screen->format, 255, 0, 0));
-        Draw_HLine(rimage[3], 2, 0, 4, BLACK);
-        Draw_HLine(rimage[3], 2, 6, 4, BLACK);
-        putpixel(rimage[3], 1, 1, BLACK);
-        putpixel(rimage[3], 5, 1, BLACK);
-        putpixel(rimage[3], 1, 5, BLACK);
-        putpixel(rimage[3], 5, 5, BLACK);
-    }
-    if (rimage[4] == NULL)
-    {
-        rimage[4] = my_create_coloured_bitmap(7, 7, Qt::transparent);
-    }
-#endif
-
-    rel = r;
-    
-    //QT set_ident(ind);
-    //QT add_to_GuiObj_list();
-    
-    // Put behind resize handles. 
-    //QT make_layer_tail();
-    
-    reposition();
-    
-#if 0
-    set_image(0, rimage[4], IMAGE_SHARED);
-    if (rel->type < ALIGN_LEFT)
-    {
-        set_image(1, rimage[2], IMAGE_SHARED);
-        set_image(2, rimage[3], IMAGE_SHARED);
-    }
-    else
-    {
-        set_image(1, rimage[0], IMAGE_SHARED);
-        set_image(2, rimage[1], IMAGE_SHARED);
-    }
-    if (parent->get_active_image_n() == 0)
-    {
-        set_active_image(0);
-    }
-    else
-    {
-        set_active_image(1);
-    }
-
-    set_handler(Ring::handler);
-    
-#endif
-}
-
-
-
-QRectF Ring::boundingRect() const
-{
-    qreal penWidth = 1;
-    return QRectF(-3 - penWidth / 2, -3 - penWidth / 2,
-            3 + penWidth / 2, 3 + penWidth / 2);
-}
-
-
-void Ring::paint(QPainter *painter, 
-        const QStyleOptionGraphicsItem *option, QWidget *widget)
-{
-    Q_UNUSED (painter)
-    Q_UNUSED (option)
-    Q_UNUSED (widget)
-
-    //painter->drawRect(-3, -3, 6, 6);
-}
-
-
-
-void Ring::both_set_image(int imgn)
-{
-    Q_UNUSED (imgn)
-#if 0
-    rel->indi[0]->set_active_image(imgn);
-    rel->indi[0]->display();
-    rel->indi[1]->set_active_image(imgn);
-    rel->indi[1]->display();
-#endif
-}
-
-
-#if 0
-void Ring::handler(QWidget **object_addr, int action)
-{
-    Ring *ring = dynamic_cast<Ring *> (*object_addr);
-
-    if ((!allow_ring_disconnect ||
-            (ring->get_active_image_n() == SHAPE_STATE_UNSELECTED)) &&
-            ((action == MOUSE_LCLICK) || (action == MOUSE_MCLICK) ||
-             (action == MOUSE_WHEELUP) || (action == MOUSE_WHEELDOWN) ||
-             (action == MOUSE_MCLICKUP) || (action == MOUSE_RCLICK)))
-    {
-            // If ring is not visible and it is clicked, treat as if
-            // the parent shape was clicked instead.
-            *object_addr = ring->get_parent();
-            (*object_addr)->call_handler(object_addr, action);
-            return;
-    }
-
-    switch (action)
-    {
-        case MOUSE_OVER: 
-            if ((ring->get_active_image_n() == 1) && allow_ring_disconnect)
-            {
-                ring->both_set_image(2); 
-                SDL_SetWindowsCursor(SDL_CUR_RingCutPointer);
-            }
-            break;
-        case MOUSE_LEAVE: 
-            if ((ring->get_active_image_n() == 2) && allow_ring_disconnect)
-            {
-                ring->both_set_image(1); 
-                SDL_SetWindowsCursor(SDL_CUR_Move);
-            }
-            break;
-        case MOUSE_RCLICK:
-            break;
-        case MOUSE_MCLICK:
-            break;
-        case MOUSE_LCLICK:
-            ring->destroy_constraint();
-            *object_addr = NULL;
-            break;
-        default:
-            break;
-    }
-}
-#endif
-
-
-void Ring::destroy_constraint(void)
-{
-    // UNDO canvas()->beginUndoMacro(tr("Label"));
-    rel->Deactivate(BOTH_SIDE);
-}
-
-
-void Ring::reposition(void)
-{
-#if 0
-    // QT
-    int sw = parent->get_width() - 8, sh = parent->get_height() - 8;
-    int mod = (idents[0] == 1) ? 1 : 3;
-    
-    int nxpos = 0, nypos = 0;
-    if (rel->type == ALIGN_LEFT)
-    {
-        nxpos = 0;
-        nypos = mod * (sh / 4);
-    }
-    else if (rel->type == ALIGN_CENTER)
-    {
-        nxpos = (sw / 2);
-        nypos = mod * (sh / 4);
-    }
-    else if (rel->type == ALIGN_RIGHT)
-    {
-        nxpos = sw;
-        nypos = mod * (sh / 4);
-    }
-    else if (rel->type == ALIGN_TOP)
-    {
-        nxpos = mod * (sw / 4);
-        nypos = 0;
-    }
-    else if (rel->type == ALIGN_MIDDLE)
-    {
-        nxpos = mod * (sw / 4);
-        nypos = (sh / 2);
-    }
-    else if (rel->type == ALIGN_BOTTOM)
-    {
-        nxpos = mod * (sw / 4);
-        nypos = sh;
-    }
-    
-    if ((nxpos != xpos) || (nypos != ypos) ||
-            (absxpos != parent->get_absxpos() + nxpos) ||
-            (absypos != parent->get_absypos() + nypos))
-    {
-        // If the handle has been moved.
-        set_pos(nxpos, nypos);
-    }
-#endif
-}
-
 
 
 bool Guideline::operator<(const Guideline& rhs) const

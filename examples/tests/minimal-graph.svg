@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns:dunnart="http://www.csse.monash.edu.au/~mwybrow/dunnart.dtd">
-  <path dunnart:type="connAvoidPoly" id="3" dunnart:srcID="1" dunnart:dstID="22"/>
-  <path dunnart:type="connAvoidPoly" id="23" dunnart:srcID="4" dunnart:dstID="5"/>
-  <path dunnart:type="connAvoidPoly" id="24" dunnart:srcID="5" dunnart:dstID="1"/>
-  <path dunnart:type="connAvoidPoly" id="25" dunnart:srcID="5" dunnart:dstID="17"/>
-  <path dunnart:type="connAvoidPoly" id="29" dunnart:srcID="8" dunnart:dstID="9"/>
-  <path dunnart:type="connAvoidPoly" id="30" dunnart:srcID="9" dunnart:dstID="10"/>
-  <path dunnart:type="connAvoidPoly" id="31" dunnart:srcID="10" dunnart:dstID="21"/>
-  <path dunnart:type="connAvoidPoly" id="34" dunnart:srcID="1" dunnart:dstID="16"/>
-  <path dunnart:type="connAvoidPoly" id="35" dunnart:srcID="16" dunnart:dstID="17"/>
-  <path dunnart:type="connAvoidPoly" id="36" dunnart:srcID="17" dunnart:dstID="18"/>
-  <path dunnart:type="connAvoidPoly" id="37" dunnart:srcID="18" dunnart:dstID="19"/>
-  <path dunnart:type="connAvoidPoly" id="38" dunnart:srcID="16" dunnart:dstID="19"/>
-  <path dunnart:type="connAvoidPoly" id="39" dunnart:srcID="19" dunnart:dstID="20"/>
-  <path dunnart:type="connAvoidPoly" id="40" dunnart:srcID="20" dunnart:dstID="21"/>
-  <path dunnart:type="connAvoidPoly" id="41" dunnart:srcID="21" dunnart:dstID="22"/>
-  <path dunnart:type="connAvoidPoly" id="42" dunnart:srcID="19" dunnart:dstID="22"/>
-  <rect dunnart:type="flowEndOProc" id="1" dunnart:xPos="289" dunnart:yPos="259" dunnart:width="85" dunnart:height="30" dunnart:label="Ares"/>
-  <rect dunnart:type="flowEndOProc" id="4" dunnart:xPos="93" dunnart:yPos="219" dunnart:width="85" dunnart:height="30" dunnart:label="Apollo"/>
-  <rect dunnart:type="flowEndOProc" id="5" dunnart:xPos="179" dunnart:yPos="281" dunnart:width="85" dunnart:height="30" dunnart:label="Aphrodite"/>
-  <rect dunnart:type="flowEndOProc" id="8" dunnart:xPos="788" dunnart:yPos="171" dunnart:width="85" dunnart:height="30" dunnart:label="Hades"/>
-  <rect dunnart:type="flowEndOProc" id="9" dunnart:xPos="697" dunnart:yPos="214" dunnart:width="85" dunnart:height="30" dunnart:label="Hera"/>
-  <rect dunnart:type="flowEndOProc" id="10" dunnart:xPos="603" dunnart:yPos="259" dunnart:width="85" dunnart:height="30" dunnart:label="Hermes"/>
-  <rect dunnart:type="flowEndOProc" id="16" dunnart:xPos="280" dunnart:yPos="360" dunnart:width="85" dunnart:height="30" dunnart:label="Hestia"/>
-  <rect dunnart:type="flowEndOProc" id="17" dunnart:xPos="185" dunnart:yPos="392" dunnart:width="85" dunnart:height="30" dunnart:label="Poseidon"/>
-  <rect dunnart:type="flowEndOProc" id="18" dunnart:xPos="273" dunnart:yPos="460" dunnart:width="85" dunnart:height="30" dunnart:label="Zeus"/>
-  <rect dunnart:type="flowEndOProc" id="19" dunnart:xPos="371" dunnart:yPos="407" dunnart:width="85" dunnart:height="30" dunnart:label="Athena"/>
-  <rect dunnart:type="flowEndOProc" id="20" dunnart:xPos="479" dunnart:yPos="409" dunnart:width="85" dunnart:height="30" dunnart:label="Dementer"/>
-  <rect dunnart:type="flowEndOProc" id="21" dunnart:xPos="506" dunnart:yPos="305" dunnart:width="85" dunnart:height="30" dunnart:label="Dionysus"/>
-  <rect dunnart:type="flowEndOProc" id="22" dunnart:xPos="396" dunnart:yPos="297" dunnart:width="85" dunnart:height="30" dunnart:label="Hephaestus"/>
+<svg xmlns:dunnart="http://www.dunnart.org/ns/dunnart">
+  <path dunnart:type="connector" id="3" dunnart:srcID="1" dunnart:dstID="22"/>
+  <path dunnart:type="connector" id="23" dunnart:srcID="4" dunnart:dstID="5"/>
+  <path dunnart:type="connector" id="24" dunnart:srcID="5" dunnart:dstID="1"/>
+  <path dunnart:type="connector" id="25" dunnart:srcID="5" dunnart:dstID="17"/>
+  <path dunnart:type="connector" id="29" dunnart:srcID="8" dunnart:dstID="9"/>
+  <path dunnart:type="connector" id="30" dunnart:srcID="9" dunnart:dstID="10"/>
+  <path dunnart:type="connector" id="31" dunnart:srcID="10" dunnart:dstID="21"/>
+  <path dunnart:type="connector" id="34" dunnart:srcID="1" dunnart:dstID="16"/>
+  <path dunnart:type="connector" id="35" dunnart:srcID="16" dunnart:dstID="17"/>
+  <path dunnart:type="connector" id="36" dunnart:srcID="17" dunnart:dstID="18"/>
+  <path dunnart:type="connector" id="37" dunnart:srcID="18" dunnart:dstID="19"/>
+  <path dunnart:type="connector" id="38" dunnart:srcID="16" dunnart:dstID="19"/>
+  <path dunnart:type="connector" id="39" dunnart:srcID="19" dunnart:dstID="20"/>
+  <path dunnart:type="connector" id="40" dunnart:srcID="20" dunnart:dstID="21"/>
+  <path dunnart:type="connector" id="41" dunnart:srcID="21" dunnart:dstID="22"/>
+  <path dunnart:type="connector" id="42" dunnart:srcID="19" dunnart:dstID="22"/>
+  <rect dunnart:type="rect" id="1" dunnart:cx="289" dunnart:cy="259" dunnart:width="85" dunnart:height="30" dunnart:label="Ares" dunnart:lockedPos="1" />
+  <rect dunnart:type="rect" id="4" dunnart:cx="93" dunnart:cy="219" dunnart:width="85" dunnart:height="30" dunnart:label="Apollo"/>
+  <rect dunnart:type="rect" id="5" dunnart:cx="179" dunnart:cy="281" dunnart:width="85" dunnart:height="30" dunnart:label="Aphrodite"/>
+  <rect dunnart:type="rect" id="8" dunnart:cx="788" dunnart:cy="171" dunnart:width="85" dunnart:height="30" dunnart:label="Hades"/>
+  <rect dunnart:type="rect" id="9" dunnart:cx="697" dunnart:cy="214" dunnart:width="85" dunnart:height="30" dunnart:label="Hera"/>
+  <rect dunnart:type="rect" id="10" dunnart:cx="603" dunnart:cy="259" dunnart:width="85" dunnart:height="30" dunnart:label="Hermes"/>
+  <rect dunnart:type="rect" id="16" dunnart:cx="280" dunnart:cy="360" dunnart:width="85" dunnart:height="30" dunnart:label="Hestia"/>
+  <rect dunnart:type="rect" id="17" dunnart:cx="185" dunnart:cy="392" dunnart:width="85" dunnart:height="30" dunnart:label="Poseidon"/>
+  <rect dunnart:type="rect" id="18" dunnart:cx="273" dunnart:cy="460" dunnart:width="85" dunnart:height="30" dunnart:label="Zeus"/>
+  <rect dunnart:type="rect" id="19" dunnart:cx="371" dunnart:cy="407" dunnart:width="85" dunnart:height="30" dunnart:label="Athena"/>
+  <rect dunnart:type="rect" id="20" dunnart:cx="479" dunnart:cy="409" dunnart:width="85" dunnart:height="30" dunnart:label="Dementer"/>
+  <rect dunnart:type="rect" id="21" dunnart:cx="506" dunnart:cy="305" dunnart:width="85" dunnart:height="30" dunnart:label="Dionysus"/>
+  <rect dunnart:type="rect" id="22" dunnart:cx="396" dunnart:cy="297" dunnart:width="85" dunnart:height="30" dunnart:label="Hephaestus"/>
 </svg>

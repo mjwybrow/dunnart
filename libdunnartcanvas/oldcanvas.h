@@ -49,8 +49,6 @@ extern void redraw_connectors(QWidget **slider);
 extern QXmlNamespaceSupport namespaces;
 
 
-extern void direct_manip_checkbox_handler(QWidget **object_addr,
-        int action);
 //QT extern void selection_outlines(SDL_Surface *surface, int *sel_x, int *sel_y,
 //        int *sel_w, int *sel_h);
 //QT extern void copy_selection_to(CanvasItemList *target);
@@ -63,7 +61,6 @@ extern void dragAbortActions(void);
 extern bool do_response_tasks(void);
 extern bool checkUserInterrupt(void);
 extern void relayout_selection(QWidget **gobj);
-//QT extern void idle_loop_handler(SDL_Event *event);
 extern void removeFromCanvas(QList<CanvasItem *>& list);
 extern void returnToCanvas(QList<CanvasItem *>& list);
 

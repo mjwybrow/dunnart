@@ -38,7 +38,6 @@ enum atypes { ALIGN_TOP = 0, ALIGN_MIDDLE = 1, ALIGN_BOTTOM = 2,
 enum side { PARASITE_SIDE = 1, HOST_SIDE = 2, BOTH_SIDE = 3, EVERYTHING = 7};
 
 class ShapeObj;
-class Ring;
 class Guideline;
 class Distribution;
 class Separation;
@@ -52,8 +51,6 @@ class Relationship
         Distribution *distro;
         Separation *separation;
         atypes type;
-        // Constraint indicators.
-        Ring *indi[2];
 
         Relationship(Guideline *g, ShapeObj *sh, atypes t, bool no_undo = false);
         Relationship(Distribution *d, Guideline *g, Guideline *g2, bool no_undo = false);

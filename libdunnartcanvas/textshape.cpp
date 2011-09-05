@@ -175,67 +175,6 @@ void TextShape::setTextPositionByBaseline(int x, int b, bool from_cider)
 }
 
 
-#if 0
-void TextShape::draw(SDL_Surface *surface, const int x, const int y,
-        const int type, const int w, const int h)
-{
-    if (!surface || !txtStr || (strlen(txtStr) == 0))
-    {
-        return;
-    }
-    
-    if (textShapeFont[fontSize] == NULL)
-    {
-        textShapeFont[fontSize] = FONT_LoadTTF("FreeSans.ttf", fontSize);
-    }
-    assert(textShapeFont[fontSize] != NULL);
-
-#if 0
-    int tx, ty, tw, th, tb;
-    getTextDimensions(&tx, &ty, &tw, &th, &tb);
-    // Baseline.
-    hlineColor(surface, tx, tx + tw - 1, tb, QColor(0,0,255));
-    // Glyph's bounding box.
-    rectangleColor(surface, tx, ty, tx + tw - 1, ty + th - 1,
-            QColor(255,0,0));
-#endif
-
-    // Render text:
-    printf("%d\n", baselineOffset);
-    SDL_Surface *textbmp = TTF_RenderUNICODE_Blended(textShapeFont[fontSize],
-            unicodeStr, _colour);
-    SDL_Rect src_rect = {0, baselineOffset, width, height};
-    SDL_Rect dst_rect = {x, y, 0, 0};
-    SDL_BlitSurface(textbmp, &src_rect, surface, &dst_rect);
-    SDL_FreeSurface(textbmp);
-
-    QColor strokeCol = QColor(255, 0, 0, 50);
-    //boxColor(surface, x, y, x + w - 1, y + h - 1, strokeCol);
-   
-
-    strokeCol = QColor(0, 0, 0, 0);
-    switch (type)
-    {
-        case SHAPE_DRAW_NORMAL:
-            // Nothing to do.
-            break;
-        case SHAPE_DRAW_HIGHLIGHTED:
-            strokeCol = QColor(0, 255, 255);
-            break;
-        case SHAPE_DRAW_LEAD_HIGHLIGHTED:
-            strokeCol = QColor(0, 255, 0);
-            break;
-        case SHAPE_DRAW_OUTLINE:
-            strokeCol = QColor(0, 0, 0, 128);
-            break;
-        default:
-            break;
-    }
-    rectangleColor(surface, x, y, x + w - 1, y + h - 1, strokeCol);
-}
-#endif
-
-
 void TextShape::setColour(unsigned int r, unsigned int g, unsigned int b)
 {
     _colour.setRed(std::min(r, (unsigned)255));

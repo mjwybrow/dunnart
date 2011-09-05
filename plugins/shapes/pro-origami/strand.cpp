@@ -38,7 +38,6 @@ BioStrand::BioStrand()
     : ShapeObj(),
       m_direction_reversed(false)
 {
-    //set_handler(biostrand_handler);
 }
 
 
@@ -152,31 +151,6 @@ QAction *BioStrand::buildAndExecContextMenu(QGraphicsSceneMouseEvent *event,
     return action;
 }
 
-
-#if 0
-void biostrand_handler(QWidget **object_addr, int action)
-{
-    QWidget *object = *object_addr;
-    BioStrand *strand = dynamic_cast<BioStrand *> (object);
-
-    switch (action)
-    {
-        case LABEL_CHANGED:
-        {
-            //check to see if a resize is needed
-            int new_width, new_height;
-            bool store_undo = true;
-            int buffer = 15;
-            strand->determine_good_text_dimensions(&new_width, &new_height);
-            strand->setPosAndSize(strand->centrePos(),
-                    QSizeF(new_width + buffer, new_height, store_undo);
-        }
-        default:
-            // In all other cases, just call the superclass' handler.
-            shape_handler(object_addr, action);
-    }
-}
-#endif
 
 // vim: filetype=cpp ts=4 sw=4 et tw=0 wm=0 cindent
 

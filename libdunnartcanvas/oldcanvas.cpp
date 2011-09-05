@@ -79,13 +79,6 @@ bool freehand_drawing = false;
 
 
 #if 0
-static bool video_handler(SDL_Event *event);
-static bool key_handler(SDL_Event *event);
-static Uint32 idle_loop_callback(Uint32 interval, void *param);
-#endif
-
-
-#if 0
 void processShapeAnimation(SDL_Event *event)
 {
     ShapeObj *shape = (ShapeObj *) event->user.data1;
@@ -670,74 +663,6 @@ static bool repaint_all_indicators(void)
     }
     return changes;
 }
-
-
-
-void idle_loop_handler(SDL_Event *event)
-{
-    if (event->user.code == USEREVENT_FADE_TIMER)
-    {
-        bool changes = repaint_all_indicators();
-        
-        if (changes)
-        {
-            repaint_canvas();
-        }
-    }
-    else if (event->user.code == USEREVENT_CANVAS_ANIMATE)
-    {
-        if (canvasMoveAnimation)
-        {
-            bool finished = canvasMoveAnimation->process();
-            
-            if (finished)
-            {
-                delete canvasMoveAnimation;
-                canvasMoveAnimation = NULL;
-            }
-        }
-    }
-    else if (event->user.code == USEREVENT_SHAPE_RESIZE)
-    {
-        processShapeAnimation(event);
-    }
-    else if (event->user.code == USEREVENT_LAYOUT_FREESHIFT)
-    {
-        // XXX: We would like to use partial connector feedback here to
-        //      only reroute the connectors attached to the moving shape(s).
-        /*
-        if (!straighten_bends)
-        {
-            printf("USEREVENT_LAYOUT_FREESHIFT\n");
-            bool lastSimpleRouting = router->SimpleRouting;
-            router->SimpleRouting = false;
-            reroute_connectors();
-            router->SimpleRouting = lastSimpleRouting;
-        }
-        */
-        repaint_canvas();
-    }
-    else if (event->user.code == USEREVENT_LAYOUT_DONE)
-    {
-    }
-    else if (event->user.code == USEREVENT_LAYOUT_UPDATES)
-    {
-    }
-}
-
-    
-static Uint32 idle_loop_callback(Uint32 interval, void *param)
-{
-    //printf("--- %d, %d\n", mouse.x - canvas->get_xpos(), mouse.y - canvas->get_ypos());
-
-    SDLGui::postUserEvent(USEREVENT_FADE_TIMER);
-
-    idleTimerID = 0;
-    return 0;
-}
-
-
-void _callback(QWidget **object_addr) {};
 
 
 int fadeLevelExtraDraw(QPixmap *sur, bool disabled)

@@ -119,8 +119,6 @@ PDEPN::PDEPN(xmlNode *node, xmlNs *ns)
     :Shape(node, ns)
 {
     PDEPN::set_class_members();
-
-    set_handler(epn_handler);
 }
 
 
@@ -128,8 +126,6 @@ PDEPN::PDEPN(const double x, const double y, const int w, const int h)
     :Shape(++maxid, x, y, w, h)
 {
     PDEPN::set_class_members();
-
-    set_handler(epn_handler);
 }
 
 
@@ -176,51 +172,27 @@ xmlNodePtr PDEPN::to_xmlNode(const unsigned int subset, xmlNs *dunnartNs)
     return node;
 }
 
-void PDEPN::epn_handler(GuiObj **object_addr, int action)
+QAction *PDEPN::buildAndExecContextMenu(QGraphicsSceneMouseEvent *event,
+        QMenu& menu)
 {
-    GuiObj *object = *object_addr;
-    PDEPN *epn = dynamic_cast<PDEPN *> (object);
-
-    switch (action)
+    if (!menu.isEmpty())
     {
-    case LABEL_CHANGED:
+        menu.addSeparator();
+    }
+
+    QAction* switchCloneMarkerAction = menu.addAction(tr("Switch clone marker"));
+
+    QAction *action = CanvasItem::buildAndExecContextMenu(event, menu);
+
+    if (action == switchCloneMarkerAction)
     {
-	//check to see if a resize is needed
-	int new_width, new_height;
-	bool store_undo = true;
-	int buffer = 15;
-	epn->determine_good_text_dimensions(&new_width, &new_height);
-        epn->setPosAndSize(epn->centrePos(),
-                QSizeF(new_width + buffer, new_height, store_undo);
+        switchCloning();
     }
-    case MOUSE_RCLICK: {
-        //      epn->addContextMenuItems();
 
-        printf("testing ...\n");
-
-    }
-    default:
-        // In all other cases, just call the superclass' handler.
-        shape_handler(object_addr, action);
-    }
+    return action;
 }
-
-void PDEPN::addContextMenuItems(MenuItems& items) {
-
-    // option to turn on/off multimeric is not included in this class becase
-    // cannot be multimeric
-    //   items.push_back(
-    // 		  MenuItem(BUT_TYP_Button, BUT_GENERIC, "Switch multimeric", "",
-    // 			   NULL, switchMultimeric));
-
-    // option to turn on/off clone marker
-    items.push_back(
-                MenuItem(BUT_TYP_Button, BUT_GENERIC, "Switch clone marker", "",
-                         NULL, switchCloning));
-    items.push_back(MenuSeparator());
-}
-
 #endif
+
 
 // vim: filetype=cpp ts=4 sw=4 et tw=0 wm=0 cindent
 

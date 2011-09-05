@@ -152,47 +152,6 @@ void Template::move_diff(int diff_x, int diff_y, bool store_undo)
 }
 
 
-/** QT void Template::handler(GuiObj **object_addr, int action)
-{
-    GuiObj *object = *object_addr;
-    Template *templtPtr = dynamic_cast<Template *> (object);
-
-    //Template *templt = dynamic_cast<Template *> (object);
-    
-    switch (action)
-    {
-    case MOUSE_OVER: 
-        SDL_SetWindowsCursor(SDL_CUR_Move);
-        statusBar->setTempMessage("Template");
-        break;
-    case MOUSE_LEAVE: 
-        SDL_SetWindowsCursor(SDL_CUR_NormalSelect);
-        statusBar->unsetTempMessage();
-        break;
-#if 0
-#if defined(__APPLE__)
-    case MOUSE_MCLICK:
-        // Apple counts Left click and Alt as a Middle click.
-        if (!(OurGetModState() & KMOD_ALT))
-        {
-            break;
-        }
-        // Fallthrough.
-#endif
-#endif
-    case MOUSE_LCLICK:
-        selection_object_lclick(object);
-        break;
-    case MOUSE_RCLICK:
-        repaint_canvas();
-        templtPtr->displayContextMenu();
-        break;
-    default:
-        break;
-    }
-}
-**/
-
 // calculate whether a Shape object overlaps with the template
 bool Template::testShapeOverlap(ShapeObj *shape)
 {

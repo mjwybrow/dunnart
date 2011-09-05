@@ -65,8 +65,6 @@ class Cluster: public ShapeObj
         void recomputeBoundary(void);
         void setNewBoundary(std::vector<Avoid::Point>& points);
         void computeBoundingBox(void);
-        //QT virtual void addContextMenuItems(MenuItems& items);
-        //QT virtual void changeContextMenuState(Menu *menu);
         virtual bool canBe(const unsigned int flags);
         ShapeList& getMembers(void);
         ClusterShapeMap& getSmallShapeInfo(void)
@@ -79,6 +77,8 @@ class Cluster: public ShapeObj
         
         bool rectangular;
    protected:
+        virtual QAction *buildAndExecContextMenu(
+                QGraphicsSceneMouseEvent *event, QMenu& menu);
         virtual void routerAdd(void);
         virtual void routerRemove(void);
         virtual void routerMove(void);

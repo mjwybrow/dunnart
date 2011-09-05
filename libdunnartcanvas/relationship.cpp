@@ -50,8 +50,6 @@ Relationship::Relationship(Canvas *canvas, const QDomElement& node,
 {
     Q_UNUSED (dunNs)
 
-    indi[0] = indi[1] = NULL;
-
     QString relTypeStr = node.attribute(x_relType);
     assert(!relTypeStr.isNull());
 
@@ -84,9 +82,6 @@ Relationship::Relationship(Canvas *canvas, const QDomElement& node,
         else
         {
             Activate(BOTH_SIDE, no_undo);
-
-            indi[0] = new Ring(this, 1);
-            indi[1] = new Ring(this, 2);
         }
     }
     else if (relTypeStr == x_distribution)
@@ -136,12 +131,8 @@ Relationship::Relationship(Guideline *g, ShapeObj *sh, atypes t, bool no_undo)
     guide2 = NULL;
     type = t;
     guide = g;
-    indi[0] = indi[1] = NULL;
     
     Activate(BOTH_SIDE, no_undo);
-
-    indi[0] = new Ring(this, 1);
-    indi[1] = new Ring(this, 2);
 }
 
 
@@ -155,7 +146,6 @@ Relationship::Relationship(Distribution *d, Guideline *g1, Guideline *g2, bool n
     separation = NULL;
     guide = g1;
     guide2 = g2;
-    indi[0] = indi[1] = NULL;
     
     Activate(BOTH_SIDE, no_undo);
 }
@@ -170,7 +160,6 @@ Relationship::Relationship(Separation *s, Guideline *g1, Guideline *g2, bool no_
     separation = s;
     guide = g1;
     guide2 = g2;
-    indi[0] = indi[1] = NULL;
     
     //QcFloat *q1GuV = g1->cVar->qcFloat();
     //cVars.push_back(g1->cVar);
@@ -193,7 +182,6 @@ Relationship::Relationship(Guideline *g1, Guideline *g2, bool no_undo)
     distro = NULL;
     guide = g1;
     guide2 = g2;
-    indi[0] = indi[1] = NULL;
     
     Activate(BOTH_SIDE, no_undo);
 }
@@ -275,8 +263,6 @@ void Relationship::Deactivate(side s, bool by_undo)
         }
     }
 
-    //remove_solver_constraint(&constraint);
-
     if (!by_undo)
     {
         // UNDO bool care_order = true;
@@ -342,23 +328,11 @@ void Relationship::Deactivate(side s, bool by_undo)
         assert(rlistItem != rlist->end());
         rlist->erase(rlistItem);
     }
-
-    for (int i = 0; i < 2; i++)
-    {
-        if (indi[i])
-        {
-            //QT indi[i]->set_active_image(0);
-            //QT indi[i]->display();
-            //QT indi[i]->setVisible(false);
-        }
-    }
 }
 
 
 void Relationship::Activate(side s, bool by_undo)
 {
-    //add_solver_constraint(&constraint);
-
     if (s & PARASITE_SIDE)
     {
         if (relType == REL_Align)

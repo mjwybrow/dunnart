@@ -755,117 +755,6 @@ void Connector::restoreColour()
 }
 
 
-#if 0
-static void conn_toggle_inea(QWidget **c)
-{
-    Conn *conn = (Conn *) (*c)->parentItem()->get_ident();
-
-    beginUndoMacro(tr("Label"));
-    conn->isInEa(!conn->isInEa());
-    
-    restart_graph_layout(NULL);
-}
-
-static void conn_dump_path(QWidget **c)
-{
-    Conn *conn = (Conn *) (*c)->parentItem()->get_ident();
-    Avoid::PolyLine& route = conn->avoidRef->route();
-    std::pair<ShapeObj *, ShapeObj *> attachees = conn->getAttachedShapes();
-    //printf("Edge (%d,%d) route:\n",attachees.first->get_ID(), attachees.second->get_ID());
-    for(int j=0;j<route.pn;j++) {
-        printf("  (%f,%f)\n",route.ps[j].x,route.ps[j].y);
-    }
-}
-
-void Conn::addContextMenuItems(MenuItems& items)
-{
-    items.push_back(
-            MenuItem(BUT_TYP_Toggle, BUT_C_ISDIRECTED, "Directed", "",
-                    "", conn_toggle_isdirected));
-    items.push_back(
-            MenuItem(BUT_TYP_Button, BUT_C_DIRECTION, "Swap direction", "",
-                    NULL, conn_toggle_direction));
-    items.push_back(
-            MenuItem(BUT_TYP_Toggle, BUT_C_NOTINEA, 
-                    "No Directed Edge Constraint", "", "", conn_toggle_inea));
-    items.push_back(
-            MenuItem(BUT_TYP_Toggle, BUT_GENERIC, "Colour - red", "",
-                    "", conn_toggle_red));
-    items.push_back(
-            MenuItem(BUT_TYP_Toggle, BUT_GENERIC, "Colour - green", "",
-                    "", conn_toggle_green));
-    items.push_back(
-            MenuItem(BUT_TYP_Toggle, BUT_GENERIC, "Colour - blue", "",
-                    "", conn_toggle_blue));
-    items.push_back(
-            MenuItem(BUT_TYP_Toggle, BUT_GENERIC, "Colour - black", "",
-                    "", conn_toggle_black));
-#if 0
-    items.push_back(
-            MenuItem(BUT_TYP_Button, BUT_GENERIC, "Dump path", "",
-                    NULL, conn_dump_path));
-#endif
-    items.push_back(MenuSeparator());
-    /* Arrow types */
-    items.push_back(
-            MenuItem(BUT_TYP_Toggle, BUT_C_ARROW_NORMAL, 
-                    "Arrow type: Normal", "", "", conn_arrow_normal));
-    items.push_back(
-            MenuItem(BUT_TYP_Toggle, BUT_C_ARROW_TRIANGLE_OUTLINE, 
-                    "Arrow type: Generalisation", "", "", 
-                    conn_arrow_triangle_outline));
-    items.push_back(
-            MenuItem(BUT_TYP_Toggle, BUT_C_ARROW_DIAMOND_FILLED, 
-                    "Arrow type: Composition", "", "", 
-                    conn_arrow_diamond_filled));
-    items.push_back(
-            MenuItem(BUT_TYP_Toggle, BUT_C_ARROW_DIAMOND_OUTLINE, 
-                    "Arrow type: Aggregation", "", "", 
-                    conn_arrow_diamond_outline));
-    items.push_back(
-            MenuItem(BUT_TYP_Toggle, BUT_C_ARROW_TRIANGLE_FILLED, 
-                    "Arrow type: SBGN Production", "", "", 
-                    conn_arrow_triangle_filled));
-    items.push_back(
-            MenuItem(BUT_TYP_Toggle, BUT_C_ARROW_CIRCLE_OUTLINE, 
-                    "Arrow type: SBGN Catalysis", "", "", 
-                    conn_arrow_circle_outline));
-    items.push_back(MenuSeparator());
-/* End Arrow Types */
-/* Dotted vs Solid */        
-    items.push_back(
-            MenuItem(BUT_TYP_Toggle, BUT_C_LINE_SOLID, "Line: Solid", "",
-                    "", conn_line_solid));
-    items.push_back(
-            MenuItem(BUT_TYP_Toggle, BUT_C_LINE_DOTTED, "Line: Dotted", "",
-                    "", conn_line_dotted));
-    items.push_back(MenuSeparator());
-
-    CanvasItem::addContextMenuItems(items);
-}
-
-
-void Conn::changeContextMenuState(Menu *menu)
-{
-    if (directed)
-    {
-        menu->changeWidgetState(BUT_C_ISDIRECTED, SDLGui::WIDGET_true);
-    }
-    else
-    {
-        menu->changeWidgetState(BUT_C_DIRECTION, SDLGui::WIDGET_disable);
-    }
-
-    if (!inEa)
-    { 
-        menu->changeWidgetState(BUT_C_NOTINEA, SDLGui::WIDGET_true);
-    } 
-
-    CanvasItem::changeContextMenuState(menu);
-}
-#endif
-
-
 void Connector::updateConnections(void)
 {
     if (avoidRef)
@@ -1656,8 +1545,8 @@ QAction *Connector::buildAndExecContextMenu(QGraphicsSceneMouseEvent *event,
     {
         menu.addSeparator();
     }
-    QAction *changeType = menu.addAction(
-            tr("Change connector type"));
+    QAction *changeType = menu.addAction((m_routing_type == orthogonal) ?
+            tr("Make polyline") : tr("Make orthogonal"));
     QAction *addCheckpoint = menu.addAction(
             tr("Add routing checkpoint at this point"));
     QAction *swapDirection = menu.addAction(

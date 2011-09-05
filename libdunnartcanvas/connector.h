@@ -157,8 +157,6 @@ class Connector : public CanvasItem
         void disconnect_from(ShapeObj *shape, uint pinClassID = 0);
         QPair<ShapeObj *, ShapeObj *> getAttachedShapes(void);
         bool hasSameEndpoints(void);
-        //QT virtual void addContextMenuItems(MenuItems& items);
-        //QT virtual void changeContextMenuState(Menu *menu);
         Avoid::ConnRef *avoidRef;
         void updateFromPathChange(void);
         bool isCycleMember(void) const;

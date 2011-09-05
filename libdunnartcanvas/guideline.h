@@ -85,8 +85,6 @@ class Guideline: public Indicator
         virtual void paint(QPainter *painter, 
                 const QStyleOptionGraphicsItem *option, QWidget *widget);
         virtual QPainterPath shape() const;
-        // QT virtual void addContextMenuItems(MenuItems& items);
-        // QT virtual void changeContextMenuState(Menu *menu);
         virtual void findAttachedSet(CanvasItemSet& objSet);
         void addAttachedShapesToSet(CanvasItemSet& objSet);
         dirctn get_dir(void) const
@@ -98,6 +96,8 @@ class Guideline: public Indicator
         bool operator<(const Guideline& rhs) const;
         bool operator==(const Guideline& rhs) const;
     protected:
+        virtual QAction *buildAndExecContextMenu(
+                QGraphicsSceneMouseEvent *event, QMenu& menu);
         virtual QVariant itemChange(GraphicsItemChange change,
                 const QVariant &value);
         friend void createIndicatorHighlightCache(void);
@@ -113,24 +113,6 @@ class Guideline: public Indicator
 
 
 typedef std::list<Guideline *> GuidelineList;
-
-class Relationship;
-
-
-class Ring: public QGraphicsItem
-{
-    public:
-        Ring(Relationship *r, int ind);
-        static void handler(CanvasItem **object_addr, int action);
-        void reposition(void);
-        QRectF boundingRect() const;
-        void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-                QWidget *widget);
-    protected:
-        void both_set_image(int imgn);
-        void destroy_constraint(void);
-        Relationship *rel;
-};
 
 
 extern bool guideCompare(Guideline *g1, Guideline *g2);

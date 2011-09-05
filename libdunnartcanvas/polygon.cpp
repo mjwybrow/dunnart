@@ -198,52 +198,6 @@ void PolygonShape::computeBoundingBoxAndNormalise(void)
 }
 
 
-#if 0
-void Polygon::draw(SDL_Surface *surface, const int x, const int y,
-        const int type, const int w, const int h)
-{
-    if (!surface)
-    {
-        return;
-    }
-    
-    //boxColor(surface, x, y, x + w - 1, y + h - 1, strokeCol);
-   
-    QColor strokeCol = shLineCol;
-    switch (type)
-    {
-        case SHAPE_DRAW_NORMAL:
-            // Nothing to do.
-            break;
-        case SHAPE_DRAW_HIGHLIGHTED:
-        case SHAPE_DRAW_LEAD_HIGHLIGHTED:
-            strokeCol = QColor(0, 255, 255);
-            break;
-        case SHAPE_DRAW_OUTLINE:
-            strokeCol = QColor(0, 0, 0, 128);
-            break;
-        default:
-            break;
-    }
-    QColor fillCol = shFillCol;
-
-    int *xpsOff = (int *) calloc(_psn, sizeof(int));
-    int *ypsOff = (int *) calloc(_psn, sizeof(int));
-   
-    for (int i = 0; i < _psn; ++i)
-    {
-        xpsOff[i] = _xps[i] + x + 3;
-        ypsOff[i] = _yps[i] + y + 3;
-    }
-
-    filledPolygonColor(surface, xpsOff, ypsOff, _psn, fillCol);
-    aapolygonColor(surface, xpsOff, ypsOff, _psn, strokeCol);
-
-    std::free(xpsOff);
-    std::free(ypsOff);
-}
-#endif
-
 void PolygonShape::set_label(const char *l)
 {
     Q_UNUSED (l)

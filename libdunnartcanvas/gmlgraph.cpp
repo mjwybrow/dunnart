@@ -1073,15 +1073,6 @@ OverviewWindow::OverviewWindow(const int x, const int y):
     _largeSurface = new QPixmap(600, 600);
 
     createOverviewArea();
-    
-#if 0
-    GuiObj *resizeHandle = create_gui_image_object(this, 
-            my_create_coloured_bitmap(7, 7, SDL_MapRGB(screen->format, 
-                    255, 0, 255)), IMAGE_MINE,
-            0, width - 7, height - 7, true);
-    resizeHandle->set_handler(OverviewWindow::resizeHandler);
-#endif
-
 }
 OverviewWindow::~OverviewWindow() {
     delete _largeSurface;
@@ -1152,103 +1143,14 @@ void OverviewWindow::updateWindowFromSurface(void)
 }
 
 
-#if 0
-void OverviewWindow::overviewHandler(GuiObj **go, int action)
-{
-    OverviewWindow* ow = dynamic_cast<OverviewWindow*>
-            ((*go)->get_parent());
-    assert(ow!=NULL);
-    switch(action)
-    {
-        case MOUSE_OVER:
-            break;
-        case MOUSE_LEAVE: 
-            break;
-        case MOUSE_LCLICK: 
-            ow->gmlGraph->selectOverview(mouse.x,mouse.y, true);
-            break;
-        default:
-            break;
-    }
-}
-#endif
 void OverviewWindow::createOverviewArea(void)
 {
 #if 0
     _overviewArea = new Area(AREA_TYP_Blank, 
             4, 25, width - 8, width - 8, DGREY, NULL, this);
-    _overviewArea->set_handler(OverviewWindow::overviewHandler);
 #endif
     updateWindowFromSurface();
 }
-
-#if 0
-void OverviewWindow::resizeHandler(GuiObj **object_addr, int action)
-{
-    GuiObj *object = *object_addr;
-    OverviewWindow *win = dynamic_cast<OverviewWindow *> (object->get_parent());
-    GuiObj *winObj = win;
-
-    int oldmouse_x, oldmouse_y;
-    switch (action)
-    {
-        case MOUSE_OVER: 
-            SDL_SetWindowsCursor(SDL_CUR_DiagonalResize1);
-            break;
-        case MOUSE_LEAVE: 
-            SDL_SetWindowsCursor(SDL_CUR_NormalSelect);
-            break;
-        case MOUSE_RCLICK:
-        case MOUSE_LCLICK:
-            // Center mouse on handle
-            SDL_WarpMouse(object->get_absxpos() + HANDLE_PADDING,
-                    object->get_absypos() + HANDLE_PADDING);
-            ForceEventHandling();
-
-            oldmouse_x = mouse.x;
-            oldmouse_y = mouse.y;
-            while (mouse.b == SDL_BUTTON_LEFT)
-            {
-                if ((oldmouse_x != mouse.x) || (oldmouse_y != mouse.y))
-                {
-                    oldmouse_x = mouse.x;
-                    oldmouse_y = mouse.y;
-
-                    int width = mouse.x - win->get_absxpos() + HANDLE_PADDING;
-                    int height = mouse.y - win->get_absypos() + HANDLE_PADDING;
-
-                    int max = std::min(width, height - 22);
-                    max = std::max(max, 150);
-                        
-                    width = max;
-                    height = max + 22;
-
-                    delete win->_overviewArea;
-                    win->resize(width, height);
-                    win->call_handler(&winObj, MOUSE_OVER);
-                    win->createOverviewArea();
-                    
-                    // Move resize handle
-                    object->set_pos(width - 7, height - 7);
-                    object->save_behind();
-                    //object->make_layer_head();
-
-                    SDL_FastFlip(screen);
-                }
-
-                while ((mouse.b == SDL_BUTTON_LEFT) &&
-                        (oldmouse_x == mouse.x) && 
-                        (oldmouse_y == mouse.y))
-                {
-                    wait_mouse();
-                }
-            }
-            break;
-        default:
-            break;
-    }
-}
-#endif
 
 
 } // namespace gml

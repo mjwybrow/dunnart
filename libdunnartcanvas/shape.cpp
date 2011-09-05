@@ -80,109 +80,6 @@ static QFont *shapeFont = NULL;
 const char *x_connectionPins = "connectionPins";
 
 
-//===========================================================================
-// Generic shape and shape-handle handlers.
-
-#if 0
-void shape_handler(QWidget **object_addr, int action)
-{
-    QWidget *object = *object_addr;
-    ShapeObj *shape = dynamic_cast<ShapeObj *> (object);
-
-    switch (action)
-    {
-        case MOUSE_OVER:
-        {
-            if (queryMode) 
-                pair_query(object);
-            
-            SDL_SetWindowsCursor(SDL_CUR_Move);
-
-            statusBar->setTempMessage(shapeStatusStr);
-            bool altMode = 
-                    GraphLayout::getInstance()->isFreeShiftFromDunnart();
-            if (altMode)
-            {
-                shape->showConnectionPoints();
-                repaint_canvas();
-            }
-            break;
-        }
-        case MOUSE_LEAVE: 
-            resetQueryModeIllumination(false);
-            SDL_SetWindowsCursor(SDL_CUR_NormalSelect);
-            statusBar->unsetTempMessage();
-            shape->hideConnectionPoints();
-            repaint_canvas();
-            break;
-        case MOUSE_WHEELUP:
-            if (! shape->isBeingResized())
-            {
-                SDLGui::postUserEvent(USEREVENT_SHAPE_RESIZE,
-                        (void *) shape, (void *) true);
-                shape->setBeingResized(true);
-            }
-            break;
-        case MOUSE_WHEELDOWN:
-            if (! shape->isBeingResized())
-            {
-                SDLGui::postUserEvent(USEREVENT_SHAPE_RESIZE,
-                        (void *) shape, (void *) false);
-                shape->setBeingResized(true);
-            }
-            break;
-        case MOUSE_LCLICKUP:
-            if (!(OurGetModState() & KMOD_CTRL))
-            {
-                break;
-            }
-            // Fall through, treat CTRL + left click as middle click
-        case MOUSE_MCLICKUP:
-            if( gmlGraph ) {
-                gmlGraph->expandNeighbours(shape);
-            } else if (!(OurGetModState() & KMOD_ALT)) {
-                canvas_deselect_shapes();
-                shape_select(shape);
-                repaint_canvas();
-                shape->change_label();
-            }
-            break;
-#if defined(__APPLE__)
-        case MOUSE_MCLICK:
-            // Apple counts Left click and Alt as a Middle click.
-            if (!(OurGetModState() & KMOD_ALT))
-            {
-                break;
-            }
-            // Fallthrough.
-#endif
-        case MOUSE_LCLICK:
-            if (!(OurGetModState() & KMOD_CTRL))
-            {
-                // CTRL and left click simulate middle click,
-                // so handle on up event.
-                resetQueryModeIllumination(false);
-                selection_object_lclick(object);
-            }
-            break;
-        case MOUSE_RCLICK:
-            // Highlight the shape.
-            if (shape->get_active_image_n() == SHAPE_STATE_UNSELECTED)
-            {
-                canvas_deselect_shapes();
-                shape_select(shape);
-            }
-            repaint_canvas();
-
-            shape->displayContextMenu();
-            break;
-        default:
-            break;
-    }
-}
-#endif
-
-
 void ShapeObj::setBeingResized(bool isResizing)
 {
     beingResized = isResizing;
@@ -722,6 +619,37 @@ QAction *ShapeObj::buildAndExecContextMenu(QGraphicsSceneMouseEvent *event,
     {
         menu.addSeparator();
     }
+
+    // Menu items to break from guidelines (alignment relationships).
+    QList<QString> relationshipStrings;
+    relationshipStrings << tr("Top Alignment")
+                        << tr("Middle Alignment")
+                        << tr("Bottom Alignment")
+                        << tr("Left Alignment")
+                        << tr("Centre Alignment")
+                        << tr("Right Alignment");
+    bool attachedToGuidelines = false;
+    QList<QAction *> dettachActions;
+    for (int i = 0; i < 6; ++i)
+    {
+        dettachActions.append(
+                    menu.addAction(tr("Break ") + relationshipStrings[i]));
+        if ( ! rels[i] )
+        {
+            // Hide the menu item, if not attached to a guideline in this
+            // type of relationship.
+            dettachActions[i]->setVisible(false);
+        }
+        else
+        {
+            attachedToGuidelines = true;
+        }
+    }
+    if (attachedToGuidelines)
+    {
+        menu.addSeparator();
+    }
+
     QAction* frontAction = menu.addAction(tr("Bring to Front"));
     QAction* backAction = menu.addAction(tr("Send to Back"));
 
@@ -736,61 +664,20 @@ QAction *ShapeObj::buildAndExecContextMenu(QGraphicsSceneMouseEvent *event,
         sendToBack();
     }
 
+    for (int i = 0; i < 6; ++i)
+    {
+        if (action == dettachActions[i])
+        {
+            canvas()->beginUndoMacro(tr("Dettach From Guideline"));
+            rels[i]->Deactivate(BOTH_SIDE);
+            canvas()->interrupt_graph_layout();
+        }
+    }
+
     return action;
 }
 
 #if 0
-void ShapeObj::addContextMenuItems(MenuItems& items)
-{
-    const char *breakStr = "Alt+Drag";
-    
-    items.push_back(
-            MenuItem(BUT_TYP_Button, ALBUT_L, "Break Left Alignment", 
-                    breakStr, NULL, rfl_action));
-    items.push_back(
-            MenuItem(BUT_TYP_Button, ALBUT_C, "Break Center Alignment",
-                    breakStr, NULL, rfc_action));
-    items.push_back(
-            MenuItem(BUT_TYP_Button, ALBUT_R, "Break Right Alignment",
-                    breakStr, NULL, rfr_action));
-    items.push_back(MenuSeparator());
-    items.push_back(
-            MenuItem(BUT_TYP_Button, ALBUT_T, "Break Top Alignment",
-                    breakStr, NULL, rft_action));
-    items.push_back(
-            MenuItem(BUT_TYP_Button, ALBUT_M, "Break Middle Alignment",
-                    breakStr, NULL, rfm_action));
-    items.push_back(
-            MenuItem(BUT_TYP_Button, ALBUT_B, "Break Bottom Alignment",
-                    breakStr, NULL, rfb_action));
-    items.push_back(MenuSeparator());
-
-    CanvasItem::addContextMenuItems(items);
-
-    items.push_back(MenuSeparator());
-    items.push_back(
-            MenuItem(BUT_TYP_Button, BUT_CUTCOPY, "Bring to Front", "",
-                    "buttons/bringtop.png", btf_action));
-    items.push_back(
-            MenuItem(BUT_TYP_Button, BUT_CUTCOPY, "Send to Back", "",
-                    "buttons/bringbot.png", stb_action));
-}
-
-
-void ShapeObj::changeContextMenuState(Menu *menu)
-{
-    for (int i = 0; i < 6; i++)
-    {
-        if (!(rels[i]))
-        {
-            menu->changeWidgetState(200 + i, SDLGui::WIDGET_disable);
-        }
-    }
-
-    CanvasItem::changeContextMenuState(menu);
-}
-
-
 void ShapeObj::showConnectionPoints(void)
 {
     QWidget *gcurr = children_head;
@@ -918,63 +805,6 @@ bool ShapeObj::canBe(const unsigned int flags)
 {
     return flags & (C_CLUSTERED | C_ALIGNED);
 }
-
-
-#if 0
-
-static void rfl_action(QWidget **c)
-{
-    ShapeObj *shape = (ShapeObj *) (*c)->get_parent()->get_ident();
-
-    canvas()->beginUndoMacro(tr("Dettach From Guideline"));
-    shape->rels[ALIGN_LEFT]->Deactivate(BOTH_SIDE);
-}
-
-
-static void rfc_action(QWidget **c)
-{
-    ShapeObj *shape = (ShapeObj *) (*c)->get_parent()->get_ident();
-
-    canvas()->beginUndoMacro(tr("Dettach From Guideline");
-    shape->rels[ALIGN_CENTER]->Deactivate(BOTH_SIDE);
-}
-
-
-static void rfr_action(QWidget **c)
-{
-    ShapeObj *shape = (ShapeObj *) (*c)->get_parent()->get_ident();
-
-    canvas()->beginUndoMacro(tr("Dettach From Guideline"));
-    shape->rels[ALIGN_RIGHT]->Deactivate(BOTH_SIDE);
-}
-
-
-static void rft_action(QWidget **c)
-{
-    ShapeObj *shape = (ShapeObj *) (*c)->get_parent()->get_ident();
-
-    canvas()->beginUndoMacro(tr("Dettach From Guideline"));
-    shape->rels[ALIGN_TOP]->Deactivate(BOTH_SIDE);
-}
-
-
-static void rfm_action(QWidget **c)
-{
-    ShapeObj *shape = (ShapeObj *) (*c)->get_parent()->get_ident();
-
-    canvas()->beginUndoMacro(tr("Dettach From Guideline"));
-    shape->rels[ALIGN_MIDDLE]->Deactivate(BOTH_SIDE);
-}
-
-
-static void rfb_action(QWidget **c)
-{
-    ShapeObj *shape = (ShapeObj *) (*c)->get_parent()->get_ident();
-
-    canvas()->beginUndoMacro(tr("Dettach From Guideline"));
-    shape->rels[ALIGN_BOTTOM]->Deactivate(BOTH_SIDE);
-}
-#endif
 
 
 QColor ShapeObj::strokeColour(void) const
@@ -1284,28 +1114,6 @@ void ShapeObj::setDecorativeImageFile(const std::string fileName) {
             origDecorativeImage->h - 20);
     SDL_BlitSurface(origDecorativeImage, NULL, decorativeImage, NULL);
     SDL_FreeSurface(origDecorativeImage);
-}
-
-bool Rect::trans_outside(QWidget *obj)
-{
-    int xpos = obj->get_absxpos(), ypos = obj->get_absypos();
-    int width = obj->get_width(), height = obj->get_height();
-
-    // Low-cost check to see if mouse is outside the bounding box:
-    if ((mouse.x < xpos) || (mouse.x > (xpos + width  - 1)) ||
-        (mouse.y < ypos) || (mouse.y > (ypos + height - 1)))
-    {
-        return true;
-    }
-    
-    // Is cursor inside shape?
-    if ((mouse.x > xpos + 7) && (mouse.x < (xpos + width  - 8)) &&
-        (mouse.y > ypos + 7) && (mouse.y < (ypos + height - 8)))
-    {
-        return true;
-    }
-    
-    return false;
 }
 #endif
 

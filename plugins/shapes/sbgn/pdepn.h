@@ -100,6 +100,9 @@ protected:
 
   // QT
   #if 0
+protected:
+    virtual QAction *buildAndExecContextMenu(
+            QGraphicsSceneMouseEvent *event, QMenu& menu);
 public:
   PDEPN();
   PDEPN(const double x, const double y, const int w=60, const int h=40);
@@ -109,7 +112,6 @@ public:
   SDL_Rect labelBoundingRect(void) const;
   xmlNodePtr to_xmlNode(const unsigned int subset, xmlNs *dunnartNs);
   int get_type(void)  {  return SHAPE_TYPE_PDEPN;  }
-  static void epn_handler(GuiObj **object_addr, int action);
   void set_is_cloned(bool b) { has_clone_marker = b; }
 
   // even though not every EPN can have a clone marker, this should be
@@ -130,8 +132,6 @@ public:
   // Switch multimeric state.  Most EPNs (including this class) can't
   // be multimeric, so implement as virtual.
   virtual void switchMultimer(void) {} 
-
-  virtual void addContextMenuItems(MenuItems& items);
 
   /* "unspecified entity" can carry a clone marker */
   virtual bool is_cloned(void) { return has_clone_marker; }

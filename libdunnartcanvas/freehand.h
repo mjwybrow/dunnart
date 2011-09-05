@@ -132,6 +132,7 @@ class FreehandShape: public ShapeObj
         FreehandGeometry& getGeometry(void);
         void setPosition(int x, int y, bool from_cider);
         void setColour(unsigned int r, unsigned int g, unsigned int b);
+        virtual QPainterPath buildPainterPath(void);
 
         int get_mostlikely_id() const;
         StlClassProbabilityT get_mostlikely_prob() const;

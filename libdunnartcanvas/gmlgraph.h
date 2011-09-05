@@ -97,8 +97,6 @@ class OverviewWindow : public QDockWidget {
     public:
         OverviewWindow(const int x, const int y);
         ~OverviewWindow();
-        static void resizeHandler(QWidget **object_addr, int action);
-        static void overviewHandler(QWidget **object_addr, int action);
         QPixmap *getSurface(void);
         void updateWindowFromSurface(void);
         Graph* gmlGraph;
@@ -106,7 +104,6 @@ class OverviewWindow : public QDockWidget {
         void getCanvasPosDim(int& x, int& y, int& w, int& h);
         void updateCanvasPosOverlay(void);
         void createOverviewArea(void);
-        friend void resizeHandler(CanvasItem **object_addr, int action);
     private slots:
     private:
         QPixmap *_largeSurface;

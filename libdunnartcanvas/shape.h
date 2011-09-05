@@ -125,8 +125,6 @@ class ShapeObj: public CanvasItem
         virtual void change_label(void);
         virtual void set_label(const char *l);
         void write_rep(FILE *fp, int i);
-        //QT virtual void addContextMenuItems(MenuItems& items);
-        //QT virtual void changeContextMenuState(Menu *menu);
         virtual bool canBe(const unsigned int flags);
         Guideline *get_guide(atypes type);
         Guideline *new_guide(atypes type);

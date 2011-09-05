@@ -144,37 +144,6 @@ void ClassShape::initWithXMLProperties(Canvas *canvas,
 
 
 #if 0
-//middle click to edit contents, scroll wheel to adjust detail level
-void UMLClass::handler(GuiObj **object_addr, int action)
-{
-    GuiObj *object = *object_addr;
-    UMLClass *uml = dynamic_cast<UMLClass *> (object);
-
-    if (action == MOUSE_MCLICKUP)
-    {
-        if( gmlGraph ) {
-            gmlGraph->expandNeighbours(uml);
-        } else {
-            uml->middle_click(mouse.x, mouse.y);
-        }
-    }
-    else if (action == MOUSE_WHEELUP)
-    {
-        uml->setMode(NOABBREV);
-        uml->change_detail_level(true);
-    }
-    else if (action == MOUSE_WHEELDOWN)
-    {
-        uml->setMode(NOABBREV);
-        uml->change_detail_level(false);
-    }
-    else
-    {
-        shape_handler(object_addr, action);
-    }
-}
-
-
 void UMLClass::change_label(void)
 {
     do_edit(EDIT_CLASS_NAME);
@@ -910,7 +879,6 @@ static void get_text_width(QString text, int *w)
 
 void ClassShape::do_init()
 {
-    //QT set_handler(UMLClass::handler);
     mode_changed_manually = false;
 
     class_name = "Class";

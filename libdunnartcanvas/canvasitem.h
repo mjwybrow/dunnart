@@ -195,7 +195,6 @@ class CanvasItem: public QGraphicsSvgItem
         void glowClearClipRect(QPixmap *surface);
         virtual void resizedCanvas(void)  { }
         virtual bool canBe(const unsigned int flags);
-        void displayContextMenu(void);
         virtual bool isCollapsed(void);
         void setAsCollapsed(bool collapsed);
         virtual void deactivateAll(CanvasItemSet& selSet) = 0;

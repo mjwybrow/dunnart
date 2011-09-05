@@ -582,42 +582,33 @@ void Cluster::routerResize(void)
 }
 
 
-
-#if 0
-static void changeClusterType(CanvasItem **c)
+QAction *Cluster::buildAndExecContextMenu(QGraphicsSceneMouseEvent *event,
+        QMenu& menu)
 {
-    Cluster *cluster = (Cluster *) (*c)->get_parent()->get_ident();
+    if (!menu.isEmpty())
+    {
+        menu.addSeparator();
+    }
 
-    cluster->rectangular = !(cluster->rectangular);
+    // Add an item to indicate Cluster border type.
+    QAction *infoAction = menu.addAction((rectangular) ?
+            tr("Type: Rectangular") : tr("Type: Convex Hull"));
+    infoAction->setEnabled(false);
+    menu.addSeparator();
 
-    restart_graph_layout(NULL);
+    QAction *changeTypeAction = menu.addAction((rectangular) ?
+            tr("Make Convex Hull") : tr("Make Rectangular"));
+
+    QAction *action = CanvasItem::buildAndExecContextMenu(event, menu);
+
+    if (action == changeTypeAction)
+    {
+        rectangular = !rectangular;
+        canvas()->restart_graph_layout();
+    }
+
+    return action;
 }
-
-
-static const int BUT_CMODE = 200;
-
-void Cluster::addContextMenuItems(MenuItems& items)
-{
-    items.push_back(
-            MenuItem(BUT_TYP_Button, BUT_CMODE, (rectangular) ? 
-                    "Style: Rectangular": "Style: Convex",
-                    "", NULL, null_callback));
-    items.push_back(MenuSeparator());
-    items.push_back(
-            MenuItem(BUT_TYP_Button, BUT_GENERIC, (rectangular) ?
-                    "Make Convex" : "Make Rectangular",
-                    "", NULL, changeClusterType));
-    items.push_back(MenuSeparator());
-    
-    CanvasItem::addContextMenuItems(items);
-}
-
-
-void Cluster::changeContextMenuState(Menu *menu)
-{
-    CanvasItem::changeContextMenuState(menu);
-}
-#endif
 
 
 bool Cluster::canBe(const unsigned int flags)
@@ -811,88 +802,6 @@ QPainterPath Cluster::buildPainterPath(void)
     
     return painter_path;
 }
-
-
-#if 0
-void Cluster::draw(QPixmap *surface, const int x, const int y,
-        const int type, const int w, const int h)
-{
-    // QT
-    if (!surface)
-    {
-        return;
-    }
-    
-    // Get text size:
-    
-    //SDL_Color black = { 0x00, 0x00, 0x00, 0 };
-
-    QColor strokeCol = QColor(255, 0, 0, 75);
-    //boxColor(surface, x, y, x + w - 1, y + h - 1, strokeCol);
-   
-    strokeCol = QColor(0, 0, 0, 0);
-    switch (type)
-    {
-        case SHAPE_DRAW_NORMAL:
-            // Nothing to do.
-            break;
-        case SHAPE_DRAW_HIGHLIGHTED:
-        case SHAPE_DRAW_LEAD_HIGHLIGHTED:
-            strokeCol = QColor(0, 255, 255);
-            break;
-        case SHAPE_DRAW_OUTLINE:
-            strokeCol = QColor(0, 0, 0, 128);
-            break;
-        default:
-            break;
-    }
-    QColor fillCol = colour;
-    if (isCollapsed())
-    {
-        // Turn off opacity.
-        //QT fillCol |= 255;
-    }
-
-    Sint16 *xpsOff = (Sint16 *) calloc(psn, sizeof(Sint16));
-    Sint16 *ypsOff = (Sint16 *) calloc(psn, sizeof(Sint16));
-   
-    for (int i = 0; i < psn; ++i)
-    {
-        xpsOff[i] = static_cast<Sint16> (boundary[i].x - fPosX + x);
-        ypsOff[i] = static_cast<Sint16> (boundary[i].y - fPosY + y);
-    }
-
-    filledPolygonColor(surface, xpsOff, ypsOff, psn, fillCol);
-    aapolygonColor(surface, xpsOff, ypsOff, psn, strokeCol);
-
-    std::free(xpsOff);
-    std::free(ypsOff);
-
-    double clx, cly, clw, clh;
-    getPosAndSize(clx, cly, clw, clh, false);
-    
-    double clcx = clx + (clw / 2);
-    double clcy = cly + (clh / 2);
-    // Draw small members
-    if (isCollapsed())
-    {
-        for (ShapeList::iterator curr = members.begin(); 
-                curr != members.end(); ++curr)
-        {
-            double ox, oy, w, h;
-            smallShapeInfo[(*curr)->get_ID()]->getOffsetAndSize(ox, oy, w, h);
-            ox += (w/2);
-            oy += (h/2);
-            w += (2 * HANDLE_PADDING);
-            h += (2 * HANDLE_PADDING);
-            (*curr)->draw(surface, 
-                    (int) (clcx - ox - HANDLE_PADDING + 1 + cxoff), 
-                    (int) (clcy - oy  - HANDLE_PADDING + 1 + cyoff), 
-                    SHAPE_DRAW_NORMAL, (int) w, (int) h);
-        }
-    }
-}
-#endif
 
 
 void Cluster::set_label(const char *l)

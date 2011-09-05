@@ -266,60 +266,29 @@ void FreehandShape::addStroke(FreehandGeometry& geometry)
     //QT set_active_image(get_active_image_n(), true);
 }
 
-
-#if 0
-void Freehand::draw(SDL_Surface *surface, const int x, const int y,
-        const int type, const int w, const int h)
+QPainterPath FreehandShape::buildPainterPath(void)
 {
-    int lx = x + 0;
-    int ly = y + 0;
-    if (!surface)
-    {
-        return;
-    }
+    QPainterPath path;
 
-    QColor strokeCol = _colour;
-    switch (type)
-    {
-        case SHAPE_DRAW_NORMAL:
-            // Nothing to do.
-            break;
-        case SHAPE_DRAW_HIGHLIGHTED:
-            strokeCol = QColor(0, 255, 255);
-            break;
-        case SHAPE_DRAW_LEAD_HIGHLIGHTED:
-            strokeCol = QColor(0, 255, 0);
-            break;
-        case SHAPE_DRAW_OUTLINE:
-            strokeCol = QColor(0, 0, 0, 128);
-            break;
-        default:
-            break;
-    }
-    //rectangleRGBA(surface, lx, ly, lx + w - 5, ly + h - 5, 
-    //        255, 0, 0, 128);
-    
     StlStrokeList::iterator sEnd = _geometry.strokes.end();
     for (StlStrokeList::iterator s = _geometry.strokes.begin(); s != sEnd; ++s)
     {
-        int last_x = 0, last_y = 0;
         StlStroke::iterator pBegin = (*s).begin();
         StlStroke::iterator pEnd = (*s).end();
         for (StlStroke::iterator p = pBegin; p != pEnd; ++p)
         {
-            if (p != pBegin)
+            if (p == pBegin)
             {
-                // If not the first point:
-                //
-                aalineColor(surface, last_x, last_y, 
-                        (int) ((*p).x + lx), (int) ((*p).y + ly), strokeCol);
+                // First point.
+                path.moveTo(QPointF((*p).x, (*p).y));
             }
-            last_x = (int) ((*p).x + lx);
-            last_y = (int) ((*p).y + ly);
+            else
+            {
+                path.lineTo(QPointF((*p).x, (*p).y));
+            }
         }
     }
 }
-#endif
 
 
 void FreehandShape::setPosition(int x, int y, bool from_cider)
