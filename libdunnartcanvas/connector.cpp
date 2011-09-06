@@ -1142,34 +1142,14 @@ void Connector::calc_layout(void)
     endpts[1].vn = Avoid::kUnassignedVertexNumber;
     
     adjust_endpoint_for_vis(VertID::tar, endpts[1]);
-  
-    bool srcExt = (srctype & (HAN_TOP | HAN_BOT | HAN_RIGHT | HAN_LEFT));
-    bool endExt = (dsttype & (HAN_TOP | HAN_BOT | HAN_RIGHT | HAN_LEFT));
-    
+      
     avoidRef->router()->processTransaction();
     // Add end segments to connect to shape centres for border conn points.
     const Avoid::PolyLine &newroute = avoidRef->displayRoute();
     assert(!newroute.empty());
 
-    Avoid::PolyLine fixedroute;
-    fixedroute._id = newroute._id;
-    fixedroute.ps = newroute.ps;
-
-    if (srcExt)
-    {
-        QPointF shapeCentre = srcpt.shape->centrePos();
-        Point centrePoint = Point(shapeCentre.x(), shapeCentre.y());
-        fixedroute.ps.insert(fixedroute.ps.begin(), centrePoint);
-    }
-    if (endExt)
-    {
-        QPointF shapeCentre = dstpt.shape->centrePos();
-        Point centrePoint = Point(shapeCentre.x(), shapeCentre.y());
-        fixedroute.ps.push_back(centrePoint);
-    }
-
     bool updateLibavoid = true;
-    applyNewRoute(fixedroute, updateLibavoid);
+    applyNewRoute(newroute, updateLibavoid);
 }
 
 
