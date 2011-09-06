@@ -949,6 +949,11 @@ int GraphLayout::processReturnPositions()
 #endif
     }
     m_canvas->m_processing_layout_updates = false;
+
+    // Update selection cue after nodes have moved.
+    bool computePositions = true;
+    m_canvas->repositionAndShowSelectionResizeHandles(computePositions);
+
     ConstraintDebug("********END***********\n\n");
     //redraw_connectors(NULL);
     return movesCount;
