@@ -287,7 +287,13 @@ void CanvasItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     }
     canvas()->processResponseTasks();
 
-    // We handle the moving of the shape, so no need to 
+    // Still do routing even when the layout thread is suspended.
+    if (canvas()->isLayoutSuspended())
+    {
+        reroute_connectors(canvas());
+    }
+
+    // We handle the moving of the shape, so no need to
     // call QGraphicsItem::mouseMoveEvent().
 }
 

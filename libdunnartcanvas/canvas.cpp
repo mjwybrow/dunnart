@@ -1714,7 +1714,8 @@ void Canvas::processLayoutUpdateEvent(void)
     //int changes = m_graphlayout->processReturnPositions();
     m_graphlayout->processReturnPositions();
     if ((!m_simple_paths_during_layout || !m_opt_automatic_graph_layout ||
-            !m_opt_preserve_topology) && !m_gml_graph && !m_batch_diagram_layout)
+            (!m_opt_preserve_topology || (m_graphlayout->runLevel != 1))) &&
+            !m_gml_graph && !m_batch_diagram_layout)
     {
         // Don't reroute connectors in the case of automatic graph layout.
         reroute_connectors(this);
