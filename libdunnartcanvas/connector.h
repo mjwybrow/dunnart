@@ -158,7 +158,6 @@ class Connector : public CanvasItem
         QPair<ShapeObj *, ShapeObj *> getAttachedShapes(void);
         bool hasSameEndpoints(void);
         Avoid::ConnRef *avoidRef;
-        void updateFromPathChange(void);
         bool isCycleMember(void) const;
         void setCycleMember(const bool value);
         bool obeysDirectedEdgeConstraints(void) const;
@@ -166,7 +165,6 @@ class Connector : public CanvasItem
         void overrideColour(QColor col);
         void restoreColour();
         void setDotted(bool dotted) {this->dotted = dotted;}
-        virtual void move_diff_points(int diff_x, int diff_y);
         void adjust_endpoint_for_vis(int type, Avoid::Point& adjpt,
                 Avoid::Vector slp = Avoid::Vector());
         virtual void UpdateEndptVis(const int type);
@@ -211,6 +209,8 @@ class Connector : public CanvasItem
         virtual void routerAdd(void);
         virtual void routerRemove(void);
         void updateConnections(void);
+        void applySimpleRoute(void);
+
 
         double m_ideal_length;
         QColor m_colour;

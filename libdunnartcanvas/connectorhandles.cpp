@@ -106,6 +106,9 @@ void ConnectorEndpointHandle::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
     reposition();
 
+    // Cause layout to notice change in network structure.
+    m_conn->canvas()->interrupt_graph_layout();
+
     Handle::mouseReleaseEvent(event);
 }
 

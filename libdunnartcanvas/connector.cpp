@@ -328,7 +328,6 @@ void Connector::routerRemove(void)
 }
 
 
-
 void Connector::setNewEndpointPos(const int endptType, QPointF pos,
     ShapeObj *shape, uint pinClassID)
 {
@@ -348,8 +347,14 @@ void Connector::setNewEndpointPos(const int endptType, QPointF pos,
         dstpt.x = pos.x();
         dstpt.y = pos.y();
     }
-    UpdateEndptVis((endptType == SRCPT) ? VertID::src : VertID::tar);
 
+    if (avoidRef->router()->SimpleRouting)
+    {
+        applySimpleRoute();
+        return;
+    }
+
+    UpdateEndptVis((endptType == SRCPT) ? VertID::src : VertID::tar);
     if (avoidRef)
     {
         avoidRef->makePathInvalid();
@@ -613,23 +618,6 @@ void Connector::rerouteIntersect(void)
 }
 
 
-#if 0
-// NOW GONE??
-//
-void Conn::updateFromPathChange(void)
-{
-    restore_behind();
-    destroy_images_for_resize();
-    recreate();
-    bool regen_cache = true;
-    set_active_image(get_active_image_n(), regen_cache);
-    update();
-}
-
-
-#endif
-
-
 bool Connector::hasSameEndpoints(void)
 {
     double xdiff = fabs(srcpt.x - dstpt.x);
@@ -788,39 +776,43 @@ void Connector::disconnect_from(ShapeObj *shape, uint pinClassID)
 }
 
 
+void Connector::applySimpleRoute(void)
+{
+    if (srcpt.shape)
+    {
+        // Use shape centre position for endpoint.
+        QPointF srcPt = srcpt.shape->centrePos();
+        srcpt.x = srcPt.x();
+        srcpt.y = srcPt.y();
+    }
+    if (dstpt.shape)
+    {
+        // Use shape centre position for endpoint.
+        QPointF dstPt = dstpt.shape->centrePos();
+        dstpt.x = dstPt.x();
+        dstpt.y = dstPt.y();
+    }
+
+    Avoid::PolyLine route(2);
+
+    route.ps[0].x = srcpt.x;
+    route.ps[0].y = srcpt.y;
+    route.ps[0].vn = Avoid::kUnassignedVertexNumber;
+
+    route.ps[1].x = dstpt.x;
+    route.ps[1].y = dstpt.y;
+    route.ps[1].vn = Avoid::kUnassignedVertexNumber;
+
+    bool updateLibavoid = true;
+    this->applyNewRoute(route, updateLibavoid);
+}
+
 void Connector::update_and_reroute(bool reroute)
 {
     //qDebug("update_and_reroute %d", (int) avoidRef->router()->SimpleRouting);
     if (avoidRef->router()->SimpleRouting)
     {
-        if (srcpt.shape)
-        {
-            // Use shape centre position for endpoint.
-            QPointF srcPt = srcpt.shape->centrePos();
-            srcpt.x = srcPt.x();
-            srcpt.y = srcPt.y();
-        }
-        if (dstpt.shape)
-        {
-            // Use shape centre position for endpoint.
-            QPointF dstPt = dstpt.shape->centrePos();
-            dstpt.x = dstPt.x();
-            dstpt.y = dstPt.y();
-        }
-
-        Avoid::PolyLine route(2);
-
-        route.ps[0].x = srcpt.x;
-        route.ps[0].y = srcpt.y;
-        route.ps[0].vn = Avoid::kUnassignedVertexNumber;
-
-        route.ps[1].x = dstpt.x;
-        route.ps[1].y = dstpt.y;
-        route.ps[1].vn = Avoid::kUnassignedVertexNumber;
-
-        bool updateLibavoid = true;
-        this->applyNewRoute(route, updateLibavoid);
-
+        applySimpleRoute();
         return;
     }
 
@@ -835,37 +827,10 @@ void Connector::updateFromLibavoid(void)
 {
     if (avoidRef->router()->SimpleRouting)
     {
-        if (srcpt.shape)
-        {
-            // Use shape centre position for endpoint.
-            QPointF srcPt = srcpt.shape->centrePos();
-            srcpt.x = srcPt.x();
-            srcpt.y = srcPt.y();
-        }
-        if (dstpt.shape)
-        {
-            // Use shape centre position for endpoint.
-            QPointF dstPt = dstpt.shape->centrePos();
-            dstpt.x = dstPt.x();
-            dstpt.y = dstPt.y();
-        }
-
-        Avoid::PolyLine route(2);
-
-        route.ps[0].x = srcpt.x;
-        route.ps[0].y = srcpt.y;
-        route.ps[0].vn = Avoid::kUnassignedVertexNumber;
-
-        route.ps[1].x = dstpt.x;
-        route.ps[1].y = dstpt.y;
-        route.ps[1].vn = Avoid::kUnassignedVertexNumber;
-
-        bool updateLibavoid = true;
-        this->applyNewRoute(route, updateLibavoid);
-
+        applySimpleRoute();
         return;
     }
-    
+
     // Add end segments to connect to shape centres for border conn points.
     const Avoid::PolyLine &newroute = avoidRef->displayRoute();
 
@@ -1055,26 +1020,6 @@ void Connector::adjust_endpoint_for_vis(int type, Point& adjpt,
 }
 
 
-void Connector::move_diff_points(int diff_x, int diff_y)
-{
-    srcpt.x += diff_x;
-    dstpt.x += diff_x;
-    
-    srcpt.y += diff_y;
-    dstpt.y += diff_y;
-
-    for (size_t i = 0; i < offset_route.size(); i++)
-    {
-        offset_route.ps[i].x += diff_x;
-        offset_route.ps[i].y += diff_y;
-    }
-    for (size_t i = 0; i < offset_obs_route.size(); i++)
-    {
-        offset_obs_route.ps[i].x += diff_x;
-        offset_obs_route.ps[i].y += diff_y;
-    }
-}
-
 
 void Connector::UpdateEndptVis(const int type)
 {
@@ -1142,7 +1087,7 @@ void Connector::calc_layout(void)
     endpts[1].vn = Avoid::kUnassignedVertexNumber;
     
     adjust_endpoint_for_vis(VertID::tar, endpts[1]);
-      
+
     avoidRef->router()->processTransaction();
     // Add end segments to connect to shape centres for border conn points.
     const Avoid::PolyLine &newroute = avoidRef->displayRoute();
@@ -1408,7 +1353,7 @@ void Connector::setPainterPath(QPainterPath path)
 
 #define mid(a, b) ((a < b) ? a + ((b - a) / 2) : b + ((a - b) / 2))
 void Connector::applyMultiEdgeOffset(Point& p1, Point& p2, bool justSecond)
-{    
+{
     double nx = p1.y - p2.y;
     double ny = p2.x - p1.x;
     double nl = sqrt(nx*nx+ny*ny);

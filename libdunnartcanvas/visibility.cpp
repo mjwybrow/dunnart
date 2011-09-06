@@ -139,7 +139,6 @@ void nudgeConnectors(Canvas *canvas, const double nudgeDist,
             if (conn)
             {
                 conn->applyNewRoute(conn->avoidRef->displayRoute());
-                //QT conn->updateFromPathChange();
                 conn->update();
             }
         }
