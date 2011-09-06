@@ -110,78 +110,79 @@ void ConnectorEndpointHandle::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 }
 
 
-ConnectorCheckpointHandle::ConnectorCheckpointHandle(Connector *conn, int index, double xpos,
-                double ypos)
-            : Handle(conn, index, 0),
-              m_conn(conn),
-              m_pos(xpos, ypos)
-        {
-            setCursor(Qt::ArrowCursor);
-            setHoverMessage("Connector Checkpoint Handle - Click "
-                    "and drag to move the position of this routing checkpoint.");
-            reposition();
-        }
+ConnectorCheckpointHandle::ConnectorCheckpointHandle(Connector *conn,
+        int index, double xpos, double ypos)
+    : Handle(conn, index, 0),
+      m_conn(conn),
+      m_pos(xpos, ypos)
+{
+    setCursor(Qt::ArrowCursor);
+    setHoverMessage("Connector Checkpoint Handle - Click "
+            "and drag to move the position of this routing checkpoint.");
+    reposition();
+}
+
 void ConnectorCheckpointHandle::reposition(void)
-        {
-            //int index = this->handleFlags();
-            QPointF itemPos = m_pos - m_conn->scenePos();
-            setPos(itemPos);
-        }
+{
+    //int index = this->handleFlags();
+    QPointF itemPos = m_pos - m_conn->scenePos();
+    setPos(itemPos);
+}
+
 void ConnectorCheckpointHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    int index = this->handleFlags();
+    QPointF scenePosition = event->scenePos();
+    Avoid::Point newPosition(scenePosition.x(), scenePosition.y());
+    std::vector<Avoid::Point> checkpoints =
+            m_conn->avoidRef->routingCheckpoints();
+    checkpoints[index] = newPosition;
+    m_conn->avoidRef->setRoutingCheckpoints(checkpoints);
+    // XXX Horribly inefficient.
+    reroute_connectors(m_conn->canvas(), true);
+
+    Handle::mouseMoveEvent(event);
+}
+
+void ConnectorCheckpointHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    if (canvas() == NULL)
+    {
+        return;
+    }
+
+    if (event->button() == Qt::RightButton)
+    {
+        QMenu menu;
+        QAction* removeCheckpoint = menu.addAction(
+                QObject::tr("Remove this routing checkpoint"));
+
+        QAction *action = menu.exec(event->screenPos(), removeCheckpoint);
+        if (action == removeCheckpoint)
         {
-            int index = this->handleFlags();
-            QPointF scenePosition = event->scenePos();
-            Avoid::Point newPosition(scenePosition.x(), scenePosition.y());
+            size_t index = this->handleFlags();
             std::vector<Avoid::Point> checkpoints =
                     m_conn->avoidRef->routingCheckpoints();
-            checkpoints[index] = newPosition;
-            m_conn->avoidRef->setRoutingCheckpoints(checkpoints);
+            std::vector<Avoid::Point> newCheckpoints;
+            for (size_t i = 0; i < checkpoints.size(); ++i)
+            {
+                if (i != index)
+                {
+                    newCheckpoints.push_back(checkpoints[i]);
+                }
+            }
+
+            m_conn->avoidRef->setRoutingCheckpoints(newCheckpoints);
             // XXX Horribly inefficient.
             reroute_connectors(m_conn->canvas(), true);
-
-            Handle::mouseMoveEvent(event);
+            this->setVisible(false);
+            event->accept();
+            return;
         }
-        void ConnectorCheckpointHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
-        {
-            if (canvas() == NULL)
-            {
-                return;
-            }
-
-            if (event->button() == Qt::RightButton)
-            {
-                QMenu menu;
-                QAction* removeCheckpoint = menu.addAction(
-                        QObject::tr("Remove this routing checkpoint"));
-
-                QAction *action = menu.exec(event->screenPos(), removeCheckpoint);
-                if (action == removeCheckpoint)
-                {
-                    size_t index = this->handleFlags();
-                    std::vector<Avoid::Point> checkpoints =
-                            m_conn->avoidRef->routingCheckpoints();
-                    std::vector<Avoid::Point> newCheckpoints;
-                    for (size_t i = 0; i < checkpoints.size(); ++i)
-                    {
-                        if (i != index)
-                        {
-                            newCheckpoints.push_back(checkpoints[i]);
-                        }
-                    }
-
-                    m_conn->avoidRef->setRoutingCheckpoints(newCheckpoints);
-                    // XXX Horribly inefficient.
-                    reroute_connectors(m_conn->canvas(), true);
-                    this->setVisible(false);
-                    event->accept();
-                    return;
-                }
-                event->accept();
-            }
-            Handle::mousePressEvent(event);
-        }
-
-
+        event->accept();
+    }
+    Handle::mousePressEvent(event);
+}
 
 
 }

@@ -397,7 +397,7 @@ QVariant Connector::itemChange(QGraphicsItem::GraphicsItemChange change,
 {
     if (change == QGraphicsItem::ItemPositionHasChanged)
     {
-        // If there are handles, repositon them.
+        // If there are handles because this is selected, reposition them.
         for (int i = 0; i < m_handles.size(); ++i)
         {
             m_handles[i]->reposition();
