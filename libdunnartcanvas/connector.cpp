@@ -395,8 +395,13 @@ void Connector::loneSelectedChange(const bool value)
 QVariant Connector::itemChange(QGraphicsItem::GraphicsItemChange change,
         const QVariant &value)
 {
-    if (change == QGraphicsItem::ItemSelectedHasChanged)
+    if (change == QGraphicsItem::ItemPositionHasChanged)
     {
+        // If there are handles, repositon them.
+        for (int i = 0; i < m_handles.size(); ++i)
+        {
+            m_handles[i]->reposition();
+        }
     }
     return CanvasItem::itemChange(change, value);
 }
@@ -1361,12 +1366,6 @@ void Connector::applyNewRoute(const Avoid::Polygon& oroute)
     setPainterPath(painter_path);
 
     buildArrowHeadPath();
-
-/*    for (int i = 0; i < m_handles.size(); ++i)
-    {
-        m_handles[i]->reposition();
-    }
-*/
 }
 
 void Connector::buildArrowHeadPath(void)

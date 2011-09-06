@@ -335,9 +335,10 @@ class Canvas : public QGraphicsScene
         QUndoStack *m_undo_stack;
         UndoMacro *m_current_undo_macro;
 
-        QRectF selectionShapesBoundingRect;
-        QVector<SelectionResizeHandle *> selectionResizeHandles;
-        QVector<QRectF> selectionResizeInfo;
+        QRectF m_selection_shapes_bounding_rect;
+        QVector<SelectionResizeHandle *> m_selection_resize_handles;
+        QVector<QRectF> m_selection_resize_info;
+        bool m_hide_selection_handles;
 
         bool m_overlay_router_obstacles;
         bool m_overlay_router_visgraph;

@@ -176,6 +176,7 @@ Canvas::Canvas()
       m_lone_selected_item(NULL),
       m_undo_stack(NULL),
       m_current_undo_macro(NULL),
+      m_hide_selection_handles(false),
       m_overlay_router_obstacles(false),
       m_overlay_router_visgraph(false),
       m_overlay_router_orthogonal_visgraph(false),
@@ -234,12 +235,12 @@ Canvas::Canvas()
     m_router->setRoutingPenalty(Avoid::clusterCrossingPenalty, 0);
     //m_router->setRoutingPenalty(Avoid::fixedSharedPathPenalty);
 
-    selectionResizeHandles = QVector<SelectionResizeHandle *>(8);
+    m_selection_resize_handles = QVector<SelectionResizeHandle *>(8);
     for (int i = 0; i < 8; ++i)
     {
-        selectionResizeHandles[i] = new SelectionResizeHandle(i, 0, 0);
-        addItem(selectionResizeHandles[i]);
-        selectionResizeHandles[i]->setVisible(false);
+        m_selection_resize_handles[i] = new SelectionResizeHandle(i, 0, 0);
+        addItem(m_selection_resize_handles[i]);
+        m_selection_resize_handles[i]->setVisible(false);
     }
 
     connect(this, SIGNAL(selectionChanged()), this,
@@ -267,13 +268,13 @@ Canvas::~Canvas()
 
     // Free selection resize handles if they are not currently displayed
     // and thus owned by the scene.
-    for (int i = 0; i < selectionResizeHandles.size(); ++i)
+    for (int i = 0; i < m_selection_resize_handles.size(); ++i)
     {
-        if (selectionResizeHandles[i]->scene() == NULL)
+        if (m_selection_resize_handles[i]->scene() == NULL)
         {
             // Not part of the scene, so we need to free.
-            delete selectionResizeHandles[i];
-            selectionResizeHandles[i] = NULL;
+            delete m_selection_resize_handles[i];
+            m_selection_resize_handles[i] = NULL;
         }
     }
 }
@@ -749,6 +750,7 @@ void Canvas::setDraggedItem(CanvasItem *item)
         {
             glueObjectsToIndicators();
             clearIndicatorHighlights(true);
+            m_hide_selection_handles = false;
             repositionAndShowSelectionResizeHandles(true);
         }
         m_dragged_item = NULL;
@@ -759,6 +761,7 @@ void Canvas::setDraggedItem(CanvasItem *item)
         m_dragged_item = item;
         clearIndicatorHighlights(true);
         createIndicatorHighlightCache();
+        m_hide_selection_handles = true;
         hideSelectionResizeHandles();
         beginUndoMacro(tr("Move"));
     }
@@ -2074,11 +2077,11 @@ void Canvas::selectionChangeTriggers(void)
     this->hideSelectionResizeHandles();
 
     // Update the area covered by the selection and the resize handles.
-    this->update(selectionShapesBoundingRect.adjusted(
+    this->update(m_selection_shapes_bounding_rect.adjusted(
             -BOUNDINGRECTPADDING, -BOUNDINGRECTPADDING,
             +BOUNDINGRECTPADDING, BOUNDINGRECTPADDING));
     // Then reset the selection shape's bounding Rectangle.
-    selectionShapesBoundingRect = QRectF();
+    m_selection_shapes_bounding_rect = QRectF();
 
     QList<CanvasItem *> selected_items = selectedItems();
     for (int i = 0; i < selected_items.size(); ++i)
@@ -2090,8 +2093,8 @@ void Canvas::selectionChangeTriggers(void)
             {
                 // Build the bounding rectangle from the union of all
                 // shape's boundingRects in the selection.
-                selectionShapesBoundingRect =
-                        selectionShapesBoundingRect.united(
+                m_selection_shapes_bounding_rect =
+                        m_selection_shapes_bounding_rect.united(
                         shape->boundingRect().translated(shape->scenePos()));
             }
             shapeCount++;
@@ -2103,7 +2106,7 @@ void Canvas::selectionChangeTriggers(void)
     }
 
     // Remove the boundingRect padding.
-    selectionShapesBoundingRect = selectionShapesBoundingRect.adjusted(
+    m_selection_shapes_bounding_rect = m_selection_shapes_bounding_rect.adjusted(
             +BOUNDINGRECTPADDING, +BOUNDINGRECTPADDING,
             -BOUNDINGRECTPADDING, -BOUNDINGRECTPADDING);
 
@@ -2178,13 +2181,13 @@ void Canvas::storeSelectionResizeInfo(void)
     // relation to the boundingRect of the selection.  This way, when the
     // selection is resized, we can use this information to resize each
     // of the selected shapes.
-    QPointF selectionTopLeft = selectionShapesBoundingRect.topLeft();
+    QPointF selectionTopLeft = m_selection_shapes_bounding_rect.topLeft();
     QPointF selectionDimensions =
-            selectionShapesBoundingRect.bottomRight() - selectionTopLeft;
+            m_selection_shapes_bounding_rect.bottomRight() - selectionTopLeft;
     assert(selectionDimensions.x() >= 0);
     assert(selectionDimensions.y() >= 0);
     QList<CanvasItem *> selected_items = selectedItems();
-    selectionResizeInfo = QVector<QRectF>(selected_items.size());
+    m_selection_resize_info = QVector<QRectF>(selected_items.size());
     for (int i = 0; i < selected_items.size(); ++i)
     {
         ShapeObj *shape = dynamic_cast<ShapeObj *> (selected_items.at(i));
@@ -2201,7 +2204,7 @@ void Canvas::storeSelectionResizeInfo(void)
                     (shapeBR.bottomRight() - selectionTopLeft);
             bottomRight = QPointF(bottomRight.x() / selectionDimensions.x(),
                                   bottomRight.y() / selectionDimensions.y());
-            selectionResizeInfo[i] = QRectF(topLeft, bottomRight);
+            m_selection_resize_info[i] = QRectF(topLeft, bottomRight);
         }
     }
 }
@@ -2211,80 +2214,80 @@ void Canvas::moveSelectionResizeHandle(const int index, const QPointF pos)
 
     bool aroundCentre =
             (QApplication::keyboardModifiers() & Qt::MetaModifier);
-    QPointF oppositePos = selectionShapesBoundingRect.center() - (pos -
-            selectionShapesBoundingRect.center());
+    QPointF oppositePos = m_selection_shapes_bounding_rect.center() - (pos -
+            m_selection_shapes_bounding_rect.center());
     switch (index)
     {
     case HAND_TOP_LEFT:
-        selectionShapesBoundingRect.setTopLeft(pos);
+        m_selection_shapes_bounding_rect.setTopLeft(pos);
         if (aroundCentre)
         {
-            selectionShapesBoundingRect.setBottomRight(oppositePos);
+            m_selection_shapes_bounding_rect.setBottomRight(oppositePos);
         }
         break;
     case HAND_TOP_CENTRE:
-        selectionShapesBoundingRect.setTop(pos.y());
+        m_selection_shapes_bounding_rect.setTop(pos.y());
         if (aroundCentre)
         {
-            selectionShapesBoundingRect.setBottom(oppositePos.y());
+            m_selection_shapes_bounding_rect.setBottom(oppositePos.y());
         }
         break;
     case HAND_TOP_RIGHT:
-        selectionShapesBoundingRect.setTopRight(pos);
+        m_selection_shapes_bounding_rect.setTopRight(pos);
         if (aroundCentre)
         {
-            selectionShapesBoundingRect.setBottomLeft(oppositePos);
+            m_selection_shapes_bounding_rect.setBottomLeft(oppositePos);
         }
         break;
     case HAND_RIGHT_CENTRE:
-        selectionShapesBoundingRect.setRight(pos.x());
+        m_selection_shapes_bounding_rect.setRight(pos.x());
         if (aroundCentre)
         {
-            selectionShapesBoundingRect.setLeft(oppositePos.x());
+            m_selection_shapes_bounding_rect.setLeft(oppositePos.x());
         }
         break;
     case HAND_BOTTOM_RIGHT:
-        selectionShapesBoundingRect.setBottomRight(pos);
+        m_selection_shapes_bounding_rect.setBottomRight(pos);
         if (aroundCentre)
         {
-            selectionShapesBoundingRect.setTopLeft(oppositePos);
+            m_selection_shapes_bounding_rect.setTopLeft(oppositePos);
         }
         break;
     case HAND_BOTTOM_CENTRE:
-        selectionShapesBoundingRect.setBottom(pos.y());
+        m_selection_shapes_bounding_rect.setBottom(pos.y());
         if (aroundCentre)
         {
-            selectionShapesBoundingRect.setTop(oppositePos.y());
+            m_selection_shapes_bounding_rect.setTop(oppositePos.y());
         }
         break;
     case HAND_BOTTOM_LEFT:
-        selectionShapesBoundingRect.setBottomLeft(pos);
+        m_selection_shapes_bounding_rect.setBottomLeft(pos);
         if (aroundCentre)
         {
-            selectionShapesBoundingRect.setTopRight(oppositePos);
+            m_selection_shapes_bounding_rect.setTopRight(oppositePos);
         }
         break;
     case HAND_LEFT_CENTRE:
-        selectionShapesBoundingRect.setLeft(pos.x());
+        m_selection_shapes_bounding_rect.setLeft(pos.x());
         if (aroundCentre)
         {
-            selectionShapesBoundingRect.setRight(oppositePos.x());
+            m_selection_shapes_bounding_rect.setRight(oppositePos.x());
         }
         break;
     default:
         break;
     }
 
-    selectionShapesBoundingRect = selectionShapesBoundingRect.normalized();
+    m_selection_shapes_bounding_rect = m_selection_shapes_bounding_rect.normalized();
 
     // Update the resize handle positions.
     this->repositionAndShowSelectionResizeHandles();
 
     // Calculate and apply new positions and dimensions for all shapes in
     // the selection.
-    QPointF selectionTopLeft = selectionShapesBoundingRect.topLeft();
+    QPointF selectionTopLeft = m_selection_shapes_bounding_rect.topLeft();
     QPointF selectionDimensions =
-            selectionShapesBoundingRect.bottomRight() - selectionTopLeft;
+            m_selection_shapes_bounding_rect.bottomRight() - selectionTopLeft;
     QList<CanvasItem *> selected_items = selectedItems();
     for (int i = 0; i < selected_items.size(); ++i)
     {
@@ -2294,8 +2297,8 @@ void Canvas::moveSelectionResizeHandle(const int index, const QPointF pos)
             QRectF shapeBR = shape->boundingRect().adjusted(
                     +BOUNDINGRECTPADDING, +BOUNDINGRECTPADDING,
                     -BOUNDINGRECTPADDING, -BOUNDINGRECTPADDING);
-            QPointF topLeft = selectionResizeInfo[i].topLeft();
-            QPointF bottomRight = selectionResizeInfo[i].bottomRight();
+            QPointF topLeft = m_selection_resize_info[i].topLeft();
+            QPointF bottomRight = m_selection_resize_info[i].bottomRight();
 
             topLeft = QPointF(topLeft.x() * selectionDimensions.x(),
                               topLeft.y() * selectionDimensions.y());
@@ -2320,9 +2323,9 @@ void Canvas::moveSelectionResizeHandle(const int index, const QPointF pos)
 
 void Canvas::hideSelectionResizeHandles(void)
 {
-    for (int i = 0; i < selectionResizeHandles.size(); ++i)
+    for (int i = 0; i < m_selection_resize_handles.size(); ++i)
     {
-        selectionResizeHandles[i]->setVisible(false);
+        m_selection_resize_handles[i]->setVisible(false);
     }
 }
 
@@ -2334,9 +2337,14 @@ void Canvas::repositionAndShowSelectionResizeHandles(bool calculatePosition)
         return;
     }
 
+    if (m_hide_selection_handles)
+    {
+        return;
+    }
+
     if (calculatePosition)
     {
-        selectionShapesBoundingRect = QRectF();
+        m_selection_shapes_bounding_rect = QRectF();
 
         QList<CanvasItem *> selected_items = selectedItems();
         for (int i = 0; i < selected_items.size(); ++i)
@@ -2346,47 +2354,47 @@ void Canvas::repositionAndShowSelectionResizeHandles(bool calculatePosition)
             {
                 // Build the bounding rectangle from the union of all shape's
                 // boundingRects in the selection.
-                selectionShapesBoundingRect = selectionShapesBoundingRect.united(
+                m_selection_shapes_bounding_rect = m_selection_shapes_bounding_rect.united(
                         shape->boundingRect().translated(shape->scenePos()));
             }
         }
         // Remove the boundingRect padding.
-        selectionShapesBoundingRect = selectionShapesBoundingRect.adjusted(
+        m_selection_shapes_bounding_rect = m_selection_shapes_bounding_rect.adjusted(
                 +BOUNDINGRECTPADDING, +BOUNDINGRECTPADDING,
                 -BOUNDINGRECTPADDING, -BOUNDINGRECTPADDING);
     }
 
-    if (selectionShapesBoundingRect.isEmpty())
+    if (m_selection_shapes_bounding_rect.isEmpty())
     {
         return;
     }
 
     // Reposition resize handles.
-    selectionResizeHandles[HAND_TOP_LEFT]->setPos(
-            selectionShapesBoundingRect.topLeft());
-    selectionResizeHandles[HAND_TOP_CENTRE]->setPos(
-            selectionShapesBoundingRect.center().x(),
-            selectionShapesBoundingRect.top());
-    selectionResizeHandles[HAND_TOP_RIGHT]->setPos(
-            selectionShapesBoundingRect.topRight());
-    selectionResizeHandles[HAND_RIGHT_CENTRE]->setPos(
-            selectionShapesBoundingRect.right(),
-            selectionShapesBoundingRect.center().y());
-    selectionResizeHandles[HAND_BOTTOM_RIGHT]->setPos(
-            selectionShapesBoundingRect.bottomRight());
-    selectionResizeHandles[HAND_BOTTOM_CENTRE]->setPos(
-            selectionShapesBoundingRect.center().x(),
-            selectionShapesBoundingRect.bottom());
-    selectionResizeHandles[HAND_BOTTOM_LEFT]->setPos(
-            selectionShapesBoundingRect.bottomLeft());
-    selectionResizeHandles[HAND_LEFT_CENTRE]->setPos(
-            selectionShapesBoundingRect.left(),
-            selectionShapesBoundingRect.center().y());
+    m_selection_resize_handles[HAND_TOP_LEFT]->setPos(
+            m_selection_shapes_bounding_rect.topLeft());
+    m_selection_resize_handles[HAND_TOP_CENTRE]->setPos(
+            m_selection_shapes_bounding_rect.center().x(),
+            m_selection_shapes_bounding_rect.top());
+    m_selection_resize_handles[HAND_TOP_RIGHT]->setPos(
+            m_selection_shapes_bounding_rect.topRight());
+    m_selection_resize_handles[HAND_RIGHT_CENTRE]->setPos(
+            m_selection_shapes_bounding_rect.right(),
+            m_selection_shapes_bounding_rect.center().y());
+    m_selection_resize_handles[HAND_BOTTOM_RIGHT]->setPos(
+            m_selection_shapes_bounding_rect.bottomRight());
+    m_selection_resize_handles[HAND_BOTTOM_CENTRE]->setPos(
+            m_selection_shapes_bounding_rect.center().x(),
+            m_selection_shapes_bounding_rect.bottom());
+    m_selection_resize_handles[HAND_BOTTOM_LEFT]->setPos(
+            m_selection_shapes_bounding_rect.bottomLeft());
+    m_selection_resize_handles[HAND_LEFT_CENTRE]->setPos(
+            m_selection_shapes_bounding_rect.left(),
+            m_selection_shapes_bounding_rect.center().y());
 
     // Show resize handles.
-    for (int i = 0; i < selectionResizeHandles.size(); ++i)
+    for (int i = 0; i < m_selection_resize_handles.size(); ++i)
     {
-        selectionResizeHandles[i]->setVisible(true);
+        m_selection_resize_handles[i]->setVisible(true);
     }
 }
 
