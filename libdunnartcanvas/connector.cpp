@@ -1223,6 +1223,14 @@ void Connector::applyNewRoute(const Avoid::PolyLine& route,
     if (updateLibavoid)
     {
         avoidRef->set_route(route);
+
+        // Update Connpt positions, so that handles can be updated during
+        // topology preserving layout when routes are returned won't always
+        // match our internal endpoint positions.
+        srcpt.x = route.ps[0].x;
+        srcpt.y = route.ps[0].y;
+        dstpt.x = route.ps[route.size() - 1].x;
+        dstpt.y = route.ps[route.size() - 1].y;
     }
 
     applyNewRoute(Avoid::Polygon(route));
