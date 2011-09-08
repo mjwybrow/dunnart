@@ -158,8 +158,8 @@ class Connector : public CanvasItem
         QPair<ShapeObj *, ShapeObj *> getAttachedShapes(void);
         bool hasSameEndpoints(void);
         Avoid::ConnRef *avoidRef;
-        bool isCycleMember(void) const;
-        void setCycleMember(const bool value);
+        bool hasDownwardConstraint(void) const;
+        void setHasDownwardConstraint(const bool value);
         bool obeysDirectedEdgeConstraints(void) const;
         void setObeysDirectedEdgeConstraints(const bool value);
         void overrideColour(QColor col);
@@ -223,7 +223,7 @@ class Connector : public CanvasItem
         int bbx, bby, bbw, bbh;
         bool m_directed;
         RoutingType m_routing_type;
-        bool m_is_cycle_member;
+        bool m_has_downward_constraint;
         bool m_obeys_directed_edge_constraints;
         ArrowHeadType m_arrow_head_type;
         bool m_arrow_head_outline;

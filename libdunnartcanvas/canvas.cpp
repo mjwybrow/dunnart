@@ -1113,9 +1113,9 @@ bool Canvas::optAutomaticGraphLayout(void) const
     return m_opt_automatic_graph_layout;
 }
 
-uint Canvas::optLayoutMode(void) const
+int Canvas::optLayoutMode(void) const
 {
-    return (uint) m_graphlayout->mode;
+    return (int) m_graphlayout->mode;
 }
 
 bool Canvas::optPreventOverlaps(void) const

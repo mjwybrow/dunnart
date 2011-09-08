@@ -147,7 +147,7 @@ class Canvas : public QGraphicsScene
         double optIdealEdgeLengthModifier(void) const;
         int optConnectorRoundingDistance(void) const;
         int optConnPenaltySegment(void) const;
-        uint optLayoutMode(void) const;
+        int optLayoutMode(void) const;
         double optDirectedEdgeSeparationModifier(void) const;
 
         bool overlayRouterObstacles(void) const;

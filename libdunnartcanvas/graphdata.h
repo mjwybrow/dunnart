@@ -168,6 +168,7 @@ private:
     std::auto_ptr<GraphvizLayout> graphvizLayout;
 #endif
     friend class PostIteration;
+    friend class SCCDetector;
 };
 
 }

@@ -84,7 +84,8 @@ SOURCES += \
     pluginshapefactory.cpp \
     ui/shapepickerdialog.cpp \
     connectorhandles.cpp \
-    ui/undohistorydialog.cpp
+    ui/undohistorydialog.cpp \
+    stronglyconnectedcomponents.cpp
 HEADERS += \
 	FMMLayout.h \
 	align3.h \
@@ -133,7 +134,8 @@ HEADERS += \
     pluginshapefactory.h \
     ui/shapepickerdialog.h \
     connectorhandles.h \
-    ui/undohistorydialog.h
+    ui/undohistorydialog.h \
+    stronglyconnectedcomponents.h
 
 
 githash.target = githash.h
@@ -149,3 +151,5 @@ QMAKE_EXTRA_TARGETS += githash dummy
 
 
 PRE_TARGETDEPS += githash.h
+
+

@@ -52,6 +52,7 @@
 #include "libdunnartcanvas/template-constraints.h"
 #include "libdunnartcanvas/canvasview.h"
 #include "libdunnartcanvas/canvas.h"
+#include "libdunnartcanvas/stronglyconnectedcomponents.h"
 
 namespace dunnart {
 
@@ -137,7 +138,8 @@ GraphData::GraphData(Canvas *canvas, bool ignoreEdges,
     // create edges
     vector<Distribution*> distrolist;
     vector<Separation*> separationlist;
-    if(!ignoreEdges) {
+    if (!ignoreEdges)
+    {
         for(int i = 0; i < canvasObjects.size(); ++i)
         {
             if (Connector *conn = dynamic_cast<Connector *> (canvasObjects.at(i)))
@@ -146,7 +148,51 @@ GraphData::GraphData(Canvas *canvas, bool ignoreEdges,
             }
         }
         setupMultiEdges();
+
+        if (mode == GraphLayout::FLOW)
+        {
+            // Set up downward edge constraints.
+            // In the case that the graph isn't a DAG, i.e., has cycles, we
+            // don't constrain any of the edges that form a cycle.  We do
+            // this by coomputing the strongly connected components for the
+            // Graph and only add a downward edge constraint between two
+            // nodes (connector endpoints) if they are not part of the same
+            // strongly connected component.
+            SCCDetector cycleDetector;
+            QVector<int> sccIndexes =
+                    cycleDetector.stronglyConnectedComponentIndexes(this);
+            for (int i = 0; i < conn_vec.size(); ++i)
+            {
+                if ( ! conn_vec[i]->isDirected() ||
+                     ! conn_vec[i]->obeysDirectedEdgeConstraints() )
+                {
+                    // Don't constrain undirected edges, or those
+                    // ignoring downward edge constraints.
+                    continue;
+                }
+
+                cola::Edge edge = edges[i];
+                if (sccIndexes[edge.first] != sccIndexes[edge.second])
+                {
+#ifdef DIRECTED_CONSTRAINT_DEBUG
+                    cout << "generating directed constraint for conn("
+                            << conn_vec[i]->getId() << ")" << endl;
+#endif
+                    ccs.push_back(new cola::SeparationConstraint(vpsc::YDIM,
+                            edge.first, edge.second,
+                            (canvas_->m_ideal_connector_length *
+                             canvas_->optIdealEdgeLengthModifier() *
+                             canvas_->m_directed_edge_height_modifier)));
+                    conn_vec[i]->setHasDownwardConstraint(true);
+                }
+                else
+                {
+                    conn_vec[i]->setHasDownwardConstraint(false);
+                }
+            }
+        }
     }
+
     // get the corners of the page
     pageBoundary = canvas->pageRect();
     
@@ -679,48 +725,6 @@ void GraphData::connectorToEdge(Connector* conn,GraphLayout::Mode mode)
         }
     }
 #endif
-
-    // check if the connector is directed and if we should generate
-    // directed edge constraints
-    if (conn->isDirected() && mode == GraphLayout::FLOW)
-    {
-        // If this edge is cyclic and in the acyclic subset then generate 
-        // a constraint else don't.  If the edge isn't cyclic then generate
-        // a constraint.
-#ifdef DIRECTED_CONSTRAINT_DEBUG
-        cout << "conn(" << conn->getId() << ") cyclic: "
-             << conn->isCycleMember() << " obeysDirEdgeConstraints: "
-             << conn->obeysDirectedEdgeConstraints();
-        
-        // Get the shapes that the connector is connecting
-        pair<ShapeObj *, ShapeObj*> endPoints = conn->getAttachedShapes();
-
-        // Only continue if the connector actually connects to two shapes
-        if (endPoints.first != NULL && endPoints.second != NULL)
-        {
-            cout << " connecting shapes(" << endPoints.first->getId()
-                 << ", " << endPoints.second->getId() << ")";
-        }
-        else
-        {
-            cout << " connecting NO SHAPES";
-        }
-        cout << endl;
-#endif
-        if ((!conn->isCycleMember() && conn->obeysDirectedEdgeConstraints()) || 
-                (conn->isCycleMember() && conn->obeysDirectedEdgeConstraints()))
-        {
-#ifdef DIRECTED_CONSTRAINT_DEBUG
-            cout << "generating directed constraint for conn(" 
-                 << conn->getId() << ")" << endl;
-#endif
-    
-            ccs.push_back(new cola::SeparationConstraint(vpsc::YDIM, a, b,
-                    (canvas_->m_ideal_connector_length *
-                     canvas_->optIdealEdgeLengthModifier() *
-                     canvas_->m_directed_edge_height_modifier)));
-        }
-    }
 
     double idealLength = conn->idealLength() *
             canvas_->optIdealEdgeLengthModifier();

@@ -79,7 +79,7 @@ Connector::Connector()
       m_colour(defaultConnLineCol),
       m_saved_colour(defaultConnLineCol),
       m_directed(false),
-      m_is_cycle_member(false),
+      m_has_downward_constraint(false),
       m_obeys_directed_edge_constraints(true),
       m_arrow_head_type(normal),
       dotted(false)
@@ -700,15 +700,14 @@ bool Connector::isDirected(void) const
     return m_directed;
 }
 
-bool Connector::isCycleMember(void) const
+bool Connector::hasDownwardConstraint(void) const
 {
-    return m_is_cycle_member;
+    return m_has_downward_constraint;
 }
 
-void Connector::setCycleMember(const bool value)
+void Connector::setHasDownwardConstraint(const bool value)
 {
-    m_is_cycle_member = value;
-    update();
+    m_has_downward_constraint = value;
 }
 
 bool Connector::obeysDirectedEdgeConstraints(void) const
@@ -719,7 +718,6 @@ bool Connector::obeysDirectedEdgeConstraints(void) const
 void Connector::setObeysDirectedEdgeConstraints(const bool value)
 {
     m_obeys_directed_edge_constraints = value;
-    update();
 }
 
 QColor Connector::colour(void) const
@@ -1409,14 +1407,28 @@ void Connector::paint(QPainter *painter,
 #endif
     bool showDecorations = canvas() && ! canvas()->isRenderingForPrinting();
 
+    // Draw downward constraint indicator:
+    if ( m_has_downward_constraint && showDecorations &&
+         (canvas()->optLayoutMode() == LAYOUT_STRUCTURE_FLOW) )
+    {
+        QColor colour(180, 0, 255, 25);
+        QPen highlight(colour);
+        highlight.setWidth(7);
+        highlight.setCosmetic(true);
+        // Draw highlight.
+        painter->setPen(highlight);
+
+        painter->drawPath(painterPath());
+    }
+
+    // Draw selection cue.
     if ( isSelected() && showDecorations )
     {
         QColor colour(0, 255, 255, 70);
-        QPen highlight;
-        highlight.setColor(colour);
+        QPen highlight(colour);
         highlight.setWidth(7);
         highlight.setCosmetic(true);
-        // Draw selection cue.
+        // Draw highlight.
         painter->setPen(highlight);
 
         painter->drawPath(painterPath());
@@ -1436,13 +1448,7 @@ void Connector::paint(QPainter *painter,
         }
     }
 
-    QColor col = m_colour;
-    if ( m_directed && m_is_cycle_member &&
-         m_obeys_directed_edge_constraints && showDecorations )
-    { 
-        col = QColor(180, 0, 255);
-    }
-    QPen pen(col);
+    QPen pen(m_colour);
     if (dotted)
     {
         QVector<qreal> dashes;
@@ -1463,7 +1469,7 @@ void Connector::paint(QPainter *painter,
         }
         else
         {
-            painter->setBrush(QBrush(col));
+            painter->setBrush(QBrush(m_colour));
         }
         painter->drawPath(m_arrow_path);
     }
@@ -1510,6 +1516,7 @@ QAction *Connector::buildAndExecContextMenu(QGraphicsSceneMouseEvent *event,
         bool wasVisible = isSelected();
         setSelected(false);
         setSelected(wasVisible);
+        canvas()->interrupt_graph_layout();
     }
 
     return action;
