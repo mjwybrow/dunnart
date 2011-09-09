@@ -58,6 +58,11 @@ void ZoomLevel::updateZoomLevel(const QTransform& transform)
 
 void ZoomLevel::changeCanvasView(CanvasView *canvasview)
 {
+    if (m_canvasview)
+    {
+        disconnect(m_canvasview, 0, this, 0);
+        disconnect(this, 0, m_canvasview, 0);
+    }
     m_canvasview = canvasview;
 
     connect(m_canvasview, SIGNAL(canvasTransformChanged(QTransform)),

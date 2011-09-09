@@ -109,6 +109,7 @@ void LayoutPropertiesDialog::changeCanvas(Canvas *canvas)
         disconnect(m_canvas, 0, this, 0);
         disconnect(this, 0, m_canvas, 0);
         disconnect(idealLengthSlider, 0, m_canvas, 0);
+        disconnect(downwardSeparationSlider, 0, m_canvas, 0);
     }
     m_canvas = canvas;
 
