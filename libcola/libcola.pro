@@ -10,7 +10,7 @@ CONFIG -= qt
 
 #LIBS += -Wl,-undefined -Wl,dynamic_lookup
 
-LIBS += -L${DESTDIR} -lvpsc -ltopology
+LIBS += -L$$DESTDIR -lvpsc -ltopology
 
 # Input
 SOURCES += cola.cpp \

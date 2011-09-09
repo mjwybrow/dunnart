@@ -19,7 +19,7 @@ arcadia {
 # Prevent the app from being packaged as an OSX app bundle.
 CONFIG -= app_bundle
 
-LIBS += -L${DESTDIR}
+LIBS += -L$$DESTDIR
 
 }
 else:macx {
@@ -34,7 +34,7 @@ LIBS += -L../Dunnart.app/Contents/Frameworks
 }
 else {
 
-LIBS += -L${DESTDIR}
+LIBS += -L$$DESTDIR
 
 }
 
@@ -46,7 +46,7 @@ LIBS += -ltopology -lcola -lvpsc -logdf -lavoid
 win32 {
 CONFIG += windows
 
-#QMAKE_POST_LINK  = "copy_win32_deps.bat ${DESTDIR}"
+#QMAKE_POST_LINK  = "copy_win32_deps.bat $$DESTDIR"
 
 QMAKE_CLEAN = dunnart-win.zip
 

@@ -25,7 +25,7 @@ graphviz {
 win32 {
 LIBS += -Wl,--export-all-symbols -Wl,--no-whole-archive
 }
-LIBS += -L${DESTDIR} -lavoid -lvpsc -ltopology -lcola -logdf
+LIBS += -L$$DESTDIR -lavoid -lvpsc -ltopology -lcola -logdf
 
 # Input
 RESOURCES += \

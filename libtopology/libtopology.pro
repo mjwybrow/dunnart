@@ -17,7 +17,7 @@ LIBS += -Wl,--allow-shlib-undefined
 else {
 LIBS += -Wl,-undefined -Wl,dynamic_lookup
 }
-LIBS += -L${DESTDIR} -lvpsc
+LIBS += -L$$DESTDIR -lvpsc
 
 # Input
 SOURCES += topology_constraints_constructor.cpp topology_graph.cpp topology_constraints.cpp compute_forces.cpp \
