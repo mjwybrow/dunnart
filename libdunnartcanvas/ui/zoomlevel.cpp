@@ -44,11 +44,8 @@ ZoomLevel::ZoomLevel(CanvasView *canvasview, QWidget *parent)
             this, SLOT(changeZoomLevel(int)));
 }
 
-void ZoomLevel::changeCanvasView(CanvasView *canvasview)
+void ZoomLevel::updateZoomLevel(const QTransform& transform)
 {
-    m_canvasview = canvasview;
-
-    QTransform transform = m_canvasview->transform();
     // m11 is horizontal scale.  Should match m22
     double scale = transform.m11();
     Q_ASSERT(scale == transform.m22());
@@ -57,6 +54,16 @@ void ZoomLevel::changeCanvasView(CanvasView *canvasview)
     int zoom = scale * 100;
     m_zoom_level = zoom / 100.0;
     zoomSlider->setSliderPosition(zoom);
+}
+
+void ZoomLevel::changeCanvasView(CanvasView *canvasview)
+{
+    m_canvasview = canvasview;
+
+    connect(m_canvasview, SIGNAL(canvasTransformChanged(QTransform)),
+            this, SLOT(updateZoomLevel(QTransform)));
+
+    updateZoomLevel(m_canvasview->transform());
 }
 
 void ZoomLevel::changeZoomLevel(int zoom)

@@ -47,6 +47,8 @@ class CanvasView : public QGraphicsView
         void postDiagramLoad(void);
         Canvas *canvas(void);
         void setScene(QGraphicsScene *scene);
+    signals:
+        void canvasTransformChanged(const QTransform& transform);
     protected:
         virtual void mousePressEvent(QMouseEvent *event);
         virtual void mouseMoveEvent(QMouseEvent *event);
@@ -63,8 +65,11 @@ class CanvasView : public QGraphicsView
         void adjustSceneRect(QRectF rect);
         void debugOverlayEnabled(bool enabled);
     private:
+        void zoomToShowRect(const QRectF& rect);
+
         QPoint m_last_mouse_pos;
         bool m_hand_scrolling;
+        QTransform m_last_transform;
 };
 
 

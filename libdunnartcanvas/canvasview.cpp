@@ -367,21 +367,50 @@ QAction *CanvasView::buildAndExecContextMenu(QMouseEvent *event,
     {
         menu.addSeparator();
     }
+    QAction *zoomToFitDiagram =
+            menu.addAction(tr("Zoom to fit entire diagram"));
+    QAction *zoomToFitSelection =
+            menu.addAction(tr("Zoom to fit current selection"));
+    QAction *zoomToFitPage =
+            menu.addAction(tr("Zoom to fit page"));
+    menu.addSeparator();
     QAction* fitToDiagram = menu.addAction(
             tr("Fit page to entire diagram"));
     QAction* fitToSelection = menu.addAction(
             tr("Fit page to current selection"));
-    if (canvas()->selectedItems().empty())
-    {
-        fitToSelection->setDisabled(true);
-    }
     QAction* fitToViewport = menu.addAction(
             tr("Fit page to current viewport"));
 
+    if (canvas()->selectedItems().empty())
+    {
+        zoomToFitSelection->setDisabled(true);
+        fitToSelection->setDisabled(true);
+    }
+
+    if (canvas()->pageRect().isEmpty())
+    {
+        zoomToFitPage->setDisabled(true);
+    }
+
     QAction *action = menu.exec(event->globalPos(), fitToDiagram);
 
-    double pad = 10;
-    if (action == fitToViewport)
+    double padding = 10;
+    if (action == zoomToFitDiagram)
+    {
+        zoomToShowRect(
+                expandRect(diagramBoundingRect(canvas()->items()), padding));
+    }
+    else if (action == zoomToFitSelection)
+    {
+        zoomToShowRect(
+                expandRect(diagramBoundingRect(canvas()->selectedItems()),
+                padding));
+    }
+    else if (action == zoomToFitPage)
+    {
+        zoomToShowRect(expandRect(canvas()->pageRect(), padding));
+    }
+    else if (action == fitToViewport)
     {
         // Get the current viewport rect.
         QRectF scenerect = QRectF(mapToScene(0,0),
@@ -392,16 +421,30 @@ QAction *CanvasView::buildAndExecContextMenu(QMouseEvent *event,
     {
         canvas()->setPageRect(
                 expandRect(diagramBoundingRect(
-                        canvas()->items()), pad));
+                        canvas()->items()), padding));
     }
     else if (action == fitToSelection)
     {
         canvas()->setPageRect(expandRect(diagramBoundingRect(
-                        canvas()->selectedItems()), pad));
+                canvas()->selectedItems()), padding));
     }
     event->accept();
 
     return action;
+}
+
+void CanvasView::zoomToShowRect(const QRectF& rect)
+{
+    fitInView(rect, Qt::KeepAspectRatio);
+
+    // XXX There is no signal in Qt for when the QGraphicsView changed its
+    //     transform. So we do this ourselves to allow things like the zoom
+    //     slider to update when the view transform changes.
+    if (transform() != m_last_transform)
+    {
+        m_last_transform = transform();
+        emit canvasTransformChanged(m_last_transform);
+    }
 }
 
 bool CanvasView::contextMenuEvent(QMouseEvent *event)

@@ -41,6 +41,7 @@ class ZoomLevel : public QDockWidget, private Ui::ZoomLevel
     private slots:
         void changeZoomLevel(int zoom);
         void changeCanvasView(CanvasView *canvasview);
+        void updateZoomLevel(const QTransform& transform);
     private:
         CanvasView *m_canvasview;
         double m_zoom_level;
