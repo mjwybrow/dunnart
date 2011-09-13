@@ -15,6 +15,7 @@ do
 	for QTLIB in QtCore QtGui QtSvg QtXml
 	do
 		/usr/bin/install_name_tool -change $QT/lib/$QTLIB.framework/Versions/4/$QTLIB @executable_path/../Frameworks/$QTLIB.framework/Versions/4/$QTLIB $LIB
+		/usr/bin/install_name_tool -change $QTLIB.framework/Versions/4/$QTLIB @executable_path/../Frameworks/$QTLIB.framework/Versions/4/$QTLIB $LIB
 	done 
 done
 
