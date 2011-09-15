@@ -33,11 +33,15 @@ using namespace dunnart;
 LogicalOperator::LogicalOperator(PDLogicalType lt, int o) : ShapeObj(),
     orientation(o), stem(5), radius(36), logicalType(AND)
 {
+    Q_UNUSED(lt)
 
 }
 
 void LogicalOperator::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    Q_UNUSED(option)
+    Q_UNUSED(widget)
+
     painter->fillPath(this->shape(), Qt::white );
     painter->setRenderHint(QPainter::Antialiasing, true);
     painter->setPen( QPen( Qt::black, 2.5) );

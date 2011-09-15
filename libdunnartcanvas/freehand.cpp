@@ -288,6 +288,7 @@ QPainterPath FreehandShape::buildPainterPath(void)
             }
         }
     }
+    return path;
 }
 
 

@@ -143,7 +143,7 @@ namespace ogdf {
 #endif
 
 
-volatile double usedTime(double& T)
+double usedTime(double& T)
 {
 	double t = T;
 #ifdef OGDF_SYSTEM_WINDOWS

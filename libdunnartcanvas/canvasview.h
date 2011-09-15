@@ -60,7 +60,7 @@ class CanvasView : public QGraphicsView
         virtual void dragMoveEvent(QDragMoveEvent *event);
         virtual QAction *buildAndExecContextMenu(QMouseEvent *event,
                 QMenu& menu);
-        bool contextMenuEvent(QMouseEvent * event);
+        bool handleContextMenuEvent(QMouseEvent * event);
     private slots:
         void adjustSceneRect(QRectF rect);
         void debugOverlayEnabled(bool enabled);

@@ -230,7 +230,7 @@ void CanvasView::mousePressEvent(QMouseEvent *event)
     }
     else if (event->button() == Qt::RightButton)
     {
-        bool consumed = contextMenuEvent(event);
+        bool consumed = handleContextMenuEvent(event);
         if (consumed)
         {
             return;
@@ -447,7 +447,7 @@ void CanvasView::zoomToShowRect(const QRectF& rect)
     }
 }
 
-bool CanvasView::contextMenuEvent(QMouseEvent *event)
+bool CanvasView::handleContextMenuEvent(QMouseEvent *event)
 {
     if (canvas() == NULL)
     {

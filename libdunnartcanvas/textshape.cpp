@@ -168,7 +168,7 @@ void TextShape::setTextPosition(int x, int y, bool from_cider)
 
 void TextShape::setTextPositionByBaseline(int x, int b, bool from_cider)
 {
-    int ty, tb;
+    int ty = 0, tb = 0;
    //QT getTextDimensions(NULL, &ty, NULL, NULL, &tb);
 
     setTextPosition(x, b - (tb - ty), from_cider);
@@ -271,7 +271,7 @@ void TextShape::setText(const char *t)
 
 
 #if 0
-const unsigned int TextShape::makeLine(const int width)
+unsigned int TextShape::makeLine(const int width)
 {
     setFontSize(28);
     char t[500];

@@ -39,7 +39,7 @@ class SCCDetector
         QVector<int> stronglyConnectedComponentIndexes(GraphData *graph);
 
     private:
-        void strongConnect(int v);
+        void strongConnect(uint v);
 
         const int k_undefined;
         int m_index;

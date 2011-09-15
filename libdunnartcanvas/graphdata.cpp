@@ -144,7 +144,7 @@ GraphData::GraphData(Canvas *canvas, bool ignoreEdges,
         {
             if (Connector *conn = dynamic_cast<Connector *> (canvasObjects.at(i)))
             {    
-                connectorToEdge(conn,mode);
+                connectorToEdge(conn);
             }
         }
         setupMultiEdges();
@@ -161,7 +161,7 @@ GraphData::GraphData(Canvas *canvas, bool ignoreEdges,
             SCCDetector cycleDetector;
             QVector<int> sccIndexes =
                     cycleDetector.stronglyConnectedComponentIndexes(this);
-            for (int i = 0; i < conn_vec.size(); ++i)
+            for (uint i = 0; i < conn_vec.size(); ++i)
             {
                 if ( ! conn_vec[i]->isDirected() ||
                      ! conn_vec[i]->obeysDirectedEdgeConstraints() )
@@ -697,7 +697,7 @@ void GraphData::setUpRootCluster() {
  * @param conn the dunnart representation
  * @param mode the layout mode may affect the constraints/type of edge created
  */
-void GraphData::connectorToEdge(Connector* conn,GraphLayout::Mode mode)
+void GraphData::connectorToEdge(Connector* conn)
 {
     conn_vec.push_back(conn);
     QPair<CPoint, CPoint> connpts = conn->get_connpts();

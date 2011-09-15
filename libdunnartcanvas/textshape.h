@@ -57,7 +57,7 @@ class TextShape: public ShapeObj
         void setColour(unsigned int r, unsigned int g, unsigned int b);
         void setTextPosition(int x, int y, bool from_cider);
         void setTextPositionByBaseline(int x, int b, bool from_cider);
-        const unsigned int makeLine(const int width);
+        unsigned int makeLine(const int width);
 
     private:
         char *txtStr;

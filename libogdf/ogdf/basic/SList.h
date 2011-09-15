@@ -971,7 +971,7 @@ void print(ostream &os, const SListPure<E> &L, char delim = ' ')
 template<class E>
 void print(ostream &os, const SList<E> &L, char delim = ' ')
 {
-	print(L.getListPure(), delim);
+        print(os, L.getListPure(), delim);
 }
 
 // output operator

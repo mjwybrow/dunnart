@@ -193,7 +193,7 @@ void System::init()
 
 
 #if defined(OGDF_SYSTEM_WINDOWS) || defined(__CYGWIN__)
-volatile void System::getHPCounter(LARGE_INTEGER &counter)
+void System::getHPCounter(LARGE_INTEGER &counter)
 {
 	QueryPerformanceCounter(&counter);
 }
@@ -208,7 +208,7 @@ double System::elapsedSeconds(
 }
 
 
-volatile __int64 System::usedRealTime(__int64 &t)
+__int64 System::usedRealTime(__int64 &t)
 {
 	__int64 tStart = t;
 	t = GetTickCount();
@@ -216,7 +216,7 @@ volatile __int64 System::usedRealTime(__int64 &t)
 }
 
 
-volatile long long System::physicalMemory()
+long long System::physicalMemory()
 {
 #if !defined(__CYGWIN__) || (_WIN32_WINNT >= 0x0500)
 	MEMORYSTATUSEX statex;
@@ -233,7 +233,7 @@ volatile long long System::physicalMemory()
 #endif
 }
 	
-volatile long long System::availablePhysicalMemory()
+long long System::availablePhysicalMemory()
 {
 #if !defined(__CYGWIN__) || (_WIN32_WINNT >= 0x0500)
 	MEMORYSTATUSEX statex;
@@ -250,7 +250,7 @@ volatile long long System::availablePhysicalMemory()
 #endif
 }
 
-volatile size_t System::memoryUsedByProcess()
+size_t System::memoryUsedByProcess()
 {
 	PROCESS_MEMORY_COUNTERS pmc;
 	GetProcessMemoryInfo(GetCurrentProcess(), &pmc, sizeof(pmc));
@@ -258,7 +258,7 @@ volatile size_t System::memoryUsedByProcess()
 	return pmc.WorkingSetSize;
 }
 
-volatile size_t System::peakMemoryUsedByProcess()
+size_t System::peakMemoryUsedByProcess()
 {
 	PROCESS_MEMORY_COUNTERS pmc;
 	GetProcessMemoryInfo(GetCurrentProcess(), &pmc, sizeof(pmc));
@@ -268,7 +268,7 @@ volatile size_t System::peakMemoryUsedByProcess()
 
 #elif __APPLE__
 
-volatile long long System::physicalMemory()
+long long System::physicalMemory()
 {
 	unsigned long long value;
 	size_t  size = sizeof( value );
@@ -278,7 +278,7 @@ volatile long long System::physicalMemory()
 		return 0;
 }
 
-volatile long long System::availablePhysicalMemory()
+long long System::availablePhysicalMemory()
 {
 	unsigned long long pageSize;
 	long long result;
@@ -293,7 +293,7 @@ volatile long long System::availablePhysicalMemory()
 }
 
 
-volatile size_t System::memoryUsedByProcess()
+size_t System::memoryUsedByProcess()
 {
 	/*int pid = getpid();
 	static char filename[32];
@@ -322,17 +322,17 @@ volatile size_t System::memoryUsedByProcess()
 
 #else
 // LINUX, NOT MAC OS
-volatile long long System::physicalMemory()
+long long System::physicalMemory()
 {
 	return (long long)(sysconf(_SC_PHYS_PAGES)) * sysconf(_SC_PAGESIZE);
 }
 
-volatile long long System::availablePhysicalMemory()
+long long System::availablePhysicalMemory()
 {
 	return (long long)(sysconf(_SC_AVPHYS_PAGES)) * sysconf(_SC_PAGESIZE);
 }
 
-volatile size_t System::memoryUsedByProcess()
+size_t System::memoryUsedByProcess()
 {
 	int pid = getpid();
 	static char filename[32];
@@ -421,7 +421,7 @@ size_t System::memoryInFreelistOfMalloc()
 #endif
 
 #if !defined(OGDF_SYSTEM_WINDOWS) && !defined(__CYGWIN__)
-volatile __int64 System::usedRealTime(__int64 &t)
+__int64 System::usedRealTime(__int64 &t)
 {
 	__int64 tStart = t;
 	timeval tv;

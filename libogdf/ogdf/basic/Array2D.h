@@ -275,7 +275,7 @@ float Array2D<E>::det()
   int b = m_b;
   int c = m_c;
   int d = m_d;
-  int m = m_b - m_a + 1;
+  //int m = m_b - m_a + 1;
   int n = m_lenDim2;
 
   int i, j;

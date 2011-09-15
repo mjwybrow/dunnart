@@ -64,7 +64,7 @@ QVector<int> SCCDetector::stronglyConnectedComponentIndexes(GraphData *graph)
 }
 
 
-void SCCDetector::strongConnect(int v)
+void SCCDetector::strongConnect(uint v)
 {
     // Set the depth index for v to the smallest unused index
     m_indexes[v] = m_index;
@@ -74,7 +74,7 @@ void SCCDetector::strongConnect(int v)
     m_in_stack[v] = true;
 
     // Consider successors of v
-    for (int edgeInd = 0; edgeInd < m_graph->conn_vec.size(); ++edgeInd)
+    for (uint edgeInd = 0; edgeInd < m_graph->conn_vec.size(); ++edgeInd)
     {
         // for each (v, w) in E
         cola::Edge edge = m_graph->edges[edgeInd];
@@ -101,7 +101,7 @@ void SCCDetector::strongConnect(int v)
     {
         // start a new strongly connected component
         m_scc_index++;
-        int w;
+        uint w;
         do
         {
             w = m_stack.pop();

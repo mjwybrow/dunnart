@@ -378,7 +378,7 @@ static Initialization s_ogdfInitializer;
 
 	//! Returns used CPU time from T to current time and assigns
 	//! current time to T.
-	OGDF_EXPORT volatile double usedTime(double& T);
+        OGDF_EXPORT double usedTime(double& T);
 
 	//! \a doDestruction() returns false if a data type does not require to
 	//! call its destructor (e.g. build-in data types).

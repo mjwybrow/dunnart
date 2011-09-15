@@ -205,17 +205,17 @@ public:
 	static int pageSize() { return s_pageSize; }
 
 	//! Returns the total size of physical memory (in bytes).
-	static volatile long long physicalMemory();
+        static long long physicalMemory();
 	
 	//! Returns the size of available (free) physical memory (in bytes).
-	static volatile long long availablePhysicalMemory();
+        static long long availablePhysicalMemory();
 
 	//! Returns the amount of memory (in bytes) allocated by the process.
-	static volatile size_t memoryUsedByProcess();
+        static size_t memoryUsedByProcess();
 
 #if defined(OGDF_SYSTEM_WINDOWS) || defined(__CYGWIN__)
 	//! Returns the maximal amount of memory (in bytes) used by the process (Windows/Cygwin only).
-	static volatile size_t peakMemoryUsedByProcess();
+        static size_t peakMemoryUsedByProcess();
 #endif
 
 	//! Returns the amount of memory (in bytes) allocated by OGDF's memory manager.
@@ -262,7 +262,7 @@ public:
 	//@{
 
 	//! Returns the current value of the high-performance counter in \a counter.
-	static volatile void getHPCounter(LARGE_INTEGER &counter);
+        static void getHPCounter(LARGE_INTEGER &counter);
 
 	//! Returns the elapsed time (in seconds) between \a startCounter and \a endCounter.
 	static double elapsedSeconds(
@@ -277,7 +277,7 @@ public:
 	 * after performing some computation by calling usedRealTime(t) again; this time
 	 * the return value gives you the elapsed time in milliseconds.
 	 */
-	static volatile __int64 usedRealTime(__int64 &t);
+        static __int64 usedRealTime(__int64 &t);
 
 
 	//@}

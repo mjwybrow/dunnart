@@ -888,7 +888,7 @@ void Graph::createShape(ogdf::node v, const Box b) {
             string imageFile=imagePath+"_images/"+imageUrl+".gif";
             //QT sh->setDecorativeImageFile(imageFile);
         }
-        int smallW, smallH;
+        int smallW = 30, smallH = 20;
         //QT sh->determine_small_dimensions(&smallW, &smallH);
         int width = smallW, height = smallH;
         GA.width(v)=width;

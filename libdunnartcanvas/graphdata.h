@@ -135,7 +135,7 @@ public:
     unsigned topologyNodesCount;
     // the xxxxToXxxx methods create cola objects for dunnart graph objects
     void shapeToNode(ShapeObj* shape);
-    void connectorToEdge(Connector* conn,GraphLayout::Mode mode);
+    void connectorToEdge(Connector* conn);
     void dunnartClusterToCluster(Cluster* cluster);
     void guideToAlignmentConstraint(Guideline* guide);
     void generateRectangleConstraints(QList<CanvasItem *>& canvasChildren);
