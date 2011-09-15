@@ -19,6 +19,10 @@ win32 {
 CONFIG += embed_manifest_dll embed_manifest_exe
 }
 
+CONFIG(nightlybuild) {
+	CONFIG += displaygithash release
+}
+
 # If both release and debug are set, debug overrides release, 
 # which is the normal behaviour for qmake.
 #

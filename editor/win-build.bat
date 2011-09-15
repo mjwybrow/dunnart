@@ -13,7 +13,7 @@ set GIT_SSH=C:\WINDOWS\plink.exe
 
 git pull
 
-qmake dunnart.pro -r -config release -spec win32-g++
+qmake dunnart.pro -r -config nightlybuild -spec win32-g++
 
 mingw32-make
 

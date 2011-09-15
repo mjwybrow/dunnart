@@ -138,18 +138,20 @@ HEADERS += \
     stronglyconnectedcomponents.h
 
 
-githash.target = githash.h
-win32 {
-githash.commands = write_gitver.bat $$githash.target
+displaygithash {
+  githash.target = githash.h
+  win32 {
+    githash.commands = write_gitver.bat $$githash.target
+  }
+  else {
+    githash.commands = @ver=`git show --abbrev-commit | grep "^commit" | cut -f2 -d\' \'`; echo \"`cat .hash`define GITHASH \\\"\$\$ver\\\"\" > $$githash.target;
+  }
+  githash.depends = dummy
+
+  QMAKE_EXTRA_TARGETS += githash dummy
+  
+  PRE_TARGETDEPS += githash.h
 }
-else {
-githash.commands = @ver=`git show --abbrev-commit | grep "^commit" | cut -f2 -d\' \'`; echo \"`cat .hash`define GITHASH \\\"\$\$ver\\\"\" > $$githash.target;
-}
-githash.depends = dummy
 
-QMAKE_EXTRA_TARGETS += githash dummy
-
-
-PRE_TARGETDEPS += githash.h
 
 

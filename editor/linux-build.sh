@@ -8,7 +8,7 @@ rm -f  dunnart-linux.tar.gz
 
 git pull
 
-qmake dunnart.pro -r -config release
+qmake dunnart.pro -r -config nightlybuild
 
 make
 

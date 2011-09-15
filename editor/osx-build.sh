@@ -11,7 +11,7 @@ rm -f  dunnart-osx.tar.gz
 
 git pull
 
-./qmake.sh release
+./qmake.sh nightlybuild
 #qmake dunnart.pro -r -config release -spec win32-g++
 
 make
