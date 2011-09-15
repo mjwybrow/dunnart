@@ -169,7 +169,7 @@ unsigned int ConnEnd::pinClassId(void) const
 
 bool ConnEnd::isPinConnection(void) const
 {
-    return (m_type & (ConnEndShapePin | ConnEndJunction));
+    return (m_type == ConnEndShapePin) || (m_type == ConnEndJunction);
 }
 
 unsigned int ConnEnd::endpointType(void) const
