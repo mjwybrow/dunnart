@@ -100,11 +100,11 @@ MainWindow::MainWindow(Application *app)
     resize(1020, 743);
 
     m_new_action = new QAction("New", this);
-    m_new_action->setShortcut(tr("Ctrl+N"));
+    m_new_action->setShortcut(QKeySequence::New);
     connect(m_new_action, SIGNAL(triggered()), this, SLOT(documentNew()));
 
     m_open_action = new QAction("Open...", this);
-    m_open_action->setShortcut(tr("Ctrl+O"));
+    m_open_action->setShortcut(QKeySequence::Open);
     connect(m_open_action, SIGNAL(triggered()), this, SLOT(documentOpen()));
 
     for (int i = 0; i < MAX_RECENT_FILES; ++i)
@@ -116,17 +116,17 @@ MainWindow::MainWindow(Application *app)
     }
 
     m_close_action = new QAction("Close", this);
-    m_close_action->setShortcut(tr("Ctrl+W"));
+    m_close_action->setShortcut(QKeySequence::Close);
     connect(m_close_action, SIGNAL(triggered()),
             m_tab_widget, SLOT(currentCanvasClose()));
 
     m_save_action = new QAction("Save", this);
-    m_save_action->setShortcut(tr("Ctrl+S"));
+    m_save_action->setShortcut(QKeySequence::Save);
     connect(m_save_action, SIGNAL(triggered()),
             m_tab_widget, SLOT(currentCanvasSave()));
 
     m_save_as_action = new QAction("Save As...", this);
-    m_save_as_action->setShortcut(tr("Shift+Ctrl+S"));
+    m_save_as_action->setShortcut(QKeySequence::SaveAs);
     connect(m_save_as_action, SIGNAL(triggered()),
             m_tab_widget, SLOT(currentCanvasSaveAs()));
 
@@ -134,16 +134,15 @@ MainWindow::MainWindow(Application *app)
     connect(m_export_action, SIGNAL(triggered()), this, SLOT(documentExport()));
 
     m_print_action = new QAction("Print...", this);
-    m_print_action->setShortcut(tr("Ctrl+P"));
+    m_print_action->setShortcut(QKeySequence::Print);
     connect(m_print_action, SIGNAL(triggered()), this, SLOT(documentPrint()));
 
     m_quit_action = new QAction(tr("Quit"), this);
-    m_quit_action->setShortcut(tr("Ctrl+Q"));
+    m_quit_action->setShortcut(QKeySequence::Quit);
     connect(m_quit_action, SIGNAL(triggered()),
             this, SLOT(close()));
 
     m_about_action = new QAction(tr("About"), this);
-    m_about_action->setShortcut(tr("Ctrl+B"));
     connect(m_about_action, SIGNAL(triggered()), this, SLOT(about()));
 
     m_homepage_action = new QAction(tr("Dunnart homepage"), this);
