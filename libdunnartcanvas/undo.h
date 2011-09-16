@@ -145,9 +145,16 @@ void cmd_##SETTER(const TYPE newPos) \
     { \
         return; \
     } \
-    UndoMacro *macro = canvas()->currentUndoMacro(); \
-    Cmd##OBJECT##SETTER *cmd = new Cmd##OBJECT##SETTER(this, GETTER(), newPos); \
-    macro->addCommand(cmd); \
+    if (canvas()) \
+    { \
+        UndoMacro *macro = canvas()->currentUndoMacro(); \
+        Cmd##OBJECT##SETTER *cmd = new Cmd##OBJECT##SETTER(this, GETTER(), newPos); \
+        macro->addCommand(cmd); \
+    } \
+    else \
+    { \
+        this->SETTER(newPos); \
+    } \
 }
 
 }

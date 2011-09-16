@@ -186,28 +186,39 @@ int main(int argc, char *argv[])
         ++diagrams;
     }
 #else
-    ShapeObj *shape1 = new Rect(0, 0);
+    ShapeObj *shape1 = new RectangleShape();
+    shape1->setPosAndSize(QPointF(0,0), QSizeF(20,20));
     window.canvas()->addItem(shape1);
-    ShapeObj *shape2 = new Rect(0, 0);
+    ShapeObj *shape2 = new RectangleShape();
+    shape2->setPosAndSize(QPointF(0,0), QSizeF(20,20));
     window.canvas()->addItem(shape2);
-    ShapeObj *shape3 = new Rect(0, 0);
+    ShapeObj *shape3 = new RectangleShape();
+    shape3->setPosAndSize(QPointF(0,0), QSizeF(20,20));
     window.canvas()->addItem(shape3);
-    ShapeObj *shape4 = new Rect(0, 0);
+    ShapeObj *shape4 = new RectangleShape();
+    shape4->setPosAndSize(QPointF(0,0), QSizeF(20,20));
     window.canvas()->addItem(shape4);
-    ShapeObj *shape5 = new Rect(0, 0);
+    ShapeObj *shape5 = new RectangleShape();
+    shape5->setPosAndSize(QPointF(0,0), QSizeF(20,20));
     window.canvas()->addItem(shape5);
 
-    AvoidingConn *conn = new AvoidingConn(shape1, shape2);
+    Connector *conn = new Connector();
+    conn->initWithConnection(shape1, shape2);
     window.canvas()->addItem(conn);
-    conn = new AvoidingConn(shape3, shape2);
+    conn = new Connector();
+    conn->initWithConnection(shape3, shape2);
     window.canvas()->addItem(conn);
-    conn = new AvoidingConn(shape3, shape1);
+    conn = new Connector();
+    conn->initWithConnection(shape3, shape1);
     window.canvas()->addItem(conn);
-    conn = new AvoidingConn(shape4, shape1);
+    conn = new Connector();
+    conn->initWithConnection(shape4, shape1);
     window.canvas()->addItem(conn);
-    conn = new AvoidingConn(shape5, shape4);
+    conn = new Connector();
+    conn->initWithConnection(shape5, shape4);
     window.canvas()->addItem(conn);
-    conn = new AvoidingConn(shape1, shape5);
+    conn = new Connector();
+    conn->initWithConnection(shape1, shape5);
     window.canvas()->addItem(conn);
 #endif
 

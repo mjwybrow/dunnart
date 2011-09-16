@@ -1506,13 +1506,11 @@ void ShapeObj::move_to(const int xn, const int yn, bool store_undo,
 void ShapeObj::setPosAndSize(const QPointF& newCentrePos,
         const QSizeF& newSize)
 {
-    // Handle the case where the user is holding ALT:
-    bool freeshift = canvas()->isLayoutSuspended();
-    if (freeshift)
+    if (canvas() && canvas()->isLayoutSuspended())
     {
-        int rs = 0, re = 6;
-
-        for (int i = rs; i < re; i++)
+        // The user has suspended the layout, so we want to dettach
+        // the shape from guidelines when it moves.
+        for (int i = 0; i < 6; i++)
         {
             if (rels[i])
             {
