@@ -94,6 +94,8 @@ void CanvasView::setScene(QGraphicsScene *scene)
                 this, SLOT(adjustSceneRect(QRectF)));
         connect(canvas(), SIGNAL(debugOverlayEnabled(bool)),
                 this, SLOT(debugOverlayEnabled(bool)));
+        connect(canvas(), SIGNAL(editModeChanged(int)),
+                this, SLOT(editModeChanged(int)));
     }
 }
 
@@ -108,6 +110,12 @@ void CanvasView::debugOverlayEnabled(bool enabled)
     {
         setViewportUpdateMode(QGraphicsView::MinimalViewportUpdate);
     }
+}
+
+void CanvasView::editModeChanged(int mode)
+{
+    setDragMode((mode == ModeSelection) ?
+            QGraphicsView::RubberBandDrag : QGraphicsView::NoDrag);
 }
 
 void CanvasView::adjustSceneRect(QRectF new_scene_rect)

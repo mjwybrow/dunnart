@@ -405,16 +405,8 @@ QPainterPath Distribution::shape() const
 
 QRectF Distribution::boundingRect() const
 {
-    QRectF bb;
-    const double padding = 4;
-    if (type == GUIDE_TYPE_VERT)
-    {
-        bb = QRectF(-width() / 2, -height() / 2, width(), height());
-    }
-    else
-    {
-        bb = QRectF(-width() / 2, -height() / 2, width(), height());
-    }
+    const double padding = BOUNDINGRECTPADDING;
+    QRectF bb(-width() / 2, -height() / 2, width(), height());
     bb.adjust(-padding, -padding, padding, padding);
     return bb;
 }

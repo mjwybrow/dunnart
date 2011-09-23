@@ -453,13 +453,14 @@ void reroute_connectors(Canvas *canvas, const bool force,
     //       (int) force, (int) postProcessing);
     if (router->SimpleRouting)
     {
+        router->processTransaction();
         QList<CanvasItem *> canvas_items = canvas->items();
         for (int i = 0; i < canvas_items.size(); ++i)
         {
             Connector *conn = dynamic_cast<Connector *> (canvas_items.at(i));
             if (conn)
             {
-                conn->update_and_reroute();
+                conn->forceReroute();
             }
         }
         return;
@@ -476,7 +477,7 @@ void reroute_connectors(Canvas *canvas, const bool force,
             if (conn)
             {
                 conn->avoidRef->makePathInvalid();
-                conn->update_and_reroute(true);
+                conn->forceReroute();
             }
         }
     }
@@ -537,7 +538,7 @@ void reroute_connectors(Canvas *canvas, const bool force,
                 {
                     continue;
                 }
-                conn->rerouteIntersect();
+                conn->rerouteAvoidingIntersections();
             }
         }
     }

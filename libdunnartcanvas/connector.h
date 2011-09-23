@@ -142,18 +142,16 @@ class Connector : public CanvasItem
         double idealLength(void) const;
         void setIdealLength(double length);
 
-        void rerouteIntersect(void);
+        void rerouteAvoidingIntersections(void);
         virtual void cascade_distance(int dist, unsigned int dir,
                 CanvasItem **path);
         virtual void deactivateAll(CanvasItemSet& selSet);
 
         void setRoutingCheckPoints(const QList<QPointF>& checkpoints);
-        void move_endpoint(endPt ep, int diff_x, int diff_y);
-        void update_and_reroute(bool reroute = true);
+        void forceReroute(void);
         void addXmlProps(const unsigned int subset, QDomElement& node,
                 QDomDocument& doc);
         QPair<CPoint, CPoint> get_connpts(void) const;
-        void update_endpoints(void);
         void disconnect_from(ShapeObj *shape, uint pinClassID = 0);
         QPair<ShapeObj *, ShapeObj *> getAttachedShapes(void);
         bool hasSameEndpoints(void);
@@ -165,9 +163,7 @@ class Connector : public CanvasItem
         void overrideColour(QColor col);
         void restoreColour();
         void setDotted(bool dotted) {this->dotted = dotted;}
-        void adjust_endpoint_for_vis(int type, Avoid::Point& adjpt,
-                Avoid::Vector slp = Avoid::Vector());
-        virtual void UpdateEndptVis(const int type);
+        virtual void setNewLibavoidEndpoint(const int type);
         void reapplyRoute(void);
         void applyNewRoute(const Avoid::Polygon& route);
         void applyNewRoute(const Avoid::PolyLine& route, bool updateLibavoid);
@@ -183,8 +179,8 @@ class Connector : public CanvasItem
         virtual void setPainterPath(QPainterPath path);
         virtual void loneSelectedChange(const bool value);
         void buildArrowHeadPath(void);
-        void setNewEndpointPos(const int endptType, QPointF pos,
-            ShapeObj *shape = NULL, uint pinClassID = 0);
+        void setNewEndpoint(const int endptType, QPointF pos,
+                ShapeObj *shape = NULL, uint pinClassID = 0);
         static bool drawArrow(QPainterPath& painter_path, double srcx,
                 double srcy, double dstx, double dsty,
                 Connector::ArrowHeadType arrow_type = Connector::normal);
@@ -205,12 +201,12 @@ class Connector : public CanvasItem
         virtual QVariant itemChange(QGraphicsItem::GraphicsItemChange change,
                 const QVariant &value);
         void initialiser(void);
-        virtual void calc_layout(void);
+        virtual void triggerReroute(bool now = false);
         virtual void routerAdd(void);
         virtual void routerRemove(void);
-        void updateConnections(void);
         void applySimpleRoute(void);
-
+        void applyMultiEdgeOffset(Avoid::Point& p1, Avoid::Point& p2,
+                bool justSecond = true);
 
         double m_ideal_length;
         QColor m_colour;
@@ -228,8 +224,6 @@ class Connector : public CanvasItem
         ArrowHeadType m_arrow_head_type;
         bool m_arrow_head_outline;
         bool dotted;
-        void applyMultiEdgeOffset(Avoid::Point& p1, Avoid::Point& p2,
-                bool justSecond = true);
         QPainterPath m_arrow_path;
         // Unclosed and unreversed representation of connector path route.
         QPainterPath m_conn_path;

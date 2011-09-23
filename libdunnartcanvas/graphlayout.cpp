@@ -697,8 +697,6 @@ public:
             return true;
         }
         
-        //dumpScreenshot();
-        
         bool ready = false;
         
         while (!ready)

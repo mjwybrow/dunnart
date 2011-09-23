@@ -30,12 +30,17 @@
 
 #include "libdunnartcanvas/handle.h"
 
+namespace Avoid {
+class ShapeConnectionPin;
+}
 
 namespace dunnart {
 
+class ShapeObj;
+
 class ConnectorEndpointHandle : public Handle
 {
-    Q_GADGET
+    Q_OBJECT
 
     public:
         ConnectorEndpointHandle(Connector *conn, unsigned int endpointType);
@@ -43,18 +48,16 @@ class ConnectorEndpointHandle : public Handle
     protected:
         virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
         virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-#if 0
-        virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
-        virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-        virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
-#endif
+        virtual void paint(QPainter *painter,
+                const QStyleOptionGraphicsItem *option, QWidget *widget);
+
         Connector *m_conn;
 };
 
 
 class ConnectorCheckpointHandle : public Handle
 {
-    Q_GADGET
+    Q_OBJECT
 
     public:
         ConnectorCheckpointHandle(Connector *conn, int index, double xpos,
@@ -64,12 +67,32 @@ class ConnectorCheckpointHandle : public Handle
         virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
         virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 
-#if 0
-        virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-        virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
-#endif
         Connector *m_conn;
         QPointF m_pos;
+};
+
+
+class ConnectionPinHandle : public Handle
+{
+    Q_OBJECT
+
+    public:
+        ConnectionPinHandle(ShapeObj *shape, const uint pinClassId,
+                const Avoid::ShapeConnectionPin *pin);
+        virtual void reposition(void);
+        virtual QRectF boundingRect() const;
+        virtual void paint(QPainter *painter,
+                const QStyleOptionGraphicsItem *option, QWidget *widget);
+    protected:
+        virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+        virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
+        virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+        virtual bool sceneEvent(QEvent *event);
+        ShapeObj *m_shape;
+        const uint m_pin_class_id;
+        const Avoid::ShapeConnectionPin *m_pin;
+        bool m_clicked;
+        Connector *m_new_conn;
 };
 
 

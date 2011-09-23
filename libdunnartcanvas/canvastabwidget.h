@@ -34,6 +34,7 @@ class QToolBar;
 class QUndoGroup;
 class QMainWindow;
 class QFileInfo;
+class QActionGroup;
 
 namespace dunnart {
 
@@ -70,8 +71,10 @@ public slots:
     void currentCanvasSaveAs(void);
     bool closeAllRequest(void);
     void hideEditingControls(const bool hidden);
+    void currentCanvasEditModeChanged(const int mode);
 
 private slots:
+    void setCanvasEditModeFromAction(QAction *action);
     void selectionChanged(void);
     void clipboardContentsChanged(void);
     void documentCleanChanged(bool);
@@ -90,6 +93,9 @@ private:
     QAction *m_action_select_all;
     QAction *m_action_bring_to_front;
     QAction *m_action_send_to_back;
+    QAction *m_action_selection_mode;
+    QAction *m_action_connection_mode;
+    QActionGroup *m_action_mode_group;
     QAction *m_action_lock;
     QAction *m_action_automatic_layout;
     QAction *m_action_cola_debug_output;
@@ -97,6 +103,7 @@ private:
     QAction *m_action_overlay_router_visgraph;
     QAction *m_action_overlay_router_orthogonal_visgraph;
     QAction *m_action_edit_separator;
+    QAction *m_action_edit_separator2;
 };
 
 }

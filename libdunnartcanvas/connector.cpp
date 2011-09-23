@@ -283,26 +283,12 @@ void Connector::initWithXMLProperties(Canvas *canvas,
 
 void Connector::routerAdd(void)
 {
-    Point srcPoint(srcpt.x, srcpt.y);
-    Point dstPoint(dstpt.x, dstpt.y);
+    // Create libavoid ConnRef for the connector.
+    avoidRef = new Avoid::ConnRef(canvas()->router(), internalId());
 
-    unsigned int srctype = (srcpt.shape) ? srcpt.pinClassID : 0;
-    Avoid::ConnDirFlags srcFlags = Avoid::ConnDirAll;
-    if (srctype & HAN_TOP) srcFlags = Avoid::ConnDirUp;
-    if (srctype & HAN_BOT) srcFlags = Avoid::ConnDirDown;
-    if (srctype & HAN_LEFT) srcFlags = Avoid::ConnDirLeft;
-    if (srctype & HAN_RIGHT) srcFlags = Avoid::ConnDirRight;
-
-    unsigned int dsttype = (dstpt.shape) ? dstpt.pinClassID : 0;
-    Avoid::ConnDirFlags dstFlags = Avoid::ConnDirAll;
-    if (dsttype & HAN_TOP) dstFlags = Avoid::ConnDirUp;
-    if (dsttype & HAN_BOT) dstFlags = Avoid::ConnDirDown;
-    if (dsttype & HAN_LEFT) dstFlags = Avoid::ConnDirLeft;
-    if (dsttype & HAN_RIGHT) dstFlags = Avoid::ConnDirRight;
-
-    avoidRef = new Avoid::ConnRef(canvas()->router(),
-            Avoid::ConnEnd(srcPoint, srcFlags),
-            Avoid::ConnEnd(dstPoint, dstFlags), internalId());
+    // Update endpoints.
+    setNewLibavoidEndpoint(VertID::src);
+    setNewLibavoidEndpoint(VertID::tar);
 
     if (m_routing_type == orthogonal)
     {
@@ -328,7 +314,7 @@ void Connector::routerRemove(void)
 }
 
 
-void Connector::setNewEndpointPos(const int endptType, QPointF pos,
+void Connector::setNewEndpoint(const int endptType, QPointF pos,
     ShapeObj *shape, uint pinClassID)
 {
     if (endptType == SRCPT)
@@ -348,22 +334,24 @@ void Connector::setNewEndpointPos(const int endptType, QPointF pos,
         dstpt.y = pos.y();
     }
 
-    if (avoidRef->router()->SimpleRouting)
+    if (canvas())
     {
-        applySimpleRoute();
-        return;
-    }
+        // If this has been added to the canvas, then reroute.
+        if (avoidRef->router()->SimpleRouting)
+        {
+            applySimpleRoute();
+            return;
+        }
 
-    UpdateEndptVis((endptType == SRCPT) ? VertID::src : VertID::tar);
-    if (avoidRef)
-    {
-        avoidRef->makePathInvalid();
+        setNewLibavoidEndpoint((endptType == SRCPT) ? VertID::src : VertID::tar);
+        triggerReroute();
     }
-    calc_layout();
 }
 
 void Connector::loneSelectedChange(const bool value)
 {
+    printf("RAR");
+    fflush(stdout);
     if (!value)
     {
         for (int i = 0; i < m_handles.size(); ++i)
@@ -577,42 +565,12 @@ QPair<ShapeObj *, ShapeObj *> Connector::getAttachedShapes(void)
 }
 
 
-void Connector::move_endpoint(endPt ep, int diff_x, int diff_y)
+void Connector::rerouteAvoidingIntersections(void)
 {
-    if (ep == SRCPT)
-    {
-        srcpt.x += diff_x;
-        srcpt.y += diff_y;
-    }
-    else if (ep == DSTPT)
-    {
-        dstpt.x += diff_x;
-        dstpt.y += diff_y;
-    }
-    update_endpoints();
-}
-
- 
-void Connector::update_endpoints(void)
-{
-    UpdateEndptVis(VertID::src);
-    UpdateEndptVis(VertID::tar);
-
-   if (!(avoidRef->router()->SimpleRouting))
-   {
-       avoidRef->makePathInvalid();
-   }
-   calc_layout();
-}
-
-
-void Connector::rerouteIntersect(void)
-{
-    avoidRef->makePathInvalid();
-    
     avoidRef->setHateCrossings(true);
-    
-    calc_layout();
+
+    bool rerouteImmediately = true;
+    triggerReroute(rerouteImmediately);
 
     avoidRef->setHateCrossings(false);
 }
@@ -691,7 +649,7 @@ void Connector::swapDirection(void)
     dstpt = srcpt;
     srcpt = tmp;
     
-    update_and_reroute(true);
+    forceReroute();
 }
 
 
@@ -746,16 +704,6 @@ void Connector::restoreColour()
 }
 
 
-void Connector::updateConnections(void)
-{
-    if (avoidRef)
-    {
-        avoidRef->makePathInvalid();
-    }
-    calc_layout();
-}
-
-
 void Connector::disconnect_from(ShapeObj *shape, uint pinClassID)
 {
     if ((srcpt.shape == shape) &&
@@ -805,19 +753,18 @@ void Connector::applySimpleRoute(void)
     this->applyNewRoute(route, updateLibavoid);
 }
 
-void Connector::update_and_reroute(bool reroute)
+void Connector::forceReroute(void)
 {
-    //qDebug("update_and_reroute %d", (int) avoidRef->router()->SimpleRouting);
     if (avoidRef->router()->SimpleRouting)
     {
         applySimpleRoute();
         return;
     }
 
-    if (reroute)
-    {
-        update_endpoints();
-    }
+    setNewLibavoidEndpoint(VertID::src);
+    setNewLibavoidEndpoint(VertID::tar);
+
+    triggerReroute();
 }
 
 
@@ -971,55 +918,7 @@ bool Connector::drawArrow(QPainterPath& painter_path, double srcx, double srcy,
 // Code for object-avoiding connectors.
 
 
-void Connector::adjust_endpoint_for_vis(int type, Point& adjpt,
-        Avoid::Vector slope)
-{
-    CPoint *currpt;
-    unsigned int *htype;
-    int mod;
-    if (type == VertID::src)
-    {
-        currpt = &srcpt;
-        htype  = &srctype;
-        mod = 1;
-    }
-    else
-    {
-        currpt = &dstpt;
-        htype  = &dsttype;
-        mod = -1;
-    }
-    *htype = 0;
-
-    if (currpt->shape)
-    {
-        *htype = currpt->pinClassID;
-        if (*htype & HAN_TOP)
-        {
-            adjpt.y -= EDGEPORTSPACE;
-            slope.y = -1 * mod;
-        }
-        else if (*htype & HAN_LEFT)
-        {
-            adjpt.x -= EDGEPORTSPACE;
-            slope.x = -1 * mod;
-        }
-        else if (*htype & HAN_BOT)
-        {
-            adjpt.y += EDGEPORTSPACE;
-            slope.y = 1 * mod;
-        }
-        else if (*htype & HAN_RIGHT)
-        {
-            adjpt.x += EDGEPORTSPACE;
-            slope.x = 1 * mod;
-        }
-    }
-}
-
-
-
-void Connector::UpdateEndptVis(const int type)
+void Connector::setNewLibavoidEndpoint(const int type)
 {
     if (avoidRef == NULL)
     {
@@ -1029,10 +928,7 @@ void Connector::UpdateEndptVis(const int type)
     CPoint& ep = (type == VertID::src) ? srcpt : dstpt;
     if (ep.shape)
     {
-        Avoid::ShapeRef *shapeRef = ep.shape->avoidRef;
-        unsigned int flags = ep.pinClassID;
-
-        Avoid::ConnEnd connEndRef(shapeRef, flags);
+        Avoid::ConnEnd connEndRef(ep.shape->avoidRef, ep.pinClassID);
         avoidRef->setEndpoint(type, connEndRef);
     }
     else
@@ -1040,12 +936,7 @@ void Connector::UpdateEndptVis(const int type)
         Point tmppt(ep.x, ep.y);
         tmppt.id = m_internal_id;
         tmppt.vn = (type == VertID::src) ? 1 : 2;
-        adjust_endpoint_for_vis(type, tmppt);
 
-#ifdef SELECTIVE_DEBUG        
-        //printf("IncludeEndpoints - Update Endpoint (%d, %d)\n", 0 - ID,
-        //        type);
-#endif
         avoidRef->setEndpoint(type, tmppt);
     }
 }
@@ -1067,32 +958,33 @@ QDomElement Connector::to_QDomElement(const unsigned int subset,
 }
 
 
-void Connector::calc_layout(void)
+void Connector::triggerReroute(bool now)
 {
-    srctype = 0, dsttype = 0;
-    Point endpts[2];
+    // Mark the old path as invalid.
+    avoidRef->makePathInvalid();
 
-    endpts[0].x = srcpt.x;
-    endpts[0].y = srcpt.y;
-    endpts[0].id = 0;
-    endpts[0].vn = Avoid::kUnassignedVertexNumber;
+    if (now)
+    {
+        // Do the rerouting right now.
+        avoidRef->router()->processTransaction();
+    }
+    else
+    {
+        // Let the canvas know it needs to call libavoid's
+        // processTransaction() and reroute connectors.
+        canvas()->postRoutingRequiredEvent();
+    }
 
-    adjust_endpoint_for_vis(VertID::src, endpts[0]);
-    
-    endpts[1].x = dstpt.x;
-    endpts[1].y = dstpt.y;
-    endpts[1].id = 0;
-    endpts[1].vn = Avoid::kUnassignedVertexNumber;
-    
-    adjust_endpoint_for_vis(VertID::tar, endpts[1]);
-
-    avoidRef->router()->processTransaction();
-    // Add end segments to connect to shape centres for border conn points.
+    // Either apply the existing route, or a simple (straight-line) route.
     const Avoid::PolyLine &newroute = avoidRef->displayRoute();
-    assert(!newroute.empty());
-
-    bool updateLibavoid = true;
-    applyNewRoute(newroute, updateLibavoid);
+    if (newroute.empty())
+    {
+        applySimpleRoute();
+    }
+    else
+    {
+        applyNewRoute(newroute, false);
+    }
 }
 
 
@@ -1252,8 +1144,6 @@ void Connector::applyNewRoute(const Avoid::Polygon& oroute)
     {
         offset_route = oroute;
     }
-    
-    prepareGeometryChange();
 
     // Connectors position will be the first point.
     setPos(offset_route.ps[0].x, offset_route.ps[0].y);
@@ -1294,8 +1184,8 @@ void Connector::applyNewRoute(const Avoid::Polygon& oroute)
         }
     }
 
+    prepareGeometryChange();
     setPainterPath(painter_path);
-
     buildArrowHeadPath();
 }
 
@@ -1383,7 +1273,9 @@ void Connector::applyMultiEdgeOffset(Point& p1, Point& p2, bool justSecond)
 
 QRectF Connector::boundingRect(void) const
 {
-    return (painterPath().boundingRect() | m_arrow_path.boundingRect());
+    const double padding = BOUNDINGRECTPADDING;
+    return (painterPath().boundingRect().adjusted(-padding, -padding,
+            +padding, +padding) | m_arrow_path.boundingRect());
 }
 
 
@@ -1422,7 +1314,7 @@ void Connector::paint(QPainter *painter,
     }
 
     // Draw selection cue.
-    if ( isSelected() && showDecorations )
+    if ( isSelected() && showDecorations && canvas()->enableSelection() )
     {
         QColor colour(0, 255, 255, 70);
         QPen highlight(colour);

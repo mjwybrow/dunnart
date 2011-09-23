@@ -180,7 +180,9 @@ Canvas::Canvas()
       m_overlay_router_obstacles(false),
       m_overlay_router_visgraph(false),
       m_overlay_router_orthogonal_visgraph(false),
-      m_rendering_for_printing(false)
+      m_rendering_for_printing(false),
+      m_edit_mode(ModeSelection),
+      m_routing_event_posted(false)
 {
     m_ideal_connector_length = 100;
     m_directed_edge_height_modifier = 0.5;
@@ -536,6 +538,7 @@ void Canvas::drawBackground(QPainter *painter, const QRectF& rect)
         m_expanded_page = m_page;
     }
 
+    // Draws purple background and the white page (if it is set).
     painter->fillRect(rect, QColor(189, 189, 223));
     painter->fillRect(m_expanded_page, QColor(200, 200, 200));
     painter->fillRect(m_page, QColor(255, 255, 255));
@@ -807,6 +810,12 @@ void Canvas::customEvent(QEvent *event)
         //qDebug() << "Finish " << (long long) this;
         this->startLayoutFinishTimer();
     }
+    else if (dynamic_cast<RoutingRequiredEvent *> (event))
+    {
+        // Call libavoid's processTransaction and reroute connectors.
+        m_routing_event_posted = false;
+        reroute_connectors(this);
+    }
     else
     {
         QGraphicsScene::customEvent(event);
@@ -831,6 +840,28 @@ void Canvas::lockSelectedShapes(void)
                 shape->setLockedPosition(true);
             }
         }
+    }
+}
+
+
+int Canvas::editMode(void) const
+{
+    return m_edit_mode;
+}
+
+void Canvas::setEditMode(int mode)
+{
+    m_edit_mode = mode;
+    emit editModeChanged(mode);
+
+    // Update selection.
+    selectionChangeTriggers();
+
+    // Repaint selected objects (for changed selection cues).
+    QList<QGraphicsItem *> selection = QGraphicsScene::selectedItems();
+    for (int i = 0; i < selection.size(); ++i)
+    {
+        selection.at(i)->update();
     }
 }
 
@@ -874,6 +905,15 @@ void Canvas::popStatusMessage(void)
     }
 }
 
+void Canvas::postRoutingRequiredEvent(void)
+{
+    if (!m_routing_event_posted)
+    {
+        QCoreApplication::postEvent(this, new RoutingRequiredEvent(),
+                Qt::NormalEventPriority);
+        m_routing_event_posted = true;
+    }
+}
 
 void Canvas::selectAll(void)
 {
@@ -1150,24 +1190,41 @@ void Canvas::setDebugCOLAOutput(const bool value)
 
 void Canvas::setOptAutomaticGraphLayout(const bool value)
 {
+    // Remember previous value.
+    bool had_auto_layout = m_opt_automatic_graph_layout;
+
+    // Set new value.
     m_opt_automatic_graph_layout = value;
     
     if (m_opt_automatic_graph_layout)
     {
         m_router->SimpleRouting = m_simple_paths_during_layout;
     }
-    else // if (!opt_automatic_graph_layout_)
+    else
     {
         m_router->SimpleRouting = false;
     }
     emit optChangedAutomaticLayout(m_opt_automatic_graph_layout);
     
     fully_restart_graph_layout();
-    
-    if (!m_opt_automatic_graph_layout)
+
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+    if (!m_opt_automatic_graph_layout && had_auto_layout)
     {
+        // If autolayout was set previously, then update all the positions
+        // of obstacles with libavoid and reroute connectors.
+        QList<CanvasItem *> canvas_items = items();
+        for (int i = 0; i < canvas_items.size(); ++i)
+        {
+            ShapeObj *shape = dynamic_cast<ShapeObj *> (canvas_items.at(i));
+            if (shape)
+            {
+                router()->moveShape(shape->avoidRef, 0, 0);
+            }
+        }
         reroute_connectors(this, true);
     }
+    QApplication::restoreOverrideCursor();
 }
 
 void Canvas::setOptLayoutMode(const int mode)
@@ -1664,6 +1721,11 @@ QList<CanvasItem *> Canvas::selectedItems(void) const
 {
     QList<CanvasItem *> result;
     
+    if (!enableSelection())
+    {
+        return result;
+    }
+
     QList<QGraphicsItem *> selection = QGraphicsScene::selectedItems();
     for (int i = 0; i < selection.size(); ++i)
     {
@@ -1711,16 +1773,14 @@ void Canvas::processLayoutUpdateEvent(void)
             canvasObj->setConstraintConflict(false);
         }
     }
-    //int changes = m_graphlayout->processReturnPositions();
+
     m_graphlayout->processReturnPositions();
-    if ((!m_simple_paths_during_layout || !m_opt_automatic_graph_layout ||
-            (!m_opt_preserve_topology || (m_graphlayout->runLevel != 1))) &&
+    if ((!m_opt_preserve_topology || (m_graphlayout->runLevel != 1)) &&
             !m_gml_graph && !m_batch_diagram_layout)
     {
-        // Don't reroute connectors in the case of automatic graph layout.
+        // Don't reroute connectors in the case of topology preserving layout.
         reroute_connectors(this);
     }
-    //dumpScreenshot();
 
     //qDebug("processLayoutUpdateEvent %7d", ++layoutUpdates);
 }
@@ -1914,6 +1974,11 @@ void Canvas::highlightIndicatorsForItemMove(CanvasItem *item)
             }
         }
     }
+}
+
+bool Canvas::enableSelection(void) const
+{
+    return (m_edit_mode == ModeSelection);
 }
 
 /*

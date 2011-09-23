@@ -64,6 +64,7 @@ class CanvasView : public QGraphicsView
     private slots:
         void adjustSceneRect(QRectF rect);
         void debugOverlayEnabled(bool enabled);
+        void editModeChanged(int mode);
     private:
         void zoomToShowRect(const QRectF& rect);
 

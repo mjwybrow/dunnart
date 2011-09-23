@@ -34,5 +34,7 @@
         <file>resources/images/linear_templ_horiz.png</file>
         <file>resources/images/linear_templ_vert.png</file>
         <file>resources/images/pushpin.svg</file>
+        <file>resources/images/arrow.png</file>
+        <file>resources/images/connector.png</file>
     </qresource>
 </RCC>

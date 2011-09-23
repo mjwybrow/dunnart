@@ -161,7 +161,10 @@ void Obstacle::makeActive(void)
 
 void Obstacle::makeInactive(void)
 {
-    COLA_ASSERT(m_active);
+    if (!m_active)
+    {
+        return;
+    }
     
     // Remove from shapeRefs list.
     m_router->m_obstacles.erase(m_router_obstacles_pos);

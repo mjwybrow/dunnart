@@ -91,7 +91,7 @@ class Handle: public QObject, public QGraphicsItem
         Connector *lead_selected_conn(void);
         unsigned int get_directions(void);
         Avoid::Point getPointPosition(void);
-        QRectF boundingRect() const;
+        virtual QRectF boundingRect() const;
         void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                                         QWidget *widget);
         int handleFlags(void)

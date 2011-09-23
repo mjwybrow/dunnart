@@ -124,7 +124,6 @@ class ShapeObj: public CanvasItem
         void drawLabelAndImage(QPixmap *target, const int x, const int y);
         virtual void change_label(void);
         virtual void set_label(const char *l);
-        void write_rep(FILE *fp, int i);
         virtual bool canBe(const unsigned int flags);
         Guideline *get_guide(atypes type);
         Guideline *new_guide(atypes type);
@@ -157,6 +156,9 @@ class ShapeObj: public CanvasItem
         virtual QAction *buildAndExecContextMenu(
                 QGraphicsSceneMouseEvent *event, QMenu& menu);
         virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+        virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+        virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+
         void paintShapeDecorations(QPainter *painter);
         void move_to(const int x, const int y, bool store_undo,
                 bool from_solver, bool from_cider);
@@ -185,6 +187,7 @@ class ShapeObj: public CanvasItem
         QSet<ShapeObj *> m_child_shapes;
         QList<ConnectionPinInfo> m_connection_pins;
         bool m_size_locked;
+        QVector<Handle *> m_handles;
 
         friend class Cluster;
 };

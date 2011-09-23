@@ -53,12 +53,12 @@ CanvasTabWidget::CanvasTabWidget(QMainWindow *window) :
 
     m_action_undo = new QAction(QIcon(":/resources/nuvola_icons/undo.png"),
             tr("Undo"), this);
-    m_action_undo->setShortcut(tr("Ctrl+Z"));
+    m_action_undo->setShortcut(QKeySequence::Undo);
     m_action_undo->setEnabled(false);
 
     m_action_redo = new QAction(QIcon(":/resources/nuvola_icons/redo.png"),
             tr("Redo"), this);
-    m_action_redo->setShortcut(tr("Shift+Ctrl+Z"));
+    m_action_redo->setShortcut(QKeySequence::Redo);
     m_action_redo->setEnabled(false);
 
     m_undo_group = new QUndoGroup(this);
@@ -85,18 +85,37 @@ CanvasTabWidget::CanvasTabWidget(QMainWindow *window) :
 
     m_action_cut = new QAction(QIcon(":/resources/nuvola_icons/editcut.png"),
             tr("Cut"), this);
-    m_action_cut->setShortcut(tr("Ctrl+X"));
+    m_action_cut->setShortcut(QKeySequence::Cut);
     m_action_cut->setEnabled(false);
 
     m_action_copy = new QAction(QIcon(":/resources/nuvola_icons/editcopy.png"),
             tr("Copy"), this);
-    m_action_copy->setShortcut(tr("Ctrl+C"));
+    m_action_copy->setShortcut(QKeySequence::Copy);
     m_action_copy->setEnabled(false);
 
     m_action_paste = new QAction(QIcon(":/resources/nuvola_icons/editpaste.png"),
             tr("Paste"), this);
-    m_action_paste->setShortcut(tr("Ctrl+V"));
+    m_action_paste->setShortcut(QKeySequence::Paste);
     m_action_paste->setEnabled(false);
+
+    m_action_selection_mode = new QAction(
+            QIcon(":/resources/images/arrow.png"),
+            tr("Selection Mode"), this);
+    m_action_selection_mode->setIconText(tr("Select"));
+    m_action_selection_mode->setCheckable(true);
+
+    m_action_connection_mode = new QAction(
+            QIcon(":/resources/images/connector.png"),
+            tr("Connection Mode"), this);
+    m_action_connection_mode->setIconText(tr("Connect"));
+    m_action_connection_mode->setCheckable(true);
+
+    m_action_mode_group = new QActionGroup(this);
+    m_action_mode_group->addAction(m_action_selection_mode);
+    m_action_mode_group->addAction(m_action_connection_mode);
+    m_action_selection_mode->setChecked(true);
+    connect(m_action_mode_group, SIGNAL(triggered(QAction*)),
+            this, SLOT(setCanvasEditModeFromAction(QAction*)));
 
     m_action_delete = new QAction(tr("Delete"), this);
 #ifdef Q_WS_MAC
@@ -109,8 +128,11 @@ CanvasTabWidget::CanvasTabWidget(QMainWindow *window) :
     m_action_edit_separator = new QAction(this);
     m_action_edit_separator->setSeparator(true);
 
+    m_action_edit_separator2 = new QAction(this);
+    m_action_edit_separator2->setSeparator(true);
+
     m_action_select_all = new QAction(tr("Select All"), this);
-    m_action_select_all->setShortcut(tr("Ctrl+A"));
+    m_action_select_all->setShortcut(QKeySequence::SelectAll);
 
     m_action_automatic_layout = new QAction(QIcon(":/resources/images/layout.png"),
             tr("Automatic Graph Layout"), this);
@@ -156,6 +178,29 @@ QUndoGroup *CanvasTabWidget::undoGroup(void) const
     return m_undo_group;
 }
 
+void CanvasTabWidget::currentCanvasEditModeChanged(const int mode)
+{
+    if (mode == ModeSelection)
+    {
+        m_action_selection_mode->setChecked(true);
+    }
+    else if (mode == ModeConnection)
+    {
+        m_action_connection_mode->setChecked(true);
+    }
+}
+
+void CanvasTabWidget::setCanvasEditModeFromAction(QAction *action)
+{
+    if (action == m_action_selection_mode)
+    {
+        m_canvas->setEditMode(ModeSelection);
+    }
+    else if (action == m_action_connection_mode)
+    {
+        m_canvas->setEditMode(ModeConnection);
+    }
+}
 
 void CanvasTabWidget::diagramFilenameChanged(const QFileInfo& fileinfo)
 {
@@ -195,6 +240,7 @@ void CanvasTabWidget::currentChanged(int index)
 
     m_undo_group->setActiveStack(m_canvas->undoStack());
     m_window->setWindowModified(!m_undo_group->isClean());
+    currentCanvasEditModeChanged(m_canvas->editMode());
 
     connect(m_canvas, SIGNAL(clipboardContentsChanged()),
             this, SLOT(clipboardContentsChanged()));
@@ -256,6 +302,9 @@ void CanvasTabWidget::currentChanged(int index)
     m_action_overlay_router_orthogonal_visgraph->setChecked(
             m_canvas->overlayRouterOrthogonalVisGraph());
 
+    connect(m_canvas, SIGNAL(editModeChanged(int)),
+            this, SLOT(currentCanvasEditModeChanged(int)));
+
     bool editingDisabled = m_canvas->optStructuralEditingDisabled();
     hideEditingControls(editingDisabled);
 }
@@ -269,7 +318,10 @@ void CanvasTabWidget::hideEditingControls(const bool hidden)
     m_action_paste->setVisible(showEditingControls);
     m_action_delete->setVisible(showEditingControls);
     m_action_edit_separator->setVisible(showEditingControls);
+    m_action_edit_separator2->setVisible(showEditingControls);
     m_action_automatic_layout->setVisible(showEditingControls);
+    m_action_selection_mode->setVisible(showEditingControls);
+    m_action_connection_mode->setVisible(showEditingControls);
 }
 
 void CanvasTabWidget::newTab(void)
@@ -450,6 +502,10 @@ void CanvasTabWidget::addEditToolBarActions(QToolBar *edit_toolbar)
     edit_toolbar->addAction(m_action_copy);
     edit_toolbar->addAction(m_action_paste);
     edit_toolbar->addAction(m_action_edit_separator);
+    edit_toolbar->addAction(m_action_selection_mode);
+    edit_toolbar->addAction(m_action_connection_mode);
+    edit_toolbar->addAction(m_action_edit_separator2);
+
     edit_toolbar->addAction(m_action_bring_to_front);
     edit_toolbar->addAction(m_action_send_to_back);
     //edit_toolbar->addSeparator();

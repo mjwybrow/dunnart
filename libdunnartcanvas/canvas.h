@@ -81,6 +81,9 @@ static const int LAYOUT_STRUCTURE_ORGANIC = 0;
 static const int LAYOUT_STRUCTURE_FLOW    = 1;
 static const int LAYOUT_STRUCTURE_LAYERED = 2;
 
+static const int ModeSelection   = 1;
+static const int ModeConnection  = 2;
+
 
 class Canvas : public QGraphicsScene
 {
@@ -156,6 +159,8 @@ class Canvas : public QGraphicsScene
         Actions& getActions(void);
         QString assignStringId(QString id);
         uint assignInternalId(void);
+        int editMode(void) const;
+        void setEditMode(int mode);
 
         void setLayoutSuspended(bool suspend);
         bool isLayoutSuspended(void) const;
@@ -218,7 +223,6 @@ class Canvas : public QGraphicsScene
         void processResponseTasks(void);
         void processUndoResponseTasks(void);
 
-
         void setOverlayRouterObstacles(const bool value);
         void setOverlayRouterVisGraph(const bool value);
         void setOverlayRouterOrthogonalVisGraph(const bool value);
@@ -229,8 +233,15 @@ class Canvas : public QGraphicsScene
         bool isRenderingForPrinting(void) const;
         void setRenderingForPrinting(const bool printingMode);
 
+        bool enableSelection(void) const;
+        void postRoutingRequiredEvent(void);
+
     signals:
         void diagramFilenameChanged(const QFileInfo& title);
+        void debugOverlayEnabled(bool enabled);
+        void clipboardContentsChanged(void);
+        void editModeChanged(const int mode);
+
         void optChangedAutomaticLayout(bool checked);
         void optChangedPreserveTopology(bool checked);
         void optChangedPreventOverlaps(bool checked);
@@ -238,8 +249,6 @@ class Canvas : public QGraphicsScene
         void optChangedFitWithinPage(bool checked);
         void optChangedStructuralEditingDisabled(bool checked);
         void optChangedIdealEdgeLengthModifier(double value);
-        void debugOverlayEnabled(bool enabled);
-        void clipboardContentsChanged(void);
         void optChangedLayoutMode(int mode);
         void optChangedDirectedEdgeSeparationModifier(double modifier);
 
@@ -344,6 +353,8 @@ class Canvas : public QGraphicsScene
         bool m_overlay_router_visgraph;
         bool m_overlay_router_orthogonal_visgraph;
         bool m_rendering_for_printing;
+        int m_edit_mode;
+        bool m_routing_event_posted;
 
 #ifdef FPSTIMER
         clock_t startTime;
@@ -369,7 +380,7 @@ class LayoutUpdateEvent : public QEvent
             QEvent((QEvent::Type) (QEvent::User + 1))
         {
         }
-};  
+};
         
 class LayoutFinishedEvent : public QEvent
 {
@@ -378,7 +389,16 @@ class LayoutFinishedEvent : public QEvent
             QEvent((QEvent::Type) (QEvent::User + 2))
         {
         }
-};  
+};
+
+class RoutingRequiredEvent : public QEvent
+{
+    public:
+        RoutingRequiredEvent() :
+            QEvent((QEvent::Type) (QEvent::User + 3))
+        {
+        }
+};
 
 
 }

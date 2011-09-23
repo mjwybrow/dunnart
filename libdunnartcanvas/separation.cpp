@@ -356,8 +356,6 @@ void Separation::userMoveBy(qreal dx, qreal dy)
 }
 
 
-static const int DRAW_HANDLES = 1024;
-
 QPainterPath Separation::shape() const
 {
     QPainterPath path;

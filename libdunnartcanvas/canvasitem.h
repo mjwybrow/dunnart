@@ -50,7 +50,7 @@ static const unsigned CASCADE_VERT = 1;
 static const unsigned CASCADE_HORI = 2;
 static const unsigned CASCADE_ALL  = 3;
 
-static const double BOUNDINGRECTPADDING = 3;
+static const double BOUNDINGRECTPADDING = 3.5;
 
 
 // SVG:

@@ -57,6 +57,7 @@
 #include "libdunnartcanvas/canvas.h"
 #include "libdunnartcanvas/instrument.h"
 #include "libdunnartcanvas/placement.h"
+#include "libdunnartcanvas/connectorhandles.h"
 
 namespace dunnart {
 
@@ -462,7 +463,7 @@ void ShapeObj::paint(QPainter *painter,
     assert(painter->isActive());
     bool showDecorations = canvas() && ! canvas()->isRenderingForPrinting();
 
-    if ( isSelected() && showDecorations )
+    if ( isSelected() && showDecorations && canvas()->enableSelection() )
     {
         QColor colour(0, 255, 255, 100);
         QPen highlight;
@@ -1707,14 +1708,33 @@ ShapeObj *isShapeForLayout(QGraphicsItem *obj)
 }
 
 
+void ShapeObj::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+{
+    CanvasItem::hoverLeaveEvent(event);
+
+    for (int i = 0; i < m_handles.size(); ++i)
+    {
+        delete m_handles.at(i);
+    }
+    m_handles.clear();
 }
-/*
-  Local Variables:
-  mode:c++
-  c-file-style:"stroustrup"
-  indent-tabs-mode:nil
-  fill-column:79
-  End:
-*/
+
+void ShapeObj::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+{
+    CanvasItem::hoverEnterEvent(event);
+
+    if (canvas()->editMode() == ModeConnection)
+    {
+        for (int i = 0; i < m_connection_pins.size(); ++i)
+        {
+            m_handles.push_back(new ConnectionPinHandle(this,
+                    m_connection_pins[i].classId, m_connection_pins[i].pin));
+            m_handles.at(m_handles.size() - 1)->setVisible(true);
+        }
+    }
+}
+
+
+}
 // vim: filetype=cpp ts=4 sw=4 et tw=0 wm=0 cindent
 
