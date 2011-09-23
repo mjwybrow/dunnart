@@ -350,8 +350,6 @@ void Connector::setNewEndpoint(const int endptType, QPointF pos,
 
 void Connector::loneSelectedChange(const bool value)
 {
-    printf("RAR");
-    fflush(stdout);
     if (!value)
     {
         for (int i = 0; i < m_handles.size(); ++i)
