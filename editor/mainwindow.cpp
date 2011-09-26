@@ -520,9 +520,9 @@ void MainWindow::documentExport(void)
                 currCanvas->pageRect().size());
         generator.setViewBox(viewbox);
 
-        //generator.setTitle();
-        generator.setDescription(tr("This SVG file was exported from "
-                "Dunnart, a constraint-based diagram editor."));
+        generator.setTitle(QFileInfo(filename).fileName());
+        generator.setDescription(tr("This file was exported from Dunnart.  "
+                                    "http://www.dunnart.org/"));
 
         QPainter painter;
         if (painter.begin(&generator))

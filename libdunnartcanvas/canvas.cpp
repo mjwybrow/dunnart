@@ -2723,8 +2723,9 @@ void Canvas::saveDiagramAsSVG(QString outputFilename)
 
     generator.setSize(size);
     generator.setViewBox(viewBox);
-    generator.setDescription(tr("This SVG file was exported from "
-            "Dunnart, a constraint-based diagram editor."));
+    generator.setTitle(QFileInfo(outputFilename).fileName());
+    generator.setDescription(tr("This SVG file was saved from Dunnart.  "
+                                "http://www.dunnart.org/"));
 
     QPainter painter;
     if (painter.begin(&generator))
