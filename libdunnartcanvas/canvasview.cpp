@@ -353,21 +353,6 @@ static QRectF expandRect(const QRectF& origRect, double amount)
 }
 
 
-static QRectF diagramBoundingRect(const QList<CanvasItem *>& list)
-{
-    QRectF rect;
-    
-    for (int i = 0; i < list.size(); ++i)
-    {
-        if (!dynamic_cast<Indicator *> (list.at(i)))
-        {
-            rect |= list.at(i)->sceneBoundingRect();
-        }
-    }
-
-    return rect;
-}
-
 QAction *CanvasView::buildAndExecContextMenu(QMouseEvent *event,
         QMenu& menu)
 {

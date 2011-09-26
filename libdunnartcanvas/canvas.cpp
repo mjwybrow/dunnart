@@ -32,6 +32,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QUndoStack>
 #include <QSvgGenerator>
+#include <QGraphicsView>
 
 #include "libdunnartcanvas/canvas.h"
 #include "libdunnartcanvas/shape.h"
@@ -1528,39 +1529,33 @@ void Canvas::pasteSelection(void)
     // Select all new shapes.
     recursiveMapIDs(m_clipboard, dunnartNs, PASTE_SELECTSHAPES);
 
-#if 0
-    int posOffX = 0;
-    int posOffY = 0;
+    // Find the centre of pasted items, so we know how much to move them.
+    QPointF oldCentrePos = diagramBoundingRect(selectedItems()).center();
 
-    // Center of original clipboard selection (screen co-ordinates)
-    int clip_cx = clip_x_ + (clip_w_ / 2);
-    int clip_cy = clip_y_ + (clip_h_ / 2);
-    // Center of canvas (screen co-ordinates)
-    int canvas_cx = canvas->get_absxpos() + (canvas->get_width() / 2);
-    int canvas_cy = canvas->get_absypos() + (canvas->get_height() / 2);
-
-    if (!canvas->expensive_outside() && !c)
+    // If the cursor is inside the canvas, then paste the objects centred
+    // under the cursor, otherwise paste to the centre of the visible canvas.
+    QGraphicsView *view = views().first();
+    QList<CanvasItem *> selected_items = selectedItems();
+    QPointF pastePosition;
+    if (view->underMouse())
     {
-        // If the cursor is inside the canvas, and the paste operation
-        // hasn't been triggered from the menu, then paste the objects
-        // under the cursor, else paste to the center of the page.
-        posOffX = mouse.x - clip_cx;
-        posOffY = mouse.y - clip_cy;
+        pastePosition = view->mapToScene(
+                view->mapFromGlobal(QCursor::pos()));
     }
     else
     {
-        // Paste to the center of the canvas.
-        posOffX = canvas_cx - clip_cx;
-        posOffY = canvas_cy - clip_cy;
+        pastePosition = QRectF(view->mapToScene(0,0),
+                view->mapToScene(view->width(), view->height())).center();
     }
-    
-    if ((posOffX != 0) || (posOffY != 0))
+
+    // Move the new selection to paste position.
+    QPointF difference = pastePosition - oldCentrePos;
+    for (int i = 0; i < selected_items.size(); ++i)
     {
-        selection_move_diff(posOffX, posOffY, false, true);
+        selected_items.at(i)->moveBy(difference.x(), difference.y());
     }
-#endif
+
     // Put the distribution indicators at their default positions:
-    QList<CanvasItem *> selected_items = selectedItems();
     for (int i = 0; i < selected_items.size(); ++i)
     {
         Distribution *distro = dynamic_cast<Distribution *> (selected_items.at(i));
@@ -2999,6 +2994,21 @@ const QList<QColor> Canvas::interferingConnectorColours(void) const
     {
         return m_interfering_connector_colours;
     }
+}
+
+QRectF diagramBoundingRect(const QList<CanvasItem *>& list)
+{
+    QRectF rect;
+
+    for (int i = 0; i < list.size(); ++i)
+    {
+        if (!dynamic_cast<Indicator *> (list.at(i)))
+        {
+            rect |= list.at(i)->sceneBoundingRect();
+        }
+    }
+
+    return rect;
 }
 
 

@@ -418,7 +418,7 @@ bool ConnectionPinHandle::sceneEvent(QEvent *event)
         // XXX We don't get this if the cursor is dragged off the canvas.
         //     Qt bug with dragging items with a parent perhaps?
     }
-    Handle::sceneEvent(event);
+    return false;
 }
 
 }

@@ -401,6 +401,9 @@ class RoutingRequiredEvent : public QEvent
 };
 
 
+extern QRectF diagramBoundingRect(const QList<CanvasItem *>& list);
+
+
 }
 #endif // CANVAS_H_
 
