@@ -600,8 +600,9 @@ void Connector::setDirected(const bool directed)
     // UNDO add_undo_record(DELTA_CONNDIR, this);
 
     m_directed = directed;
-    
     update();
+
+    canvas()->interrupt_graph_layout();
 }
 
 double Connector::idealLength(void) const
@@ -650,6 +651,8 @@ void Connector::swapDirection(void)
     srcpt = tmp;
     
     forceReroute();
+
+    canvas()->interrupt_graph_layout();
 }
 
 
@@ -1360,11 +1363,18 @@ QAction *Connector::buildAndExecContextMenu(QGraphicsSceneMouseEvent *event,
         menu.addSeparator();
     }
     QAction *changeType = menu.addAction((m_routing_type == orthogonal) ?
-            tr("Make polyline") : tr("Make orthogonal"));
-    QAction *addCheckpoint = menu.addAction(
-            tr("Add routing checkpoint at this point"));
+            tr("Change to polyline") : tr("Change to orthogonal"));
+    QAction *changeDirected = menu.addAction((m_directed) ?
+            tr("Change to undirected") : tr("Change to directed"));
     QAction *swapDirection = menu.addAction(
             tr("Swap connector direction"));
+    QAction *addCheckpoint = menu.addAction(
+            tr("Add routing checkpoint at this point"));
+
+    if (!m_directed)
+    {
+        swapDirection->setVisible(false);
+    }
 
     QAction *action = CanvasItem::buildAndExecContextMenu(event, menu);
 
@@ -1392,7 +1402,11 @@ QAction *Connector::buildAndExecContextMenu(QGraphicsSceneMouseEvent *event,
         bool wasVisible = isSelected();
         setSelected(false);
         setSelected(wasVisible);
-        canvas()->interrupt_graph_layout();
+    }
+    else if (action == changeDirected)
+    {
+        setDirected(!isDirected());
+        setSelected(true);
     }
 
     return action;
