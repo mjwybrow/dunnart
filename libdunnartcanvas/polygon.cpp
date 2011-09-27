@@ -97,7 +97,7 @@ void PolygonShape::initWithXMLProperties(Canvas *canvas,
 
 
 PolygonShape::PolygonShape(int *xps, int *yps, int psn, QString id)
-    : ShapeObj(),
+    : ShapeObj(x_shPolygon),
       _xps(NULL),
       _yps(NULL)
 {
@@ -204,22 +204,6 @@ void PolygonShape::set_label(const char *l)
 
     // Do nothing
     return;
-}
-
-
-QDomElement PolygonShape::to_QDomElement(const unsigned int subset,
-        QDomDocument& doc)
-{
-    QDomElement node = doc.createElement("dunnart:node");
-
-    if (subset & XMLSS_IOTHER)
-    {
-        newNsProp(node, x_dunnartNs, x_type, x_shPolygon);
-    }
-    
-    addXmlProps(subset, node, doc);
-
-    return node;
 }
 
 

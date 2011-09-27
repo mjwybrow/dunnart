@@ -51,7 +51,7 @@ class Cluster: public ShapeObj
 {
     public:
         Cluster()
-            : ShapeObj(), 
+            : ShapeObj(x_cluster),
               rectangular(false),
               psn(0)
         {

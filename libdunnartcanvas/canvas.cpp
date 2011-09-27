@@ -2658,9 +2658,21 @@ void Canvas::recursiveReadSVG(const QDomNode& start, const QString& dunnartNS,
                     m_external_node_list.push_back(nodecopy);
                 }
             }
+
+            // Read other entities.
             if (nodeHasAttribute(element, dunnartNS, x_type))
             {
+                // We have found a non-Dunnart node with a "dunnart:type"
+                // attribute, thus we look for other attributes on this node
+                // that are in the Dunnart namespace.
                 CanvasItem::create(this, element, dunnartNS, pass);
+            }
+            if ((element.localName() == "node") &&
+                (element.prefix() == x_dunnartNs))
+            {
+                // We have found a standard dunnart:node node.  We can read
+                // attributes from this without any namespace.
+                CanvasItem::create(this, element, "", pass);
             }
         }
         this->recursiveReadSVG(curr.firstChild(), dunnartNS, pass);

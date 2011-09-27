@@ -91,7 +91,7 @@ void PDEPN::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
 }
 
 // Extension of the labelled glyph, creates the centred label, and sets a boolean to keep track of whether the glyph is cloned.
-PDEPN::PDEPN(QString l, bool cb, QString cl, bool m) : ShapeObj(), cloned(cb), cloneLabel(cl), multimer(m)
+PDEPN::PDEPN(QString l, bool cb, QString cl, bool m) : ShapeObj("sbgn.NucleicAcidEPN"), cloned(cb), cloneLabel(cl), multimer(m)
 {
     ShapeObj::setLabel(l);
 }
@@ -157,20 +157,6 @@ SDL_Rect PDEPN::labelBoundingRect(void) const
     return text_rect;
 }
 
-// !!! need to implement this
-xmlNodePtr PDEPN::to_xmlNode(const unsigned int subset, xmlNs *dunnartNs)
-{
-    xmlNodePtr node = xmlNewNode(NULL, BAD_CAST("rect"));
-
-    //     if (subset & XMLSS_IOTHER)
-    //     {
-    //         xmlNewNsProp(node, dunnartNs, x_type, x_shBioHelix);
-    //     }
-
-    //     addXmlProps(subset, node, dunnartNs);
-
-    return node;
-}
 
 QAction *PDEPN::buildAndExecContextMenu(QGraphicsSceneMouseEvent *event,
         QMenu& menu)

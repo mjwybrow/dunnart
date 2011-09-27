@@ -81,7 +81,7 @@ Cluster *newCluster(CanvasItemList& memberList, QString id)
 
 
 Cluster::Cluster(Canvas *canvas, const QDomElement& node, const QString& ns)
-    : ShapeObj(),
+    : ShapeObj(x_cluster),
       avoidClusterRef(NULL),
       rectangular(false),
       detailLevel(100)
@@ -135,7 +135,7 @@ Cluster::Cluster(Canvas *canvas, const QDomElement& node, const QString& ns)
 
 
 Cluster::Cluster(CanvasItemList& memberList, QString id)
-    : ShapeObj(),
+    : ShapeObj(x_cluster),
       avoidClusterRef(NULL),
       rectangular(false),
       detailLevel(100)
@@ -836,17 +836,17 @@ QDomElement Cluster::to_QDomElement(const unsigned int subset,
             }
             count++;
         }
-        newNsProp(node, x_dunnartNs, x_contains, value);
+        newProp(node, x_contains, value);
 
         if (m_fill_colour != clusterFillCol)
         {
             value = value.sprintf("%02x%02x%02x%02x;", m_fill_colour.red(),
                     m_fill_colour.green(), m_fill_colour.blue(),
                     m_fill_colour.alpha());
-            newNsProp(node, x_dunnartNs, x_fillCol, value);
+            newProp(node, x_fillCol, value);
         }
         
-        newNsProp(node, x_dunnartNs, x_rectangular, rectangular);
+        newProp(node, x_rectangular, rectangular);
     }
 
     return node;

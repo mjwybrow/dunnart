@@ -108,11 +108,7 @@ enum UML_Class_Edit_Type { EDIT_CLASS_NAME, EDIT_ATTRIBUTES, EDIT_METHODS};
 
 class ClassShape: public RectangleShape {
     public:
-        ClassShape()
-            : RectangleShape()
-        {
-            do_init();
-        }
+        ClassShape();
 
         virtual void initWithXMLProperties(Canvas *canvas,
                 const QDomElement& node, const QString& ns);

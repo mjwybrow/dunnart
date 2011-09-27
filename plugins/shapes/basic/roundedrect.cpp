@@ -33,6 +33,10 @@ using namespace dunnart;
 //===========================================================================
 //  "RoundedRect" shape code:
 
+RoundedRectShape::RoundedRectShape()
+    : ShapeObj("roundedRect")
+{
+}
 
 QPainterPath RoundedRectShape::buildPainterPath(void)
 {
@@ -49,20 +53,5 @@ QPainterPath RoundedRectShape::buildPainterPath(void)
     return painter_path;
 }
 
-
-QDomElement RoundedRectShape::to_QDomElement(const unsigned int subset,
-        QDomDocument& doc)
-{
-    QDomElement node = doc.createElement("dunnart:node");
-
-    if (subset & XMLSS_IOTHER)
-    {
-        newNsProp(node, x_dunnartNs, x_type, "roundedRect");
-    }
-
-    addXmlProps(subset, node, doc);
-
-    return node;
-}
 
 // vim: filetype=cpp ts=4 sw=4 et tw=0 wm=0 cindent

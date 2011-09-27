@@ -35,7 +35,7 @@ using namespace dunnart;
 //  "Protein Strand" shape code:
 
 BioStrand::BioStrand()
-    : ShapeObj(),
+    : ShapeObj("bioStrand"),
       m_direction_reversed(false)
 {
 }
@@ -97,24 +97,6 @@ QPainterPath BioStrand::buildPainterPath(void)
     painter_path.closeSubpath();
 
     return painter_path;
-}
-
-
-QDomElement BioStrand::to_QDomElement(const unsigned int subset, 
-        QDomDocument& doc)
-{
-    QDomElement node = doc.createElement("dunnart:node");
-
-    if (subset & XMLSS_IOTHER)
-    {
-        newNsProp(node, x_dunnartNs, x_reversed, m_direction_reversed);
-
-        newNsProp(node, x_dunnartNs, x_type, "bioStrand");
-    }
-    
-    addXmlProps(subset, node, doc);
-
-    return node;
 }
 
 

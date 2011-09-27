@@ -198,7 +198,7 @@ void start_freehand_drawing(void)
 
 
 FreehandShape::FreehandShape()
-    : ShapeObj()
+    : ShapeObj(x_shFreehand)
 {
     _colour = QColor(0,0,0);
 }
@@ -298,77 +298,6 @@ void FreehandShape::setPosition(int x, int y, bool from_cider)
     bool from_solver = false;
     move_to(x, y, store_undo, from_solver, from_cider);
 }
-
-
-QDomElement FreehandShape::to_QDomElement(const unsigned int subset,
-        QDomDocument& doc)
-{
-    QDomElement node = doc.createElement("dunnart:node");
-
-    if (subset & XMLSS_IOTHER)
-    {
-        newNsProp(node, x_dunnartNs, x_type, x_shFreehand);
-    }
-    
-    addXmlProps(subset, node, doc);
-
-    return node;
-}
-
-
-#if 0
-bool Freehand::outside(GuiObj *obj)
-{
-    int xpos = obj->get_absxpos(), ypos = obj->get_absypos();
-    int width = obj->get_width(), height = obj->get_height();
-
-    // Low-cost check to see if mouse is outside the bounding box:
-    if ((mouse.x < xpos) || (mouse.x > (xpos + width  - 1)) ||
-        (mouse.y < ypos) || (mouse.y > (ypos + height - 1)))
-    {
-        return true;
-    }
-    
-    Freehand *freehand= dynamic_cast<Freehand *> (obj);
-    
-    const double tolerance = 2;
-    FreehandGeometry& geometry = freehand->getGeometry();
-
-    StlStrokeList::iterator sEnd = geometry.strokes.end();
-    for (StlStrokeList::iterator s = geometry.strokes.begin(); s != sEnd; ++s)
-    {
-        int last_x = 0, last_y = 0;
-        StlStroke::iterator pBegin = (*s).begin();
-        StlStroke::iterator pEnd = (*s).end();
-        for (StlStroke::iterator p = pBegin; p != pEnd; ++p)
-        {
-            if (p != pBegin)
-            {
-                // If not the first point:
-                //
-                Point p1((*p).x + xpos, (*p).y + ypos);
-                Point p2(last_x, last_y);
-                
-                Point xmin(mouse.x - tolerance, mouse.y);
-                Point xmax(mouse.x + tolerance, mouse.y);
-                if (Avoid::segmentIntersect(p1, p2, xmin, xmax))
-                {
-                    return false;
-                }
-                Point ymin(mouse.x, mouse.y - tolerance);
-                Point ymax(mouse.x, mouse.y + tolerance);
-                if (Avoid::segmentIntersect(p1, p2, ymin, ymax))
-                {
-                    return false;
-                }
-            }
-            last_x = (int) ((*p).x + xpos);
-            last_y = (int) ((*p).y + ypos);
-        }
-    }
-    return true;
-}
-#endif
 
 
 FreehandGeometry& FreehandShape::getGeometry(void)

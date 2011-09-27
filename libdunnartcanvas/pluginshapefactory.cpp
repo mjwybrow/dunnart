@@ -80,6 +80,7 @@ void PluginShapeFactory::registerShapePlugin(ShapePluginInterface *builder)
 
 ShapeObj *PluginShapeFactory::createShape(const QString& shapeType)
 {
+    ShapeObj *newShape = NULL;
     // We allow the user to use unqualified names from the default namespace,
     // so we also check the qualified version.
     QString qualifiedShapeType = "org.dunnart.shapes." + shapeType;
@@ -88,12 +89,19 @@ ShapeObj *PluginShapeFactory::createShape(const QString& shapeType)
     {
         if (shapeBuilders.contains(shapeType))
         {
-            return shapeBuilders[shapeType]->generateShape(shapeType);
+            newShape = shapeBuilders[shapeType]->generateShape(shapeType);
         }
         else if (shapeBuilders.contains(qualifiedShapeType))
         {
-            return shapeBuilders[qualifiedShapeType]->generateShape(
+            newShape = shapeBuilders[qualifiedShapeType]->generateShape(
                     qualifiedShapeType);
+        }
+
+        if (newShape)
+        {
+            // Set the type and return the shape.
+            newShape->setItemType(shapeType);
+            return newShape;
         }
     }
     return NULL;

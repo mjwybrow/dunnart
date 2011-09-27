@@ -51,6 +51,8 @@ Guideline::Guideline(dirctn t, double position)
 {
     type = t;
 
+    setItemType(x_guideline);
+
     initialiser(position);
 }
 
@@ -524,18 +526,16 @@ QDomElement Guideline::to_QDomElement(const unsigned int subset,
 
     if (subset & XMLSS_IOTHER)
     {
-        newNsProp(node, x_dunnartNs, x_direction, (int) type);
+        newProp(node, x_direction, (int) type);
 
-        newNsProp(node, x_dunnartNs, x_type, x_guideline);
-
-        newProp(node, "position", position);
+        newProp(node, x_type, x_guideline);
 
         newProp(node, "id",getIdString());
     }
     
     if (subset & XMLSS_IMOVE)
     {
-        newNsProp(node, x_dunnartNs, x_position, position);
+        newProp(node, x_position, position);
     }
 
     for (RelsList::iterator r = rels.begin(); r != rels.end(); ++r)

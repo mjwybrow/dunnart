@@ -50,7 +50,7 @@ QFont *textShapeFont[MAX_TEXTSHAPE_FONTSIZE + 1] = { NULL };
 
 
 TextShape::TextShape()
-    :ShapeObj()
+    :ShapeObj(x_shTextShape)
 {
     _colour = Qt::black;
     txtStr = strdup("Text");
@@ -59,7 +59,7 @@ TextShape::TextShape()
 }
 
 TextShape::TextShape(const double x, const double y, const char *txt, int ptSize)
-    :ShapeObj()
+    :ShapeObj(x_shTextShape)
 {
     CanvasItem::setPos(x, y);
     _colour = Qt::black;
@@ -73,7 +73,7 @@ TextShape::TextShape(const double x, const double y, const char *txt, int ptSize
 
 TextShape::TextShape(QString id, const double x, const double y,
         int w, int h, const char *txt, int ptSize)
-    : ShapeObj()
+    : ShapeObj(x_shTextShape)
 {
     initWithDimensions(id, x, y, w, h);
     _colour = Qt::black;
@@ -372,34 +372,14 @@ QDomElement TextShape::to_QDomElement(const unsigned int subset,
     
     if (subset & XMLSS_IOTHER)
     {
-        newNsProp(node, x_dunnartNs, x_type, x_shTextShape);
-
-        //newNsProp(node, x_dunnartNs, x_label, txtStr);
-        newNsProp(node, x_dunnartNs, x_fontSize, fontSize);
+        //newProp(node, x_label, txtStr);
+        newProp(node, x_fontSize, fontSize);
     }
 
     addXmlProps(subset, node, doc);
 
     return node;
 }
-
-
-#if 0
-bool TextShape::outside(GuiObj *obj)
-{
-    int xpos = obj->get_absxpos(), ypos = obj->get_absypos();
-    int width = obj->get_width(), height = obj->get_height();
-
-    // Low-cost check to see if mouse is outside the bounding box:
-    if ((mouse.x < xpos) || (mouse.x > (xpos + width  - 1)) ||
-        (mouse.y < ypos) || (mouse.y > (ypos + height - 1)))
-    {
-        return true;
-    }
-    
-    return false;
-}
-#endif
 
 
 Polygon *TextShape::poly(const double b, Polygon *p)

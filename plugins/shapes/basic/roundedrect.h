@@ -34,13 +34,9 @@ using dunnart::ShapeObj;
 class RoundedRectShape: public ShapeObj
 {
     public:
-        RoundedRectShape()
-            : ShapeObj()
-        {
-        }
+        RoundedRectShape();
+        virtual ~RoundedRectShape() { }
 
-        virtual QDomElement to_QDomElement(const unsigned int subset,
-                QDomDocument& doc);
         virtual QPainterPath buildPainterPath(void);
 };
 

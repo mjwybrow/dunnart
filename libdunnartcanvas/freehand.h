@@ -123,8 +123,6 @@ class FreehandShape: public ShapeObj
 
         virtual void initWithXMLProperties(Canvas *canvas,
                 const QDomElement& node, const QString& ns);
-        QDomElement to_QDomElement(const unsigned int subset, 
-                QDomDocument& doc);
 
         void finalise(void);
         void addStroke(FreehandGeometry& geometry);

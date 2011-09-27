@@ -155,6 +155,8 @@ Distribution::Distribution(GuidelineList *guides, int xp, int yp)
 {
     setPos(xp, yp);
     
+    setItemType(x_distribution);
+
     // Order guides:
     guides->sort(guideCompare);
     // Remove duplicates
@@ -557,23 +559,23 @@ QDomElement Distribution::to_QDomElement(const unsigned int subset,
 
     if (subset & XMLSS_IOTHER)
     {
-        newNsProp(node, x_dunnartNs, x_type, x_distribution);
+        newProp(node, x_type, x_distribution);
 
         int position = (type == GUIDE_TYPE_VERT) ?  y(): x();
-        newNsProp(node, x_dunnartNs, x_position, position);
+        newProp(node, x_position, position);
 
-        newNsProp(node, x_dunnartNs, x_direction, (int) type);
+        newProp(node, x_direction, (int) type);
 
         sprintf(value, "%g", space);
-        newNsProp(node, x_dunnartNs, x_sepDistance, value);
+        newProp(node, x_sepDistance, value);
 
         newProp(node, "id", getIdString());
     }
 
     if (subset & XMLSS_XMOVE)
     {
-        newNsProp(node, x_dunnartNs, x_xPos, x());
-        newNsProp(node, x_dunnartNs, x_yPos, y());
+        newProp(node, x_xPos, x());
+        newProp(node, x_yPos, y());
     }
 
     for (RelsList::iterator r = rels.begin(); r != rels.end(); ++r)

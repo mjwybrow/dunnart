@@ -41,7 +41,7 @@ class ProcessNode: public ShapeObj
 public:
     enum PDProcessNodeType { PROCESS, OMITTED, UNCERTAIN, ASSOCIATION, DISSOCIATION, PHENOTYPE };
 
-    ProcessNode() : ShapeObj(), orientation(Qt::Horizontal), rect(16), processType(PROCESS)  {}
+    ProcessNode() : ShapeObj("sbgn.ProcessNode"), orientation(Qt::Horizontal), rect(16), processType(PROCESS)  {}
     ProcessNode(int o, PDProcessNodeType pt);
     QPainterPath buildPainterPath();
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);

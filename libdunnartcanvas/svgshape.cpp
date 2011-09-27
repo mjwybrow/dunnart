@@ -35,7 +35,7 @@
 namespace dunnart {
 
 SvgShape::SvgShape()
-    : ShapeObj()
+    : ShapeObj("svgNode")
 {
     // Restore the cache type from normal QGraphicsSVGItems.
     // XXX Don't enable caching, as there seems to be a bug that

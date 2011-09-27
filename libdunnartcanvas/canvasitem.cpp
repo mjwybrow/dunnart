@@ -378,6 +378,16 @@ uint CanvasItem::internalId(void) const
     return m_internal_id;
 }
 
+QString CanvasItem::itemType(void) const
+{
+    return m_type;
+}
+
+void CanvasItem::setItemType(const QString& type)
+{
+    m_type = type;
+}
+
 void CanvasItem::bringToFront(void)
 {
     QList<QGraphicsItem *> overlapItems = collidingItems();
@@ -456,7 +466,7 @@ CanvasItem *CanvasItem::create(Canvas *canvas, const QDomElement& node,
 
     if (pass == PASS_SHAPES)
     {
-        // Support legacy shaes from Dunnart v1.
+        // Support legacy shapes from Dunnart v1.
         if (type == "flowEndOProc")
         {
             type = "roundedRect";
@@ -583,6 +593,8 @@ void CanvasItem::addXmlProps(const unsigned int subset, QDomElement& node,
     {
         newProp(node, "id", getIdString());
 
+        newProp(node, x_type, itemType());
+
         // Add saved properties for props not used by Dunnart
         QList<QByteArray> propertyList = this->dynamicPropertyNames();
         for (int i = 0; i < propertyList.size(); ++i)
@@ -605,7 +617,7 @@ void CanvasItem::addXmlProps(const unsigned int subset, QDomElement& node,
             else
             {
                 // Add attribute in a NS prefix.
-                newNsProp(node, prefix, localName,
+                newProp(node, qualify(prefix, localName),
                           this->property(propName).toString());
             }
         }
@@ -615,12 +627,9 @@ void CanvasItem::addXmlProps(const unsigned int subset, QDomElement& node,
 QDomElement CanvasItem::to_QDomElement(const unsigned int subset, 
         QDomDocument& doc)
 {
-    Q_UNUSED (subset)
-    Q_UNUSED (doc)
-
-    fprintf(stderr, "warning: no to_QDomElement() method set for CanvasItem "
-            "(id: %d)\n", internalId());
-    return QDomElement();
+    QDomElement node = doc.createElement("dunnart:node");
+    addXmlProps(subset, node, doc);
+    return node;
 }
 
 

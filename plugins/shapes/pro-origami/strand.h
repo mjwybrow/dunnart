@@ -40,8 +40,6 @@ class BioStrand: public ShapeObj
 
         virtual void initWithXMLProperties(dunnart::Canvas *canvas,
                 const QDomElement& node, const QString& ns);
-        virtual QDomElement to_QDomElement(const unsigned int subset,
-                QDomDocument& doc);
         virtual QPainterPath buildPainterPath(void);
 
         bool reversed(void) const;

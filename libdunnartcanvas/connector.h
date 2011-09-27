@@ -149,7 +149,7 @@ class Connector : public CanvasItem
 
         void setRoutingCheckPoints(const QList<QPointF>& checkpoints);
         void forceReroute(void);
-        void addXmlProps(const unsigned int subset, QDomElement& node,
+        virtual void addXmlProps(const unsigned int subset, QDomElement& node,
                 QDomDocument& doc);
         QPair<CPoint, CPoint> get_connpts(void) const;
         void disconnect_from(ShapeObj *shape, uint pinClassID = 0);
@@ -169,8 +169,6 @@ class Connector : public CanvasItem
         void applyNewRoute(const Avoid::PolyLine& route, bool updateLibavoid);
         void updateFromLibavoid(void);
         virtual void write_libavoid_path(QDomElement& node,
-                QDomDocument& doc);
-        virtual QDomElement to_QDomElement(const unsigned int subset,
                 QDomDocument& doc);
         QRectF boundingRect(void) const;
         QPainterPath shape() const;

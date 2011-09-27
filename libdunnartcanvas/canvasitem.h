@@ -157,6 +157,7 @@ class CanvasItem: public QGraphicsSvgItem
 {
     Q_OBJECT
     Q_PROPERTY (QString id READ getIdString)
+    Q_PROPERTY (QString type READ itemType)
 
     public:
         CanvasItem(QGraphicsItem *parent, QString id, unsigned int lev);
@@ -167,6 +168,9 @@ class CanvasItem: public QGraphicsSvgItem
 
         QString getIdString(void) const;
         uint internalId(void) const;
+
+        QString itemType(void) const;
+        void setItemType(const QString& type);
 
         Canvas *canvas(void) const;
         void bringToFront(void);
@@ -237,7 +241,7 @@ class CanvasItem: public QGraphicsSvgItem
 
         QVariant itemChange(QGraphicsItem::GraphicsItemChange change,
                 const QVariant &value);
-        void addXmlProps(const unsigned int subset, QDomElement& node,
+        virtual void addXmlProps(const unsigned int subset, QDomElement& node,
                 QDomDocument& doc);
         virtual QAction *buildAndExecContextMenu(
                 QGraphicsSceneMouseEvent *event, QMenu& menu);
@@ -256,6 +260,7 @@ class CanvasItem: public QGraphicsSvgItem
         friend class AlterCanvasItemProperty;
         virtual void userMoveBy(qreal dx, qreal dy);
 
+        QString m_type;
         QPainterPath m_painter_path;
         QSizeF m_size;
         QString m_hover_message;
@@ -339,15 +344,6 @@ void newProp(QDomElement& node, const QString& prop, T argument,
 {
     QString value = QString("%1%2").arg(argument).arg(append);
     node.setAttribute(prop, value);
-}
-
-
-template <typename T>
-void newNsProp(QDomElement& node, const QString& ns, const QString& prop,
-        T argument, const char *append = "")
-{
-    QString value = QString("%1%2").arg(argument).arg(append);
-    node.setAttribute(qualify(ns, prop), value);
 }
 
 

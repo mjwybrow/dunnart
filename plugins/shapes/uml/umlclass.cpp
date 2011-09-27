@@ -45,6 +45,15 @@ QFont *mono = NULL;
 static const int minSectHeight = 23;
 static const int classLineHeight = 12;
 
+
+ClassShape::ClassShape()
+    : RectangleShape()
+{
+    do_init();
+
+    setItemType("umlClass");
+}
+
 void ClassShape::initWithXMLProperties(Canvas *canvas,
         const QDomElement& node, const QString& ns)
 {
@@ -786,7 +795,7 @@ QDomElement ClassShape::to_QDomElement(const unsigned int subset,
 
     if (subset & XMLSS_IOTHER)
     {
-        newNsProp(node, x_dunnartNs, x_type, "umlClass");
+        newProp(node, x_type, "umlClass");
     }
 
     addXmlProps(subset, node, doc);

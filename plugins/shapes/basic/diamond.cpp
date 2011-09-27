@@ -34,6 +34,11 @@ using namespace dunnart;
 //  "Diamond" shape code:
 
 
+DiamondShape::DiamondShape()
+    : ShapeObj("diamond")
+{
+}
+
 QPainterPath DiamondShape::buildPainterPath(void)
 {
     QPainterPath painter_path;
@@ -50,19 +55,5 @@ QPainterPath DiamondShape::buildPainterPath(void)
     return painter_path;
 }
 
-QDomElement DiamondShape::to_QDomElement(const unsigned int subset,
-        QDomDocument& doc)
-{
-    QDomElement node = doc.createElement("dunnart:node");
-
-    if (subset & XMLSS_IOTHER)
-    {
-        newNsProp(node, x_dunnartNs, x_type, "diamond");
-    }
-
-    addXmlProps(subset, node, doc);
-
-    return node;
-}
 
 // vim: filetype=cpp ts=4 sw=4 et tw=0 wm=0 cindent

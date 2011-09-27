@@ -30,7 +30,7 @@
 
 using namespace dunnart;
 
-LogicalOperator::LogicalOperator(PDLogicalType lt, int o) : ShapeObj(),
+LogicalOperator::LogicalOperator(PDLogicalType lt, int o) : ShapeObj(""),
     orientation(o), stem(5), radius(36), logicalType(AND)
 {
     Q_UNUSED(lt)

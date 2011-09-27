@@ -194,7 +194,7 @@ QDomElement Relationship::to_QDomElement(const unsigned int subset,
     
     if (subset & XMLSS_IOTHER)
     {
-        newNsProp(node, x_dunnartNs, x_type, x_constraint);
+        newProp(node, x_type, x_constraint);
 
         if (distro)
         {

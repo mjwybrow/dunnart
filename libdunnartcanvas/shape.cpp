@@ -1022,19 +1022,19 @@ void ShapeObj::addXmlProps(const unsigned int subset, QDomElement& node,
 
     if (subset & XMLSS_IMOVE)
     {
-        newNsProp(node, x_dunnartNs, x_centreX, x());
-        newNsProp(node, x_dunnartNs, x_centreY, y());
+        newProp(node, x_centreX, x());
+        newProp(node, x_centreY, y());
     }
 
     if (subset & XMLSS_IRESIZE)
     {
-        newNsProp(node, x_dunnartNs, x_width, width());
-        newNsProp(node, x_dunnartNs, x_height, height());
+        newProp(node, x_width, width());
+        newProp(node, x_height, height());
     }
     
     if (subset & XMLSS_ILABEL)
     {
-        newNsProp(node, x_dunnartNs, x_label, m_label.toUtf8().data());
+        newProp(node, x_label, m_label.toUtf8().data());
     }
 
     if (subset & XMLSS_IOTHER)
@@ -1045,7 +1045,7 @@ void ShapeObj::addXmlProps(const unsigned int subset, QDomElement& node,
             value = value.sprintf("%02x%02x%02x%02x;", m_fill_colour.red(),
                     m_fill_colour.green(), m_fill_colour.blue(),
                     m_fill_colour.alpha());
-            newNsProp(node, x_dunnartNs, x_fillCol, value);
+            newProp(node, x_fillCol, value);
         }
         if (m_stroke_colour != shLineCol)
         {
@@ -1053,16 +1053,16 @@ void ShapeObj::addXmlProps(const unsigned int subset, QDomElement& node,
             value = value.sprintf("%02x%02x%02x%02x;", m_stroke_colour.red(),
                     m_stroke_colour.green(), m_stroke_colour.blue(),
                     m_stroke_colour.alpha());
-            newNsProp(node, x_dunnartNs, x_lineCol, value);
+            newProp(node, x_lineCol, value);
         }
 
         QString value;
         value = value.sprintf("%g", detailLevel);
-        newNsProp(node, x_dunnartNs, "detailLevel", value);
+        newProp(node, "detailLevel", value);
 
         if (m_has_locked_position)
         {
-            newNsProp(node, x_dunnartNs, x_lockedPosition, "1");
+            newProp(node, x_lockedPosition, "1");
         }
 
         // Store info about all connection pins other than the centre one,
@@ -1078,29 +1078,13 @@ void ShapeObj::addXmlProps(const unsigned int subset, QDomElement& node,
         }
         if (!pinRepStr.isEmpty())
         {
-            newNsProp(node, x_dunnartNs, x_connectionPins, pinRepStr);
+            newProp(node, x_connectionPins, pinRepStr);
         }
     }
 }
 
 //===========================================================================
 //  Rectangle code ("Action or Process"):
-
-
-QDomElement RectangleShape::to_QDomElement(const unsigned int subset,
-        QDomDocument& doc)
-{
-    QDomElement node = doc.createElement("dunnart:node");
-
-    if (subset & XMLSS_IOTHER)
-    {
-        newNsProp(node, x_dunnartNs, x_type, "rect");
-    }
-
-    addXmlProps(subset, node, doc);
-
-    return node;
-}
 
 
 #if 0
@@ -1165,7 +1149,7 @@ Avoid::Polygon *ShapeObj::poly(const double b, Avoid::Polygon *p)
 // Shape class code
 
 
-ShapeObj::ShapeObj()
+ShapeObj::ShapeObj(const QString& itemType)
     : CanvasItem(NULL, QString(), ZORD_Shape),
       avoidRef(NULL),
       m_has_locked_position(false),
@@ -1177,6 +1161,8 @@ ShapeObj::ShapeObj()
       m_stroke_colour(shLineCol),
       m_size_locked(false)
 {
+    setItemType(itemType);
+
     if (!shapeFont)
     {
         QFontDatabase database;

@@ -23,6 +23,7 @@
 */
 
 
+#include "libdunnartcanvas/shape.h"
 #include "pdprocessnode.h"
 
 using namespace dunnart;
@@ -31,10 +32,28 @@ using namespace dunnart;
 //                                   PROCESS NODE FUNCTIONS
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ProcessNode::ProcessNode(int o, PDProcessNodeType pt) : ShapeObj(), orientation(o), rect(16), processType(pt)
+ProcessNode::ProcessNode(int o, PDProcessNodeType pt) : ShapeObj("sbgn.ProcessNode"), orientation(o), rect(16), processType(pt)
 {
     if (processType == UNCERTAIN) { setLabel("?"); }
     else if (processType == OMITTED) { setLabel("\\\\"); }
+
+    // Set item type.
+    if (processType == ProcessNode::UNCERTAIN)
+    {
+        setItemType("sbgn.UnknownProcessNode");
+    }
+    else if (processType == ProcessNode::OMITTED)
+    {
+        setItemType("sbgn.OmittedProcessNode");
+    }
+    else if (processType == ProcessNode::ASSOCIATION)
+    {
+        setItemType("sbgn.AssociationProcessNode");
+    }
+    else if (processType == ProcessNode::DISSOCIATION)
+    {
+        setItemType("sbgn.DissociationProcessNode");
+    }
 }
 
 QPainterPath ProcessNode::buildPainterPath(void)

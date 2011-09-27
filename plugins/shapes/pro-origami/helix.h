@@ -35,8 +35,7 @@ class BioHelix: public ShapeObj
 
     public:
         BioHelix();
-        virtual QDomElement to_QDomElement(const unsigned int subset, 
-                QDomDocument& doc);
+
         virtual QPainterPath buildPainterPath(void);
         virtual QRectF labelBoundingRect(void) const;
 };

@@ -116,6 +116,8 @@ Separation::Separation(GuidelineList *guides, double gap, double xp, double yp)
 {
     setPos(xp, yp);
 
+    setItemType(x_separation);
+
     // Setup separation representation.
     GuidelineList::iterator prev = guides->begin();
     GuidelineList::iterator curr = prev;
@@ -559,13 +561,13 @@ QDomElement Separation::to_QDomElement(const unsigned int subset,
    
     if (subset & XMLSS_IOTHER)
     {
-        newNsProp(node, x_dunnartNs, x_type, x_separation);
+        newProp(node, x_type, x_separation);
 
         double position = (type == GUIDE_TYPE_VERT) ? y(): x();
         
-        newNsProp(node, x_dunnartNs, x_position, position);
-        newNsProp(node, x_dunnartNs, x_direction, (int) type);
-        newNsProp(node, x_dunnartNs, x_sepDistance, gap);
+        newProp(node, x_position, position);
+        newProp(node, x_direction, (int) type);
+        newProp(node, x_sepDistance, gap);
 
         newProp(node, "id", getIdString());
     }

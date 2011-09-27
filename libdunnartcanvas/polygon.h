@@ -41,7 +41,7 @@ class PolygonShape: public ShapeObj
 {
     public:
         PolygonShape()
-            : ShapeObj(), 
+            : ShapeObj(x_shPolygon),
               _xps(NULL), 
               _yps(NULL),
               _psn(0)
@@ -52,8 +52,6 @@ class PolygonShape: public ShapeObj
         virtual void initWithXMLProperties(Canvas *canvas,
                 const QDomElement& node, const QString& ns);
 
-        QDomElement to_QDomElement(const unsigned int subset,
-                QDomDocument& doc);
         Avoid::Polygon *poly(const double buffer, Avoid::Polygon *poly = NULL);
         virtual void set_label(const char *l);
         void setNewBoundary(int *xps, int *yps, int psn);

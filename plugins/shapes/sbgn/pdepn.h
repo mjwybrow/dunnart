@@ -82,7 +82,7 @@ class PDEPN: public ShapeObj
 
 public:
     // By default an EPN does not have a label, and is not cloneable
-    PDEPN() : ShapeObj(), cloned(false), cloneLabel(QString("")), multimer(false) {}
+    PDEPN() : ShapeObj("sbgn.NucleicAcidEPN"), cloned(false), cloneLabel(QString("")), multimer(false) {}
 //    PDEPN(float w, float h) : LabelledGlyph("", w, h), cloned(false), cloneLabel(new Label("")), multimer(false) {}
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
     virtual QPainterPath clone_marker() const = 0; // creates the clone marker for this glyph: MUST be instantiated in the inheriting class
@@ -110,7 +110,6 @@ public:
   virtual ~PDEPN();
   void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
   SDL_Rect labelBoundingRect(void) const;
-  xmlNodePtr to_xmlNode(const unsigned int subset, xmlNs *dunnartNs);
   int get_type(void)  {  return SHAPE_TYPE_PDEPN;  }
   void set_is_cloned(bool b) { has_clone_marker = b; }
 

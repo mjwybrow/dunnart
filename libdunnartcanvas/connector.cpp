@@ -89,6 +89,8 @@ Connector::Connector()
     qRegisterMetaType<dunnart::Connector::ArrowHeadType>("ArrowHeadType");
     qRegisterMetaTypeStreamOperators<int>("ArrowHeadType");
 
+    setItemType("connector");
+
     m_routing_type = polyline;
 
     num_points = 0;
@@ -407,36 +409,36 @@ void Connector::addXmlProps(const unsigned int subset, QDomElement& node,
     {
         if (m_ideal_length != canvas()->idealConnectorLength())
         {
-            newNsProp(node, x_dunnartNs, x_idealLength, m_ideal_length);
+            newProp(node, x_idealLength, m_ideal_length);
         }
 
         if ( ! m_obeys_directed_edge_constraints)
         {
-            newNsProp(node, x_dunnartNs, x_obeysDirEdgeConstraints,
+            newProp(node, x_obeysDirEdgeConstraints,
                     m_obeys_directed_edge_constraints);
         }
 
         if (orthogonalConstraint != NONE)
         {
-            newNsProp(node, x_dunnartNs, x_orthogonalConstraint,
+            newProp(node, x_orthogonalConstraint,
                     orthogonalConstraint);
         }
 
         if (m_routing_type != polyline)
         {
-            newNsProp(node, x_dunnartNs, "routingType",
+            newProp(node, "routingType",
                       valueStringForEnum("RoutingType", m_routing_type));
         }
 
         if (m_arrow_head_type != normal)
         {
-            newNsProp(node, x_dunnartNs, "arrowHeadType",
+            newProp(node, "arrowHeadType",
                       valueStringForEnum("ArrowHeadType", m_arrow_head_type));
         }
 
         if (m_directed)
         {
-            newNsProp(node, x_dunnartNs, x_directed, m_directed);
+            newProp(node, x_directed, m_directed);
         }
 
         if (m_colour != defaultConnLineCol)
@@ -444,7 +446,7 @@ void Connector::addXmlProps(const unsigned int subset, QDomElement& node,
             QString value;
             value = value.sprintf("%02x%02x%02x%02x;", m_colour.red(),
                     m_colour.green(), m_colour.blue(), m_colour.alpha());
-            newNsProp(node, x_dunnartNs, x_lineCol, value);
+            newProp(node, x_lineCol, value);
         }
         
         write_libavoid_path(node, doc);
@@ -454,7 +456,7 @@ void Connector::addXmlProps(const unsigned int subset, QDomElement& node,
         if (dotted)
         {
             strcpy(value, "dashed");
-            newNsProp(node, x_dunnartNs, "LineStyle", value);
+            newProp(node, "LineStyle", value);
         }
     }
 
@@ -462,40 +464,40 @@ void Connector::addXmlProps(const unsigned int subset, QDomElement& node,
     {
         if (srcpt.shape)
         {
-            newNsProp(node, x_dunnartNs, x_srcID, srcpt.shape->getIdString());
+            newProp(node, x_srcID, srcpt.shape->getIdString());
             if (srcpt.pinClassID != CENTRE_CONNECTION_PIN)
             {
-                newNsProp(node, x_dunnartNs, x_srcPinID, srcpt.pinClassID);
+                newProp(node, x_srcPinID, srcpt.pinClassID);
             }
         }
         else
         {
-            newNsProp(node, x_dunnartNs, x_srcID, 0);
+            newProp(node, x_srcID, 0);
         }
 
-        newNsProp(node, x_dunnartNs, x_srcX, srcpt.x);
-        newNsProp(node, x_dunnartNs, x_srcY, srcpt.y);
+        newProp(node, x_srcX, srcpt.x);
+        newProp(node, x_srcY, srcpt.y);
 
         if (dstpt.shape)
         {
-            newNsProp(node, x_dunnartNs, x_dstID, dstpt.shape->getIdString());
+            newProp(node, x_dstID, dstpt.shape->getIdString());
             if (dstpt.pinClassID != CENTRE_CONNECTION_PIN)
             {
-                newNsProp(node, x_dunnartNs, x_dstPinID, dstpt.pinClassID);
+                newProp(node, x_dstPinID, dstpt.pinClassID);
             }
         }
         else
         {
-            newNsProp(node, x_dunnartNs, x_dstID, 0);
+            newProp(node, x_dstID, 0);
         }
-        newNsProp(node, x_dunnartNs, x_dstX, dstpt.x);
-        newNsProp(node, x_dunnartNs, x_dstY, dstpt.y);
+        newProp(node, x_dstX, dstpt.x);
+        newProp(node, x_dstY, dstpt.y);
     }
 
     if (subset & XMLSS_XMOVE)
     {
-        newNsProp(node, x_dunnartNs, x_xPos, x());
-        newNsProp(node, x_dunnartNs, x_yPos, y());
+        newProp(node, x_xPos, x());
+        newProp(node, x_yPos, y());
     }
 }
 
@@ -937,22 +939,6 @@ void Connector::setNewLibavoidEndpoint(const int type)
 
         avoidRef->setEndpoint(type, tmppt);
     }
-}
-
-
-QDomElement Connector::to_QDomElement(const unsigned int subset,
-        QDomDocument& doc)
-{
-    QDomElement node = doc.createElement("dunnart:node");
-
-    if (subset & XMLSS_IOTHER)
-    {
-        newNsProp(node, x_dunnartNs, x_type, x_connector);
-    }
-
-    addXmlProps(subset, node, doc);
-
-    return node;
 }
 
 
@@ -1436,7 +1422,7 @@ void Connector::write_libavoid_path(QDomElement& node, QDomDocument& doc)
     
     if (!pathStr.isEmpty())
     {
-        newNsProp(node, x_dunnartNs, x_libavoidPath, pathStr);
+        newProp(node, x_libavoidPath, pathStr);
     }
 }
 

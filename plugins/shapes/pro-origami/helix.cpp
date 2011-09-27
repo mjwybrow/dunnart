@@ -34,7 +34,7 @@ using namespace dunnart;
 //  "Protein Helix" shape code:
 
 BioHelix::BioHelix()
-    : ShapeObj()
+    : ShapeObj("bioHelix")
 {
 }
 
@@ -90,22 +90,6 @@ QRectF BioHelix::labelBoundingRect(void) const
     label_rect.adjust(xoffset, yoffset, 0, 0);
 
     return label_rect;
-}
-
-
-QDomElement BioHelix::to_QDomElement(const unsigned int subset, 
-        QDomDocument& doc)
-{
-    QDomElement node = doc.createElement("dunnart:node");
-
-    if (subset & XMLSS_IOTHER)
-    {
-        newNsProp(node, x_dunnartNs, x_type, "bioHelix");
-    }
-
-    addXmlProps(subset, node, doc);
- 
-    return node;
 }
 
 

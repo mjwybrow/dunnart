@@ -34,14 +34,9 @@ using dunnart::ShapeObj;
 class DiamondShape: public virtual ShapeObj
 {
     public:
+        DiamondShape();
         virtual ~DiamondShape() { }
-        DiamondShape()
-            : ShapeObj()
-        {
-        }
 
-        virtual QDomElement to_QDomElement(const unsigned int subset,
-                QDomDocument& doc);
         virtual QPainterPath buildPainterPath(void);
 };
 

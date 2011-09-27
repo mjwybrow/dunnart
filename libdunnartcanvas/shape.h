@@ -81,7 +81,7 @@ class ShapeObj: public CanvasItem
     UNDO_ACTION (ShapeObj, QSizeF, size, setSize, UNDO_SHAPE_SIZE, "resize shape")
 
     public:
-        ShapeObj();
+        ShapeObj(const QString& itemType);
         virtual ~ShapeObj();
 
         virtual void initWithXMLProperties(Canvas *canvas,
@@ -102,7 +102,7 @@ class ShapeObj: public CanvasItem
 
         virtual void cascade_distance(int dist, unsigned int dir,
                 CanvasItem **path);
-        void addXmlProps(const unsigned int subset, QDomElement& node,
+        virtual void addXmlProps(const unsigned int subset, QDomElement& node,
                 QDomDocument& doc);
         void addContainedShape(ShapeObj *shape);
         void addContainedShapes(QList<ShapeObj *>& shapes);
@@ -203,11 +203,9 @@ class RectangleShape: public ShapeObj
 {
     public:
         RectangleShape()
-            : ShapeObj()
+            : ShapeObj("rect")
         {
         }
-        virtual QDomElement to_QDomElement(const unsigned int subset, 
-                QDomDocument& doc);
 };
 
 
