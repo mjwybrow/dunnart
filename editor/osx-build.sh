@@ -16,6 +16,9 @@ git pull
 
 make
 
-cd editor
+if [ -f Dunnart.app/Contents/MacOS/Dunnart ]
+then	
+	cd editor
 
-make dunnart-osx.tar.gz
+	make dunnart-osx.tar.gz
+fi

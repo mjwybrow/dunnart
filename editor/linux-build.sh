@@ -12,7 +12,10 @@ qmake dunnart.pro -r -config nightlybuild
 
 make
 
-cd editor
+if [ -f build/Dunnart ]
+then    
+	cd editor
 
-make dunnart-linux.tar.gz
+	make dunnart-linux.tar.gz
+fi
 

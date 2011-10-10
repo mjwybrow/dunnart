@@ -19,4 +19,5 @@ mingw32-make
 
 cd editor
 
-mingw32-make dunnart-win.zip
+IF EXIST ..\build\Dunnart.exe mingw32-make dunnart-win.zip
+
