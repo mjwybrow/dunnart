@@ -24,6 +24,8 @@
  * Author(s): Michael Wybrow  <http://michael.wybrow.info/>
 */
 
+#include <cassert>
+
 #include <QGraphicsItem>
 #include <QCursor>
 #include <QGraphicsSceneMouseEvent>
