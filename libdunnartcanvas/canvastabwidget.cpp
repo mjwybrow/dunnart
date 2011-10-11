@@ -316,7 +316,6 @@ void CanvasTabWidget::hideEditingControls(const bool hidden)
     m_action_cut->setVisible(showEditingControls);
     m_action_copy->setVisible(showEditingControls);
     m_action_paste->setVisible(showEditingControls);
-    m_action_delete->setVisible(showEditingControls);
     m_action_edit_separator->setVisible(showEditingControls);
     m_action_edit_separator2->setVisible(showEditingControls);
     m_action_automatic_layout->setVisible(showEditingControls);
@@ -572,10 +571,18 @@ void CanvasTabWidget::selectionChanged(void)
 
     if (m_canvas->optStructuralEditingDisabled() == false)
     {
+        // Allow cut, copy and deletion of non-empty selections so long
+        // as structural editing isn't disbabled.
         bool enabled = (selected_items.count() > 0);
         m_action_delete->setEnabled(enabled);
         m_action_cut->setEnabled(enabled);
         m_action_copy->setEnabled(enabled);
+    }
+    else
+    {
+        // Enable deletion of indicators if strucutral editing is diabled.
+        bool enabled = (indicatorCount > 0);
+        m_action_delete->setEnabled(enabled);
     }
 }
 

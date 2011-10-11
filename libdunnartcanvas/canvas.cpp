@@ -1582,10 +1582,6 @@ void Canvas::deleteSelection(void)
     {
         return;
     }
-    else if (m_opt_stuctural_editing_disabled)
-    {
-        return;
-    }
 
     Actions& actions = getActions();
     actions.clear();
@@ -1598,6 +1594,27 @@ void Canvas::deleteSelection(void)
     // Use a copy since the deselect action will change the selection.
     QList<CanvasItem *> sel_copy = this->selectedItems();
     QList<ShapeObj *> sel_shapes;
+
+    if (m_opt_stuctural_editing_disabled)
+    {
+        // If structural editing is disabled then we should only allow
+        // deletion of constraint indicators.
+        for (QList<CanvasItem *>::iterator sh = sel_copy.begin();
+                sh != sel_copy.end(); )
+        {
+            Indicator *indicator = dynamic_cast<Indicator *> (*sh);
+            if (indicator)
+            {
+                // Indicator, so leave in list.
+                sh++;
+            }
+            else
+            {
+                // Not an idicator, so remove from list.
+                sh = sel_copy.erase(sh);
+            }
+        }
+    }
 
     this->deselectAll();
 
