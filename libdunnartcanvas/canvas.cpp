@@ -1733,11 +1733,7 @@ QList<CanvasItem *> Canvas::selectedItems(void) const
 {
     QList<CanvasItem *> result;
     
-    if (!enableSelection())
-    {
-        return result;
-    }
-
+    // Filter and return just the CanvasItem-based objects.
     QList<QGraphicsItem *> selection = QGraphicsScene::selectedItems();
     for (int i = 0; i < selection.size(); ++i)
     {
@@ -1745,6 +1741,23 @@ QList<CanvasItem *> Canvas::selectedItems(void) const
         if (canvasItem)
         {
             result.push_back(canvasItem);
+        }
+    }
+
+    if (m_edit_mode == ModeConnection)
+    {
+        // In connection mode we want to allow selection of lone connectors
+        // for editing purposes, but not selection of other objects.
+        if ((result.size() == 1) && dynamic_cast<Connector *> (result.first()))
+        {
+            // Return the single selected connector
+            return result;
+        }
+        else
+        {
+            // Otherwise, return no selection.
+            QList<CanvasItem *> emptyResult;
+            return emptyResult;
         }
     }
 
@@ -1988,7 +2001,7 @@ void Canvas::highlightIndicatorsForItemMove(CanvasItem *item)
     }
 }
 
-bool Canvas::enableSelection(void) const
+bool Canvas::inSelectionMode(void) const
 {
     return (m_edit_mode == ModeSelection);
 }

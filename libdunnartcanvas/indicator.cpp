@@ -228,7 +228,7 @@ void Indicator::paint(QPainter *painter,
         setPainterPath(buildPainterPath());
     }
     //painter->drawRect(boundingRect());
-    if (isSelected() && canvas()->enableSelection())
+    if (isSelected() && canvas()->inSelectionMode())
     {
         // Draw selection cue.
         painter->setPen(m_selection_pen);

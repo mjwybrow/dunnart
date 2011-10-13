@@ -115,12 +115,15 @@ class Handle: public QObject, public QGraphicsItem
         virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
         virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
         //virtual bool sceneEvent(QEvent *event);
+
+        bool isActive(void) const;
     private:
         void initialiser(void);
         double xrel, xoff, yrel, yoff;
         int m_flags;
-        QString hover_message_;
+        QString m_hover_message;
         Avoid::ShapeConnectionPin *m_pin;
+        bool m_active;
 };
 
 }

@@ -41,7 +41,8 @@ namespace dunnart {
 
 Handle::Handle(QGraphicsItem *shape, int hflags, int index)
     : QGraphicsItem(shape),
-      m_pin(NULL)
+      m_pin(NULL),
+      m_active(false)
 {
     Q_UNUSED (index)
 
@@ -54,7 +55,8 @@ Handle::Handle(QGraphicsItem *shape, int hflags, int index)
 Handle::Handle(QGraphicsItem *shape, int hflags, double xr, double xo,
         double yr, double yo)
     : QGraphicsItem(shape),
-      m_pin(NULL)
+      m_pin(NULL),
+      m_active(false)
 {
     xrel = xr;
     yrel = yr;
@@ -98,6 +100,12 @@ void Handle::setConnPin(Avoid::ShapeConnectionPin *pin)
 QRectF Handle::boundingRect(void) const
 {
     return QRectF(-3.5, -3.5, 7, 7);
+}
+
+
+bool Handle::isActive(void) const
+{
+    return m_active;
 }
 
 
@@ -255,7 +263,11 @@ void Handle::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 
     if (canvas())
     {
-        canvas()->pushStatusMessage(hover_message_);
+        canvas()->pushStatusMessage(m_hover_message);
+
+        // Note that this is active and trigger redraw.
+        m_active = true;
+        update();
     }
 }
 
@@ -266,12 +278,16 @@ void Handle::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     if (canvas())
     {
         canvas()->popStatusMessage();
+
+        // Note that this is inactive and trigger redraw.
+        m_active = false;
+        update();
     }
 }
 
 void Handle::setHoverMessage(const QString& message)
 {
-    hover_message_ = message;
+    m_hover_message = message;
 }
 
 

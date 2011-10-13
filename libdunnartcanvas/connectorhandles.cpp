@@ -86,13 +86,55 @@ static const char *connectorPointerXPM[] = {
     "                                "
 };
 
+static const char *connectorAdditionPointerXPM[] = {
+  // width height num_colors chars_per_pixel
+    "32 32 3 1",
+  // colors
+    "X c #000000",
+    ". c #ffffff",
+    "  c None",
+  // pixels
+    ".                               ",
+    "..                              ",
+    ".X.              ...            ",
+    ".XX.             .X.            ",
+    ".XXX.            .X.            ",
+    ".XXXX.           .X.            ",
+    ".XXXXX.      .....X.....        ",
+    ".XXXXXX.     .XXXXXXXXX.        ",
+    ".XXXXXXX.    .....X.....        ",
+    ".XXXXXXXX.       .X.            ",
+    ".XXXXX.....      .X.            ",
+    ".XX.XX.          .X.            ",
+    ".X. .XX.         ...            ",
+    "..  .XX.                        ",
+    ".    .XX.                       ",
+    "     .XX.         ...           ",
+    "      ..          .X.           ",
+    "                  .X.           ",
+    "                  .X.           ",
+    "        ...........X.           ",
+    "        .XXXXXXXXXXX.           ",
+    "        .X...........           ",
+    "        .X.                     ",
+    "        .X.                     ",
+    "      ...X...                   ",
+    "      .XXXXX.                   ",
+    "       .XXX.                    ",
+    "        .X.                     ",
+    "         .                      ",
+    "                                ",
+    "                                ",
+    "                                "
+};
+
 
 ConnectorEndpointHandle::ConnectorEndpointHandle(Connector *conn, unsigned int endpointType)
     : Handle(NULL, endpointType, 0),
       m_conn(conn)
 {
     // Position it in front of other objects.
-    this->setZValue(1000000);
+    this->setZValue(ZORD_ConnectorEndpoint);
 
     // Set connector cursor.
     setCursor(QCursor(QPixmap(connectorPointerXPM), 1, 2));
@@ -133,9 +175,9 @@ void ConnectorEndpointHandle::paint(QPainter *painter,
         return;
     }
 
-    QColor highlight = QColor(0, 255, 255);
+    QColor colour = QColor(0, 255, 255);
     painter->setPen(QPen(QBrush(Qt::black), 1));
-    painter->setBrush(QBrush(QColor(highlight)));
+    painter->setBrush(QBrush(colour));
     painter->drawEllipse(boundingRect());
 }
 
@@ -271,17 +313,17 @@ ConnectionPinHandle::ConnectionPinHandle(ShapeObj *shape,
       m_new_conn(NULL)
 {
     // Position it in front of other objects.
-    setZValue(1000000);
+    setZValue(ZORD_ConnectionPoint);
 
     // Place center pin handles (which will cover the whole shape) below
     // other user-defined pin handles.
     if (m_pin_class_id == CENTRE_CONNECTION_PIN)
     {
-        setZValue(zValue() - 1);
+        setZValue(ZORD_CentreConnectionPoint);
     }
 
     // Set connector cursor.
-    setCursor(QCursor(QPixmap(connectorPointerXPM), 1, 2));
+    setCursor(QCursor(QPixmap(connectorAdditionPointerXPM), 1, 2));
 
     setHoverMessage("Connection Point Handle - Click and drag to start "
             "drawing a new connector.");
@@ -324,11 +366,12 @@ void ConnectionPinHandle::paint(QPainter *painter,
         return;
     }
 
-    QColor highlight = QColor(0, 255, 255);
+    QColor colour = (isActive()) ? QColor(255, 128, 0) : QColor(0, 255, 255);
     painter->setPen(QPen(QBrush(Qt::black), 1));
-    painter->setBrush(QBrush(QColor(highlight)));
+    painter->setBrush(QBrush(colour));
     painter->drawEllipse(QRectF(-3.5, -3.5, 7, 7));
 }
+
 
 void ConnectionPinHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
@@ -420,7 +463,7 @@ bool ConnectionPinHandle::sceneEvent(QEvent *event)
         // XXX We don't get this if the cursor is dragged off the canvas.
         //     Qt bug with dragging items with a parent perhaps?
     }
-    return false;
+    return Handle::sceneEvent(event);
 }
 
 }

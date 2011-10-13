@@ -227,6 +227,7 @@ class Connector : public CanvasItem
         QPainterPath m_conn_path;
         QPainterPath m_shape_path;
         QVector<Handle *> m_handles;
+        bool m_is_lone_selected;
 };
 
 

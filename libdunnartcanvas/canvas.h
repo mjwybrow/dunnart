@@ -233,7 +233,7 @@ class Canvas : public QGraphicsScene
         bool isRenderingForPrinting(void) const;
         void setRenderingForPrinting(const bool printingMode);
 
-        bool enableSelection(void) const;
+        bool inSelectionMode(void) const;
         void postRoutingRequiredEvent(void);
 
     signals:

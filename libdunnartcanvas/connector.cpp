@@ -82,7 +82,8 @@ Connector::Connector()
       m_has_downward_constraint(false),
       m_obeys_directed_edge_constraints(true),
       m_arrow_head_type(normal),
-      dotted(false)
+      dotted(false),
+      m_is_lone_selected(false)
 {
     qRegisterMetaType<dunnart::Connector::RoutingType>("RoutingType");
     qRegisterMetaTypeStreamOperators<int>("RoutingType");
@@ -382,6 +383,7 @@ void Connector::loneSelectedChange(const bool value)
             m_handles.at(2 + i)->setVisible(true);
         }
     }
+    m_is_lone_selected = value;
 }
 
 
@@ -1301,7 +1303,8 @@ void Connector::paint(QPainter *painter,
     }
 
     // Draw selection cue.
-    if ( isSelected() && showDecorations && canvas()->enableSelection() )
+    if ( isSelected() && showDecorations &&
+         (canvas()->inSelectionMode() || m_is_lone_selected) )
     {
         QColor colour(0, 255, 255, 70);
         QPen highlight(colour);

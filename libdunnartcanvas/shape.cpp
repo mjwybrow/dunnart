@@ -463,7 +463,7 @@ void ShapeObj::paint(QPainter *painter,
     assert(painter->isActive());
     bool showDecorations = canvas() && ! canvas()->isRenderingForPrinting();
 
-    if ( isSelected() && showDecorations && canvas()->enableSelection() )
+    if ( isSelected() && showDecorations && canvas()->inSelectionMode() )
     {
         QColor colour(0, 255, 255, 100);
         QPen highlight;

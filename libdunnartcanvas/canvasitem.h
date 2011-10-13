@@ -271,13 +271,16 @@ typedef QList<CanvasItem *> CanvasItemList;
 
 
 enum {
-    ZORD_Template = 1,
+    ZORD_Template = 1000,
     ZORD_Cluster,
     ZORD_Guideline,
     ZORD_Distribution,
     ZORD_TransSh,
     ZORD_Conn,
-    ZORD_Shape
+    ZORD_Shape,
+    ZORD_CentreConnectionPoint,
+    ZORD_ConnectionPoint,
+    ZORD_ConnectorEndpoint
 };
 
 
