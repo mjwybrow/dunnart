@@ -45,9 +45,9 @@ class TextShape: public ShapeObj
         virtual QDomElement to_QDomElement(const unsigned int subset,
                 QDomDocument& doc);
         Avoid::Polygon *poly(const double buffer, Avoid::Polygon *poly = NULL);
-        virtual void set_label(const char *l);
-        
-        void setText(const char *t);
+        virtual void setLabel(const QString& label);
+
+        void setText(const QString& t);
         char *getText(void);
         void setFontSize(const unsigned int ptSize);
         unsigned int getFontSize(void);

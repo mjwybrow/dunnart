@@ -86,7 +86,7 @@ static const char *connectorPointerXPM[] = {
     "                                "
 };
 
-static const char *connectorAdditionPointerXPM[] = {
+static const char *connectorCreationPointerXPM[] = {
   // width height num_colors chars_per_pixel
     "32 32 3 1",
   // colors
@@ -322,8 +322,8 @@ ConnectionPinHandle::ConnectionPinHandle(ShapeObj *shape,
         setZValue(ZORD_CentreConnectionPoint);
     }
 
-    // Set connector cursor.
-    setCursor(QCursor(QPixmap(connectorAdditionPointerXPM), 1, 2));
+    // Set connector creation cursor.
+    setCursor(QCursor(QPixmap(connectorCreationPointerXPM), 1, 2));
 
     setHoverMessage("Connection Point Handle - Click and drag to start "
             "drawing a new connector.");

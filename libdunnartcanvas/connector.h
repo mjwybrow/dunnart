@@ -47,7 +47,6 @@ namespace dunnart {
 
 class ShapeObj;
 
-extern bool createDirectedConns;
 extern const QColor defaultConnLineCol;
 
 typedef struct ConnRepStruct ConnRep;
@@ -162,7 +161,7 @@ class Connector : public CanvasItem
         void setObeysDirectedEdgeConstraints(const bool value);
         void overrideColour(QColor col);
         void restoreColour();
-        void setDotted(bool dotted) {this->dotted = dotted;}
+        void setDotted(bool dotted) {this->m_is_dotted = dotted;}
         virtual void setNewLibavoidEndpoint(const int type);
         void reapplyRoute(void);
         void applyNewRoute(const Avoid::Polygon& route);
@@ -185,10 +184,10 @@ class Connector : public CanvasItem
         static QString valueStringForEnum(const char *enumName,
                 int enumValue);
 
-        bool multiEdge;
-        unsigned multiEdgeSize;
-        unsigned multiEdgeInd;
-        OrthogonalConstraint orthogonalConstraint;
+        bool m_is_multiedge;
+        unsigned m_multiedge_size;
+        unsigned m_multiedge_index;
+        OrthogonalConstraint m_orthogonal_constraint;
 
     public slots:
         void swapDirection(void);
@@ -209,19 +208,16 @@ class Connector : public CanvasItem
         double m_ideal_length;
         QColor m_colour;
         QColor m_saved_colour;
-        int num_points;
-        unsigned int srctype, dsttype;
-        Avoid::Polygon offset_route;
-        Avoid::PolyLine offset_obs_route;
-        CPoint srcpt, dstpt;
-        int bbx, bby, bbw, bbh;
-        bool m_directed;
+        Avoid::Polygon m_offset_route;
+        CPoint m_src_pt;
+        CPoint m_dst_pt;
+        bool m_is_directed;
         RoutingType m_routing_type;
         bool m_has_downward_constraint;
         bool m_obeys_directed_edge_constraints;
         ArrowHeadType m_arrow_head_type;
         bool m_arrow_head_outline;
-        bool dotted;
+        bool m_is_dotted;
         QPainterPath m_arrow_path;
         // Unclosed and unreversed representation of connector path route.
         QPainterPath m_conn_path;
@@ -229,21 +225,6 @@ class Connector : public CanvasItem
         QVector<Handle *> m_handles;
         bool m_is_lone_selected;
 };
-
-
-
-// Connector representation
-struct ConnRepStruct
-{
-    int width, height;
-    int xpos, ypos;
-    int type;
-
-    int numpoints;
-    CPoint *points;
-    double idealLength;
-};
-
 
 
 }

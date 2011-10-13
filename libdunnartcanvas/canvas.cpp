@@ -1713,7 +1713,7 @@ QString Canvas::filename(void)
 
 QList<CanvasItem *> Canvas::items(void) const
 {
-    QList<CanvasItem *> result;
+    QList<CanvasItem *> canvasItems;
 
     QList<QGraphicsItem *> itemList = QGraphicsScene::items();
     for (int i = 0; i < itemList.size(); ++i)
@@ -1721,17 +1721,17 @@ QList<CanvasItem *> Canvas::items(void) const
         CanvasItem *canvasItem = dynamic_cast<CanvasItem *> (itemList.at(i));
         if (canvasItem)
         {
-            result.push_back(canvasItem);
+            canvasItems.push_back(canvasItem);
         }
     }
 
-    return result;
+    return canvasItems;
 }
 
 
 QList<CanvasItem *> Canvas::selectedItems(void) const
 {
-    QList<CanvasItem *> result;
+    QList<CanvasItem *> filteredSelection;
     
     // Filter and return just the CanvasItem-based objects.
     QList<QGraphicsItem *> selection = QGraphicsScene::selectedItems();
@@ -1740,7 +1740,7 @@ QList<CanvasItem *> Canvas::selectedItems(void) const
         CanvasItem *canvasItem = dynamic_cast<CanvasItem *> (selection.at(i));
         if (canvasItem)
         {
-            result.push_back(canvasItem);
+            filteredSelection.push_back(canvasItem);
         }
     }
 
@@ -1748,20 +1748,21 @@ QList<CanvasItem *> Canvas::selectedItems(void) const
     {
         // In connection mode we want to allow selection of lone connectors
         // for editing purposes, but not selection of other objects.
-        if ((result.size() == 1) && dynamic_cast<Connector *> (result.first()))
+        if ((filteredSelection.size() == 1) &&
+                dynamic_cast<Connector *> (filteredSelection.first()))
         {
             // Return the single selected connector
-            return result;
+            return filteredSelection;
         }
         else
         {
             // Otherwise, return no selection.
-            QList<CanvasItem *> emptyResult;
-            return emptyResult;
+            QList<CanvasItem *> emptySelection;
+            return emptySelection;
         }
     }
 
-    return result;
+    return filteredSelection;
 }
 
 bool Canvas::useGmlClusters(void) const
@@ -2493,23 +2494,23 @@ void Canvas::repositionAndShowSelectionResizeHandles(bool calculatePosition)
 bool Canvas::singlePropUpdateID(QDomElement& node, const QString& prop,
             const QString ns)
 {
-    bool result = false;
+    bool wasSuccessful = false;
     QString oldId = nodeAttribute(node, ns, prop);
     if (!oldId.isNull())
     {
-        QString qName = (ns.isEmpty()) ? prop : ns + ":" + prop;
+        QString propertyName = (ns.isEmpty()) ? prop : ns + ":" + prop;
         if (m_paste_id_map.find(oldId) != m_paste_id_map.end())
         {
             // The object this ID refers to is in the selection.
-            node.setAttribute(qName, m_paste_id_map[oldId]);
-            result = true;
+            node.setAttribute(propertyName, m_paste_id_map[oldId]);
+            wasSuccessful = true;
         }
         else
         {
             node.removeAttribute(prop);
         }
     }
-    return result;
+    return wasSuccessful;
 }
 
 

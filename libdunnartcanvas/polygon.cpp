@@ -198,9 +198,9 @@ void PolygonShape::computeBoundingBoxAndNormalise(void)
 }
 
 
-void PolygonShape::set_label(const char *l)
+void PolygonShape::setLabel(const QString& label)
 {
-    Q_UNUSED (l)
+    Q_UNUSED (label)
 
     // Do nothing
     return;

@@ -35,12 +35,6 @@
 namespace dunnart {
 
 
-    // Used for solver status:
-static bool modified_variables = false;
-
-const QColor shLightGlow  = QColor(255, 210, 190);
-
-
 #if 0
 static void clear_change_indicators(void)
 {
@@ -53,12 +47,6 @@ static void clear_change_indicators(void)
 
 
 #endif
-
-
-void tell_modified_variables(void)
-{
-    modified_variables = true;
-}
 
 
     // Reset illumination associated with cascade-type queries.

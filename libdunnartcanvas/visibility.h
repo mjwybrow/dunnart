@@ -33,7 +33,6 @@ namespace dunnart {
 class Canvas;
 class Connector;
 
-extern void set_no_visibility_changes(void);
 extern void reroute_all_connectors(Canvas *canvas);
 extern void redraw_connectors(Canvas *canvas);
 extern void reroute_connectors(Canvas *canvas, const bool force = false,

@@ -500,21 +500,6 @@ static void toggle_poly_conns(GuiObj **c)
 
 
 #if 0
-static void toggle_directed_connectors(QWidget **c)
-{
-    if (!createDirectedConns)
-    {
-        createDirectedConns = true;
-        changeControlState(BUT_DIRECTED, SDLGui::WIDGET_true);
-    }
-    else  // if (createDirectedConns)
-    {
-        createDirectedConns = false;
-        changeControlState(BUT_DIRECTED, SDLGui::WIDGET_false);
-    }
-}
-
-
 void toggle_partial_feedback(QWidget **c)
 {
     bool& PartialFeedback = router->PartialFeedback;

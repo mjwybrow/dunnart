@@ -53,7 +53,7 @@ class PolygonShape: public ShapeObj
                 const QDomElement& node, const QString& ns);
 
         Avoid::Polygon *poly(const double buffer, Avoid::Polygon *poly = NULL);
-        virtual void set_label(const char *l);
+        virtual void setLabel(const QString& label);
         void setNewBoundary(int *xps, int *yps, int psn);
         void computeBoundingBoxAndNormalise(void);
         bool getPointPos(int n, double *x, double *y);

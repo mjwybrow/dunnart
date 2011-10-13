@@ -804,9 +804,10 @@ QPainterPath Cluster::buildPainterPath(void)
 }
 
 
-void Cluster::set_label(const char *l)
+void Cluster::setLabel(const QString& label)
 {
-    Q_UNUSED (l)
+    Q_UNUSED (label)
+
     // Do nothing
     return;
 }

@@ -221,9 +221,6 @@ class CanvasItem: public QGraphicsSvgItem
         virtual void loneSelectedChange(const bool value);
         QString svgCodeAsString(const QSize& size, const QRectF& viewBox);
 
-        int distance;
-        int cascade_glow;
-        CanvasItem *connectedObjs[2];
     protected:
         void setHoverMessage(const QString& message);
         virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
@@ -253,9 +250,15 @@ class CanvasItem: public QGraphicsSvgItem
         virtual void routerResize(void);
 
         QString m_string_id;
-        uint m_internal_id;
+        uint m_internal_id;        
         bool m_is_collapsed;
-        bool _inactive;
+        bool m_is_inactive;
+
+        // Used for constraint debugging:
+        int m_connection_distance;
+        int m_connection_cascade_glow;
+        CanvasItem *m_connected_objects[2];
+
     private:
         friend class AlterCanvasItemProperty;
         virtual void userMoveBy(qreal dx, qreal dy);

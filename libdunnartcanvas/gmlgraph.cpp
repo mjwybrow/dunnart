@@ -868,7 +868,7 @@ void Graph::createShape(ogdf::node v, const Box b) {
         if(GA.shapeNode(v)==ogdf::GraphAttributes::oval) {
             sh = factory->createShape("flowEndOProc");
             sh->setCentrePos(QPointF(b.x, b.y));
-            sh->set_label(GA.labelNode(v).cstr());
+            sh->setLabel(GA.labelNode(v).cstr());
         }
         else if(templ.substr(0,9)=="UML:CLASS") {
             sh = factory->createShape("umlClass");
@@ -878,7 +878,7 @@ void Graph::createShape(ogdf::node v, const Box b) {
         else {
             sh = new RectangleShape();
             sh->setCentrePos(QPointF(b.x, b.y));
-            sh->set_label(GA.labelNode(v).cstr());
+            sh->setLabel(GA.labelNode(v).cstr());
         }
 
         // we want shapes in the canvas list in the order that they are created

@@ -822,7 +822,7 @@ void ShapeObj::setStrokeColour(const QColor& colour)
 
 QColor ShapeObj::fillColour(void) const
 {
-    if ((this == queryObj) || cascade_glow || constraintConflict())
+    if ((this == queryObj) || m_connection_cascade_glow || constraintConflict())
     {
         return HAZARD_COLOUR;
     }
@@ -1340,7 +1340,7 @@ QString ShapeObj::getLabel(void) const
 }
 
 
-void ShapeObj::setLabel(const QString label)
+void ShapeObj::setLabel(const QString& label)
 {
     m_label = label;
     update();
@@ -1511,58 +1511,7 @@ void ShapeObj::setPosAndSize(const QPointF& newCentrePos,
 }
 
 
-void ShapeObj::set_label(const char *l)
-{
-    setLabel(l);
-    
-    update();
-    
-    // Generate a label change event
-    //QT QWidget *gobj = this;
-    //QT gobj->call_handler(&gobj, LABEL_CHANGED);
-}
-
-#if 0
-static std::vector<std::string> explode(std::string s, std::string e)
-{
-    std::vector<std::string> ret;
-    int iPos = s.find(e, 0);
-    int iPit = e.length();
-    while(iPos >- 1) 
-    {
-        //if(iPos!=0) // filter blank strings
-        ret.push_back(s.substr(0, iPos));
-        s.erase(0,iPos + iPit);
-        iPos = s.find(e, 0);
-    }
-    //if(s != "")
-    ret.push_back(s);
-    return ret;
-}
-
-
-static std::string implode(std::vector<std::string> vec, std::string e)
-{
-    // Doesn't filter blank strings.
-    std::string ret;
-
-    for (unsigned int i = 0; i < vec.size(); ++i)
-    {
-        if (i == 0)
-        {
-            ret += vec[i];
-        }
-        else
-        {
-            ret = ret + e + vec[i];
-        }
-    }
-    return ret;
-}
-#endif
-
-
-void ShapeObj::change_label(void)
+void ShapeObj::changeLabel(void)
 {
 #if 0
     int padding = 7;
@@ -1597,7 +1546,7 @@ void ShapeObj::change_label(void)
         
         FieldLines& lines = field->getLines();
         std::string result = implode(lines, nlStr);
-        set_label(result.c_str());
+        setLabel(result.c_str());
     }
     delete field;
 #endif

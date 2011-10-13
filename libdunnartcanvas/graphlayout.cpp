@@ -953,7 +953,7 @@ int GraphLayout::processReturnPositions()
     m_canvas->repositionAndShowSelectionResizeHandles(computePositions);
 
     ConstraintDebug("********END***********\n\n");
-    //redraw_connectors(NULL);
+    //redraw_connectors(m_canvas);
     return movesCount;
 }
 

@@ -97,7 +97,7 @@ void TextShape::initWithXMLProperties(Canvas *canvas,
     QString value = nodeAttribute(node, ns, x_label);
     if (!value.isNull())
     {
-        setText(value.toLatin1().data());
+        setText(value);
     }
     routerAdd();
 }
@@ -193,13 +193,13 @@ char *TextShape::getText(void)
 }
 
 
-void TextShape::set_label(const char *l)
+void TextShape::setLabel(const QString& label)
 {
-    setText(l);
+    setText(label);
 }
 
 
-void TextShape::setText(const char *t)
+void TextShape::setText(const QString& t)
 {
     Q_UNUSED (t)
 
@@ -258,8 +258,6 @@ void TextShape::setText(const char *t)
 
     restore_behind();
     set_noimages(textw, texth);
-    
-    tell_modified_variables();
 
     shapePoly = poly(selectionBuffer, shapePoly);
 
@@ -347,8 +345,6 @@ void TextShape::setFontSize(const unsigned int ptSize)
     
     restore_behind();
     set_noimages(textw, texth);
-    
-    tell_modified_variables();
 
     shapePoly = poly(selectionBuffer, shapePoly);
 

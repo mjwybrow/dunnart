@@ -44,22 +44,12 @@ class CanvasItem;
 class Handle;
 
 
-extern void redraw_connectors(QWidget **slider);
-
 extern QXmlNamespaceSupport namespaces;
 
 
-//QT extern void selection_outlines(SDL_Surface *surface, int *sel_x, int *sel_y,
-//        int *sel_w, int *sel_h);
-//QT extern void copy_selection_to(CanvasItemList *target);
-extern void setup_toolbar();
-extern void setup_sliders();
 extern void load_diagram(Canvas *canvas, const QString& filename);
-extern void toggle_direct_manip(void);
 extern void toggle_partial_feedback(QWidget **c);
 extern void dragAbortActions(void);
-extern bool do_response_tasks(void);
-extern bool checkUserInterrupt(void);
 extern void relayout_selection(QWidget **gobj);
 extern void removeFromCanvas(QList<CanvasItem *>& list);
 extern void returnToCanvas(QList<CanvasItem *>& list);

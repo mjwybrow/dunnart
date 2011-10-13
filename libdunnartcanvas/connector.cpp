@@ -59,8 +59,6 @@ using Avoid::Point;
 namespace dunnart {
 
 
-bool createDirectedConns = true;
-
 // For crossing counting to work as expected, 
 // we require that EDGEPORTSPACE == routingBuffer.
 #define EDGEPORTSPACE (routingBuffer)
@@ -71,18 +69,18 @@ const QColor defaultConnLineCol = QColor(0, 0, 0);
 Connector::Connector()
     : CanvasItem(NULL, QString(), ZORD_Conn),
       avoidRef(NULL),
-      multiEdge(false),
-      multiEdgeSize(1),
-      multiEdgeInd(0),
-      orthogonalConstraint(NONE),
+      m_is_multiedge(false),
+      m_multiedge_size(1),
+      m_multiedge_index(0),
+      m_orthogonal_constraint(NONE),
       m_ideal_length(0),
       m_colour(defaultConnLineCol),
       m_saved_colour(defaultConnLineCol),
-      m_directed(false),
+      m_is_directed(false),
       m_has_downward_constraint(false),
       m_obeys_directed_edge_constraints(true),
       m_arrow_head_type(normal),
-      dotted(false),
+      m_is_dotted(false),
       m_is_lone_selected(false)
 {
     qRegisterMetaType<dunnart::Connector::RoutingType>("RoutingType");
@@ -94,9 +92,7 @@ Connector::Connector()
 
     m_routing_type = polyline;
 
-    num_points = 0;
-    offset_route.clear();
-    offset_obs_route.clear();
+    m_offset_route.clear();
 
     setFlag(QGraphicsItem::ItemIsMovable, false);
 
@@ -109,8 +105,8 @@ void Connector::initWithConnection(ShapeObj *sh1, ShapeObj *sh2)
 {
     if (sh1)
     {
-        srcpt.shape = sh1;
-        srcpt.pinClassID = CENTRE_CONNECTION_PIN;
+        m_src_pt.shape = sh1;
+        m_src_pt.pinClassID = CENTRE_CONNECTION_PIN;
     }
     else
     {
@@ -119,8 +115,8 @@ void Connector::initWithConnection(ShapeObj *sh1, ShapeObj *sh2)
 
     if (sh2)
     {
-        dstpt.shape = sh2;
-        dstpt.pinClassID = CENTRE_CONNECTION_PIN;
+        m_dst_pt.shape = sh2;
+        m_dst_pt.pinClassID = CENTRE_CONNECTION_PIN;
     }
     else
     {
@@ -159,14 +155,14 @@ void Connector::initWithXMLProperties(Canvas *canvas,
     {
         setProperty("arrowHeadType", value);
         // Arrowhead implies connector is directed.
-        m_directed = true;
+        m_is_directed = true;
     }
 
-    optionalProp(node, x_directed, m_directed, ns);
+    optionalProp(node, x_directed, m_is_directed, ns);
 
-    srcpt.shape = NULL;
-    srcpt.pinClassID = 0;
-    srcpt.x = srcpt.y = 0;
+    m_src_pt.shape = NULL;
+    m_src_pt.pinClassID = 0;
+    m_src_pt.x = m_src_pt.y = 0;
     QString sshape, dshape;
     if (optionalProp(node, x_srcID, sshape, ns) && !(sshape.isEmpty()))
     {
@@ -184,8 +180,8 @@ void Connector::initWithXMLProperties(Canvas *canvas,
             optionalProp(node, x_srcPinID, pinID, ns);
             assert(pinID != 0);
 
-            srcpt.shape = sh;
-            srcpt.pinClassID = pinID;
+            m_src_pt.shape = sh;
+            m_src_pt.pinClassID = pinID;
         }
         if (!sh)
         {
@@ -194,15 +190,15 @@ void Connector::initWithXMLProperties(Canvas *canvas,
     }
     else
     {
-        srcpt.pinClassID = 0;
+        m_src_pt.pinClassID = 0;
 
-        srcpt.x = essentialProp<double>(node, x_srcX, ns);
-        srcpt.y = essentialProp<double>(node, x_srcY, ns);
+        m_src_pt.x = essentialProp<double>(node, x_srcX, ns);
+        m_src_pt.y = essentialProp<double>(node, x_srcY, ns);
     }
 
-    dstpt.shape = NULL;
-    dstpt.pinClassID = 0;
-    dstpt.x = dstpt.y = 0;
+    m_dst_pt.shape = NULL;
+    m_dst_pt.pinClassID = 0;
+    m_dst_pt.x = m_dst_pt.y = 0;
     if (optionalProp(node,x_dstID,dshape,ns) && !(dshape.isEmpty()))
     {
         ShapeObj *sh = dynamic_cast<ShapeObj *> 
@@ -219,8 +215,8 @@ void Connector::initWithXMLProperties(Canvas *canvas,
             optionalProp(node, x_dstPinID, pinID, ns);
             assert(pinID != 0);
 
-            dstpt.shape = sh;
-            dstpt.pinClassID = pinID;
+            m_dst_pt.shape = sh;
+            m_dst_pt.pinClassID = pinID;
         }
         if (!sh)
         {
@@ -229,9 +225,9 @@ void Connector::initWithXMLProperties(Canvas *canvas,
     }
     else
     {
-        dstpt.pinClassID = 0;
-        dstpt.x = essentialProp<double>(node, x_dstX, ns);
-        dstpt.y = essentialProp<double>(node, x_dstY, ns);
+        m_dst_pt.pinClassID = 0;
+        m_dst_pt.x = essentialProp<double>(node, x_dstX, ns);
+        m_dst_pt.y = essentialProp<double>(node, x_dstY, ns);
     }
     
     optionalProp(node, x_idealLength, m_ideal_length, ns);
@@ -240,7 +236,7 @@ void Connector::initWithXMLProperties(Canvas *canvas,
     int oc=NONE;
     if (optionalProp(node, x_orthogonalConstraint, oc, ns)) 
     {
-        orthogonalConstraint=(OrthogonalConstraint)oc;
+        m_orthogonal_constraint=(OrthogonalConstraint)oc;
         printf("orthogonal constraint=%d\n",oc);
     }
     value = nodeAttribute(node, ns, x_lineCol);
@@ -322,19 +318,19 @@ void Connector::setNewEndpoint(const int endptType, QPointF pos,
 {
     if (endptType == SRCPT)
     {
-        srcpt.shape = shape;
-        srcpt.pinClassID = pinClassID;
+        m_src_pt.shape = shape;
+        m_src_pt.pinClassID = pinClassID;
 
-        srcpt.x = pos.x();
-        srcpt.y = pos.y();
+        m_src_pt.x = pos.x();
+        m_src_pt.y = pos.y();
     }
     else
     {
-        dstpt.shape = shape;
-        dstpt.pinClassID = pinClassID;
+        m_dst_pt.shape = shape;
+        m_dst_pt.pinClassID = pinClassID;
 
-        dstpt.x = pos.x();
-        dstpt.y = pos.y();
+        m_dst_pt.x = pos.x();
+        m_dst_pt.y = pos.y();
     }
 
     if (canvas())
@@ -420,10 +416,10 @@ void Connector::addXmlProps(const unsigned int subset, QDomElement& node,
                     m_obeys_directed_edge_constraints);
         }
 
-        if (orthogonalConstraint != NONE)
+        if (m_orthogonal_constraint != NONE)
         {
             newProp(node, x_orthogonalConstraint,
-                    orthogonalConstraint);
+                    m_orthogonal_constraint);
         }
 
         if (m_routing_type != polyline)
@@ -438,9 +434,9 @@ void Connector::addXmlProps(const unsigned int subset, QDomElement& node,
                       valueStringForEnum("ArrowHeadType", m_arrow_head_type));
         }
 
-        if (m_directed)
+        if (m_is_directed)
         {
-            newProp(node, x_directed, m_directed);
+            newProp(node, x_directed, m_is_directed);
         }
 
         if (m_colour != defaultConnLineCol)
@@ -455,7 +451,7 @@ void Connector::addXmlProps(const unsigned int subset, QDomElement& node,
 
         char value[40];
         // also add line style
-        if (dotted)
+        if (m_is_dotted)
         {
             strcpy(value, "dashed");
             newProp(node, "LineStyle", value);
@@ -464,12 +460,12 @@ void Connector::addXmlProps(const unsigned int subset, QDomElement& node,
 
     if (subset & XMLSS_ICONNS)
     {
-        if (srcpt.shape)
+        if (m_src_pt.shape)
         {
-            newProp(node, x_srcID, srcpt.shape->getIdString());
-            if (srcpt.pinClassID != CENTRE_CONNECTION_PIN)
+            newProp(node, x_srcID, m_src_pt.shape->getIdString());
+            if (m_src_pt.pinClassID != CENTRE_CONNECTION_PIN)
             {
-                newProp(node, x_srcPinID, srcpt.pinClassID);
+                newProp(node, x_srcPinID, m_src_pt.pinClassID);
             }
         }
         else
@@ -477,23 +473,23 @@ void Connector::addXmlProps(const unsigned int subset, QDomElement& node,
             newProp(node, x_srcID, 0);
         }
 
-        newProp(node, x_srcX, srcpt.x);
-        newProp(node, x_srcY, srcpt.y);
+        newProp(node, x_srcX, m_src_pt.x);
+        newProp(node, x_srcY, m_src_pt.y);
 
-        if (dstpt.shape)
+        if (m_dst_pt.shape)
         {
-            newProp(node, x_dstID, dstpt.shape->getIdString());
-            if (dstpt.pinClassID != CENTRE_CONNECTION_PIN)
+            newProp(node, x_dstID, m_dst_pt.shape->getIdString());
+            if (m_dst_pt.pinClassID != CENTRE_CONNECTION_PIN)
             {
-                newProp(node, x_dstPinID, dstpt.pinClassID);
+                newProp(node, x_dstPinID, m_dst_pt.pinClassID);
             }
         }
         else
         {
             newProp(node, x_dstID, 0);
         }
-        newProp(node, x_dstX, dstpt.x);
-        newProp(node, x_dstY, dstpt.y);
+        newProp(node, x_dstX, m_dst_pt.x);
+        newProp(node, x_dstY, m_dst_pt.y);
     }
 
     if (subset & XMLSS_XMOVE)
@@ -556,14 +552,14 @@ void Connector::cascade_distance(int dist, unsigned int dir, CanvasItem **path)
 
 QPair<CPoint, CPoint> Connector::get_connpts(void) const
 {
-    return qMakePair(srcpt, dstpt);
+    return qMakePair(m_src_pt, m_dst_pt);
 }
 
 
     // Returns pointers to the shapes that this connector is attached to.
 QPair<ShapeObj *, ShapeObj *> Connector::getAttachedShapes(void)
 {
-    return qMakePair(srcpt.shape, dstpt.shape);
+    return qMakePair(m_src_pt.shape, m_dst_pt.shape);
 }
 
 
@@ -580,8 +576,8 @@ void Connector::rerouteAvoidingIntersections(void)
 
 bool Connector::hasSameEndpoints(void)
 {
-    double xdiff = fabs(srcpt.x - dstpt.x);
-    double ydiff = fabs(srcpt.y - dstpt.y);
+    double xdiff = fabs(m_src_pt.x - m_dst_pt.x);
+    double ydiff = fabs(m_src_pt.y - m_dst_pt.y);
     int maxDiff = 7;
 
     if ((xdiff <= maxDiff) && (ydiff <= maxDiff))
@@ -594,14 +590,14 @@ bool Connector::hasSameEndpoints(void)
 
 void Connector::setDirected(const bool directed)
 {
-    if (directed == m_directed)
+    if (directed == m_is_directed)
     {
         return;
     }
 
     // UNDO add_undo_record(DELTA_CONNDIR, this);
 
-    m_directed = directed;
+    m_is_directed = directed;
     update();
 
     canvas()->interrupt_graph_layout();
@@ -648,9 +644,9 @@ void Connector::setArrowHeadType(const Connector::ArrowHeadType arrowHeadTypeVal
 void Connector::swapDirection(void)
 {
     // Swap endpoints.
-    CPoint tmp = dstpt;
-    dstpt = srcpt;
-    srcpt = tmp;
+    CPoint tmp = m_dst_pt;
+    m_dst_pt = m_src_pt;
+    m_src_pt = tmp;
     
     forceReroute();
 
@@ -660,7 +656,7 @@ void Connector::swapDirection(void)
 
 bool Connector::isDirected(void) const
 {
-    return m_directed;
+    return m_is_directed;
 }
 
 bool Connector::hasDownwardConstraint(void) const
@@ -711,47 +707,47 @@ void Connector::restoreColour()
 
 void Connector::disconnect_from(ShapeObj *shape, uint pinClassID)
 {
-    if ((srcpt.shape == shape) &&
-            ((pinClassID == 0) || (srcpt.pinClassID == pinClassID)))
+    if ((m_src_pt.shape == shape) &&
+            ((pinClassID == 0) || (m_src_pt.pinClassID == pinClassID)))
     {
-        srcpt.shape = NULL;
-        srcpt.pinClassID = 0;
+        m_src_pt.shape = NULL;
+        m_src_pt.pinClassID = 0;
     }
 
-    if ((dstpt.shape == shape) &&
-            ((pinClassID == 0) || (dstpt.pinClassID == pinClassID)))
+    if ((m_dst_pt.shape == shape) &&
+            ((pinClassID == 0) || (m_dst_pt.pinClassID == pinClassID)))
     {
-        dstpt.shape = NULL;
-        dstpt.pinClassID = 0;
+        m_dst_pt.shape = NULL;
+        m_dst_pt.pinClassID = 0;
     }
 }
 
 
 void Connector::applySimpleRoute(void)
 {
-    if (srcpt.shape)
+    if (m_src_pt.shape)
     {
         // Use shape centre position for endpoint.
-        QPointF srcPt = srcpt.shape->centrePos();
-        srcpt.x = srcPt.x();
-        srcpt.y = srcPt.y();
+        QPointF srcPt = m_src_pt.shape->centrePos();
+        m_src_pt.x = srcPt.x();
+        m_src_pt.y = srcPt.y();
     }
-    if (dstpt.shape)
+    if (m_dst_pt.shape)
     {
         // Use shape centre position for endpoint.
-        QPointF dstPt = dstpt.shape->centrePos();
-        dstpt.x = dstPt.x();
-        dstpt.y = dstPt.y();
+        QPointF dstPt = m_dst_pt.shape->centrePos();
+        m_dst_pt.x = dstPt.x();
+        m_dst_pt.y = dstPt.y();
     }
 
     Avoid::PolyLine route(2);
 
-    route.ps[0].x = srcpt.x;
-    route.ps[0].y = srcpt.y;
+    route.ps[0].x = m_src_pt.x;
+    route.ps[0].y = m_src_pt.y;
     route.ps[0].vn = Avoid::kUnassignedVertexNumber;
 
-    route.ps[1].x = dstpt.x;
-    route.ps[1].y = dstpt.y;
+    route.ps[1].x = m_dst_pt.x;
+    route.ps[1].y = m_dst_pt.y;
     route.ps[1].vn = Avoid::kUnassignedVertexNumber;
 
     bool updateLibavoid = true;
@@ -789,21 +785,21 @@ void Connector::updateFromLibavoid(void)
     fixedroute.ps = newroute.ps;
 
     //Set points for endpoint handles.
-    srcpt.x = fixedroute.at(0).x;
-    srcpt.y = fixedroute.at(0).y;
-    dstpt.x = fixedroute.at(fixedroute.size() - 1).x;
-    dstpt.y = fixedroute.at(fixedroute.size() - 1).y;
+    m_src_pt.x = fixedroute.at(0).x;
+    m_src_pt.y = fixedroute.at(0).y;
+    m_dst_pt.x = fixedroute.at(fixedroute.size() - 1).x;
+    m_dst_pt.y = fixedroute.at(fixedroute.size() - 1).y;
 
-    if (srcpt.shape && (srcpt.pinClassID != CENTRE_CONNECTION_PIN))
+    if (m_src_pt.shape && (m_src_pt.pinClassID != CENTRE_CONNECTION_PIN))
     {
-        QPointF shapeCentre = srcpt.shape->centrePos();
+        QPointF shapeCentre = m_src_pt.shape->centrePos();
         Point centrePoint = Point(shapeCentre.x(), shapeCentre.y());
         fixedroute.ps.insert(fixedroute.ps.begin(), centrePoint);
     }
 
-    if (dstpt.shape && (dstpt.pinClassID != CENTRE_CONNECTION_PIN))
+    if (m_dst_pt.shape && (m_dst_pt.pinClassID != CENTRE_CONNECTION_PIN))
     {
-        QPointF shapeCentre = dstpt.shape->centrePos();
+        QPointF shapeCentre = m_dst_pt.shape->centrePos();
         Point centrePoint = Point(shapeCentre.x(), shapeCentre.y());
         fixedroute.ps.push_back(centrePoint);
     }
@@ -930,7 +926,7 @@ void Connector::setNewLibavoidEndpoint(const int type)
         return;
     }
 
-    CPoint& ep = (type == VertID::src) ? srcpt : dstpt;
+    CPoint& ep = (type == VertID::src) ? m_src_pt : m_dst_pt;
     if (ep.shape)
     {
         Avoid::ConnEnd connEndRef(ep.shape->avoidRef, ep.pinClassID);
@@ -980,13 +976,13 @@ void Connector::triggerReroute(bool now)
 static QPainterPath cutPainterPathEnd(const QPainterPath& path, 
         const QPointF pathPos, const QPolygonF& shape) 
 {
-    QPainterPath result;
+    QPainterPath cutPainterPath;
     QPointF cutPoint;
     const QRectF boundingRect = shape.boundingRect();
 
-    bool found_intersection = false;
+    bool hasfoundIntersection = false;
     int index = path.elementCount() - 1;
-    while (!found_intersection && (index > 0))
+    while (!hasfoundIntersection && (index > 0))
     {
         QPainterPath::Element c1Elem = path.elementAt(index - 1);
         QPainterPath::Element c2Elem = path.elementAt(index);
@@ -1036,18 +1032,18 @@ static QPainterPath cutPainterPathEnd(const QPainterPath& path,
             const QPainterPath::Element& element = path.elementAt(j);
             if (element.isMoveTo())
             {
-                result.moveTo(element.x, element.y);
+                cutPainterPath.moveTo(element.x, element.y);
             }
             else if (element.isLineTo())
             {
                 if (index == j)
                 {
-                    result.lineTo(cutPoint);
+                    cutPainterPath.lineTo(cutPoint);
                     break;
                 }
                 else 
                 {
-                    result.lineTo(element.x, element.y);
+                    cutPainterPath.lineTo(element.x, element.y);
                 }
             }
             else if (element.isCurveTo())
@@ -1061,29 +1057,29 @@ static QPainterPath cutPainterPathEnd(const QPainterPath& path,
                 {
                     if (index == j)
                     {
-                        result.lineTo(cutPoint);
+                        cutPainterPath.lineTo(cutPoint);
                     }
                     else if (index == j + 1)
                     {
-                        result.cubicTo(element.x, element.y, element.x, 
+                        cutPainterPath.cubicTo(element.x, element.y, element.x,
                                 element.y, cutPoint.x(), cutPoint.y());
                     }
                     else if (index == j + 2)
                     {
-                        result.cubicTo(element.x, element.y, elem2.x, elem2.y,
+                        cutPainterPath.cubicTo(element.x, element.y, elem2.x, elem2.y,
                                 cutPoint.x(), cutPoint.y());
                     }
                     break;
                 }
                 else
                 {
-                    result.cubicTo(element.x, element.y, elem2.x, elem2.y,
+                    cutPainterPath.cubicTo(element.x, element.y, elem2.x, elem2.y,
                             elem3.x, elem3.y);
                 }
                 j += 2;
             }
         }
-        return result;
+        return cutPainterPath;
     }
     return path;
 }
@@ -1106,10 +1102,10 @@ void Connector::applyNewRoute(const Avoid::PolyLine& route,
         // Update Connpt positions, so that handles can be updated during
         // topology preserving layout when routes are returned won't always
         // match our internal endpoint positions.
-        srcpt.x = route.ps[0].x;
-        srcpt.y = route.ps[0].y;
-        dstpt.x = route.ps[route.size() - 1].x;
-        dstpt.y = route.ps[route.size() - 1].y;
+        m_src_pt.x = route.ps[0].x;
+        m_src_pt.y = route.ps[0].y;
+        m_dst_pt.x = route.ps[route.size() - 1].x;
+        m_dst_pt.y = route.ps[route.size() - 1].y;
     }
 
     applyNewRoute(Avoid::Polygon(route));
@@ -1127,42 +1123,42 @@ void Connector::applyNewRoute(const Avoid::Polygon& oroute)
     double roundingDist = (double) canvas()->optConnectorRoundingDistance();
     if (roundingDist > 0)
     {
-        offset_route = oroute.curvedPolyline(roundingDist);
+        m_offset_route = oroute.curvedPolyline(roundingDist);
     }
     else
     {
-        offset_route = oroute;
+        m_offset_route = oroute;
     }
 
     // Connectors position will be the first point.
-    setPos(offset_route.ps[0].x, offset_route.ps[0].y);
+    setPos(m_offset_route.ps[0].x, m_offset_route.ps[0].y);
     // Reset the painter path for this connector.
     QPainterPath painter_path = QPainterPath();
-    int route_pn = offset_route.size();
+    int route_pn = m_offset_route.size();
     for (int j = 0; j < route_pn; ++j)
     {
         // Switch to local coordinates.
-        offset_route.ps[j].x -= x();
-        offset_route.ps[j].y -= y();
+        m_offset_route.ps[j].x -= x();
+        m_offset_route.ps[j].y -= y();
         if (j > 0)
         {
-            applyMultiEdgeOffset(offset_route.ps[j - 1], offset_route.ps[j],
+            applyMultiEdgeOffset(m_offset_route.ps[j - 1], m_offset_route.ps[j],
                     (j > 1));
         }
     }
     for (int j = 0; j < route_pn; ++j)
     {
-        QPointF point(offset_route.ps[j].x, offset_route.ps[j].y);
+        QPointF point(m_offset_route.ps[j].x, m_offset_route.ps[j].y);
         if (j == 0)
         {
             // First point.
             painter_path.moveTo(point);
         }
-        else if ((roundingDist > 0) && (offset_route.ts[j] == 'C'))
+        else if ((roundingDist > 0) && (m_offset_route.ts[j] == 'C'))
         {
             // This is a bezier curve.
-            QPointF c2(offset_route.ps[j + 1].x, offset_route.ps[j + 1].y);
-            QPointF c3(offset_route.ps[j + 2].x, offset_route.ps[j + 2].y);
+            QPointF c2(m_offset_route.ps[j + 1].x, m_offset_route.ps[j + 1].y);
+            QPointF c3(m_offset_route.ps[j + 2].x, m_offset_route.ps[j + 2].y);
             painter_path.cubicTo(point, c2, c3);
             j += 2;
         }
@@ -1181,11 +1177,11 @@ void Connector::applyNewRoute(const Avoid::Polygon& oroute)
 void Connector::buildArrowHeadPath(void)
 {
     m_arrow_path = QPainterPath();
-    if (m_directed)
+    if (m_is_directed)
     {
-        if (dstpt.shape)
+        if (m_dst_pt.shape)
         {
-            ShapeObj *shape = dstpt.shape;
+            ShapeObj *shape = m_dst_pt.shape;
             QPolygonF polygon = shape->shape().toFillPolygon();
             polygon.translate(shape->pos());
             
@@ -1207,13 +1203,13 @@ void Connector::buildArrowHeadPath(void)
         }
         else
         {
-            int line_size = offset_route.size();
+            int line_size = m_offset_route.size();
             // The destination end is not attached to any shape.
             m_arrow_head_outline = drawArrow(m_arrow_path,
-                    offset_route.ps[line_size - 2].x,
-                    offset_route.ps[line_size - 2].y,
-                    offset_route.ps[line_size - 1].x,
-                    offset_route.ps[line_size - 1].y, arrowHeadType());
+                    m_offset_route.ps[line_size - 2].x,
+                    m_offset_route.ps[line_size - 2].y,
+                    m_offset_route.ps[line_size - 1].x,
+                    m_offset_route.ps[line_size - 1].y, arrowHeadType());
         }
     }
 }
@@ -1247,7 +1243,7 @@ void Connector::applyMultiEdgeOffset(Point& p1, Point& p2, bool justSecond)
         nx/=nl;
         ny/=nl;
     }
-    double pos = (double)multiEdgeInd - ((double)multiEdgeSize-1.)/2.;
+    double pos = (double)m_multiedge_index - ((double)m_multiedge_size-1.)/2.;
     Point offset(nx*pos*3., ny*pos*3.);
 
     if (!justSecond)
@@ -1331,7 +1327,7 @@ void Connector::paint(QPainter *painter,
     }
 
     QPen pen(m_colour);
-    if (dotted)
+    if (m_is_dotted)
     {
         QVector<qreal> dashes;
         dashes << 5 << 3;
@@ -1341,7 +1337,7 @@ void Connector::paint(QPainter *painter,
     painter->drawPath(painterPath());
     
     // Add the Arrowhead.
-    if (m_directed)
+    if (m_is_directed)
     {
         // There is an arrowhead.
         if (m_arrow_head_outline)
@@ -1367,14 +1363,14 @@ QAction *Connector::buildAndExecContextMenu(QGraphicsSceneMouseEvent *event,
     }
     QAction *changeType = menu.addAction((m_routing_type == orthogonal) ?
             tr("Change to polyline") : tr("Change to orthogonal"));
-    QAction *changeDirected = menu.addAction((m_directed) ?
+    QAction *changeDirected = menu.addAction((m_is_directed) ?
             tr("Change to undirected") : tr("Change to directed"));
     QAction *swapDirection = menu.addAction(
             tr("Swap connector direction"));
     QAction *addCheckpoint = menu.addAction(
             tr("Add routing checkpoint at this point"));
 
-    if (!m_directed)
+    if (!m_is_directed)
     {
         swapDirection->setVisible(false);
     }

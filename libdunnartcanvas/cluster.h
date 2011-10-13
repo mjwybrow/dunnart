@@ -58,10 +58,11 @@ class Cluster: public ShapeObj
         }
         Cluster(CanvasItemList& memberList, QString id);
         Cluster(Canvas *canvas, const QDomElement& node, const QString& ns);
-        QDomElement to_QDomElement(const unsigned int subset, 
+
+        QDomElement to_QDomElement(const unsigned int subset,
                 QDomDocument& doc);
         Avoid::Polygon *poly(const double buffer, Avoid::Polygon *poly = NULL);
-        virtual void set_label(const char *l);
+        virtual void setLabel(const QString& label);
         void recomputeBoundary(void);
         void setNewBoundary(std::vector<Avoid::Point>& points);
         void computeBoundingBox(void);
@@ -88,6 +89,9 @@ class Cluster: public ShapeObj
     private:
         virtual void userMoveBy(qreal dx, qreal dy);
 
+        void calculateBoundary(void);
+        void changeDetailLevel(bool expand);
+
         ShapeList members;
         std::vector<Avoid::Point> boundary;
         int psn;
@@ -98,8 +102,6 @@ class Cluster: public ShapeObj
         ConnSet internalConns;
         XmlNodeList expandedConnRoutes;
         
-        void calculateBoundary(void);
-        void changeDetailLevel(bool expand);
 };
 
 

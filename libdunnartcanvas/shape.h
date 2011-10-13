@@ -90,7 +90,7 @@ class ShapeObj: public CanvasItem
                 const double y, const double w, const double h);
 
         QString getLabel(void) const;
-        void setLabel(const QString label);
+        virtual void setLabel(const QString& label);
 
         QColor strokeColour(void) const;
         void setStrokeColour(const QColor& colour);
@@ -111,7 +111,7 @@ class ShapeObj: public CanvasItem
         QList<ShapeObj *> containedShapes(void) const;
         void showConnectionPoints(void);
         void hideConnectionPoints(void);
-        bool change_detail_level(bool expand);
+        bool changeDetailLevel(bool expand);
         virtual QRectF shapeRect(const double buffer = 0.0) const;
         void setPos(const QPointF& pos);
         virtual void setSize(const QSizeF& size);
@@ -122,8 +122,7 @@ class ShapeObj: public CanvasItem
         void paintLabel(QPainter *painter);
         virtual QRectF labelBoundingRect(void) const;
         void drawLabelAndImage(QPixmap *target, const int x, const int y);
-        virtual void change_label(void);
-        virtual void set_label(const char *l);
+        virtual void changeLabel(void);
         virtual bool canBe(const unsigned int flags);
         Guideline *get_guide(atypes type);
         Guideline *new_guide(atypes type);
@@ -147,17 +146,21 @@ class ShapeObj: public CanvasItem
         uint connectionPinForConnectionFlags(uint flags);
         void addConnectionPin(ConnectionPinInfo pinInfo);
         virtual QPointF centrePos(void) const;
+        void setBeingResized(bool isResizing);
+        bool isBeingResized(void);
 
         Relationship *rels[6];
         Avoid::ShapeRef *avoidRef;
-        void setBeingResized(bool isResizing);
-        bool isBeingResized(void);
     protected:
         virtual QAction *buildAndExecContextMenu(
                 QGraphicsSceneMouseEvent *event, QMenu& menu);
         virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
         virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
         virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+        virtual void routerAdd(void);
+        virtual void routerRemove(void);
+        virtual void routerMove(void);
+        virtual void routerResize(void);
 
         void paintShapeDecorations(QPainter *painter);
         void move_to(const int x, const int y, bool store_undo,
@@ -170,12 +173,6 @@ class ShapeObj: public CanvasItem
         double smallDecorativeScale;
         double detailLevel;
         bool beingResized;
-
-    protected:
-        virtual void routerAdd(void);
-        virtual void routerRemove(void);
-        virtual void routerMove(void);
-        virtual void routerResize(void);
 
     private:
         virtual void userMoveBy(qreal dx, qreal dy);

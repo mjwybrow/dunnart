@@ -742,7 +742,7 @@ void GraphData::setupMultiEdges() {
     list<Connector*> conList(conn_vec.begin(),conn_vec.end());
     list<list<Connector*> > conDups;
     for(list<Connector*>::iterator i=conList.begin();i!=conList.end();i++) {
-        (*i)->multiEdge=false;
+        (*i)->m_is_multiedge=false;
     }
     for(list<Connector*>::iterator i=conList.begin();i!=conList.end();)
     {
@@ -750,11 +750,11 @@ void GraphData::setupMultiEdges() {
         list<Connector*> dups;
         dups.push_back(*i);
         for(list<Connector*>::iterator j=++i;j!=conList.end();j++) {
-            if(!(*j)->multiEdge && p1.first && p1.second) {
+            if(!(*j)->m_is_multiedge && p1.first && p1.second) {
                 QPair<ShapeObj *, ShapeObj *> p2 = (*j)->getAttachedShapes();
                 if(   (p1.first==p2.first && p1.second==p2.second)
            || (p1.first==p2.second && p1.second==p2.first)) {
-                    (*j)->multiEdge=true;
+                    (*j)->m_is_multiedge=true;
                     dups.push_back(*j);
                 }
             }
@@ -769,8 +769,8 @@ void GraphData::setupMultiEdges() {
         for(list<Connector*>::iterator j=i->begin();j!=i->end();j++) {
             QPair<ShapeObj *, ShapeObj *> p = (*j)->getAttachedShapes();
             printf("(%d,%d) ", p.first->internalId(), p.second->internalId());
-            (*j)->multiEdgeSize=i->size();
-            (*j)->multiEdgeInd=ctr++;
+            (*j)->m_multiedge_size=i->size();
+            (*j)->m_multiedge_index=ctr++;
         }
         printf("\n");
     }

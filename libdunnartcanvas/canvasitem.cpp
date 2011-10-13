@@ -126,12 +126,12 @@ const char *x_dunnartURI = "http://www.dunnart.org/ns/dunnart";
 
 CanvasItem::CanvasItem(QGraphicsItem *parent, QString id, unsigned int lev)
         : QGraphicsSvgItem(),
-          distance(-1),
-          cascade_glow(false),
           m_string_id(id),
           m_internal_id(0),
           m_is_collapsed(false),
-          _inactive(false),
+          m_is_inactive(false),
+          m_connection_distance(-1),
+          m_connection_cascade_glow(false),
           m_constraint_conflict(false)
 {
     Q_UNUSED (parent)
@@ -141,7 +141,7 @@ CanvasItem::CanvasItem(QGraphicsItem *parent, QString id, unsigned int lev)
     setCacheMode(QGraphicsItem::NoCache);
 
     setZValue(lev);
-    connectedObjs[0] = connectedObjs[1] = NULL;
+    m_connected_objects[0] = m_connected_objects[1] = NULL;
 
     setAcceptHoverEvents(true);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
@@ -810,7 +810,7 @@ void CanvasItem::setAsCollapsed(bool collapsed)
 
 bool CanvasItem::isInactive(void) const
 {
-    return _inactive;
+    return m_is_inactive;
 }
 
 
@@ -857,7 +857,7 @@ void CanvasItem::maybeReturn(void)
 
 void CanvasItem::setAsInactive(bool inactive, CanvasItemSet fullSet)
 {
-    if (_inactive == inactive)
+    if (m_is_inactive == inactive)
     {
         qFatal("Existing inactive state passed to CanvasItem::setAsInactive");
     }
@@ -867,8 +867,8 @@ void CanvasItem::setAsInactive(bool inactive, CanvasItemSet fullSet)
     ShapeObj *shape = dynamic_cast<ShapeObj *> (this);
 
     QDomDocument doc("XML");
-    _inactive = inactive;
-    if (_inactive)
+    m_is_inactive = inactive;
+    if (m_is_inactive)
     {
         QDomElement xn = to_QDomElement(XMLSS_ALL, doc);
         assert(!xn.isNull());
@@ -1011,7 +1011,7 @@ bool CanvasItem::cascade_logic(int& nextval, int dist, unsigned int dir,
         int index = dist + 1;
         while (path[index])
         {
-            path[index]->distance = -1;
+            path[index]->m_connection_distance = -1;
             path[index] = NULL;
             ++index;
         }
@@ -1019,22 +1019,22 @@ bool CanvasItem::cascade_logic(int& nextval, int dist, unsigned int dir,
     
     if (path && (this == path[0]))
     {
-        if (distance == -1)
+        if (m_connection_distance == -1)
         {
-            distance = dist;
+            m_connection_distance = dist;
         }
         path[dist + 1] = this;
         // Have reached destination
         for (int i = dist + 1; i > 0; --i)
         {
             // Mark path.
-            path[i]->distance = -2;
-            path[i]->cascade_glow = true;
+            path[i]->m_connection_distance = -2;
+            path[i]->m_connection_cascade_glow = true;
 
             if ((i > 1) && (i < (dist + 1)))
             {
-                path[i]->connectedObjs[0] = path[i - 1];
-                path[i]->connectedObjs[1] = path[i + 1];
+                path[i]->m_connected_objects[0] = path[i - 1];
+                path[i]->m_connected_objects[1] = path[i + 1];
             }
 
 #if 0
@@ -1048,12 +1048,12 @@ bool CanvasItem::cascade_logic(int& nextval, int dist, unsigned int dir,
         return false;
     }
 
-    if (distance == -1)
+    if (m_connection_distance == -1)
     {
-        distance = dist;
+        m_connection_distance = dist;
         path[dist + 1] = this;
     }
-    else if (dist >= distance)
+    else if (dist >= m_connection_distance)
     {
         return false;
     }

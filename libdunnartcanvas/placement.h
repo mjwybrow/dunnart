@@ -27,21 +27,13 @@
 #define PLACEMENT_H
 
 namespace dunnart {
-
-
-static const bool allow_ring_disconnect = false;
-
     
 extern void selection_align(CanvasItem **c);
 extern void selection_distro(CanvasItem **c);
 extern void selection_separation(CanvasItem **c);
 extern void pair_query(CanvasItem *curr);
-extern void toggle_multiway_constraints(void);
 extern void reroute_all_connectors(CanvasItem **slider);
 extern void resetQueryModeIllumination(const bool clearQueryObj);
-
-
-extern const QColor shLightGlow;
 
 
 }
