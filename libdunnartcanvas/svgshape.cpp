@@ -137,8 +137,10 @@ void SvgShape::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
            QWidget *widget)
 {
     assert(painter->isActive());
+    assert(option);
 
-    if (isSelected())
+    bool showDecorations = canvas() && ! canvas()->isRenderingForPrinting();
+    if ( isSelected() && showDecorations && canvas()->inSelectionMode() )
     {
         QPen highlight;
         highlight.setColor(QColor(0, 255, 255, 100));

@@ -45,13 +45,6 @@
 namespace dunnart {
 
 
-#define MAX_PATH_LEN 200
-#define MAX_NAME_LEN 20
-
-extern char runtime_path[MAX_PATH_LEN + 1];
-extern char filename[MAX_PATH_LEN + 1];
-
-
 #ifdef DPRINTF_DEBUG
 
 inline void d_printf(const char *fmt, ...)

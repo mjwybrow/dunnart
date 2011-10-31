@@ -25,8 +25,8 @@
 #include <QtGui>
 #include <QObject>
 
+#include "libdunnartcanvas/shapeplugininterface.h"
 #include "libdunnartcanvas/shape.h"
-#include "libdunnartcanvas/canvasitem.h"
 using namespace dunnart;
 
 #include "umlclass.h"
@@ -44,13 +44,13 @@ class UMLShapesPlugin : public QObject, public ShapePluginInterface
         {
             return "UML";
         }
-        QStringList shapes() const
+        QStringList producableShapeTypes() const
         {
             QStringList shapes;
             shapes << "org.dunnart.shapes.umlClass";
             return shapes;
         }
-        ShapeObj *generateShape(QString shapeType)
+        ShapeObj *generateShapeOfType(QString shapeType)
         {
             if (shapeType == "org.dunnart.shapes.umlClass")
             {

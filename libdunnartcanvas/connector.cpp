@@ -185,7 +185,8 @@ void Connector::initWithXMLProperties(Canvas *canvas,
         }
         if (!sh)
         {
-            qWarning("could not find shape for `src' connection");
+            qWarning("could not find shape for `src' connection: \"%s\"",
+                     qPrintable(sshape));
         }
     }
     else
@@ -220,7 +221,8 @@ void Connector::initWithXMLProperties(Canvas *canvas,
         }
         if (!sh)
         {
-            qWarning("could not find shape for `dst' connection");
+            qWarning("could not find shape for `dst' connection: \"%s\"",
+                    qPrintable(sshape));
         }
     }
     else
@@ -462,7 +464,7 @@ void Connector::addXmlProps(const unsigned int subset, QDomElement& node,
     {
         if (m_src_pt.shape)
         {
-            newProp(node, x_srcID, m_src_pt.shape->getIdString());
+            newProp(node, x_srcID, m_src_pt.shape->idString());
             if (m_src_pt.pinClassID != CENTRE_CONNECTION_PIN)
             {
                 newProp(node, x_srcPinID, m_src_pt.pinClassID);
@@ -478,7 +480,7 @@ void Connector::addXmlProps(const unsigned int subset, QDomElement& node,
 
         if (m_dst_pt.shape)
         {
-            newProp(node, x_dstID, m_dst_pt.shape->getIdString());
+            newProp(node, x_dstID, m_dst_pt.shape->idString());
             if (m_dst_pt.pinClassID != CENTRE_CONNECTION_PIN)
             {
                 newProp(node, x_dstPinID, m_dst_pt.pinClassID);
@@ -1436,6 +1438,18 @@ void Connector::write_libavoid_path(QDomElement& node, QDomDocument& doc)
     if (!pathStr.isEmpty())
     {
         newProp(node, x_libavoidPath, pathStr);
+    }
+
+    const Avoid::PolyLine& displayRoute = avoidRef->displayRoute();
+    pathStr.clear();
+    for (size_t i = 0; i < displayRoute.size(); ++i)
+    {
+        pathStr += str.sprintf("%g,%g ", displayRoute.ps[i].x,
+                displayRoute.ps[i].y);
+    }
+    if (!pathStr.isEmpty())
+    {
+        newProp(node, "path", pathStr);
     }
 }
 

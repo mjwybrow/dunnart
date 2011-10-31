@@ -33,6 +33,7 @@
 #include <QUndoStack>
 #include <QSvgGenerator>
 #include <QGraphicsView>
+#include <QMessageBox>
 
 #include "libdunnartcanvas/canvas.h"
 #include "libdunnartcanvas/shape.h"
@@ -45,6 +46,8 @@
 #include "libdunnartcanvas/connector.h"
 #include "libdunnartcanvas/canvasitem.h"
 #include "libdunnartcanvas/gmlgraph.h"
+#include "libdunnartcanvas/connectionpininfo.h"
+#include "libdunnartcanvas/pluginfileiofactory.h"
 
 #include "libdunnartcanvas/graphlayout.h"
 #include "libdunnartcanvas/oldcanvas.h"
@@ -283,52 +286,54 @@ Canvas::~Canvas()
 }
 
 
-void Canvas::loadGmlDiagram(const QString& filename)
+bool Canvas::loadGmlDiagram(const QFileInfo& fileInfo)
 {
     setOptFitWithinPage(true);
     setOptAutomaticGraphLayout(true);
     avoidBuffer = 10;
     int cxoff, cyoff;
-    m_gml_graph = new gml::Graph(this, filename.toStdString(),
+    m_gml_graph = new gml::Graph(this, fileInfo.absolutePath().toStdString(),
             gml::Page(this), gml::COff(cxoff, cyoff));
-    //QT changeControlState(BUT_GMLGRAPH, SDLGui::WIDGET_enable);
+    return true;
 }
 
 
-void Canvas::loadSvgDiagram(const QString& filename)
+void Canvas::loadDiagram(const QString& filename)
 {
-    QDomDocument doc(filename);
-    QFile file(filename);
-    if (!file.open(QIODevice::ReadOnly))
+    if (filename.isEmpty())
     {
-        qDebug() << "WARNING:\tCannot open file '" << filename <<
-                "' for reading.\n"
-                "\t\tSaving the active diagram will create this file.\n";
         return;
     }
-    if (!doc.setContent(&file, true))
-    {
-        file.close();
-        qFatal("Can't set XML content.");
-    }
-    file.close();
-    m_svg_renderer = new QSvgRenderer(filename);
 
-    QDomElement root = doc.documentElement();
+    QString errorMessage;
+    QFileInfo fileInfo(filename);
+    PluginFileIOFactory *fileIOFactory = sharedPluginFileIOFactory();
+    bool successful = fileIOFactory->loadDiagramFromFile(this, fileInfo,
+            errorMessage);
 
-    for (int pass = 0; pass < PASS_LAST; ++pass)
+    if (successful)
     {
-        if (pass == PASS_CLUSTERS)
-        {
-            // Cause shapes to be added before clusters try and reference them.
-            router()->processTransaction();
-        }
-        recursiveReadSVG(root, x_dunnartNs, pass);
+        this->setFilename(filename);
     }
-    // XXX Quick test
-    //canvas->loadConstraintInfoFromString("<!DOCTYPE svg> <svg> <dunnart:options penaliseCrossings=\"0\" layoutMode=\"0\" preventOverlaps=\"1\" defaultIdealConnectorLength=\"1\" segmentPenalty=\"50\" layoutMethod=\"0\" avoidBuffer=\"0\" pageBoundaryConstraints=\"0\"/> <guide position=\"275\" id=\"4\" dunnart:direction=\"100\" dunnart:position=\"272\" dunnart:type=\"indGuide\"> <dunnart:node constraintID=\"4\" alignmentPos=\"4\" dunnart:type=\"constraint\" relType=\"alignment\" objOneID=\"3\"/> <dunnart:node constraintID=\"4\" alignmentPos=\"4\" dunnart:type=\"constraint\" relType=\"alignment\" objOneID=\"2\"/> <dunnart:node constraintID=\"4\" alignmentPos=\"4\" dunnart:type=\"constraint\" relType=\"alignment\" objOneID=\"1\"/> </guide> <guide position=\"623\" id=\"8\" dunnart:direction=\"100\" dunnart:position=\"620\" dunnart:type=\"indGuide\"> <dunnart:node constraintID=\"8\" alignmentPos=\"4\" dunnart:type=\"constraint\" relType=\"alignment\" objOneID=\"7\"/> </guide> <guide position=\"522\" id=\"9\" dunnart:direction=\"100\" dunnart:position=\"519\" dunnart:type=\"indGuide\"> <dunnart:node constraintID=\"9\" alignmentPos=\"4\" dunnart:type=\"constraint\" relType=\"alignment\" objOneID=\"6\"/> </guide> <guide position=\"401\" id=\"10\" dunnart:direction=\"100\" dunnart:position=\"398\" dunnart:type=\"indGuide\"> <dunnart:node constraintID=\"10\" alignmentPos=\"4\" dunnart:type=\"constraint\" relType=\"alignment\" objOneID=\"5\"/> </guide> <guide position=\"275.166\" id=\"12\" dunnart:direction=\"101\" dunnart:position=\"272.166\" dunnart:type=\"indGuide\"> <dunnart:node constraintID=\"12\" alignmentPos=\"1\" dunnart:type=\"constraint\" relType=\"alignment\" objOneID=\"3\"/> </guide> <guide position=\"209.666\" id=\"13\" dunnart:direction=\"101\" dunnart:position=\"206.666\" dunnart:type=\"indGuide\"> <dunnart:node constraintID=\"13\" alignmentPos=\"1\" dunnart:type=\"constraint\" relType=\"alignment\" objOneID=\"2\"/> </guide> <guide position=\"144.166\" id=\"14\" dunnart:direction=\"101\" dunnart:position=\"141.166\" dunnart:type=\"indGuide\"> <dunnart:node constraintID=\"14\" alignmentPos=\"1\" dunnart:type=\"constraint\" relType=\"alignment\" objOneID=\"1\"/> </guide> <dunnart:node id=\"11\" dunnart:direction=\"100\" dunnart:position=\"52\" dunnart:type=\"separation\" dunnart:sepDistance=\"50\"> <dunnart:node objTwoID=\"10\" constraintID=\"11\" dunnart:type=\"constraint\" relType=\"separation\" objOneID=\"4\"/> <dunnart:node objTwoID=\"9\" constraintID=\"11\" dunnart:type=\"constraint\" relType=\"separation\" objOneID=\"10\"/> <dunnart:node objTwoID=\"8\" constraintID=\"11\" dunnart:type=\"constraint\" relType=\"separation\" objOneID=\"9\"/> </dunnart:node> <dunnart:node id=\"15\" dunnart:direction=\"101\" dunnart:position=\"7\" dunnart:type=\"distribution\" dunnart:sepDistance=\"65.5\"> <dunnart:node objTwoID=\"13\" constraintID=\"15\" dunnart:type=\"constraint\" relType=\"distribution\" objOneID=\"14\"/> <dunnart:node objTwoID=\"12\" constraintID=\"15\" dunnart:type=\"constraint\" relType=\"distribution\" objOneID=\"13\"/> </dunnart:node> </svg>\" penaliseCrossings=\"0\" layoutMode=\"0\" preventOverlaps=\"1\" defaultIdealConnectorLength=\"1\" segmentPenalty=\"50\" layoutMethod=\"0\" avoidBuffer=\"0\" pageBoundaryConstraints=\"0\"/> <guide position=\"275\" id=\"4\" dunnart:direction=\"100\" dunnart:position=\"272\" dunnart:type=\"indGuide\"> <dunnart:node constraintID=\"4\" alignmentPos=\"4\" dunnart:type=\"constraint\" relType=\"alignment\" objOneID=\"3\"/> <dunnart:node constraintID=\"4\" alignmentPos=\"4\" dunnart:type=\"constraint\" relType=\"alignment\" objOneID=\"2\"/> <dunnart:node constraintID=\"4\" alignmentPos=\"4\" dunnart:type=\"constraint\" relType=\"alignment\" objOneID=\"1\"/> </guide> <guide position=\"623\" id=\"8\" dunnart:direction=\"100\" dunnart:position=\"620\" dunnart:type=\"indGuide\"> <dunnart:node constraintID=\"8\" alignmentPos=\"4\" dunnart:type=\"constraint\" relType=\"alignment\" objOneID=\"7\"/> </guide> <guide position=\"522\" id=\"9\" dunnart:direction=\"100\" dunnart:position=\"519\" dunnart:type=\"indGuide\"> <dunnart:node constraintID=\"9\" alignmentPos=\"4\" dunnart:type=\"constraint\" relType=\"alignment\" objOneID=\"6\"/> </guide> <guide position=\"401\" id=\"10\" dunnart:direction=\"100\" dunnart:position=\"398\" dunnart:type=\"indGuide\"> <dunnart:node constraintID=\"10\" alignmentPos=\"4\" dunnart:type=\"constraint\" relType=\"alignment\" objOneID=\"5\"/> </guide> <guide position=\"275.166\" id=\"12\" dunnart:direction=\"101\" dunnart:position=\"272.166\" dunnart:type=\"indGuide\"> <dunnart:node constraintID=\"12\" alignmentPos=\"1\" dunnart:type=\"constraint\" relType=\"alignment\" objOneID=\"3\"/> </guide> <guide position=\"209.666\" id=\"13\" dunnart:direction=\"101\" dunnart:position=\"206.666\" dunnart:type=\"indGuide\"> <dunnart:node constraintID=\"13\" alignmentPos=\"1\" dunnart:type=\"constraint\" relType=\"alignment\" objOneID=\"2\"/> </guide> <guide position=\"144.166\" id=\"14\" dunnart:direction=\"101\" dunnart:position=\"141.166\" dunnart:type=\"indGuide\"> <dunnart:node constraintID=\"14\" alignmentPos=\"1\" dunnart:type=\"constraint\" relType=\"alignment\" objOneID=\"1\"/> </guide> <dunnart:node id=\"11\" dunnart:direction=\"100\" dunnart:position=\"52\" dunnart:type=\"separation\" dunnart:sepDistance=\"50\"> <dunnart:node objTwoID=\"10\" constraintID=\"11\" dunnart:type=\"constraint\" relType=\"separation\" objOneID=\"4\"/> <dunnart:node objTwoID=\"9\" constraintID=\"11\" dunnart:type=\"constraint\" relType=\"separation\" objOneID=\"10\"/> <dunnart:node objTwoID=\"8\" constraintID=\"11\" dunnart:type=\"constraint\" relType=\"separation\" objOneID=\"9\"/> </dunnart:node> <dunnart:node id=\"15\" dunnart:direction=\"101\" dunnart:position=\"7\" dunnart:type=\"distribution\" dunnart:sepDistance=\"65.5\"> <dunnart:node objTwoID=\"13\" constraintID=\"15\" dunnart:type=\"constraint\" relType=\"distribution\" objOneID=\"14\"/> <dunnart:node objTwoID=\"12\" constraintID=\"15\" dunnart:type=\"constraint\" relType=\"distribution\" objOneID=\"13\"/> </dunnart:node> </svg> ");
+    else
+    {
+        // We weren't successful loading, so show an error message.
+        QString warning = QString(
+                QObject::tr("<p><b>The document \"%1\" could not be loaded.</b></p>"
+                "<p>%2</p>")).arg(fileInfo.fileName()).arg(errorMessage);
+
+        QWidget *window = views().first()->window();
+        QMessageBox message(QMessageBox::Warning, "Error Loading File",
+                            warning, QMessageBox::Ok, window);
+        message.setWindowModality(Qt::WindowModal);
+        message.exec();
+    }
 }
 
+void Canvas::setSvgRendererForFile(const QString& filename)
+{
+    m_svg_renderer = new QSvgRenderer(filename);
+}
 
 void Canvas::postDiagramLoad(void)
 {
@@ -384,7 +389,7 @@ CanvasItem *Canvas::getItemByID(QString ID) const
     for (int i = 0; i < canvas_items.size(); ++i)
     {
         CanvasItem *cobj = canvas_items.at(i);
-        if (ID == cobj->getIdString())
+        if (ID == cobj->idString())
         {
             return cobj;
         }
@@ -485,7 +490,7 @@ bool Canvas::idIsUnique(QString id) const
     CanvasItem *item;
     foreach (item, items())
     {
-        if (item->getIdString() == id)
+        if (item->idString() == id)
         {
             ++count;
         }
@@ -1697,7 +1702,7 @@ void Canvas::startLayoutFinishTimer(void)
 }
 
 
-void Canvas::set_filename(QString filename)
+void Canvas::setFilename(QString filename)
 {
     m_filename = filename;
     QFileInfo info(m_filename);
@@ -2608,9 +2613,8 @@ void Canvas::recursiveMapIDs(QDomNode start, const QString& ns, int pass)
 }
 
 
-// Return true for namespaces that are not used by Dunnart
-// (since we will be copy elements/properties
-//  in such namespaces straight through)
+// Return true for namespaces that are not used by Dunnart (since we
+// will be copy elements/properties in such namespaces straight through).
 static bool is_external_ns(const QString& ns)
 {
     if (ns.isEmpty() || (ns == x_dunnartNs) || (ns == "inkscape") ||
@@ -2642,6 +2646,12 @@ void Canvas::loadSVGRootNodeAttributes(const QDomElement& svgRoot)
 void Canvas::recursiveReadSVG(const QDomNode& start, const QString& dunnartNS,
         int pass)
 {
+    if (pass == PASS_CLUSTERS)
+    {
+        // Cause shapes to be added before clusters try and reference them.
+        router()->processTransaction();
+    }
+
     for (QDomNode curr = start; !curr.isNull(); curr = curr.nextSibling())
     {
         if (!curr.prefix().isEmpty())
@@ -2656,7 +2666,7 @@ void Canvas::recursiveReadSVG(const QDomNode& start, const QString& dunnartNS,
         {
             const QDomElement element = curr.toElement();
 
-            if (pass == 0)
+            if (pass == PASS_SHAPES)
             {
                 if ((element.localName() == "options") &&
                     (element.prefix() == x_dunnartNs))
@@ -2710,6 +2720,7 @@ void Canvas::recursiveReadSVG(const QDomNode& start, const QString& dunnartNS,
     }
 }
 
+
 bool Canvas::forceOrthogonalConnectors(void) const
 {
     return m_force_orthogonal_connectors;
@@ -2739,129 +2750,33 @@ static const char *x_rubberBandRouting =
 static const char *x_interferingConnectorColours =
         "interferingConnectorColours";
 
-static QString nodeToString(const QDomNode& node)
+void Canvas::saveDiagram(const QString& outputFilename)
 {
-    QString nodeString;
-    QTextStream nodeTextStream(&nodeString);
-    node.save(nodeTextStream, 4);
+    QFileInfo fileInfo(outputFilename);
+    PluginFileIOFactory *fileIOFactory = sharedPluginFileIOFactory();
+    QString errorMessage;
+    bool successful = fileIOFactory->saveDiagramToFile(this, fileInfo,
+            errorMessage);
 
-    return nodeString;
+    if (successful)
+    {
+        undoStack()->setClean();
+    }
+    else
+    {
+        // We weren't successful saving, so show an error message.
+        QString warning = QString(
+                QObject::tr("<p><b>The document \"%1\" could not be saved.</b></p>"
+                "<p>%2</p>")).arg(fileInfo.fileName()).arg(errorMessage);
+
+        QWidget *window = views().first()->window();
+        QMessageBox message(QMessageBox::Warning, "Error Saving File",
+                            warning, QMessageBox::Ok, window);
+        message.setWindowModality(Qt::WindowModal);
+        message.exec();
+    }
 }
 
-void Canvas::saveDiagramAsSVG(QString outputFilename)
-{
-    QSize size = pageRect().size().toSize();
-    QRectF viewBox = pageRect();
-
-    QBuffer buffer;
-    buffer.open(QBuffer::WriteOnly);
-
-    QSvgGenerator generator;
-    generator.setOutputDevice(&buffer);
-
-    generator.setSize(size);
-    generator.setViewBox(viewBox);
-    generator.setTitle(QFileInfo(outputFilename).fileName());
-    generator.setDescription(tr("This SVG file was saved from Dunnart.  "
-                                "http://www.dunnart.org/"));
-
-    QPainter painter;
-    if (painter.begin(&generator))
-    {
-        // Don't paint any objects into the generator, be just want to capture
-        // the header and footer SVG tags, that we can later wrap around the
-        // individual drawing tags for all canvas items.
-        painter.end();
-    }
-    buffer.close();
-
-    // Remove SVG tags up to beginning of first group tag, which will be
-    // the beginning of the definition of the
-    QString svgStr(buffer.data());
-    int contentStart = svgStr.indexOf("<g ");
-    svgStr = svgStr.remove(contentStart, svgStr.length() - contentStart);
-
-    // Add namespaces.
-    int namespaceInsertPos = svgStr.indexOf(" xmlns");
-    // Add Dunnart namespace.
-    svgStr.insert(namespaceInsertPos,
-            QString(" xmlns:dunnart=\"%1\"\n").arg(x_dunnartURI));
-    // Now, add any namespaces used in the input document that we don't use
-    // (since we will be copying properties in such namespaces straight
-    // through).
-    QMap<QString, QString>::const_iterator i =
-            m_extra_namespaces_map.constBegin();
-    while (i != m_extra_namespaces_map.constEnd())
-    {
-        const QString& nsName = i.key();
-        const QString& nsURI  = i.value();
-
-        svgStr.insert(namespaceInsertPos,
-                QString(" xmlns:%1=\"%2\"\n").arg(nsName).arg(nsURI));
-        ++i;
-    }
-
-    QFile svgFile(outputFilename);
-    svgFile.open(QIODevice::WriteOnly);
-    svgFile.write(svgStr.toUtf8());
-
-    setRenderingForPrinting(true);
-    QList<CanvasItem *> canvas_items = items();
-    int canvas_count = canvas_items.size();
-    for (int i = 0; i < canvas_count; ++i)
-    {
-        // Consider all the canvas items in reverse order, so they get drawn
-        // into the SVG file with the correct z-order.
-        CanvasItem *cobj = canvas_items.at(canvas_count - 1 - i);
-        QString svg = cobj->svgCodeAsString(size, viewBox);
-
-        // Less than three lines represents a open and close group tag
-        // (setting style), with no content between, so only output it if
-        // there are more than three lines.
-        int lines = svg.count('\n');
-        if (lines > 3)
-        {
-            svgFile.write(svg.toUtf8());
-        }
-    }
-    setRenderingForPrinting(false);
-
-    svgFile.write("<!-- Dunnart description -->\n");
-    QDomDocument doc("svg");
-
-    QDomElement optionsNode = this->writeLayoutOptionsToDomElement(doc);
-    QString optionsNodeString = nodeToString(optionsNode);
-    svgFile.write(optionsNodeString.toUtf8());
-
-    for (int i = 0; i < canvas_count; ++i)
-    {
-        // Consider all the canvas items in reverse order, so they get drawn
-        // into the SVG file with the correct z-order.
-        CanvasItem *canvasObj = canvas_items.at(i);
-
-        QDomNode node = canvasObj->to_QDomElement(XMLSS_ALL, doc);
-        QString svgNodeString = nodeToString(node);
-        svgFile.write(svgNodeString.toUtf8());
-    }
-
-    // Copy XML for any external namespaces we have saved
-    if ( ! m_external_node_list.empty() )
-    {
-        svgFile.write("<!-- External namespace nodes -->\n");
-        QDomNode externalNode;
-        foreach (externalNode, m_external_node_list)
-        {
-            QString externalNodeString = nodeToString(externalNode);
-            svgFile.write(externalNodeString.toUtf8());
-        }
-    }
-
-    svgFile.write(QByteArray("</svg>\n"));
-    svgFile.close();
-}
-
-
-// XXX Clean up the methods below.
 
 void Canvas::loadLayoutOptionsFromDomElement(const QDomElement& options)
 {

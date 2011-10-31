@@ -27,6 +27,7 @@
 #include <QPainter>
 #include <QGraphicsSceneMouseEvent>
 #include <QSvgGenerator>
+#include <QStyleOptionGraphicsItem>
 
 #include "libdunnartcanvas/oldcanvas.h"
 #include "libdunnartcanvas/shape.h"
@@ -132,6 +133,7 @@ CanvasItem::CanvasItem(QGraphicsItem *parent, QString id, unsigned int lev)
           m_is_inactive(false),
           m_connection_distance(-1),
           m_connection_cascade_glow(false),
+          m_size(QSizeF(10, 10)),
           m_constraint_conflict(false)
 {
     Q_UNUSED (parent)
@@ -150,6 +152,9 @@ CanvasItem::CanvasItem(QGraphicsItem *parent, QString id, unsigned int lev)
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 #endif
     setCursor(Qt::OpenHandCursor);
+
+    // Initial painter path.
+    m_painter_path = buildPainterPath();
 }
 
 
@@ -169,28 +174,7 @@ void CanvasItem::initWithXMLProperties(Canvas *canvas,
     {
         QDomNode prop = attrs.item(i);
         QString name = prop.localName();
-        if ( prop.prefix().isEmpty())
-        {
-            if ( !name.isNull()      &&
-                 (name != "id")      &&
-                 (name != "style")   &&
-                 (name != "class")   &&
-                 (name != "x")       &&
-                 (name != "y")       &&
-                 (name != "width")   &&
-                 (name != "height")  &&
-                 (name != "rx")      &&
-                 (name != "ry")      &&
-                 (name != "d") )
-
-            {
-                QString propName = "svg:" + prop.localName();
-                setProperty(propName.toLatin1().constData(), prop.nodeValue());
-            }
-        }
-        else if ( (prop.prefix() != x_dunnartNs) &&
-             (prop.prefix() != "sodipodi") &&
-             (prop.prefix() != "inkscape") )
+        if ( ! prop.prefix().isEmpty() && prop.prefix() != x_dunnartNs)
         {
             QString propName = prop.prefix() + ":" + prop.localName();
             setProperty(propName.toLatin1().constData(), prop.nodeValue());
@@ -368,7 +352,19 @@ void CanvasItem::paint(QPainter *painter,
 }
 
 
-QString CanvasItem::getIdString(void) const
+void CanvasItem::setIdString(const QString& id)
+{
+    if (canvas())
+    {
+        m_string_id = canvas()->assignStringId(id);
+    }
+    else
+    {
+        m_string_id = id;
+    }
+}
+
+QString CanvasItem::idString(void) const
 {
     return m_string_id;
 }
@@ -591,7 +587,7 @@ void CanvasItem::addXmlProps(const unsigned int subset, QDomElement& node,
 
     if (subset & XMLSS_IOTHER)
     {
-        newProp(node, "id", getIdString());
+        newProp(node, "id", idString());
 
         newProp(node, x_type, itemType());
 
@@ -629,6 +625,7 @@ QDomElement CanvasItem::to_QDomElement(const unsigned int subset,
 {
     QDomElement node = doc.createElement("dunnart:node");
     addXmlProps(subset, node, doc);
+
     return node;
 }
 
@@ -717,9 +714,10 @@ void CanvasItem::setSizeAndUpdatePainterPath(const QSizeF& newSize)
 
 void CanvasItem::setSize(const QSizeF& newSize)
 {
-    if (newSize == size())
+    if (newSize == size() && ! m_painter_path.isEmpty())
     {
-        // Don't do anything if the size hasn't changed.
+        // Don't do anything if the size hasn't changed and
+        // shape has a painter path.
         return;
     }
     prepareGeometryChange();
@@ -735,7 +733,7 @@ void CanvasItem::setSize(const QSizeF& newSize)
 
 void CanvasItem::setSize(const double w, const double h)
 {
-    setSize(QSizeF(w, h));
+    CanvasItem::setSize(QSizeF(w, h));
 }
 
 double CanvasItem::width(void) const
@@ -1099,7 +1097,8 @@ QString CanvasItem::svgCodeAsString(const QSize& size, const QRectF& viewBox)
     {        
         painter.setRenderHint(QPainter::Antialiasing);
         painter.setMatrix(this->sceneMatrix(), true);
-        this->paint(&painter, NULL, NULL);
+        QStyleOptionGraphicsItem styleItem;
+        this->paint(&painter, &styleItem, NULL);
         painter.end();
     }
     buffer.close();

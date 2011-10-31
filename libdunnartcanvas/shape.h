@@ -171,7 +171,7 @@ class ShapeObj: public CanvasItem
         QPixmap* decorativeImage;
         QPixmap* smallDecorativeImage;
         double smallDecorativeScale;
-        double detailLevel;
+        double m_detail_level;
         bool beingResized;
 
     private:
@@ -214,21 +214,8 @@ extern unsigned int shapeFontSize;
 
 extern ShapeObj *isShapeForLayout(QGraphicsItem *object);
 
-class ShapePluginInterface
-{
-    public:
-        virtual ~ShapePluginInterface() {}
-
-        virtual QString shapesClassLabel(void) const = 0;
-        virtual QStringList shapes(void) const = 0;
-        virtual ShapeObj *generateShape(QString shapeType) = 0;
-};
 
 }
-
-Q_DECLARE_INTERFACE(dunnart::ShapePluginInterface,
-        "org.dunnart.dunnart.ShapePluginInterface/1.0")
-
 #endif
 // vim: filetype=cpp ts=4 sw=4 et tw=0 wm=0 cindent
 

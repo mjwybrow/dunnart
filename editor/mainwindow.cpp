@@ -42,6 +42,7 @@
 #include "libdunnartcanvas/canvasview.h"
 #include "libdunnartcanvas/canvas.h"
 #include "libdunnartcanvas/oldcanvas.h"
+#include "libdunnartcanvas/pluginfileiofactory.h"
 
 #include "libdunnartcanvas/githash.h"
 
@@ -391,7 +392,7 @@ void MainWindow::about(void)
     QMessageBox *box = new QMessageBox(QMessageBox::NoIcon, "About Dunnart",
             "Dunnart", QMessageBox::NoButton, this, 
             Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
-    box->setIconPixmap(windowIcon().pixmap(70));
+    box->setIconPixmap(windowIcon().pixmap(MESSAGEBOX_PIXMAP_SIZE));
     QString hash = GITHASH;
     hash = hash.toUpper();
 
@@ -431,7 +432,7 @@ void MainWindow::loadDiagram(const QString& filename)
 {
     newCanvasTab();
 
-    load_diagram(canvas(), filename);
+    canvas()->loadDiagram(filename);
 
     QSettings settings;
     QStringList files = settings.value("recentFileList").toStringList();
@@ -452,9 +453,12 @@ void MainWindow::loadDiagram(const QString& filename)
 
 void MainWindow::documentOpen(void)
 {
+    PluginFileIOFactory *fileIOFactory = sharedPluginFileIOFactory();
+    QString filter = tr("Dunnart diagrams (") +
+            fileIOFactory->openableFileTypesString() + ")";
+
     QString fileName = QFileDialog::getOpenFileName(this,
-            tr("Open Diagram"), QDir::homePath(),
-            tr("Diagram Files (*.svg *.gml)"));
+            tr("Open Diagram"), QDir::homePath(), filter);
     if (!fileName.isEmpty())
     {
         loadDiagram(fileName);

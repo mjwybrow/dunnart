@@ -82,10 +82,12 @@ SOURCES += \
 	ui/connectorproperties.cpp \
 	ui/propertieseditor.cpp \
     pluginshapefactory.cpp \
+    pluginfileiofactory.cpp \
     ui/shapepickerdialog.cpp \
     connectorhandles.cpp \
     ui/undohistorydialog.cpp \
-    stronglyconnectedcomponents.cpp
+    stronglyconnectedcomponents.cpp \
+    connectionpininfo.cpp
 HEADERS += \
 	FMMLayout.h \
 	align3.h \
@@ -102,7 +104,6 @@ HEADERS += \
 	graphvizlayout.h \
 	guideline.h \
 	indicator.h \
-	instrument.h \
 	interferencegraph.h \
 	nearestpoint.h \
 	placement.h \
@@ -132,10 +133,14 @@ HEADERS += \
 	ui/connectorproperties.h \
 	ui/propertieseditor.h \
     pluginshapefactory.h \
+    pluginfileiofactory.h \
     ui/shapepickerdialog.h \
     connectorhandles.h \
     ui/undohistorydialog.h \
-    stronglyconnectedcomponents.h
+    stronglyconnectedcomponents.h \
+    connectionpininfo.h \
+    shapeplugininterface.h \
+    fileioplugininterface.h
 
 
 displaygithash {
@@ -152,6 +157,12 @@ displaygithash {
   
   PRE_TARGETDEPS += githash.h
 }
+
+
+
+
+
+
 
 
 

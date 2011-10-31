@@ -47,7 +47,6 @@ class Handle;
 extern QXmlNamespaceSupport namespaces;
 
 
-extern void load_diagram(Canvas *canvas, const QString& filename);
 extern void toggle_partial_feedback(QWidget **c);
 extern void dragAbortActions(void);
 extern void relayout_selection(QWidget **gobj);

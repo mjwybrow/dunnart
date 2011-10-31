@@ -23,9 +23,9 @@
 */
 
 
-#include "pluginshapefactory.h"
-
-#include "shape.h"
+#include "libdunnartcanvas/pluginshapefactory.h"
+#include "libdunnartcanvas/shapeplugininterface.h"
+#include "libdunnartcanvas/shape.h"
 
 namespace dunnart {
 
@@ -72,7 +72,7 @@ void PluginShapeFactory::registerShapePlugin(ShapePluginInterface *builder)
     m_shape_class_labels.push_back(builder->shapesClassLabel());
     m_shape_builders.push_back(ShapeBuilders());
     ShapeBuilders& shapeBuilders = m_shape_builders.last();
-    foreach (QString shapeType, builder->shapes())
+    foreach (QString shapeType, builder->producableShapeTypes())
     {
         shapeBuilders[shapeType] = builder;
     }
@@ -89,11 +89,11 @@ ShapeObj *PluginShapeFactory::createShape(const QString& shapeType)
     {
         if (shapeBuilders.contains(shapeType))
         {
-            newShape = shapeBuilders[shapeType]->generateShape(shapeType);
+            newShape = shapeBuilders[shapeType]->generateShapeOfType(shapeType);
         }
         else if (shapeBuilders.contains(qualifiedShapeType))
         {
-            newShape = shapeBuilders[qualifiedShapeType]->generateShape(
+            newShape = shapeBuilders[qualifiedShapeType]->generateShapeOfType(
                     qualifiedShapeType);
         }
 

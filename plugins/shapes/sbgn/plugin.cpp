@@ -26,8 +26,8 @@
 #include <QtGui>
 #include <QObject>
 
+#include "libdunnartcanvas/shapeplugininterface.h"
 #include "libdunnartcanvas/shape.h"
-#include "libdunnartcanvas/canvasitem.h"
 using namespace dunnart;
 
 #include "pdepn.h"
@@ -54,75 +54,75 @@ class SBGNShapesPlugin : public QObject, public ShapePluginInterface
         {
             return "SBGN";
         }
-        QStringList shapes() const
+        QStringList producableShapeTypes() const
         {
             QStringList shapes;
-            shapes << "org.dunnart.shapes.sbgn.UnspecifiedEPN";
-            shapes << "org.dunnart.shapes.sbgn.SourceOrSink";
-            shapes << "org.dunnart.shapes.sbgn.SimpleChemEPN";
-            shapes << "org.dunnart.shapes.sbgn.MacromolEPN";
-            shapes << "org.dunnart.shapes.sbgn.NucleicAcidEPN";
-            shapes << "org.dunnart.shapes.sbgn.ComplexEPN";
-            shapes << "org.dunnart.shapes.sbgn.PerturbingEPN";
-            shapes << "org.dunnart.shapes.sbgn.ProcessNode";
-            shapes << "org.dunnart.shapes.sbgn.UnknownProcessNode";
-            shapes << "org.dunnart.shapes.sbgn.OmittedProcessNode";
-            shapes << "org.dunnart.shapes.sbgn.AssociationProcessNode";
-            shapes << "org.dunnart.shapes.sbgn.DissociationProcessNode";
-            shapes << "org.dunnart.shapes.sbgn.PhenotypeProcessNode";
+            shapes << "org.sbgn.pd.UnspecifiedEPN";
+            shapes << "org.sbgn.pd.SourceOrSink";
+            shapes << "org.sbgn.pd.SimpleChemEPN";
+            shapes << "org.sbgn.pd.MacromolEPN";
+            shapes << "org.sbgn.pd.NucleicAcidEPN";
+            shapes << "org.sbgn.pd.ComplexEPN";
+            shapes << "org.sbgn.pd.PerturbingEPN";
+            shapes << "org.sbgn.pd.ProcessNode";
+            shapes << "org.sbgn.pd.UnknownProcessNode";
+            shapes << "org.sbgn.pd.OmittedProcessNode";
+            shapes << "org.sbgn.pd.AssociationProcessNode";
+            shapes << "org.sbgn.pd.DissociationProcessNode";
+            shapes << "org.sbgn.pd.PhenotypeProcessNode";
             return shapes;
         }
-        ShapeObj *generateShape(QString shapeType)
+        ShapeObj *generateShapeOfType(QString shapeType)
         {
-            if (shapeType == "org.dunnart.shapes.sbgn.UnspecifiedEPN")
+            if (shapeType == "org.sbgn.pd.UnspecifiedEPN")
             {
                 return new UnspecifiedEPN("Unspecified cloned", true);
             }
-            else if (shapeType == "org.dunnart.shapes.sbgn.SourceOrSink")
+            else if (shapeType == "org.sbgn.pd.SourceOrSink")
             {
                 return new SourceOrSink();
             }
-            else if (shapeType == "org.dunnart.shapes.sbgn.SimpleChemEPN")
+            else if (shapeType == "org.sbgn.pd.SimpleChemEPN")
             {
                 return new SimpleChemEPN("Hello World 1", true, true);
             }
-            else if (shapeType == "org.dunnart.shapes.sbgn.MacromolEPN")
+            else if (shapeType == "org.sbgn.pd.MacromolEPN")
             {
-                return new MacromolEPN("Cloned Macromol", true, "Label ...", true);
+                return new MacromolEPN("Cloned Macromol", false, "", false);
             }
-            else if (shapeType == "org.dunnart.shapes.sbgn.NucleicAcidEPN")
+            else if (shapeType == "org.sbgn.pd.NucleicAcidEPN")
             {
                 return new NucleicAcidEPN("Cloned Nucleic Acid", true, "Clone marker", true);
             }
-            else if (shapeType == "org.dunnart.shapes.sbgn.ComplexEPN")
+            else if (shapeType == "org.sbgn.pd.ComplexEPN")
             {
                 return new ComplexEPN("Cloned Complex", true, "Clone label", true);
             }
-            else if (shapeType == "org.dunnart.shapes.sbgn.PerturbingEPN")
+            else if (shapeType == "org.sbgn.pd.PerturbingEPN")
             {
                 return new PerturbingEPN("Perturbing EPN cloned", true);
             }
-            else if (shapeType == "org.dunnart.shapes.sbgn.ProcessNode")
+            else if (shapeType == "org.sbgn.pd.ProcessNode")
             {
                 return new ProcessNode(Qt::Horizontal, ProcessNode::PROCESS);
             }
-            else if (shapeType == "org.dunnart.shapes.sbgn.UnknownProcessNode")
+            else if (shapeType == "org.sbgn.pd.UnknownProcessNode")
             {
                 return new ProcessNode(Qt::Vertical, ProcessNode::UNCERTAIN);
             }
-            else if (shapeType == "org.dunnart.shapes.sbgn.OmittedProcessNode")
+            else if (shapeType == "org.sbgn.pd.OmittedProcessNode")
             {
                 return new ProcessNode(Qt::Horizontal, ProcessNode::OMITTED);
             }
-            else if (shapeType == "org.dunnart.shapes.sbgn.AssociationProcessNode")
+            else if (shapeType == "org.sbgn.pd.AssociationProcessNode")
             {
                 return new ProcessNode(Qt::Horizontal, ProcessNode::ASSOCIATION);
             }
-            else if (shapeType == "org.dunnart.shapes.sbgn.DissociationProcessNode")
+            else if (shapeType == "org.sbgn.pd.DissociationProcessNode")
             {
                 return new ProcessNode(Qt::Horizontal, ProcessNode::DISSOCIATION);
             }
-            else if (shapeType == "org.dunnart.shapes.sbgn.PhenotypeProcessNode")
+            else if (shapeType == "org.sbgn.pd.PhenotypeProcessNode")
             {
                 return new PhenotypeProcessNode("Phenotype cloned", true);
             }

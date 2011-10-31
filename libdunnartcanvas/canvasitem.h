@@ -139,14 +139,6 @@ static const int HANDLE_PADDING = 3;
 // Only display guides to edge of things they are connected to.
 static const bool two_tier_indicators = true;
 
-enum loadPass
-{
-    PASS_SHAPES,
-    PASS_CLUSTERS,
-    PASS_CONNECTORS,
-    PASS_RELATIONSHIPS,
-    PASS_LAST
-};
 
 class Canvas;
 class CanvasItem;
@@ -156,8 +148,8 @@ typedef QSet<CanvasItem *> CanvasItemSet;
 class CanvasItem: public QGraphicsSvgItem
 {
     Q_OBJECT
-    Q_PROPERTY (QString id READ getIdString)
     Q_PROPERTY (QString type READ itemType)
+    Q_PROPERTY (QString id READ idString WRITE setIdString)
 
     public:
         CanvasItem(QGraphicsItem *parent, QString id, unsigned int lev);
@@ -166,7 +158,9 @@ class CanvasItem: public QGraphicsSvgItem
         virtual void initWithXMLProperties(Canvas *canvas,
                 const QDomElement& node, const QString& ns);
 
-        QString getIdString(void) const;
+        void setIdString(const QString& id);
+        QString idString(void) const;
+
         uint internalId(void) const;
 
         QString itemType(void) const;

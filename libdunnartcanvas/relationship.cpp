@@ -200,24 +200,24 @@ QDomElement Relationship::to_QDomElement(const unsigned int subset,
         {
             newProp(node, x_relType, x_distribution);
             
-            newProp(node, x_constraintID, distro->getIdString());
-            newProp(node, x_objOneID, guide->getIdString());
-            newProp(node, x_objTwoID, guide2->getIdString());
+            newProp(node, x_constraintID, distro->idString());
+            newProp(node, x_objOneID, guide->idString());
+            newProp(node, x_objTwoID, guide2->idString());
         }
         else if (separation)
         {
             newProp(node, x_relType, x_separation);
 
-            newProp(node, x_constraintID, separation->getIdString());
-            newProp(node, x_objOneID, guide->getIdString());
-            newProp(node, x_objTwoID, guide2->getIdString());
+            newProp(node, x_constraintID, separation->idString());
+            newProp(node, x_objOneID, guide->idString());
+            newProp(node, x_objTwoID, guide2->idString());
         }
         else
         {
             newProp(node, x_relType, x_alignment);
 
-            newProp(node, x_constraintID, guide->getIdString());
-            newProp(node, x_objOneID, shape->getIdString());
+            newProp(node, x_constraintID, guide->idString());
+            newProp(node, x_objOneID, shape->idString());
             
             newProp(node, x_alignmentPos, (int) type);
         }

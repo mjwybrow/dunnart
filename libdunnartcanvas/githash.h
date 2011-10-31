@@ -1,1 +1,1 @@
-#define GITHASH "???"
+#define GITHASH "670871f"

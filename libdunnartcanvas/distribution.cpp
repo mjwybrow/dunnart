@@ -569,7 +569,7 @@ QDomElement Distribution::to_QDomElement(const unsigned int subset,
         sprintf(value, "%g", space);
         newProp(node, x_sepDistance, value);
 
-        newProp(node, "id", getIdString());
+        newProp(node, "id", idString());
     }
 
     if (subset & XMLSS_XMOVE)
@@ -955,11 +955,11 @@ Distribution *createDistribution(QWidget *window, const dtype type,
     {
         if (window)
         {
-            char warning[400];
-            sprintf(warning, "<p><b>Distribution constraints must be applied to two "
-                    "or more selected shapes or guidelines.</b></p>"
-                    "<p>The current selection contains only %d such object.</p>",
-                    (int) guideList.size());
+            QString warning = QString(
+                    QObject::tr("<p><b>Distribution constraints must be applied "
+                    "to two or more selected shapes or guidelines.</b></p>"
+                    "<p>The current selection contains only %1 such object."
+                    "</p>")).arg(guideList.size());
 
             QMessageBox message(QMessageBox::Warning, "Invalid Action",
                                 warning, QMessageBox::Ok, window);

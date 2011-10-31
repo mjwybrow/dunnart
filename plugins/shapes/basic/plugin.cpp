@@ -25,8 +25,8 @@
 #include <QtGui>
 #include <QObject>
 
+#include "libdunnartcanvas/shapeplugininterface.h"
 #include "libdunnartcanvas/shape.h"
-#include "libdunnartcanvas/canvasitem.h"
 using namespace dunnart;
 
 #include "diamond.h"
@@ -45,7 +45,7 @@ class BasicShapesPlugin : public QObject, public ShapePluginInterface
         {
             return "Basic";
         }
-        QStringList shapes() const
+        QStringList producableShapeTypes() const
         {
             QStringList shapes;
             shapes << "org.dunnart.shapes.rect";
@@ -53,7 +53,7 @@ class BasicShapesPlugin : public QObject, public ShapePluginInterface
             shapes << "org.dunnart.shapes.roundedRect";
             return shapes;
         }
-        ShapeObj *generateShape(QString shapeType)
+        ShapeObj *generateShapeOfType(QString shapeType)
         {
             if (shapeType == "org.dunnart.shapes.rect")
             {

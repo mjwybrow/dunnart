@@ -530,7 +530,7 @@ QDomElement Guideline::to_QDomElement(const unsigned int subset,
 
         newProp(node, x_type, x_guideline);
 
-        newProp(node, "id",getIdString());
+        newProp(node, "id", idString());
     }
     
     if (subset & XMLSS_IMOVE)

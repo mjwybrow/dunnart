@@ -84,7 +84,7 @@ Cluster::Cluster(Canvas *canvas, const QDomElement& node, const QString& ns)
     : ShapeObj(x_cluster),
       avoidClusterRef(NULL),
       rectangular(false),
-      detailLevel(100)
+      m_detail_level(100)
 {
     setZValue(ZORD_Cluster);
     
@@ -138,7 +138,7 @@ Cluster::Cluster(CanvasItemList& memberList, QString id)
     : ShapeObj(x_cluster),
       avoidClusterRef(NULL),
       rectangular(false),
-      detailLevel(100)
+      m_detail_level(100)
 {
     m_string_id = id;
     m_stroke_colour = m_fill_colour = clusterFillCol;
@@ -193,19 +193,19 @@ static const double maxCollapsedClusterSize = 80;
 void Cluster::changeDetailLevel(bool expand)
 {
     QDomDocument doc("XML");
-    double lastDetailLevel = detailLevel;
+    double lastDetailLevel = m_detail_level;
     bool shrink = !expand;
     
     if (expand)
     {
-        detailLevel = 100;
+        m_detail_level = 100;
     }
     else
     {
-        detailLevel = 0;
+        m_detail_level = 0;
     }
 
-    if (lastDetailLevel == detailLevel)
+    if (lastDetailLevel == m_detail_level)
     {
         // No change
         return;
@@ -221,7 +221,7 @@ void Cluster::changeDetailLevel(bool expand)
         {
             // The cluster is already smaller than maxCollapsedClusterSize, 
             // so don't shrink it.
-            detailLevel = 100;
+            m_detail_level = 100;
             return;
         }
         m_expanded_size = clusterRect.size();
@@ -430,11 +430,11 @@ void Cluster::changeDetailLevel(bool expand)
                 {
                     if (srcShape == (*curr))
                     {
-                        newProp(node, x_srcID, getIdString());
+                        newProp(node, x_srcID, idString());
                         newProp(node, x_srcFlags, cHand->handleFlags());
 
                         
-                        newProp(undoNode, x_srcID, srcShape->getIdString());
+                        newProp(undoNode, x_srcID, srcShape->idString());
                         newProp(undoNode, x_srcFlags, connpts.first.pinClassID);
                     }
                 }
@@ -443,10 +443,10 @@ void Cluster::changeDetailLevel(bool expand)
                 {
                     if (dstShape == (*curr))
                     {
-                        newProp(node, x_dstID, getIdString());
+                        newProp(node, x_dstID, idString());
                         newProp(node, x_dstFlags, cHand->handleFlags());
                         
-                        newProp(undoNode, x_dstID, dstShape->getIdString());
+                        newProp(undoNode, x_dstID, dstShape->idString());
                         newProp(undoNode, x_dstFlags, connpts.second.pinClassID);
                     }
                 }
@@ -824,13 +824,13 @@ QDomElement Cluster::to_QDomElement(const unsigned int subset,
     {
         node.setAttribute("dunnart:type", x_cluster);
 
-        newProp(node, "id", getIdString());
+        newProp(node, "id", idString());
 
         int count = 0;
         for (ShapeList::iterator curr = members.begin(); curr != members.end();
                 ++curr)
         {
-            value += (*curr)->getIdString();
+            value += (*curr)->idString();
             if (count > 0)
             {
                 value += " ";

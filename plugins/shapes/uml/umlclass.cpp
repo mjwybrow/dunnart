@@ -84,7 +84,7 @@ void ClassShape::initWithXMLProperties(Canvas *canvas,
         }
         else if (name == "detailLevel")
         {
-            detailLevel = element.text().toInt();
+            m_detail_level = element.text().toInt();
         }
         else if (name == "attr_section_height")
         {
@@ -560,7 +560,7 @@ void ClassShape::determine_best_mode(void)
     if (height() < (int) get_class_name_section_height() + (HANDLE_PADDING * 2))
     {
         mode = CLASS_NAME_ONLY;
-        detailLevel = 0;
+        m_detail_level = 0;
         return;
     }
 
@@ -914,7 +914,7 @@ void ClassShape::on_resize(bool setDetailLevel)
 {
     if (!setDetailLevel)
     {
-        detailLevel = 50;
+        m_detail_level = 50;
     }
     mode_changed_manually = true;
     determine_best_mode(); 

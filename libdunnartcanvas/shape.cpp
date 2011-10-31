@@ -55,9 +55,9 @@
 #include "libdunnartcanvas/connector.h"
 #include "libdunnartcanvas/canvasview.h"
 #include "libdunnartcanvas/canvas.h"
-#include "libdunnartcanvas/instrument.h"
 #include "libdunnartcanvas/placement.h"
 #include "libdunnartcanvas/connectorhandles.h"
+#include "libdunnartcanvas/connectionpininfo.h"
 
 namespace dunnart {
 
@@ -90,170 +90,6 @@ void ShapeObj::setBeingResized(bool isResizing)
 bool ShapeObj::isBeingResized(void)
 {
     return beingResized;
-}
-
-class ConnectionPinInfo
-{
-public:
-    ConnectionPinInfo(const unsigned int classId,
-            const double xPortionOffset, const double yPortionOffset,
-            const double insideOffset = 0.0,
-            const Avoid::ConnDirFlags visDirs = Avoid::ConnDirAll,
-            const bool exclusive = false);
-    ConnectionPinInfo(QString strRep);
-    void createPin(Avoid::ShapeRef *avoidRef);
-    QString writeToString(void) const;
-    bool operator==(const ConnectionPinInfo& rhs);
-
-    unsigned int classId;
-    double xPortionOffset;
-    double yPortionOffset;
-    double insideOffset;
-    Avoid::ConnDirFlags visDirs;
-    bool exclusive;
-    Avoid::ShapeConnectionPin *pin;
-};
-
-ConnectionPinInfo::ConnectionPinInfo(
-        const unsigned int classId, const double xPortionOffset,
-        const double yPortionOffset, const double insideOffset,
-        const Avoid::ConnDirFlags visDirs, const bool exclusive)
-    : classId(classId),
-      xPortionOffset(xPortionOffset),
-      yPortionOffset(yPortionOffset),
-      insideOffset(insideOffset),
-      visDirs(visDirs),
-      exclusive(exclusive),
-      pin(NULL)
-{
-}
-
-ConnectionPinInfo::ConnectionPinInfo(QString strRep)
-    : classId(0),
-      xPortionOffset(Avoid::ATTACH_POS_CENTRE),
-      yPortionOffset(Avoid::ATTACH_POS_CENTRE),
-      insideOffset(0.0),
-      visDirs(Avoid::ConnDirNone),
-      exclusive(false),
-      pin(NULL)
-{
-    QStringList list = strRep.split(" ");
-    bool okay;
-
-    classId = list[0].toUInt(&okay);
-    if (!okay)
-    {
-        qWarning("Could not read classId from \"%s\"",
-                qPrintable(strRep));
-    }
-
-    xPortionOffset = list[1].toDouble(&okay);
-    if (!okay)
-    {
-        qWarning("Could not read xPortionOffset from \"%s\"",
-                qPrintable(strRep));
-    }
-
-    yPortionOffset = list[2].toDouble(&okay);
-    if (!okay)
-    {
-        qWarning("Could not read yPortionOffset from \"%s\"",
-                qPrintable(strRep));
-    }
-
-    for (int i = 3; i < list.size(); ++i)
-    {
-        double valueD = list[i].toDouble(&okay);
-        if (okay)
-        {
-            insideOffset = valueD;
-        }
-        else if (list[i] == "exclusive")
-        {
-            exclusive = true;
-        }
-
-        if (list[i] == "up")
-        {
-            visDirs = Avoid::ConnDirUp;
-        }
-
-        if (list[i] == "down")
-        {
-            visDirs = Avoid::ConnDirDown;
-        }
-
-        if (list[i] == "left")
-        {
-            visDirs = Avoid::ConnDirLeft;
-        }
-
-        if (list[i] == "right")
-        {
-            visDirs = Avoid::ConnDirRight;
-        }
-    }
-
-    if (visDirs == Avoid::ConnDirNone)
-    {
-        visDirs = Avoid::ConnDirAll;
-    }
-}
-
-
-void ConnectionPinInfo::createPin(Avoid::ShapeRef *avoidRef)
-{
-    pin = new Avoid::ShapeConnectionPin(avoidRef, classId,
-            xPortionOffset, yPortionOffset, insideOffset, visDirs);
-    pin->setExclusive(exclusive);
-}
-
-
-QString ConnectionPinInfo::writeToString(void) const
-{
-    QString strRep("%1 %2 %3");
-    strRep = strRep.arg(classId);
-    strRep = strRep.arg(xPortionOffset);
-    strRep = strRep.arg(yPortionOffset);
-    if (insideOffset)
-    {
-        strRep += QString(" %1").arg(insideOffset);
-    }
-    if (visDirs != Avoid::ConnDirAll)
-    {
-        if (visDirs == Avoid::ConnDirUp)
-        {
-            strRep += " up";
-        }
-        if (visDirs == Avoid::ConnDirDown)
-        {
-            strRep += " down";
-        }
-        if (visDirs == Avoid::ConnDirLeft)
-        {
-            strRep += " left";
-        }
-        if (visDirs == Avoid::ConnDirRight)
-        {
-            strRep += " right";
-        }
-    }
-    if (exclusive)
-    {
-        strRep += " exclusive";
-    }
-    return strRep;
-}
-
-
-bool ConnectionPinInfo::operator==(const ConnectionPinInfo& rhs)
-{
-    return ((classId == rhs.classId) &&
-            (xPortionOffset == rhs.xPortionOffset) &&
-            (yPortionOffset == rhs.yPortionOffset) &&
-            (insideOffset == rhs.insideOffset) &&
-            (visDirs == rhs.visDirs) &&
-            (exclusive == rhs.exclusive));
 }
 
 
@@ -1034,7 +870,10 @@ void ShapeObj::addXmlProps(const unsigned int subset, QDomElement& node,
     
     if (subset & XMLSS_ILABEL)
     {
-        newProp(node, x_label, m_label.toUtf8().data());
+        if (! m_label.isEmpty())
+        {
+            newProp(node, x_label, m_label);
+        }
     }
 
     if (subset & XMLSS_IOTHER)
@@ -1056,9 +895,12 @@ void ShapeObj::addXmlProps(const unsigned int subset, QDomElement& node,
             newProp(node, x_lineCol, value);
         }
 
-        QString value;
-        value = value.sprintf("%g", detailLevel);
-        newProp(node, "detailLevel", value);
+        if (m_detail_level != 0)
+        {
+            QString value;
+            value = value.sprintf("%g", m_detail_level);
+            newProp(node, "detailLevel", value);
+        }
 
         if (m_has_locked_position)
         {
@@ -1070,15 +912,8 @@ void ShapeObj::addXmlProps(const unsigned int subset, QDomElement& node,
         QString pinRepStr;
         for (int i = 1; i < m_connection_pins.size(); ++i)
         {
-            if (!pinRepStr.isEmpty())
-            {
-                pinRepStr += ",";
-            }
-            pinRepStr += m_connection_pins[i].writeToString();
-        }
-        if (!pinRepStr.isEmpty())
-        {
-            newProp(node, x_connectionPins, pinRepStr);
+            QDomElement pinNode = m_connection_pins[i].pinAsDomElement(doc);
+            node.appendChild(pinNode);
         }
     }
 }
@@ -1135,16 +970,6 @@ Avoid::Polygon *ShapeObj::poly(const double b, Avoid::Polygon *p)
 
 
 
-
-
-
-
-
-
-
-
-
-
 //===========================================================================
 // Shape class code
 
@@ -1157,6 +982,7 @@ ShapeObj::ShapeObj(const QString& itemType)
       decorativeImage(NULL),
       smallDecorativeImage(NULL),
       smallDecorativeScale(-1),
+      m_detail_level(0.0),
       m_fill_colour(shFillCol),
       m_stroke_colour(shLineCol),
       m_size_locked(false)
@@ -1209,25 +1035,13 @@ void ShapeObj::initWithXMLProperties(Canvas *canvas,
     bool has_size =  optionalProp(node, x_width, w, ns) &&
             optionalProp(node, x_height, h, ns);
 
-    bool centre_pos = optionalProp(node, x_centreX, x, ns) && 
-            optionalProp(node, x_centreY, y, ns);
-    if (!centre_pos)
-    {
-        // The previous version of Dunnart stored top-left positions for 
-        // shapes, relative to the canvas widget.  It also had 6 pixels of
-        // padding around shapes.
-        optionalProp(node, x_xPos, x, ns);
-        optionalProp(node, x_yPos, y, ns);
-        x += (w / 2);
-        y += (h / 2);
-        w -= 6;
-        h -= 6;
-    }
+    optionalProp(node, x_centreX, x, ns);
+    optionalProp(node, x_centreY, y, ns);
 
+    CanvasItem::setPos(x, y);
     if (has_size)
     {
         CanvasItem::setSize(w, h);
-        CanvasItem::setPos(x, y);
     }
 
     QString value = nodeAttribute(node, ns, x_label);
@@ -1248,7 +1062,7 @@ void ShapeObj::initWithXMLProperties(Canvas *canvas,
         m_stroke_colour = QColorFromRRGGBBAA(value.toLatin1().data());
     }
     
-    optionalProp(node, "detailLevel", detailLevel, ns);
+    optionalProp(node, "detailLevel", m_detail_level, ns);
     
     value = nodeAttribute(node, ns, x_lockedPosition);
     if (!value.isNull())

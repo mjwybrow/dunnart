@@ -42,6 +42,10 @@ class QUndoStack;
 class QUndoCommand;
 class QFileInfo;
 
+class BuiltinLayoutFileIOPlugin;
+class BuiltinSVGFileIOPlugin;
+
+
 namespace Avoid {
 class Router;
 }
@@ -71,6 +75,7 @@ class Actions {
         bool empty(void) const;
 };
 
+static const uint MESSAGEBOX_PIXMAP_SIZE = 70;
 
 static const unsigned int ACTION_NONE           = 0;
 static const unsigned int ACTION_ADDITIONS      = 1;
@@ -83,6 +88,15 @@ static const int LAYOUT_STRUCTURE_LAYERED = 2;
 
 static const int ModeSelection   = 1;
 static const int ModeConnection  = 2;
+
+enum loadPass
+{
+    PASS_SHAPES,
+    PASS_CLUSTERS,
+    PASS_CONNECTORS,
+    PASS_RELATIONSHIPS,
+    PASS_LAST
+};
 
 
 class Canvas : public QGraphicsScene
@@ -105,12 +119,11 @@ class Canvas : public QGraphicsScene
         Canvas();
         virtual ~Canvas();
 
-        void loadSvgDiagram(const QString& filename);
-        void loadGmlDiagram(const QString& filename);
+        bool loadGmlDiagram(const QFileInfo& fileInfo);
         void loadSVGRootNodeAttributes(const QDomElement& svgRoot);
         void startLayoutUpdateTimer(void);
         void startLayoutFinishTimer(void);
-        void set_filename(QString filename);
+        void setFilename(QString filename);
         QString filename(void);
         QList<CanvasItem *> items(void) const;
         QList<CanvasItem *> selectedItems(void) const;
@@ -174,10 +187,7 @@ class Canvas : public QGraphicsScene
         UndoMacro *beginUndoMacro(const QString& text);
         void endUndoMacro(void);
 
-        // XXX Should be private:
-        void recursiveReadSVG(const QDomNode& start, const QString& dunnartNS,
-                int pass);
-        void saveDiagramAsSVG(QString save_filename);
+        void saveDiagram(const QString& outputFilename);
         const QList<QColor> interferingConnectorColours(void) const;
         double visualPageBuffer(void) const;
         bool useGmlClusters(void) const;
@@ -262,12 +272,16 @@ class Canvas : public QGraphicsScene
         virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
     private:
+        void loadDiagram(const QString& filename);
         bool idIsUnique(QString id) const;
         void recursiveMapIDs(QDomNode start, const QString& ns, int pass);
         bool singlePropUpdateID(QDomElement& node, const QString& prop,
                 const QString ns = QString());
         QDomElement writeLayoutOptionsToDomElement(QDomDocument& doc) const;
         void loadLayoutOptionsFromDomElement(const QDomElement& options);
+        void setSvgRendererForFile(const QString& filename);
+        void recursiveReadSVG(const QDomNode& start, const QString& dunnartNS,
+                int pass);
         void setInterferingConnectorColours(const QString colourListString);
         void hideSelectionResizeHandles(void);
         void repositionAndShowSelectionResizeHandles(
@@ -370,6 +384,10 @@ class Canvas : public QGraphicsScene
         friend class GraphLayout;
         friend class GraphData;
         friend class UndoMacro;
+        friend class MainWindow;
+
+        friend class ::BuiltinLayoutFileIOPlugin;
+        friend class ::BuiltinSVGFileIOPlugin;
 };
 
 

@@ -41,7 +41,6 @@
 #include "libdunnartcanvas/undo.h"
 #include "libdunnartcanvas/placement.h"
 #include "libdunnartcanvas/graphlayout.h"
-#include "libdunnartcanvas/instrument.h"
 #include "libdunnartcanvas/oldcanvas.h"
 #include "libdunnartcanvas/guideline.h"
 #include "libdunnartcanvas/distribution.h"
@@ -747,39 +746,6 @@ static void visinfo_action(QWidget **c)
     router->printInfo();
 }
 #endif
-
-
-void load_diagram(Canvas *canvas, const QString& filename)
-{
-    if (filename.isEmpty())
-    {
-        ins_init("untitled.svg");
-        return;
-    }
-    ins_init(filename);
-
-    QFileInfo fileInfo(filename);
-    if ((fileInfo.completeSuffix() == "svg") ||
-            (fileInfo.completeSuffix() == "exd"))
-    {
-        Avoid::db_printf("Loading diagram `%s'...\n",
-                qPrintable(fileInfo.absoluteFilePath()));
-        canvas->loadSvgDiagram(fileInfo.absoluteFilePath());
-        canvas->set_filename(filename);
-    }
-    else if (fileInfo.completeSuffix() == "gml")
-    {
-        Avoid::db_printf("Loading GML Graph `%s'...\n",
-                qPrintable(fileInfo.absoluteFilePath()));
-        canvas->loadGmlDiagram(fileInfo.absoluteFilePath());
-        canvas->set_filename(filename);
-    }
-    else
-    {
-        qFatal("File \"%s\" does not have a valid extention.",
-               qPrintable(filename));
-    }
-}
 
 
 }

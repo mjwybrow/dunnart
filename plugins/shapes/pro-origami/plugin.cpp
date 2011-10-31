@@ -25,8 +25,8 @@
 #include <QtGui>
 #include <QObject>
 
+#include "libdunnartcanvas/shapeplugininterface.h"
 #include "libdunnartcanvas/shape.h"
-#include "libdunnartcanvas/canvasitem.h"
 using namespace dunnart;
 
 #include "helix.h"
@@ -45,14 +45,14 @@ class ProOrigamiShapesPlugin : public QObject, public ShapePluginInterface
         {
             return "Pro-origami";
         }
-        QStringList shapes() const
+        QStringList producableShapeTypes() const
         {
             QStringList shapes;
             shapes << "org.dunnart.shapes.bioStrand";
             shapes << "org.dunnart.shapes.bioHelix";
             return shapes;
         }
-        ShapeObj *generateShape(QString shapeType)
+        ShapeObj *generateShapeOfType(QString shapeType)
         {
             if (shapeType == "org.dunnart.shapes.bioStrand")
             {

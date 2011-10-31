@@ -38,6 +38,7 @@
 #include "libdunnartcanvas/canvasview.h"
 #include "libdunnartcanvas/canvas.h"
 #include "libdunnartcanvas/shape.h"
+#include "libdunnartcanvas/pluginfileiofactory.h"
 
 namespace dunnart {
 
@@ -321,6 +322,9 @@ void CanvasTabWidget::hideEditingControls(const bool hidden)
     m_action_automatic_layout->setVisible(showEditingControls);
     m_action_selection_mode->setVisible(showEditingControls);
     m_action_connection_mode->setVisible(showEditingControls);
+
+    // If the canvas is in connector mode, put it back to selection mode.
+    m_action_selection_mode->setChecked(true);
 }
 
 void CanvasTabWidget::newTab(void)
@@ -375,7 +379,7 @@ bool CanvasTabWidget::closeAllRequest()
         QPushButton *discardButton = msgBox.addButton(tr("Discard Changes"), QMessageBox::RejectRole);
         msgBox.setDefaultButton(reviewButton);
         msgBox.setEscapeButton(cancelButton);
-        msgBox.setIconPixmap(windowIcon().pixmap(70));
+        msgBox.setIconPixmap(windowIcon().pixmap(MESSAGEBOX_PIXMAP_SIZE));
         msgBox.setWindowModality(Qt::WindowModal);
         msgBox.exec();
 
@@ -433,7 +437,7 @@ bool CanvasTabWidget::tabCloseRequested(int index)
         msgBox.setInformativeText(tr("Your changes will be lost if you don't save them."));
         msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
         msgBox.setDefaultButton(QMessageBox::Save);
-        msgBox.setIconPixmap(windowIcon().pixmap(70));
+        msgBox.setIconPixmap(windowIcon().pixmap(MESSAGEBOX_PIXMAP_SIZE));
         msgBox.setWindowModality(Qt::WindowModal);
         int ret = msgBox.exec();
 
@@ -608,8 +612,7 @@ void CanvasTabWidget::currentCanvasSave(void)
     }
     else
     {
-        currentCanvas()->saveDiagramAsSVG(filename);
-        currentCanvas()->undoStack()->setClean();
+        currentCanvas()->saveDiagram(filename);
     }
 }
 
@@ -621,13 +624,15 @@ void CanvasTabWidget::currentCanvasSaveAs(void)
     {
         currFilename = "untitled.svg";
     }
+
+    QString defaultFilter = "Dunnart Annotated SVG (*.svg)";
+    PluginFileIOFactory *fileIOFactory = sharedPluginFileIOFactory();
     QString filename = QFileDialog::getSaveFileName(m_window, tr("Save Diagram"),
-            currFilename, tr("Dunnart SVG (*.svg)"));
+            currFilename, fileIOFactory->saveableFileFiltersString(), &defaultFilter);
     if (!filename.isEmpty())
     {
-        currentCanvas()->saveDiagramAsSVG(filename);
-        currentCanvas()->set_filename(filename);
-        currentCanvas()->undoStack()->setClean();
+        currentCanvas()->saveDiagram(filename);
+        currentCanvas()->setFilename(filename);
     }
 }
 

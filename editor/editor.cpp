@@ -40,7 +40,6 @@
 #include "libdunnartcanvas/oldcanvas.h"
 #include "libdunnartcanvas/placement.h"
 #include "libdunnartcanvas/graphlayout.h"
-#include "libdunnartcanvas/instrument.h"
 #include "libdunnartcanvas/visibility.h"
 #include "libdunnartcanvas/connector.h"
 #include "libdunnartcanvas/utility.h"
@@ -51,29 +50,22 @@
 #include "libavoid/debug.h"
 
 #include "libdunnartcanvas/pluginshapefactory.h"
-
-using namespace dunnart;
-
-bool use_recogniser = false;
+#include "libdunnartcanvas/pluginfileiofactory.h"
+#include "libdunnartcanvas/shapeplugininterface.h"
+#include "libdunnartcanvas/fileioplugininterface.h"
 
 #include "mainwindow.h"
+
+
+using namespace dunnart;
 
 // We supply our own since the MinGW people don't have non-GPLed headers
 // in their compiler, which we need on windows.
 #include "getopt.h"
 
-FILE *ins_fp = NULL;
-
-
 
 static void usage(char *title, char *editor);
 
-
-static void cleanup(void)
-{
-
-    ins_end();
-}
 
 
 int main(int argc, char *argv[])
@@ -92,26 +84,35 @@ int main(int argc, char *argv[])
     pluginsDir.cd("plugins");
 #endif
 
-    PluginShapeFactory *factory = sharedPluginShapeFactory();
+    // Dynamically load each library in the plugins directory, and then
+    // register them if they implement a given DUnnart plugin interface.
+    PluginShapeFactory *shapeFactory = sharedPluginShapeFactory();
+    PluginFileIOFactory *fileIOFactory = sharedPluginFileIOFactory();
     foreach (QString fileName, pluginsDir.entryList(QDir::Files))
     {
         QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
         QObject *plugin = loader.instance();
-        ShapePluginInterface *shapePlugin = qobject_cast<ShapePluginInterface *> (plugin);
+
+        ShapePluginInterface *shapePlugin =
+                qobject_cast<ShapePluginInterface *> (plugin);
         if (shapePlugin)
         {
-            factory->registerShapePlugin(shapePlugin);
+            shapeFactory->registerShapePlugin(shapePlugin);
+        }
+
+        FileIOPluginInterface *fileIOPlugin =
+                qobject_cast<FileIOPluginInterface *> (plugin);
+        if (fileIOPlugin)
+        {
+            fileIOFactory->registerFileIOPlugin(fileIOPlugin);
         }
     }
 
     namespaces.setPrefix(x_dunnartNs, x_dunnartURI);
     namespaces.setPrefix("xmlns", "http://www.w3.org/2000/svg");
-    namespaces.setPrefix("sodipodi", 
+    namespaces.setPrefix("sodipodi",
             "http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd");
     namespaces.setPrefix("xlink", "http://www.w3.org/1999/xlink");
-
-    // the filename of a gesture recogniser, if one is to be loaded
-    std::string recogniser_filename;
 
     bool save_svg_and_exit = false;
 
@@ -122,22 +123,13 @@ int main(int argc, char *argv[])
     window.setWindowIcon(appIcon);
 
     int c = -1;
-    char args[] = "jbd:fhinqrst:vw:xyz:";
+    char args[] = "bhvw:xyz:";
     while ((c = mj_getopt(argc, argv, args)) != -1)
     {
         switch (c)
         {
-            case 'd':
-                recogniser_filename = mj_optarg;
-                use_recogniser = true;
-                break;
             case 'b':
                 //QT window.canvas()->m_batch_diagram_layout = true;
-                break;
-            case 'i':
-            case 'f':
-            case 'n':
-            case 'j':
                 break;
             case 'x':
                 save_svg_and_exit = true;
@@ -242,12 +234,9 @@ int main(int argc, char *argv[])
         save_svg_action(NULL);
         free_xml_savespace();
         freeInterferingConnectorColours();
-        ins_end();
         exit(EXIT_SUCCESS);
     }
 #endif
-    
-    atexit(cleanup);
 
     //QT iteration_handler = do_response_tasks;
     //QT canvas_repaint_handler = repaint_canvas_wrapper;
@@ -264,28 +253,7 @@ static void usage(char *title, char *editor)
     printf("%s\n\n"
 "Usage: %s [options] file\n"
 "\n"
-"Visibility Options:\n"
-"   -t ptvisalgo      Set the algorithm used for point visibility.\n"
-"                     ptvisalgo must be one of the following:\n"
-"                        n  naive\n"
-"                        s  sweep\n"
-"   -i                If this option is given, don't ignore regions that \n"
-"                     can't contain the shortest path.  Keep all valid edges\n"
-"                     in the visibility graph.\n"
-"   -e                If this option is given, don't include endpoints in\n"
-"                     the visibility graph.  Instead generate pt visibility\n"
-"                     for endpoints prior to planning paths for a connector.\n"
-"   -f                Use Partial Feedback, rather than Immediate Feedback\n"
-"                     for visibility graph actions.\n"
-"   -n                If this option is given, the *invisibility* graph won't\n"
-"                     be used.  This generally results in a slowdown.\n"
-"   -s                Don't selectively calculate and reroute connectors\n"
-"                     after changes to the visibility graph.  Instead,\n"
-"                     recalculate the paths for all connectors.\n"
-"\n"
 "General Options:\n"
-"   -q                Record the session into the file.svg.bnlg binary log.\n"
-"   -r                Replay the session saved in the file.svg.bnlg binary log.\n"
 "   -h                Show usage information.\n"
 "   -v                Show version information.\n"
 "   -x                Load the diagram, then immediately write out SVG and quit.\n"
@@ -295,26 +263,7 @@ static void usage(char *title, char *editor)
 "   -z xing_penalty   Set the connector crossing penalty (0 to 500).\n"
 "   -w nudge_distance 'Nudge' connectors by this amount to separate then.\n"
 "                     Only valid in batch mode (-b), otherwise use CTRL-N.\n"
-"\n"
-"General Information:\n"
-"\n"
-"   A diagram can be opened by giving the filename as an argument when\n"
-"   starting Dunnart.  New diagrams can be created by specifying a\n"
-"   non-existent diagram on the command line, modifying the diagram and\n"
-"   then saving it.  (A modification of a diagram can be created by\n"
-"   making a copy of a diagram through the shell, and then opening and\n"
-"   modifying the copy.  Drawing should have a `svg' extension.  They are\n"
-"   stored as Scalable Vector Graphics (SVG) with added markup.\n"
-"\n"
-"   When using the record (-q) feature or opening an `exd' (experiment\n"
-"   diagram) file all interactions with the diagram are written out to\n"
-"   a binary log file (.bnlg).  This can then be used by Dunnart to play\n"
-"   back the entire session using the `-r' option.\n"
-"\n"
-"   Saving diagrams with an exd extension creates a new revision of the\n"
-"   file each time as `origfile-XX.exd' where XX is the revision number.\n"
-"   This is useful for saving a copy of the state of the diagram at\n"
-"   particular points during experiments.\n\n", title, editor);
+"\n", title, editor);
       
 }
 
