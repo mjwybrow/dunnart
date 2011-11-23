@@ -234,6 +234,7 @@ Router::Router(const unsigned int flags)
     {
         _routingPenalties[p] = 0.0;
     }
+    _routingPenalties[segmentPenalty] = 10;
     _routingPenalties[clusterCrossingPenalty] = 4000;
     _routingPenalties[portDirectionPenalty] = 100;
     _routingOptions[nudgeOrthogonalSegmentsConnectedToShapes] = false;
@@ -264,8 +265,11 @@ Router::~Router()
         ShapeRef *shape = dynamic_cast<ShapeRef *> (obstaclePtr);
         db_printf("Deleting %s %u in ~Router()\n", 
                 (shape) ? "shape" : "junction", obstaclePtr->id());
-        obstaclePtr->removeFromGraph();
-        obstaclePtr->makeInactive();
+        if (obstaclePtr->isActive())
+        {
+            obstaclePtr->removeFromGraph();
+            obstaclePtr->makeInactive();
+        }
         delete obstaclePtr;
         obstacle = m_obstacles.begin();
     }
@@ -539,44 +543,18 @@ bool Router::processTransaction(void)
 {
     bool notPartialTime = !(PartialFeedback && PartialTime);
     bool seenShapeMovesOrDeletes = false;
-    ActionInfoList::iterator curr;
-    ActionInfoList::iterator finish = actionList.end();
 
-    if (SimpleRouting)
+    // If SimpleRouting, then don't update here.
+    if ((actionList.empty() && (m_hyperedge_rerouter.count() == 0)) ||
+            SimpleRouting)
     {
-        // If SimpleRouting, then just update obstacle positions.
-        for (curr = actionList.begin(); curr != finish; ++curr)
-        {
-            ActionInfo& actInf = *curr;
-            if ((actInf.type == ShapeMove) || (actInf.type == JunctionMove))
-            {
-                Obstacle *obstacle = actInf.obstacle();
-                ShapeRef *shape = actInf.shape();
-                JunctionRef *junction = actInf.junction();
-                Polygon& newPoly = actInf.newPoly;
-
-                obstacle->removeFromGraph();
-                if (shape)
-                {
-                    shape->setNewPoly(newPoly);
-                }
-                else
-                {
-                    junction->setPosition(actInf.newPosition);
-                }
-            }
-        }
         actionList.clear();
         return false;
     }
 
-    if (actionList.empty() && (m_hyperedge_rerouter.count() == 0))
-    {
-        // Nothing to do.
-        return false;
-    }
-
     actionList.sort();
+    ActionInfoList::iterator curr;
+    ActionInfoList::iterator finish = actionList.end();
     for (curr = actionList.begin(); curr != finish; ++curr)
     {
         ActionInfo& actInf = *curr;
@@ -624,6 +602,14 @@ bool Router::processTransaction(void)
         //      Feedback.  Without this the blocked edges still route
         //      around the shape until it leaves the connector.
         obstacle->makeInactive();
+
+        if (!isMove)
+        {
+            // Free deleted obstacle.
+            m_currently_calling_destructors = true;
+            delete obstacle;
+            m_currently_calling_destructors = false;
+        }
     }
     
     if (seenShapeMovesOrDeletes && _polyLineRouting)

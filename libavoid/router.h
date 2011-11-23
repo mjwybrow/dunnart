@@ -93,6 +93,8 @@ enum PenaltyType
     //!         is some evidence that tighter corners are worse for 
     //!         readability, but that slight bends might not be so bad, 
     //!         especially when smoothed by curves.
+    //! @note   If this penalty is not set (i.e., is equal to zero) then 
+    //!         orthogonal connector routes will not get nudged apart.  
     anglePenalty,
     //! @brief  This penalty is applied whenever a connector path crosses 
     //!         another connector path.  It takes shared paths into 
@@ -224,7 +226,7 @@ class Router {
 
         //! @brief Allows setting of the behaviour of the router in regard
         //!        to transactions.  This controls whether transactions are
-        //!        used to queue changes and process them effeciently at once
+        //!        used to queue changes and process them efficiently at once
         //!        or they are instead processed immediately.
         //!
         //! It is more efficient to perform actions like shape movement,
@@ -234,7 +236,7 @@ class Router {
         //! "transactions" that are processed efficiently when the 
         //! processTransaction() method is called.
         //!
-        //! By default, the router will process all actions as tranactions.
+        //! By default, the router will process all actions as transactions.
         //! If transactionUse() is set to false, then all actions will get 
         //! processed immediately, and cause immediate routing callbacks to 
         //! all affected connectors after each action.
@@ -402,7 +404,7 @@ class Router {
         void setOrthogonalNudgeDistance(const double dist);
 
         //! @brief   Returns the spacing distance that overlapping orthogonal
-        //!          connecotrs are nudged apart.
+        //!          connectors are nudged apart.
         //!
         //! @return  The current spacing distance used for orthogonal nudging.
         //!
@@ -461,13 +463,17 @@ class Router {
         //! @brief  Generates an SVG file containing debug output and code that
         //!         can be used to regenerate the instance.
         //!
+        //! If transactions are being used, then this method should be called 
+        //! after processTransaction() has been called, so that it includes any
+        //! changes being queued by the router.
+        //!
         //! @param[in] filename  The filename to use for the output file, if
         //!                      not given "libavoid-debug.svg" will be used.
         //!
         void outputInstanceToSVG(std::string filename = std::string());
 
         //! @brief  Returns the object ID used for automatically generated 
-        //!         objects, such as during hyeredge routing.
+        //!         objects, such as during hyperedge routing.
         //! 
         //! Reimplement this in a subclass to set specific IDs for new objects.
         //!
