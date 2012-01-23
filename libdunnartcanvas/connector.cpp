@@ -602,7 +602,10 @@ void Connector::setDirected(const bool directed)
     m_is_directed = directed;
     update();
 
-    canvas()->interrupt_graph_layout();
+    if (canvas())
+    {
+        canvas()->interrupt_graph_layout();
+    }
 }
 
 double Connector::idealLength(void) const
