@@ -223,8 +223,7 @@ void Indicator::paint(QPainter *painter,
     if (m_curr_path_one_pixel != onePixel)
     {
         m_curr_path_one_pixel = onePixel;
-        printf("---- Zoom change %g \n", onePixel);
-        fflush(stdout);
+        //qDebug("Indicator::paint(): Zoom change %g", onePixel);
         setPainterPath(buildPainterPath());
     }
     //painter->drawRect(boundingRect());

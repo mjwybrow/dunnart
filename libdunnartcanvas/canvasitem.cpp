@@ -554,7 +554,7 @@ CanvasItem *CanvasItem::create(Canvas *canvas, const QDomElement& node,
                 (type ==  "connAvoidPoly"))
         {
             QString id = essentialProp<QString>(node, x_id);
-            fprintf(stderr, "Warning: Conn [%s] specified with old syntax: %s.\n",
+            qWarning("Conn [%s] specified with old syntax: %s.",
                     qPrintable(id), qPrintable(type));
 
             Connector *conn = new Connector();

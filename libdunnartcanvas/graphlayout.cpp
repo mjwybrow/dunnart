@@ -604,7 +604,7 @@ struct PreIteration : cola::PreIteration {
         bool interrupt = gl.interruptFromDunnart | gl.freeShiftFromDunnart;
         gl.m_layout_signal_mutex.unlock();
         if (interrupt) { 
-            printf("User interrupt detected in PreIteration!\n");
+            qDebug("User interrupt detected in PreIteration!");
             return false; 
         }
         gl.m_changed_list_mutex.lock();
@@ -686,7 +686,7 @@ public:
         }
         if (interrupt)
         {
-            printf("User interrupt detected in PostIteration!\n");
+            qDebug("User interrupt detected in PostIteration!");
             gl.m_layout_signal_mutex.lock();
             gl.interruptFromDunnart = true;
             if (gl.freeShiftFromDunnart)
@@ -1126,7 +1126,7 @@ void GraphLayout::apply(bool ignoreEdges)
 void GraphLayout::setLayoutMode(Mode newMode)
 {
     mode = newMode;
-    printf("Layout Mode set to %d\n", (int) mode);
+    qDebug("Layout Mode set to %d", (int) mode);
 }
 
 void GraphLayout::setOptimizationMethod(OptimizationMethod newOM)
@@ -1141,7 +1141,7 @@ void GraphLayout::setOptimizationMethod(OptimizationMethod newOM)
 
 void GraphLayout::initialise(void)
 {
-    printf("GraphLayout::initialise: runlevel=%d\n",runLevel);
+    qDebug("GraphLayout::initialise: runlevel=%d",runLevel);
     if (m_graph!=NULL)
     {
         delete m_graph;
@@ -1208,8 +1208,8 @@ void GraphLayout::setOutputDebugFiles(const bool value)
 
 void GraphLayout::showUnsatisfiable(cola::UnsatisfiableConstraintInfo* i)
 {
-    printf("WARNING: Unsatisfiable constraint:\n");
-    printf("  left id=%d,right id=%d\n",i->vlid,i->vrid);
+    qWarning("Unsatisfiable constraint:");
+    qWarning("  left id=%d,right id=%d",i->vlid,i->vrid);
 
     ShapeObj *s1 = m_graph->getShape(i->vlid);
     ShapeObj *s2 = m_graph->getShape(i->vrid);

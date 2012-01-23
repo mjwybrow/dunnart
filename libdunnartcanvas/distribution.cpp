@@ -991,7 +991,7 @@ QVariant Distribution::itemChange(QGraphicsItem::GraphicsItemChange change,
 {
     if (change == QGraphicsItem::ItemScenePositionHasChanged)
     {
-        printf("Transform Changed!!!!!!!!!!\n");
+        qDebug("Transform Changed!");
         fflush(stdout);
         abort();
         buildPainterPath();

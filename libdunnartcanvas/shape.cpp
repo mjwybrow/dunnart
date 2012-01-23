@@ -926,7 +926,7 @@ void ShapeObj::addXmlProps(const unsigned int subset, QDomElement& node,
 void ShapeObj::setDecorativeImageFile(const std::string fileName) {
     SDL_Surface *origDecorativeImage = IMG_Load(fileName.c_str());
     if(!origDecorativeImage) {
-        fprintf(stderr,"IMG_Load: %s\n",IMG_GetError());
+        qWarning("setDecorativeImageFile(): %s\n",IMG_GetError());
         return;
     }
     // Get rid of the bottom 20 pixels, since it contains a ID code.

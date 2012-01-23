@@ -939,8 +939,7 @@ void Canvas::templateFromSelection(int type)
     {
         case TEMPLATE_LINEAR_HORI:
         {
-            printf("creating horizontal linear template\n");
-            fflush(stdout);
+            qDebug("creating horizontal linear template");
 
             double xpos = 150;
             double ypos = 150;
@@ -1784,8 +1783,7 @@ void Canvas::processLayoutUpdateEvent(void)
 {
     m_layout_update_timer->stop();
 
-    //printf("LayoutUpdateEvent\n");
-    //fflush(stdout);
+    //qDebug("LayoutUpdateEvent");
 #ifdef FPSTIMER
     if (!timerRunning)
     {
@@ -1821,7 +1819,7 @@ void Canvas::processLayoutFinishedEvent(void)
 {
     m_layout_finish_timer->stop();
 
-    //printf("LayoutFinishedEvent\n");
+    //qDebug("LayoutFinishedEvent");
 #if 0
 #ifdef FPSTIMER
     if (timerRunning)
@@ -1866,7 +1864,7 @@ void Canvas::processLayoutFinishedEvent(void)
     if (gl->runLevel == 0)
     {
         gl->runLevel=1;
-        printf("runLevel=1\n");
+        qDebug("runLevel=1");
         interrupt_graph_layout();
         changes = true;
     }

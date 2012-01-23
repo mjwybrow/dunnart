@@ -68,15 +68,14 @@ Relationship::Relationship(Canvas *canvas, const QDomElement& node,
 
         if (atypes_to_dirctn(type) != guide->get_dir())
         {
-            fprintf(stderr, "Warning: Constraint relationship with wrong "
-                    "direction, adjusting...\n");
+            qWarning("Constraint relationship with wrong "
+                    "direction, adjusting...");
             type = (atypes) (((int)type + 3) % 6);
         }
    
         if (dynamic_cast<Cluster *> (shape))
         {
-            fprintf(stderr, 
-                    "WARNING: Ignoring cluster %d attached to guideline %d.\n",
+            qWarning("Ignoring cluster %d attached to guideline %d.",
                     shape->internalId(), guide->internalId());
         }
         else

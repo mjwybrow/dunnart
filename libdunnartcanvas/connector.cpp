@@ -239,14 +239,14 @@ void Connector::initWithXMLProperties(Canvas *canvas,
     if (optionalProp(node, x_orthogonalConstraint, oc, ns)) 
     {
         m_orthogonal_constraint=(OrthogonalConstraint)oc;
-        printf("orthogonal constraint=%d\n",oc);
+        qDebug("orthogonal constraint=%d",oc);
     }
     value = nodeAttribute(node, ns, x_lineCol);
     if (!value.isNull())
     {
         m_colour = QColorFromRRGGBBAA(value.toLatin1().data());
         m_saved_colour = m_colour;
-        //printf("read id=%d colour=%x\n",get_ID(),colour);
+        //qDebug("read id=%d colour=%x",get_ID(),colour);
     }
     
     // get dotted

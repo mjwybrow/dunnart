@@ -67,7 +67,7 @@ Cluster *newCluster(CanvasItemList& memberList, QString id)
     }
     if (members.empty())
     {
-        fprintf(stderr, "WARNING: newCluster called with no members.\n");
+        qWarning("newCluster called with no members.");
         return NULL;
     }
     Cluster *newC = new Cluster(members, id);
@@ -366,9 +366,9 @@ void Cluster::changeDetailLevel(bool expand)
             {
                 fn = n;
             }
-            //printf("-- nw %g nh %g\n", nw, nh);
+            //qDebug("-- nw %g nh %g", nw, nh);
             QPointF npos = clusterRect.center() - (shapeRect.center() * proportion);
-            //printf("-- nx %g ny %g\n", nx, ny);
+            //qDebug("-- nx %g ny %g", nx, ny);
             (*curr)->setPosAndSize(npos, fn);
         }
         if (i != levelsOfDetail)

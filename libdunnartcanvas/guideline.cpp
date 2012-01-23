@@ -710,7 +710,7 @@ Guideline *createAlignment(const atypes atype, CanvasItemList& objList)
     }
     if (!guide)
     {
-        fprintf(stderr, "WARNING: No alignment created in createAlignment().\n");
+        qWarning("No alignment created in createAlignment().");
     }
 
     return guide;

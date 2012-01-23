@@ -159,11 +159,11 @@ int main(int argc, char *argv[])
                 window.canvas()->setNudgeDistance(atof(mj_optarg));
                 break;
             case '?':
-                qFatal("Please run `%s -h' to see valid options.\n", argv[0]);
+                qFatal("Please run `%s -h' to see valid options.", argv[0]);
                 break;
 
             default:
-                qFatal("?? getopt returned character code 0%o ??\n", c);
+                qFatal("?? getopt returned character code 0%o ??", c);
         }
     }
 

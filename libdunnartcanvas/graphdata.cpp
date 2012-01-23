@@ -254,7 +254,7 @@ GraphData::GraphData(Canvas *canvas, bool ignoreEdges,
         }
     }
 
-    //printf("Total connector crossings=%d\n", noOfConnectorCrossings());
+    //qDebug("Total connector crossings=%d", noOfConnectorCrossings());
     
     if (canvas_->optFitWithinPage())
     {
@@ -299,19 +299,20 @@ GraphData::GraphData(Canvas *canvas, bool ignoreEdges,
         }
 #endif
 
-    printf("GraphData ctor done: ccs=%d, rs=%d, "
-            "topologyNodes=%d, topologyRoutes=%d\n", (int) ccs.size(),
-            (int) rs.size(), (int) topologyNodesCount, (int) topologyRoutes.size());
+    qDebug("GraphData ctor done: ccs=%d, rs=%d, "
+           "topologyNodes=%d, topologyRoutes=%d", (int) ccs.size(),
+           (int) rs.size(), (int) topologyNodesCount,
+           (int) topologyRoutes.size());
 #endif
 
-    printf("GraphData ctor done: ccs=%d, rs=%d\n",
-            (int) ccs.size(), (int) rs.size());
+    qDebug("GraphData ctor done: ccs=%d, rs=%d",
+           (int) ccs.size(), (int) rs.size());
 }
 
 
 void resolveOverlappingRectangles(Rectangles &rs, vpsc::Dim dim) {
     unsigned n=rs.size();
-    //printf("resolveOverlappingRectangles: n=%d\n",n);
+    //qDebug("resolveOverlappingRectangles: n=%d",n);
     Variables vs(n);
     unsigned i=0;
     for(Variables::iterator v=vs.begin();v!=vs.end();++v,++i) {
@@ -398,7 +399,7 @@ void GraphData::generateRoutes() {
         unsigned int shapeID = shape_vec[i]->internalId();
         idMap[shapeID] = i;
 #ifdef PATHDEBUG
-        printf("Shape[%3d]:  %g. %g - %g %g\n", shapeID, x, y, X, Y);
+        qDebug("Shape[%3d]:  %g. %g - %g %g", shapeID, x, y, X, Y);
 #endif
         new Avoid::ShapeRef(router, shapePoly, shapeID);
     }
@@ -432,7 +433,7 @@ void GraphData::generateRoutes() {
         Avoid::Point srcPt(r0->getCentreX(),r0->getCentreY());
         Avoid::Point dstPt(r1->getCentreX(),r1->getCentreY());
 #ifdef PATHDEBUG
-        printf("=Conn[%3d]================================================\n",
+        qDebug("=Conn[%3d]================================================",
                 connID);
 #endif
         const Avoid::PolyLine& oldRoute = conn_vec[i]->avoidRef->route();
@@ -446,7 +447,7 @@ void GraphData::generateRoutes() {
                 dstPt.x=ep.x;
                 dstPt.y=ep.y;
 #ifdef PATHDEBUG
-                printf("Trace(%2lu):  [%d %d] %g, %g\n", j, ep.id, ep.vn,
+                qDebug("Trace(%2lu):  [%d %d] %g, %g", j, ep.id, ep.vn,
                         ep.x, ep.y);
 #endif
                 connRef->makePathInvalid();
@@ -490,7 +491,7 @@ void GraphData::generateRoutes() {
             const unsigned nodeID = idMap[p.id];
             assert(nodeID!=e.first);
             assert(nodeID!=e.second);
-            //printf("  (%f,%f)\n",r->xs[j],r->ys[j]);
+            //qDebug("  (%f,%f)", r->xs[j], r->ys[j]);
             //cout << "addToPath(vs[" << nodeID << "],";
             assert(nodeID<topologyNodesCount);
             topology::Node* node=topologyNodes[nodeID];
@@ -588,12 +589,14 @@ void GraphData::shapeToNode(ShapeObj* shape) {
     rootNodes.insert(nodeID);
     bool allowOverlap = false;
     if(rect.width() < 1.0) {
-        printf("dummy node, size<1 found - allowing overlap\n");
+        qWarning("dummy node, size<1 found - allowing overlap");
         allowOverlap=true;
     }
-    Rectangle *r=
-        new Rectangle(rect.left(),rect.right(),rect.top(),rect.bottom(),allowOverlap);
-    printf("Node id=%d, (x,y)=(%f,%f), (w,h)=%f,%f\n",shape->internalId(),r->getCentreX(), r->getCentreY(), r->width(), r->height());
+    Rectangle *r = new Rectangle(rect.left(), rect.right(),
+            rect.top(), rect.bottom(), allowOverlap);
+    qWarning("Node id=%d, (x,y)=(%f,%f), (w,h)=%f,%f",
+            shape->internalId(),r->getCentreX(), r->getCentreY(),
+            r->width(), r->height());
 
     rs.push_back(r);
 
@@ -655,13 +658,13 @@ void GraphData::dunnartClusterToCluster(Cluster* cluster) {
         cola::AlignmentConstraint *vac = new cola::AlignmentConstraint(clcx);
         vac->guide = NULL;
         ccsx.push_back(vac);
-        printf("collapsed cluster\n");
+        qDebug("Collapsed cluster:");
 
         cola::AlignmentConstraint *hac = new cola::AlignmentConstraint(clcy);
         hac->guide = NULL;
         ccsy.push_back(hac);
 
-        printf("Cluster centre: %g %g\n", clcx, clcy);
+        qDebug("Cluster centre: %g %g\n", clcx, clcy);
 
         ShapeList& members = cluster->getMembers();
         ClusterShapeMap& smallShapeInfo = cluster->getSmallShapeInfo();
@@ -671,14 +674,14 @@ void GraphData::dunnartClusterToCluster(Cluster* cluster) {
             double offx, offy, sw, sh;
             smallShapeInfo[(*curr)->getId()]->getOffsetAndSize(offx, offy,
                     sw, sh);
-            printf("Shape id: %d\n", snMap[*curr]);
-            printf("Shape offset: %g %g\n", offx, offy);
-            printf("Shape size: %g %g\n", sw, sh);
-            printf("Shape pos: %g %g\n", clcx - offx, clcy - offy);
+            qDebug("Shape id: %d", snMap[*curr]);
+            qDebug("Shape offset: %g %g", offx, offy);
+            qDebug("Shape size: %g %g", sw, sh);
+            qDebug("Shape pos: %g %g", clcx - offx, clcy - offy);
             double sx, sy, sw2, sh2;
             (*curr)->getPosAndSize(sx, sy, sw2, sh2);
-            printf("Real Shape size: %g %g\n", sw2, sh2);
-            printf("Real Shape pos: %g %g\n", sx, sy);
+            qDebug("Real Shape size: %g %g", sw2, sh2);
+            qDebug("Real Shape pos: %g %g", sx, sy);
             
             vac->offsets.push_back(make_pair(snMap[(*curr)],-offx));
             hac->offsets.push_back(make_pair(snMap[(*curr)],-offy));
@@ -702,7 +705,7 @@ void GraphData::connectorToEdge(Connector* conn)
     conn_vec.push_back(conn);
     QPair<CPoint, CPoint> connpts = conn->get_connpts();
     if(!connpts.first.shape||!connpts.second.shape) {
-        printf("dangling connector!\n");
+        qWarning("dangling connector!");
         return;
     }
     unsigned a=getConnectionPoint(connpts.first);
@@ -710,7 +713,7 @@ void GraphData::connectorToEdge(Connector* conn)
 #if 0
     if (conn->orthogonalConstraint != Conn::NONE)
     {
-        //printf("Creating orthogonalConstraint\n");
+        //qDebug("Creating orthogonalConstraint");
         cola::OrthogonalEdgeConstraint *oec = 
                 new cola::OrthogonalEdgeConstraint(a, b);
         if (conn->orthogonalConstraint == Conn::HORIZONTAL)
@@ -731,7 +734,7 @@ void GraphData::connectorToEdge(Connector* conn)
     addEdge(a,b,idealLength);
 
     // dump dot format
-    //printf("%d->%d;\n",a,b);
+    //qDebug("%d->%d;",a,b);
 }
 
 
@@ -764,15 +767,14 @@ void GraphData::setupMultiEdges() {
         }
     }
     for(list<list<Connector*> >::iterator i=conDups.begin();i!=conDups.end();i++) {
-        printf("Duplicates: ");
+        qDebug("Duplicates: ");
         unsigned ctr=0;
         for(list<Connector*>::iterator j=i->begin();j!=i->end();j++) {
             QPair<ShapeObj *, ShapeObj *> p = (*j)->getAttachedShapes();
-            printf("(%d,%d) ", p.first->internalId(), p.second->internalId());
+            qDebug("+-(%d, %d)", p.first->internalId(), p.second->internalId());
             (*j)->m_multiedge_size=i->size();
             (*j)->m_multiedge_index=ctr++;
         }
-        printf("\n");
     }
 }
 

@@ -471,7 +471,7 @@ void Graph::drawConnectorGhosts(SDL_Surface *surface, int offx, int offy)
 #endif
 
 void Graph::restartLayout(ogdf::node centre) {
-    fprintf(stderr,"GraphExpl::restartLayout\n");
+    qDebug("Graph::restartLayout()");
     layoutDoneCallback = new LayoutCallback(this);
     //fully_restart_graph_layout(NULL);
     ShapeObj* sh = shapes[centre];
@@ -601,7 +601,7 @@ void Graph::expandNeighbours(double x, double y) {
     expandNeighbours(closest);
 }
 void Graph::expandNeighbours(ogdf::node centre) {
-    fprintf(stderr,"expandNeighbours setting interrupt...\n");
+    qDebug("expandNeighbours setting interrupt...");
     GraphLayout* gl=canvas()->layout();
     gl->setInterruptFromDunnart();
     gl->unlockAll(NULL);

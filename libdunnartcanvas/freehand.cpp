@@ -157,7 +157,7 @@ void start_freehand_drawing(void)
         while ((mouse.b != 0) && SDL_PollEvent(&event));
     }
 
-    //printf("Points: %d\n", (int) points.size());
+    //qDebug("Points: %d", (int) points.size());
     SDL_FastBlit(behind, screen, 0, 0, 0, 0, screen->w, screen->h);
     SDL_FreeSurface(behind);
    
