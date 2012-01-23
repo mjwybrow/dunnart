@@ -92,6 +92,13 @@ int main(int argc, char *argv[])
     {
         QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
         QObject *plugin = loader.instance();
+        if (plugin == NULL)
+        {
+            // The plugin either didn't load or couldn't be instantiated.
+            qCritical("Plugin \"%s\" failed to load: %s", qPrintable(fileName),
+                      qPrintable(loader.errorString()));
+            continue;
+        }
 
         ShapePluginInterface *shapePlugin =
                 qobject_cast<ShapePluginInterface *> (plugin);
@@ -152,9 +159,7 @@ int main(int argc, char *argv[])
                 window.canvas()->setNudgeDistance(atof(mj_optarg));
                 break;
             case '?':
-                fprintf(stderr, "Please run `%s -h' to see valid options.\n",
-                        argv[0]);
-                exit(EXIT_FAILURE);
+                qFatal("Please run `%s -h' to see valid options.\n", argv[0]);
                 break;
 
             default:
