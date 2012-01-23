@@ -36,9 +36,14 @@ namespace Avoid {
 JunctionRef::JunctionRef(Router *router, Point position, const unsigned int id)
     : Obstacle(router, makeRectangle(router, position), id),
       m_position(position),
-      m_recommended_position(position)
+      m_recommended_position(position),
+      m_position_fixed(false)
 {
-    setPositionFixed(false);
+    // For Junctions we use a single non-exclusive pin.
+    ShapeConnectionPin *pin = new Avoid::ShapeConnectionPin(this,
+            Avoid::CONNECTIONPIN_CENTRE, ConnDirAll);
+    pin->setExclusive(false);
+    m_connection_pins.insert(pin);
 
     m_router->addJunction(this);
 }
@@ -75,33 +80,6 @@ Rectangle JunctionRef::makeRectangle(Router *router, const Point& position)
 void JunctionRef::setPositionFixed(bool fixed)
 {
     m_position_fixed = fixed;
-
-    // Remove existing connection pins.
-    while ( ! m_connection_pins.empty() )
-    {
-        delete *(m_connection_pins.begin());
-    }
-
-    if (m_position_fixed)
-    {
-        // Set up pins in four directions, each exclusive.
-        m_connection_pins.insert(new Avoid::ShapeConnectionPin(this, 
-                Avoid::CONNECTIONPIN_CENTRE, ConnDirUp));
-        m_connection_pins.insert(new Avoid::ShapeConnectionPin(this, 
-                Avoid::CONNECTIONPIN_CENTRE, ConnDirDown));
-        m_connection_pins.insert(new Avoid::ShapeConnectionPin(this, 
-                Avoid::CONNECTIONPIN_CENTRE, ConnDirLeft));
-        m_connection_pins.insert(new Avoid::ShapeConnectionPin(this, 
-                Avoid::CONNECTIONPIN_CENTRE, ConnDirRight));
-    }
-    else
-    {
-        // For non-fixed Junctions, use a single non-excluusive pin.
-        ShapeConnectionPin *pin = new Avoid::ShapeConnectionPin(this,
-                Avoid::CONNECTIONPIN_CENTRE, ConnDirAll);
-        pin->setExclusive(false);
-        m_connection_pins.insert(pin);
-    }
 }
 
 
@@ -167,7 +145,11 @@ void JunctionRef::outputCode(FILE *fp) const
 {
     fprintf(fp, "    JunctionRef *junctionRef%u = new JunctionRef(router, "
             "Point(%g, %g), %u);\n", id(), position().x, position().y, id());
-
+    if (m_position_fixed)
+    {
+        fprintf(fp, "    junctionRef%u->setPositionFixed(true);\n", id());
+    }
+    
     fprintf(fp, "    /*\n");
     fprintf(fp, "    // This may be useful if junction pins are modified.\n");
     for (ShapeConnectionPinSet::const_iterator curr = 

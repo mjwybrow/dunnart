@@ -46,19 +46,19 @@ namespace Avoid {
 ConnRef::ConnRef(Router *router, const unsigned int id)
     : m_router(router),
       m_type(router->validConnType()),
-      m_needs_reroute_flag(true),
       m_reroute_flag_ptr(NULL),
+      m_needs_reroute_flag(true),
       m_false_path(false),
       m_needs_repaint(false),
       m_active(false),
+      m_initialised(false),
+      m_hate_crossings(false),
       m_route_dist(0),
       m_src_vert(NULL),
       m_dst_vert(NULL),
       m_start_vert(NULL),
-      m_initialised(false),
       m_callback_func(NULL),
       m_connector(NULL),
-      m_hate_crossings(false),
       m_src_connend(NULL),
       m_dst_connend(NULL)
 {
@@ -76,18 +76,18 @@ ConnRef::ConnRef(Router *router, const ConnEnd& src, const ConnEnd& dst,
         const unsigned int id)
     : m_router(router),
       m_type(router->validConnType()),
-      m_needs_reroute_flag(true),
       m_reroute_flag_ptr(NULL),
+      m_needs_reroute_flag(true),
       m_false_path(false),
       m_needs_repaint(false),
       m_active(false),
+      m_initialised(false),
+      m_hate_crossings(false),
       m_route_dist(0),
       m_src_vert(NULL),
       m_dst_vert(NULL),
-      m_initialised(false),
       m_callback_func(NULL),
       m_connector(NULL),
-      m_hate_crossings(false),
       m_src_connend(NULL),
       m_dst_connend(NULL)
 {
@@ -1238,7 +1238,7 @@ void PtOrder::sort(const size_t dim)
 
     size_t n = nodes[dim].size();
 
-    // Build an adjacancy matrix for easy lookup.
+    // Build an adjacency matrix for easy lookup.
     std::vector<std::vector<bool> > adjacencyMatrix(n);
     for (size_t i = 0; i < n; ++i)
     {
@@ -1247,7 +1247,7 @@ void PtOrder::sort(const size_t dim)
     std::vector<int> incomingDegree(n);
     std::queue<size_t> queue;
 
-    // Populate the dependancy matrix.
+    // Populate the dependency matrix.
     for (NodeIndexPairLinkList::iterator it = links[dim].begin(); 
             it != links[dim].end(); ++it)
     {
@@ -1531,8 +1531,34 @@ void ConnectorCrossings::clear(void)
 {
     crossingCount = 0;
     crossingFlags = CROSSING_NONE;
+    firstSharedPathAtEndLength = DBL_MAX;
+    secondSharedPathAtEndLength = DBL_MAX;
 }
 
+
+// Computes the *shared* length of these two shared paths.
+//
+static double pathLength(Avoid::Point **c_path, Avoid::Point **p_path, 
+        unsigned int size)
+{
+    double length = 0;
+
+    for (unsigned int ind = 1; ind < size; ++ind)
+    {
+        if ( (*(c_path[ind - 1]) == *(p_path[ind - 1])) && 
+             (*(c_path[ind]) == *(p_path[ind])) )
+        {
+            // This segment is shared by both paths.
+            //
+            // This function will only be used for orthogonal paths, so we 
+            // can use manhattan distance here since it will be faster to 
+            // compute.
+            length += manhattanDist(*(c_path[ind - 1]), *(c_path[ind]));
+        }
+    }
+
+    return length;
+}
 
 // Works out if the segment conn[cIndex-1]--conn[cIndex] really crosses poly.
 // This does not not count non-crossing shared paths as crossings.
@@ -1710,7 +1736,7 @@ void ConnectorCrossings::countForSegment(size_t cIndex, const bool finalSegment)
                             ((trace_p >= 0) && (trace_p < (int) poly_size))) )
                 {
                     // If poly is a cluster boundary, then it is a closed 
-                    // poly-line and so it wraps arounds.
+                    // poly-line and so it wraps around.
                     size_t index_p = (size_t)
                             ((trace_p + (2 * poly_size)) % poly_size);
                     size_t index_c = (size_t) trace_c;
@@ -1893,6 +1919,42 @@ void ConnectorCrossings::countForSegment(size_t cIndex, const bool finalSegment)
                 if (front_same || back_same)
                 {
                     crossingFlags |= CROSSING_SHARES_PATH_AT_END;
+
+                    // Reduce the cost of paths that stay straight after 
+                    // the split, and make this length available so that the
+                    // paths can be ordered during the improveCrossings()
+                    // step and the straight (usually better) paths will be 
+                    // left alone while the router attempts to find better
+                    // paths for the others.
+                    double straightModifier = 200;
+                    firstSharedPathAtEndLength = secondSharedPathAtEndLength = 
+                            pathLength(c_path, p_path, size);
+                    if (back_same && (size > 2))
+                    {
+                        if (vecDir(*p_path[0], *p_path[1], *p_path[2]) == 0)
+                        {
+                            firstSharedPathAtEndLength -= straightModifier;
+                        }
+
+                        if (vecDir(*c_path[0], *c_path[1], *c_path[2]) == 0)
+                        {
+                            secondSharedPathAtEndLength -= straightModifier;
+                        }
+                    }
+                    else if (front_same && (size > 2))
+                    {
+                        if (vecDir(*p_path[size - 3], *p_path[size - 2],
+                                    *p_path[size - 1]) == 0)
+                        {
+                            firstSharedPathAtEndLength -= straightModifier;
+                        }
+
+                        if (vecDir(*c_path[size - 3], *c_path[size - 2],
+                                    *c_path[size - 1]) == 0)
+                        {
+                            secondSharedPathAtEndLength -= straightModifier;
+                        }
+                    }
                 }
                 else if (polyIsOrthogonal && connIsOrthogonal)
                 {
@@ -2179,7 +2241,7 @@ void ConnectorCrossings::countForSegment(size_t cIndex, const bool finalSegment)
             }
         }
     }
-    //db_printf("crossingcount %d\n", crossingCount);
+    //db_printf("crossingcount %d %d\n", crossingCount, crossingFlags);
 
     // Free shared path memory.
     delete[] c_path;
