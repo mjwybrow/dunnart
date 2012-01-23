@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
 #endif
 
     // Dynamically load each library in the plugins directory, and then
-    // register them if they implement a given DUnnart plugin interface.
+    // register them if they implement a given Dunnart plugin interface.
     PluginShapeFactory *shapeFactory = sharedPluginShapeFactory();
     PluginFileIOFactory *fileIOFactory = sharedPluginFileIOFactory();
     foreach (QString fileName, pluginsDir.entryList(QDir::Files))

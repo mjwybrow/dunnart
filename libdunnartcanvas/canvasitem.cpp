@@ -458,10 +458,16 @@ CanvasItem *CanvasItem::create(Canvas *canvas, const QDomElement& node,
     QString type = nodeAttribute(node, dunnartURI, x_type);
     assert(!type.isEmpty());
 
+    QStringList oldConnTypes;
+    oldConnTypes << "connStraight" << "connAvoidCurved" << "connAvoidPoly" <<
+                    "connOrthogonal" << "connAvoidOrtho";
+
     CanvasItem *newObj = NULL;
 
     if (pass == PASS_SHAPES)
     {
+        ShapeObj *shape = NULL;
+
         // Support legacy shapes from Dunnart v1.
         if (type == "flowEndOProc")
         {
@@ -476,13 +482,21 @@ CanvasItem *CanvasItem::create(Canvas *canvas, const QDomElement& node,
             type = x_guideline;
         }
 
-        ShapeObj *shape = NULL;
-        // Load this shape from a plugin if the factory supports it.
-        PluginShapeFactory *factory = sharedPluginShapeFactory();
-        shape = factory->createShape(type);
-
-        // Or for create the old way for non-factory-supported shapes.
-        if (shape == NULL)
+        if (type == x_guideline)
+        {
+            newObj = new Guideline(canvas, node, dunnartURI);
+        }
+        else if (type == x_distribution)
+        {
+            newObj = new Distribution(node, dunnartURI);
+        }
+        else if (type == x_separation)
+        {
+            newObj = new Separation(node, dunnartURI);
+        }
+        else if (!type.isEmpty() && (type != x_cluster) &&
+                (type != x_constraint) && (type != x_connector) &&
+                ! oldConnTypes.contains(type))
         {
             if (type == x_svgNode)
             {
@@ -500,34 +514,15 @@ CanvasItem *CanvasItem::create(Canvas *canvas, const QDomElement& node,
             {
                 shape = new FreehandShape();
             }
-            else if (type == x_guideline)
+            else
             {
-                newObj = new Guideline(canvas, node, dunnartURI);
-            }
-            else if (type == x_distribution)
-            {
-                newObj = new Distribution(node, dunnartURI);
-            }
-            else if (type == x_separation)
-            {
-                newObj = new Separation(node, dunnartURI);
-            }
-
-            if ((newObj == NULL) && (shape == NULL) && !type.isEmpty() &&
-                    (type != x_cluster) &&
-                    (type != x_constraint) &&
-                    (type != x_connector) &&
-                    (type != "connStraight") &&
-                    (type != "connAvoidCurved") &&
-                    (type != "connOrthogonal") &&
-                    (type != "connAvoidOrtho") &&
-                    (type !=  "connAvoidPoly") )
-            {
-                // It's a shape we haven't loaded, so load it as just a
-                // rectangle.
-                shape = new RectangleShape();
+                // Load this shape from a plugin if the factory supports it,
+                // or else create a generic RectangleShape().
+                PluginShapeFactory *factory = sharedPluginShapeFactory();
+                shape = factory->createShape(type);
             }
         }
+
         if (shape)
         {
             shape->initWithXMLProperties(canvas, node, dunnartURI);
@@ -549,9 +544,7 @@ CanvasItem *CanvasItem::create(Canvas *canvas, const QDomElement& node,
             conn->initWithXMLProperties(canvas, node, dunnartURI);
             newObj = conn;
         }
-        else if ((type == "connStraight") || (type == "connAvoidCurved") ||
-                (type == "connOrthogonal") || (type == "connAvoidOrtho") ||
-                (type ==  "connAvoidPoly"))
+        else if (oldConnTypes.contains(type))
         {
             QString id = essentialProp<QString>(node, x_id);
             qWarning("Conn [%s] specified with old syntax: %s.",

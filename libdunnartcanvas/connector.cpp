@@ -655,7 +655,10 @@ void Connector::swapDirection(void)
     
     forceReroute();
 
-    canvas()->interrupt_graph_layout();
+    if (canvas())
+    {
+        canvas()->interrupt_graph_layout();
+    }
 }
 
 
