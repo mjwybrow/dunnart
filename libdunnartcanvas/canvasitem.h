@@ -23,6 +23,9 @@
  * Author(s): Michael Wybrow  <http://michael.wybrow.info/>
 */
 
+//! @file
+//! CanvasItem class.  This is DunnartCanvas' equivalent of QGraphicsItem.
+
 #ifndef CANVASITEM_H
 #define CANVASITEM_H
 

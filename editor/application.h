@@ -28,22 +28,22 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
-#include <QApplication>
+#include "libdunnartcanvas/canvasapplication.h"
 
 class QEvent;
 
 namespace dunnart {
+
 class MainWindow;
 
-class Application : public QApplication
+class Application : public CanvasApplication
 {
-public:
-    Application(int & argc, char ** argv);
-    void setWindow(MainWindow *window);
-protected:
-    bool event(QEvent *ev);
-private:
-    MainWindow *m_window;
+    public:
+        Application(int & argc, char ** argv);
+        MainWindow *mainWindow(void) const;
+        virtual bool openDiagram(QFileInfo *file);
+    protected:
+        bool event(QEvent *ev);
 };
 
 }

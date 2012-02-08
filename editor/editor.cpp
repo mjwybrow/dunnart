@@ -49,11 +49,6 @@
 #include "libavoid/router.h"
 #include "libavoid/debug.h"
 
-#include "libdunnartcanvas/pluginshapefactory.h"
-#include "libdunnartcanvas/pluginfileiofactory.h"
-#include "libdunnartcanvas/shapeplugininterface.h"
-#include "libdunnartcanvas/fileioplugininterface.h"
-
 #include "mainwindow.h"
 
 
@@ -71,49 +66,6 @@ static void usage(char *title, char *editor);
 int main(int argc, char *argv[])
 {
     Application app(argc, argv);
-
-    //QCoreApplication::addLibraryPath("libs/plugins");
-
-    QDir pluginsDir = QDir(qApp->applicationDirPath());
-#if defined(Q_OS_MAC)
-    if (pluginsDir.dirName() == "MacOS") {
-        pluginsDir.cdUp();
-    }
-    pluginsDir.cd("Plugins");
-#else
-    pluginsDir.cd("plugins");
-#endif
-
-    // Dynamically load each library in the plugins directory, and then
-    // register them if they implement a given Dunnart plugin interface.
-    PluginShapeFactory *shapeFactory = sharedPluginShapeFactory();
-    PluginFileIOFactory *fileIOFactory = sharedPluginFileIOFactory();
-    foreach (QString fileName, pluginsDir.entryList(QDir::Files))
-    {
-        QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
-        QObject *plugin = loader.instance();
-        if (plugin == NULL)
-        {
-            // The plugin either didn't load or couldn't be instantiated.
-            qCritical("Plugin \"%s\" failed to load: %s", qPrintable(fileName),
-                      qPrintable(loader.errorString()));
-            continue;
-        }
-
-        ShapePluginInterface *shapePlugin =
-                qobject_cast<ShapePluginInterface *> (plugin);
-        if (shapePlugin)
-        {
-            shapeFactory->registerShapePlugin(shapePlugin);
-        }
-
-        FileIOPluginInterface *fileIOPlugin =
-                qobject_cast<FileIOPluginInterface *> (plugin);
-        if (fileIOPlugin)
-        {
-            fileIOFactory->registerFileIOPlugin(fileIOPlugin);
-        }
-    }
 
     namespaces.setPrefix(x_dunnartNs, x_dunnartURI);
     namespaces.setPrefix("xmlns", "http://www.w3.org/2000/svg");

@@ -64,7 +64,7 @@ class MainWindow : public QMainWindow
         CanvasView *view(void);
         QList<CanvasView *> views(void);
         void newCanvasTab(void);
-        void loadDiagram(const QString& filename);
+        bool loadDiagram(const QString& filename);
     private slots:
         void documentNew(void);
         void documentOpen(void);

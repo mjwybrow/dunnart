@@ -39,6 +39,7 @@ FORMS = \
 	ui/connectorproperties.ui \
     ui/createtemplate.ui \
     ui/shapepickerdialog.ui
+
 SOURCES += \ 
 	FMMLayout.cpp \
 	align3.cpp \
@@ -87,7 +88,10 @@ SOURCES += \
     connectorhandles.cpp \
     ui/undohistorydialog.cpp \
     stronglyconnectedcomponents.cpp \
-    connectionpininfo.cpp
+    connectionpininfo.cpp \
+    canvasapplication.cpp \
+    pluginapplicationmanager.cpp
+
 HEADERS += \
 	FMMLayout.h \
 	align3.h \
@@ -140,7 +144,10 @@ HEADERS += \
     stronglyconnectedcomponents.h \
     connectionpininfo.h \
     shapeplugininterface.h \
-    fileioplugininterface.h
+    fileioplugininterface.h \
+    applicationplugininterface.h \
+    canvasapplication.h \
+    pluginapplicationmanager.h
 
 
 displaygithash {

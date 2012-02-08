@@ -56,6 +56,7 @@
 #include "libdunnartcanvas/ui/propertieseditor.h"
 #include "libdunnartcanvas/ui/shapepickerdialog.h"
 #include "libdunnartcanvas/ui/undohistorydialog.h"
+#include "libdunnartcanvas/pluginapplicationmanager.h"
 
 
 namespace dunnart {
@@ -65,7 +66,7 @@ MainWindow::MainWindow(Application *app)
     : QMainWindow(),
       m_application(app)
 {
-    app->setWindow(this);
+    app->setMainWindow(this);
     setUnifiedTitleAndToolBarOnMac(true);
     setDocumentMode(true);
 
@@ -253,11 +254,6 @@ MainWindow::MainWindow(Application *app)
 
     m_layout_menu = menuBar()->addMenu("Layout");
     m_tab_widget->addLayoutMenuActions(m_layout_menu);
-
-    m_help_menu = menuBar()->addMenu(tr("Help"));
-    m_help_menu->addAction(m_homepage_action);
-    m_help_menu->addSeparator();
-    m_help_menu->addAction(m_about_action);
     
     m_edit_toolbar = addToolBar(tr("Edit toolbar"));
     m_edit_toolbar->setIconSize(QSize(24, 24));
@@ -362,6 +358,18 @@ MainWindow::MainWindow(Application *app)
     addDockWidget(Qt::LeftDockWidgetArea, m_dialog_undo_history);
     m_dialog_undo_history->hide();
 
+    // Allow plugins to initialise themselves and add things like
+    // menu items and dock widgets to the main window.
+    PluginApplicationManager *appPluginManager =
+            sharedPluginApplicationManager();
+    appPluginManager->applicationMainWindowInitialised(app);
+
+    // Add help menu after everything else (if should be rightmost).
+    m_help_menu = menuBar()->addMenu(tr("Help"));
+    m_help_menu->addAction(m_homepage_action);
+    m_help_menu->addSeparator();
+    m_help_menu->addAction(m_about_action);
+
     // Restore window geometry and Dock Widget geometry.
     QSettings settings;
     restoreGeometry(settings.value("geometry").toByteArray());
@@ -373,6 +381,10 @@ void MainWindow::closeEvent(QCloseEvent *event)
     event->setAccepted(m_tab_widget->closeAllRequest());
     if (event->isAccepted())
     {
+        PluginApplicationManager *appPluginManager =
+                sharedPluginApplicationManager();
+        appPluginManager->applicationWillClose();
+
         // Save window geometry and Dock Widget geometry.
         QSettings settings;
         settings.setValue("geometry", saveGeometry());
@@ -401,7 +413,7 @@ void MainWindow::about(void)
             "Built on " __DATE__ "<br />"
             "Based on Qt " QT_VERSION_STR "<br /><br />"
             "Copyright &copy; 2003&ndash;2008 Michael Wybrow<br />"
-            "Copyright&nbsp;&copy;&nbsp;2006-2011&nbsp;Monash&nbsp;University";
+            "Copyright&nbsp;&copy;&nbsp;2006-2012&nbsp;Monash&nbsp;University";
     box->setInformativeText(infoStr);
     box->show();
 }
@@ -428,11 +440,11 @@ CanvasView *MainWindow::view(void)
     return m_tab_widget->currentCanvasView();
 }
 
-void MainWindow::loadDiagram(const QString& filename)
+bool MainWindow::loadDiagram(const QString& filename)
 {
     newCanvasTab();
 
-    canvas()->loadDiagram(filename);
+    bool successful = canvas()->loadDiagram(filename);
 
     QSettings settings;
     QStringList files = settings.value("recentFileList").toStringList();
@@ -449,6 +461,8 @@ void MainWindow::loadDiagram(const QString& filename)
     canvasFileInfoChanged(fileinfo);
 
     view()->postDiagramLoad();
+
+    return successful;
 }
 
 void MainWindow::documentOpen(void)

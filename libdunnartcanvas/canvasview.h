@@ -23,6 +23,9 @@
  * Author(s): Michael Wybrow  <http://michael.wybrow.info/>
 */
 
+//! @file
+//! CanvasView class.  This is DunnartCanvas' equivalent of QGraphicsView.
+
 #ifndef CANVASVIEW_H_
 #define CANVASVIEW_H_
 

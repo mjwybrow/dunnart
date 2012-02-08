@@ -298,11 +298,11 @@ bool Canvas::loadGmlDiagram(const QFileInfo& fileInfo)
 }
 
 
-void Canvas::loadDiagram(const QString& filename)
+bool Canvas::loadDiagram(const QString& filename)
 {
     if (filename.isEmpty())
     {
-        return;
+        return false;
     }
 
     QString errorMessage;
@@ -328,6 +328,7 @@ void Canvas::loadDiagram(const QString& filename)
         message.setWindowModality(Qt::WindowModal);
         message.exec();
     }
+    return successful;
 }
 
 void Canvas::setSvgRendererForFile(const QString& filename)

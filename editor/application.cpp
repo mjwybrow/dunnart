@@ -34,24 +34,37 @@
 namespace dunnart {
 
 Application::Application( int & argc, char ** argv)
-    : QApplication(argc, argv),
-      m_window(NULL)
+    : CanvasApplication(argc, argv)
 {
 }
 
-void Application::setWindow(MainWindow *window)
+
+MainWindow *Application::mainWindow(void) const
 {
-    m_window = window;
+    return (MainWindow *) CanvasApplication::mainWindow();
 }
+
+
+bool Application::openDiagram(QFileInfo *file)
+{
+    MainWindow *main_window = mainWindow();
+    if (main_window)
+    {
+        return main_window->loadDiagram(file->absoluteFilePath());
+    }
+    return false;
+}
+
 
 bool Application::event(QEvent *ev)
 {
+    MainWindow *main_window = mainWindow();
     if (ev->type() == QEvent::FileOpen)
     {
         QString file = static_cast<QFileOpenEvent *>(ev)->file();
-        if (m_window)
+        if (main_window)
         {
-            m_window->loadDiagram(file);
+            main_window->loadDiagram(file);
         }
         return true;
     }
@@ -60,7 +73,7 @@ bool Application::event(QEvent *ev)
         //QCloseEvent *closeEvent = static_cast<QCloseEvent *>(ev);
         return true;
     }
-    return QApplication::event(ev);
+    return CanvasApplication::event(ev);
 }
 
 

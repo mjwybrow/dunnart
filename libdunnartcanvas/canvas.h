@@ -23,6 +23,9 @@
  * Author(s): Michael Wybrow  <http://michael.wybrow.info/>
 */
 
+//! @file
+//! Canvas class.  This is DunnartCanvas' equivalent of QGraphicsScene.
+
 #ifndef CANVAS_H_
 #define CANVAS_H_
 
@@ -272,7 +275,7 @@ class Canvas : public QGraphicsScene
         virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
     private:
-        void loadDiagram(const QString& filename);
+        bool loadDiagram(const QString& filename);
         bool idIsUnique(QString id) const;
         void recursiveMapIDs(QDomNode start, const QString& ns, int pass);
         bool singlePropUpdateID(QDomElement& node, const QString& prop,
