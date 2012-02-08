@@ -209,9 +209,6 @@ class RectangleShape: public ShapeObj
 extern const QColor shLineCol;
 extern const QColor shFillCol;
 
-static const unsigned int defaultShapeFontSize = 11;
-extern unsigned int shapeFontSize;
-
 extern ShapeObj *isShapeForLayout(QGraphicsItem *object);
 
 

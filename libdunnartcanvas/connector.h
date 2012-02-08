@@ -98,6 +98,7 @@ class Connector : public CanvasItem
     Q_PROPERTY (double idealLength READ idealLength WRITE setIdealLength)
     Q_PROPERTY (ArrowHeadType arrowHeadType READ arrowHeadType WRITE setArrowHeadType)
     Q_PROPERTY (QColor colour READ colour WRITE setColour)
+    Q_PROPERTY (QString label READ getLabel WRITE setLabel)
     Q_ENUMS (RoutingType)
     Q_ENUMS (ArrowHeadType)
 
@@ -140,6 +141,9 @@ class Connector : public CanvasItem
 
         double idealLength(void) const;
         void setIdealLength(double length);
+
+        QString getLabel(void) const;
+        void setLabel(const QString& label);
 
         void rerouteAvoidingIntersections(void);
         virtual void cascade_distance(int dist, unsigned int dir,
@@ -205,6 +209,7 @@ class Connector : public CanvasItem
         void applyMultiEdgeOffset(Avoid::Point& p1, Avoid::Point& p2,
                 bool justSecond = true);
 
+        QString m_label;
         double m_ideal_length;
         QColor m_colour;
         QColor m_saved_colour;

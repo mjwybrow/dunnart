@@ -608,6 +608,20 @@ void Connector::setDirected(const bool directed)
     }
 }
 
+
+QString Connector::getLabel(void) const
+{
+    return m_label;
+}
+
+
+void Connector::setLabel(const QString& label)
+{
+    m_label = label;
+    update();
+}
+
+
 double Connector::idealLength(void) const
 {
     return m_ideal_length;
@@ -1343,6 +1357,13 @@ void Connector::paint(QPainter *painter,
     }
     painter->setPen(pen);
     painter->drawPath(painterPath());
+
+    // Draw the connector's label.
+    // XXX We need to work on positioning labels.
+    painter->setPen(Qt::black);
+    painter->setFont(canvas()->canvasFont());
+    painter->setRenderHint(QPainter::TextAntialiasing, true);
+    painter->drawText(painterPath().pointAtPercent(0.25), m_label);
     
     // Add the Arrowhead.
     if (m_is_directed)

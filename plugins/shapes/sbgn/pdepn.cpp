@@ -73,12 +73,11 @@ void PDEPN::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
         painter->setOpacity(0.95);
         painter->fillPath(this->clone_marker(), Qt::gray);
 
-        // QT How can I get this shapeFont from ShapeObj instead of re-declaring it here??!!
-//        QFontDatabase database;
-//        database.addApplicationFont("DejaVuSans.ttf");
-//        static QFont *shapeFont = new QFont("DejaVu Sans", shapeFontSize);
         painter->setPen(Qt::black);
-//        painter->setFont(*shapeFont);
+        if (canvas())
+        {
+            painter->setFont(canvas()->canvasFont());
+        }
         painter->setRenderHint(QPainter::TextAntialiasing, true);
 //        painter->drawText(labelBoundingRect(), Qt::AlignLeft, cloneLabel);
 

@@ -74,10 +74,6 @@ double routingBuffer = avoidBuffer;
 
 static QPixmap *infoIcon = NULL;
 
-unsigned int shapeFontSize = defaultShapeFontSize;
-
-static QFont *shapeFont = NULL;
-
 const char *x_connectionPins = "connectionPins";
 
 
@@ -989,14 +985,6 @@ ShapeObj::ShapeObj(const QString& itemType)
 {
     setItemType(itemType);
 
-    if (!shapeFont)
-    {
-        QFontDatabase database;
-        database.addApplicationFont(":/resources/DejaVuSans.ttf");
-
-        shapeFont = new QFont("DejaVu Sans", shapeFontSize);
-    }
-
     setHoverMessage("Shape \"%1\" - Drag to move. Hold ALT to drag free "
                     "from guidelines.");
 
@@ -1170,7 +1158,10 @@ QRectF ShapeObj::labelBoundingRect(void) const
 void ShapeObj::paintLabel(QPainter *painter)
 {
     painter->setPen(Qt::black);
-    painter->setFont(*shapeFont);
+    if (canvas())
+    {
+        painter->setFont(canvas()->canvasFont());
+    }
     painter->setRenderHint(QPainter::TextAntialiasing, true);
     painter->drawText(labelBoundingRect(), Qt::AlignCenter | Qt::TextWordWrap,
             m_label);
