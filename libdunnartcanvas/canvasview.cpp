@@ -407,7 +407,7 @@ QAction *CanvasView::buildAndExecContextMenu(QMouseEvent *event,
     {
         // Get the current viewport rect.
         QRectF scenerect = QRectF(mapToScene(0,0),
-                mapToScene(width(), height()));
+                mapToScene(viewport()->width(), viewport()->height()));
         canvas()->setPageRect(scenerect);
     }
     else if (action == fitToDiagram)
@@ -428,7 +428,8 @@ QAction *CanvasView::buildAndExecContextMenu(QMouseEvent *event,
 
 QPointF CanvasView::centre(void) const
 {
-    QRectF visibleRect(mapToScene(0,0), mapToScene(width(), height()));
+    QRectF visibleRect(mapToScene(0,0),
+            mapToScene(viewport()->width(), viewport()->height()));
     return visibleRect.center();
 }
 
@@ -487,7 +488,8 @@ void CanvasView::postDiagramLoad(void)
     // re-centred in the view.
     qreal border = 2000;
     QPolygonF scene_poly = mapToScene(-border, -border,
-            width() + (2 * border), height() + (2 * border));
+            viewport()->width() + (2 * border),
+            viewport()->height() + (2 * border));
     QRectF view_scene_rect = scene_poly.boundingRect();
     QRectF scene_rect = scene()->sceneRect();
     scene_rect = scene_rect.united(view_scene_rect);
