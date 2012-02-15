@@ -246,7 +246,8 @@ void Connector::initWithXMLProperties(Canvas *canvas,
     {
         m_colour = QColorFromRRGGBBAA(value.toLatin1().data());
         m_saved_colour = m_colour;
-        //qDebug("read id=%d colour=%x",get_ID(),colour);
+        //qDebug("read id=%s colour=%s", qPrintable(this->idString()),
+        //       qPrintable(m_colour.name()));
     }
     
     // get dotted
@@ -444,7 +445,7 @@ void Connector::addXmlProps(const unsigned int subset, QDomElement& node,
         if (m_colour != defaultConnLineCol)
         {
             QString value;
-            value = value.sprintf("%02x%02x%02x%02x;", m_colour.red(),
+            value = value.sprintf("%02x%02x%02x%02x", m_colour.red(),
                     m_colour.green(), m_colour.blue(), m_colour.alpha());
             newProp(node, x_lineCol, value);
         }

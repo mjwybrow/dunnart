@@ -877,7 +877,7 @@ void ShapeObj::addXmlProps(const unsigned int subset, QDomElement& node,
         if (m_fill_colour != shFillCol)
         {
             QString value;
-            value = value.sprintf("%02x%02x%02x%02x;", m_fill_colour.red(),
+            value = value.sprintf("%02x%02x%02x%02x", m_fill_colour.red(),
                     m_fill_colour.green(), m_fill_colour.blue(),
                     m_fill_colour.alpha());
             newProp(node, x_fillCol, value);
@@ -885,7 +885,7 @@ void ShapeObj::addXmlProps(const unsigned int subset, QDomElement& node,
         if (m_stroke_colour != shLineCol)
         {
             QString value;
-            value = value.sprintf("%02x%02x%02x%02x;", m_stroke_colour.red(),
+            value = value.sprintf("%02x%02x%02x%02x", m_stroke_colour.red(),
                     m_stroke_colour.green(), m_stroke_colour.blue(),
                     m_stroke_colour.alpha());
             newProp(node, x_lineCol, value);

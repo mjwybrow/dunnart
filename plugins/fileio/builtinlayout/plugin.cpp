@@ -285,23 +285,7 @@ void BuiltinLayoutFileIOPlugin::createFromLayoutXML(Canvas *canvas,
                     }
                 }
 
-                double x = 0, y = 0, w = 10, h = 10;
-
-                optionalProp(node, "width", w);
-                optionalProp(node, "height", h);
-
-                optionalProp(node, "cx", x);
-                optionalProp(node, "cy", y);
-
-                shape->setIdString(essentialProp<QString>(node, "id"));
-                shape->CanvasItem::setPos(x, y);
-                shape->CanvasItem::setSize(w, h);
-
-                QString value = nodeAttribute(node, QString(), "label");
-                if (!value.isNull())
-                {
-                    shape->setLabel(value);
-                }
+                shape->initWithXMLProperties(canvas, node, dunnartURI);
 
                 // Set dynamic properties for any attributes not recognised and handled
                 // by Dunnart.

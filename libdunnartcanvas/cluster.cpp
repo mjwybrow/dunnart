@@ -841,7 +841,7 @@ QDomElement Cluster::to_QDomElement(const unsigned int subset,
 
         if (m_fill_colour != clusterFillCol)
         {
-            value = value.sprintf("%02x%02x%02x%02x;", m_fill_colour.red(),
+            value = value.sprintf("%02x%02x%02x%02x", m_fill_colour.red(),
                     m_fill_colour.green(), m_fill_colour.blue(),
                     m_fill_colour.alpha());
             newProp(node, x_fillCol, value);
