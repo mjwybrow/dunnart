@@ -154,6 +154,7 @@ class ShapeObj: public CanvasItem
     protected:
         virtual QAction *buildAndExecContextMenu(
                 QGraphicsSceneMouseEvent *event, QMenu& menu);
+        virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
         virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
         virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
         virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);

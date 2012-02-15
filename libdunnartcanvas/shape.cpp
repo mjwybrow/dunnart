@@ -24,9 +24,7 @@
 */
 
 
-#include <QFontDatabase>
-#include <QFontMetrics>
-#include <QImage>
+#include <QtGui>
 
 #include <algorithm>
 #include <climits>
@@ -60,9 +58,6 @@
 #include "libdunnartcanvas/connectionpininfo.h"
 
 namespace dunnart {
-
-
-using Avoid::Point;
 
 
 const QColor shLineCol = QColor(0,   0,   0);
@@ -197,6 +192,32 @@ void ShapeObj::routerResize(void)
     routerMove();
 }
 
+
+void ShapeObj::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton)
+    {
+        // Deselect the shape.
+        setSelected(false);
+
+        CanvasView *view =
+                dynamic_cast<CanvasView *> (canvas()->views().first());
+        if (view)
+        {
+            // Recentre the canvas view, animating the "centre" property.
+            QPropertyAnimation *animation =
+                    new QPropertyAnimation(view, "centre");
+
+            animation->setDuration(500);
+            //animation->setEasingCurve(QEasingCurve::OutInCirc);
+            animation->setStartValue(view->centre());
+            animation->setEndValue(mapToScene(QPointF(0, 0)));
+            animation->start();
+        }
+        return;
+    }
+    CanvasItem::mouseDoubleClickEvent(event);
+}
 
 void ShapeObj::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {

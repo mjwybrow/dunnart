@@ -44,9 +44,13 @@ class CanvasView : public QGraphicsView
 {
     Q_OBJECT;
 
+    Q_PROPERTY (QPointF centre READ centre WRITE setCentre)
+
     public:
         CanvasView(Canvas *c);
         virtual ~CanvasView() { }
+        QPointF centre(void) const;
+        void setCentre(QPointF newCentre);
         void postDiagramLoad(void);
         Canvas *canvas(void);
         void setScene(QGraphicsScene *scene);

@@ -64,8 +64,6 @@
 
 namespace dunnart {
 
-using Avoid::VertID;
-using Avoid::EdgeInf;
 
 LayoutDoneCallback* layoutDoneCallback = NULL;
 
@@ -73,8 +71,6 @@ QXmlNamespaceSupport namespaces;
 
 bool queryMode = false;
 CanvasItem *queryObj = NULL;
-
-bool freehand_drawing = false;
 
 
 #if 0
@@ -104,97 +100,7 @@ void processShapeAnimation(SDL_Event *event)
 }
 
 
-class CanvasMoveAnimation {
-    public:
-        CanvasMoveAnimation(int x, int y):
-                origX(cxoff),
-                origY(cyoff),
-                diffx(x - cxoff),
-                diffy(y - cyoff),
-                steps(30),
-//                steps(sqrt(std::max(fabs(diffx), fabs(diffy) * 10))),
-                currStep(0),
-                range(2.4), 
-                halfRange(range/2),
-                domainStart(-tan(halfRange)),
-                domainEnd(tan(halfRange)),
-                domain(domainEnd-domainStart)
-        {
-            lastCanvasRepaintN = canvasRepaintN;
-            SDLGui::postUserEvent(USEREVENT_CANVAS_ANIMATE);
-        }
-        bool process(void)
-        {
-            if (currStep >= steps)
-            {
-                return true;
-            }
-
-            if ((currStep > 0) && (lastCanvasRepaintN == canvasRepaintN))
-            {
-                // Forcing canvas_repaint, since it hasn't happened due to 
-                // any other events since the last move of the canvas.
-                repaint_canvas();
-            }
-            lastCanvasRepaintN = canvasRepaintN;
-            SDLGui::postUserEvent(USEREVENT_CANVAS_ANIMATE);
-
-            double dp=static_cast<double>(currStep)/static_cast<double>(steps);
-            double p=domainStart+dp*domain;
-            double d=(atan(p)+halfRange)/range;
-            //assert(d>=0.0);
-            //assert(d<=1.0);
-            cxoff = static_cast<int> (origX + (d * diffx));
-            cyoff = static_cast<int> (origY + (d * diffy));
-
-            bool animate = false;
-            move_canvas_offset(cxoff, cyoff, animate);
-            currStep++;
-            return false;
-        }
-
-        int origX;
-        int origY;
-        double diffx;
-        double diffy;
-        const int steps;
-        int currStep;
-        const double range;
-        const double halfRange;
-        const double domainStart;
-        const double domainEnd;
-        const double domain;
-};
-CanvasMoveAnimation *canvasMoveAnimation = NULL;
-
-
 static Widget *overviewDialog = NULL;
-
-void move_canvas_offset(int x, int y, bool animate, gml::Graph* g)
-{
-    if (animate)
-    {
-        if (canvasMoveAnimation)
-        {
-            delete canvasMoveAnimation;
-        }
-        canvasMoveAnimation = new CanvasMoveAnimation(x, y);
-        return;
-    }
-    cxoff=x;
-    cyoff=y;
-    expCanvas.w = expCanvas.h = 0;
-    canvasRect = wholeCanvasRect;
-    if(g) {
-        g->updateOverview();
-    }
-
-    if (gmlGraph)
-    {
-        // Quicly show where the selection is in the overview window.
-        gmlGraph->drawOverviewOverlay();
-    }
-}
 
 static void createOverviewDialog(QWidget **c)
 {
@@ -263,22 +169,6 @@ void shape_change_highlight_state(QWidget *shape, int highlight_type);
 
 
 #if 0
-void finish_partial_move(void)
-{
-    for (SelectionList::reverse_iterator sh = selection.rbegin();
-            sh != selection.rend(); sh++)
-    {
-        ShapeObj *shape = dynamic_cast<ShapeObj *> (*sh);
-        
-        if (shape)
-        {
-            bool first_move = false;
-            visalgo->obj_move(shape, first_move);
-        }
-    }
-
-}
-
 void dragAbortActions(void)
 {
     mouse.b = 0;
@@ -395,29 +285,7 @@ void selection_returnInactive(QWidget **c)
 
 
 #if 0
-
-
-void change_selected_shape_label(void)
-{
-    if (selection.size() < 1)
-    {
-        return;
-    }
-    
-    // Take the first Object in selection.
-    ShapeObj *shape = dynamic_cast<ShapeObj *> (selection.front());
-
-    // Set label if it's a shape.
-    if (shape)
-    {
-        shape->change_label();
-    }
-}
-
-
 //============================================================================
-
-
 void remove_directed_edge_constraints(QWidget **c)
 {
     for (CanvasItemList::iterator curr = selection.begin();
@@ -485,37 +353,8 @@ void set_query_mode(const bool setting)
 #endif
 
 
-#if 0
-static void toggle_poly_conns(GuiObj **c)
-{
-    if (new_connector_type != CONN_TYPE_AVOID)
-    {
-        new_connector_type = CONN_TYPE_AVOID;
-        changeControlState(BUT_ORTHCONN, SDLGui::WIDGET_false);
-        changeControlState(BUT_POLYCONN, SDLGui::WIDGET_true);
-    }
-}
-#endif
-
 
 #if 0
-void toggle_partial_feedback(QWidget **c)
-{
-    bool& PartialFeedback = router->PartialFeedback;
-
-    if (!PartialFeedback)
-    {
-        PartialFeedback = true;
-        changeControlState(BUT_PARTIAL, SDLGui::WIDGET_true);
-    }
-    else  // if (PartialFeedback)
-    {
-        PartialFeedback = false;
-        changeControlState(BUT_PARTIAL, SDLGui::WIDGET_false);
-    }
-}
-
-
 static void buffer_change_callback(QWidget **c)
 {
     if (automatic_graph_layout)
@@ -738,12 +577,6 @@ static void createIndicatorPropertiesDialog(QWidget **c)
     slider->setPositions(7);
     itemOffset += slider->get_height() + itemBuffer;
     
-}
-
-
-static void visinfo_action(QWidget **c)
-{
-    router->printInfo();
 }
 #endif
 

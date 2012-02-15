@@ -426,6 +426,17 @@ QAction *CanvasView::buildAndExecContextMenu(QMouseEvent *event,
     return action;
 }
 
+QPointF CanvasView::centre(void) const
+{
+    QRectF visibleRect(mapToScene(0,0), mapToScene(width(), height()));
+    return visibleRect.center();
+}
+
+void CanvasView::setCentre(QPointF newCentre)
+{
+    centerOn(newCentre);
+}
+
 void CanvasView::zoomToShowRect(const QRectF& rect)
 {
     fitInView(rect, Qt::KeepAspectRatio);
