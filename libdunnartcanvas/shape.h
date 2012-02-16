@@ -67,6 +67,32 @@ class ConnectionPinInfo;
 
 typedef std::multiset<Connector *> ConnMultiset;
   
+/**
+  * @brief Base class for canvas shapes.
+  *
+  *
+  * @par Detail Levels (Contextual Zoom)
+  * When you create your own shapes, you can specify that they have
+  * additional detail levels by overriding ShapeObj::levelsOfDetail().
+  * You can then specify sizes for each detail level by overriding
+  * ShapeObj::sizeForDetailLevel(uint level).
+  *
+  * @par
+  * The base level of detail is 1.  Each additional level is numbered 2, 3,
+  * etc and should usually make the shape larger and have increasing amounts
+  * of detail.
+  *
+  * @par
+  * You probably want to draw different amounts of text (or draw the shape
+  * completely differently) depending on the detail level.  You can check
+  * the current detail level by calling ShapeObj::currentDetailLevel().
+  *
+  * @par
+  * You can resize a shape by moving a mouse scroll wheel when hovering
+  * over the shape (this will only work for actual mice, not trackpads), or
+  * by selecting the shape and hitting the '+' key to increase the detail
+  * level or the '-' key to decrease it.
+  */
 class ShapeObj: public CanvasItem
 {
     Q_OBJECT
