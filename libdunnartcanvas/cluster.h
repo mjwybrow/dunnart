@@ -95,7 +95,6 @@ class Cluster: public ShapeObj
         ShapeList members;
         std::vector<Avoid::Point> boundary;
         int psn;
-        double m_detail_level;
         QSizeF m_expanded_size;
         ClusterShapeMap largeShapeInfo;
         ClusterShapeMap smallShapeInfo;

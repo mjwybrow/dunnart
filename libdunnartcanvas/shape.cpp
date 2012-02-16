@@ -74,13 +74,13 @@ const char *x_connectionPins = "connectionPins";
 
 void ShapeObj::setBeingResized(bool isResizing)
 {
-    beingResized = isResizing;
+    m_being_resized = isResizing;
 }
 
 
 bool ShapeObj::isBeingResized(void)
 {
-    return beingResized;
+    return m_being_resized;
 }
 
 
@@ -223,6 +223,21 @@ void ShapeObj::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     canvas()->processSelectionDropEvent(event);
     CanvasItem::mouseReleaseEvent(event);
+}
+
+void ShapeObj::wheelEvent(QGraphicsSceneWheelEvent *event)
+{
+    if (event->orientation() == Qt::Vertical && (abs(event->delta()) >= 120))
+    {
+        // If the scroll was moved vertically a significant amount, then
+        // change detail level of the shape.  Most mouse wheels have steps
+        // of 15 degrees, so the delta is a multiple of 120 (== 15 * 8).
+        canvas()->deselectAll();
+        bool expand = (event->delta() < 0);
+        changeDetailLevel(expand);
+        return;
+    }
+    CanvasItem::wheelEvent(event);
 }
 
 void ShapeObj::updateContainment(void)
@@ -414,56 +429,89 @@ void ShapeObj::determine_small_dimensions(int *w, int *h)
         *h += 19;
     }
 }
+#endif
 
+class ShapeObjSizeAnimation : public QPropertyAnimation
+{
+    public:
+        ShapeObjSizeAnimation(ShapeObj *target, const QByteArray& propertyName,
+                QObject *parent = 0)
+            : QPropertyAnimation(target, propertyName, parent),
+              m_shape(target)
+        {
 
-static const double levelsOfDetail = 9;
+        }
+    protected:
+        virtual void updateCurrentValue(const QVariant& value)
+        {
+            QPropertyAnimation::updateCurrentValue(value);
+
+            Canvas *canvas = m_shape->canvas();
+            if (canvas)
+            {
+                Actions& actions = canvas->getActions();
+                actions.resizeList.push_back(m_shape);
+            }
+
+            // Update the resize handle positions.
+            canvas->repositionAndShowSelectionResizeHandles(true);
+            // Cause the layout engine to notice changes to shape sizes.
+            canvas->interrupt_graph_layout();
+            canvas->restart_graph_layout();
+        }
+        virtual void updateState(QAbstractAnimation::State newState,
+                QAbstractAnimation::State oldState)
+        {
+            if ((oldState == QPropertyAnimation::Running) &&
+                    (newState == QPropertyAnimation::Stopped))
+            {
+                m_shape->setBeingResized(false);
+            }
+        }
+
+    private:
+        ShapeObj *m_shape;
+};
 
 
 //adjusts level of detail shown
-bool ShapeObj::change_detail_level(bool expand)
+bool ShapeObj::changeDetailLevel(bool expand)
 {
+    if (m_being_resized)
+    {
+        return false;
+    }
+
     if (expand)
     {
-        if (detailLevel == 100)
+        if (m_detail_level >= levelsOfDetail())
         {
-            return true;
+            return false;
         }
-        detailLevel += (int) (100 / levelsOfDetail);
-        detailLevel = std::min(detailLevel, 100.0);
+        m_detail_level += 1;
     }
     else
     {
-        if (detailLevel == 0)
+        if (m_detail_level <= 1)
         {
-            return true;
+            return false;
         }
-        detailLevel -= (int) (100 / levelsOfDetail);
-        detailLevel = std::max(detailLevel, 0.0);
+        m_detail_level -= 1;
     }
-    
-    int low_width, low_height;
-    int high_width, high_height;
-    determine_small_dimensions(&low_width, &low_height);
-    determine_best_dimensions(&high_width, &high_height);
-    double portion = (detailLevel / (double) 100);
-    int new_width = (int) (low_width + (high_width - low_width) * portion);
-    int new_height = (int) (low_height + (high_height - low_height) * portion);
-    
-    new_width += HANDLE_PADDING * 2;
-    new_height += HANDLE_PADDING * 2;
-    int dwidth = new_width - width;
-    int dheight = new_height - height;
-    if (dwidth || dheight)
-    {
-        setPosAndSize(QPointF(xpos - dwidth/2, ypos-dheight/2),
-                QSizeF(new_width, new_height));
-    }
-    bool setDetailLevel = true;
-    on_resize(setDetailLevel);
 
-    return false;
+    setSelected(true);
+    setBeingResized(true);
+    ShapeObjSizeAnimation *animation =
+            new ShapeObjSizeAnimation(this, "size");
+
+    animation->setDuration(250);
+    //animation->setEasingCurve(QEasingCurve::OutInCirc);
+    animation->setStartValue(size());
+    animation->setEndValue(sizeForDetailLevel(m_detail_level));
+    animation->start();
+
+    return true;
 }
-#endif
 
 
 QAction *ShapeObj::buildAndExecContextMenu(QGraphicsSceneMouseEvent *event,
@@ -912,10 +960,10 @@ void ShapeObj::addXmlProps(const unsigned int subset, QDomElement& node,
             newProp(node, x_lineCol, value);
         }
 
-        if (m_detail_level != 0)
+        if (m_detail_level != 1)
         {
             QString value;
-            value = value.sprintf("%g", m_detail_level);
+            value = value.sprintf("%u", m_detail_level);
             newProp(node, "detailLevel", value);
         }
 
@@ -999,17 +1047,16 @@ ShapeObj::ShapeObj(const QString& itemType)
       decorativeImage(NULL),
       smallDecorativeImage(NULL),
       smallDecorativeScale(-1),
-      m_detail_level(0.0),
       m_fill_colour(shFillCol),
       m_stroke_colour(shLineCol),
-      m_size_locked(false)
+      m_size_locked(false),
+      m_detail_level(1),
+      m_being_resized(false)
 {
     setItemType(itemType);
 
     setHoverMessage("Shape \"%1\" - Drag to move. Hold ALT to drag free "
                     "from guidelines.");
-
-    beingResized = false;
 
     setLabel("");
 
@@ -1072,6 +1119,7 @@ void ShapeObj::initWithXMLProperties(Canvas *canvas,
     }
     
     optionalProp(node, "detailLevel", m_detail_level, ns);
+    m_detail_level = std::max(m_detail_level, (uint) 1);
     
     value = nodeAttribute(node, ns, x_lockedPosition);
     if (!value.isNull())
@@ -1114,6 +1162,22 @@ bool ShapeObj::hasLockedPosition(void)
     return m_has_locked_position;
 }
 
+uint ShapeObj::currentDetailLevel(void) const
+{
+    return m_detail_level;
+}
+
+// Default implementation.  No extra detail.
+uint ShapeObj::levelsOfDetail(void) const
+{
+    return 1;
+}
+
+// Default implementation.
+QSizeF ShapeObj::sizeForDetailLevel(uint level)
+{
+    return size();
+}
 
 void ShapeObj::cascade_distance(int dist, unsigned int dir, CanvasItem **path)
 {
@@ -1440,11 +1504,6 @@ Guideline *ShapeObj::new_guide(atypes type)
     QUndoCommand *cmd = new CmdCanvasSceneAddItem(canvas(), guide);
     canvas()->currentUndoMacro()->addCommand(cmd);
     return guide;
-}
-
-void ShapeObj::on_resize(bool setDetailLevel)
-{
-    Q_UNUSED (setDetailLevel)
 }
 
 

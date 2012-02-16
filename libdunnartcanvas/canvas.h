@@ -203,6 +203,8 @@ class Canvas : public QGraphicsScene
         bool avoidConnectorCrossings(void) const;
         bool avoidClusterCrossings(void) const;
         bool forceOrthogonalConnectors(void) const;
+        void repositionAndShowSelectionResizeHandles(
+                const bool calculatePosition = false);
 
     public slots:
         void bringToFront(void);
@@ -290,8 +292,6 @@ class Canvas : public QGraphicsScene
                 int pass);
         void setInterferingConnectorColours(const QString colourListString);
         void hideSelectionResizeHandles(void);
-        void repositionAndShowSelectionResizeHandles(
-                const bool calculatePosition = false);
         void createIndicatorHighlightCache(void);
         //static void highlightIndicators(ShapeObj *shape, const QRectF& shapeRect);
         void clearIndicatorHighlights(const bool clearCache = false);

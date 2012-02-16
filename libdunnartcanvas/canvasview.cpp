@@ -339,6 +339,33 @@ void CanvasView::keyReleaseEvent(QKeyEvent *keyEvent)
 
         keyEvent->accept();
     }
+    else if (keyEvent->key() == Qt::Key_Plus ||
+             keyEvent->key() == Qt::Key_Equal)
+    {
+        // The + (=) key will increase the detail level of any selected shapes.
+        CanvasItemList selection = canvas()->selectedItems();
+        for (int i = 0; i < selection.size(); ++i)
+        {
+            ShapeObj *shape = dynamic_cast<ShapeObj *> (selection.at(i));
+            if (shape)
+            {
+                shape->changeDetailLevel(true);
+            }
+        }
+    }
+    else if (keyEvent->key() == Qt::Key_Minus)
+    {
+        // The - key will decrease the detail level of any selected shapes.
+        CanvasItemList selection = canvas()->selectedItems();
+        for (int i = 0; i < selection.size(); ++i)
+        {
+            ShapeObj *shape = dynamic_cast<ShapeObj *> (selection.at(i));
+            if (shape)
+            {
+                shape->changeDetailLevel(false);
+            }
+        }
+    }
     else
     {
         keyEvent->ignore();

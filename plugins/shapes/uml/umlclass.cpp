@@ -84,7 +84,7 @@ void ClassShape::initWithXMLProperties(Canvas *canvas,
         }
         else if (name == "detailLevel")
         {
-            m_detail_level = element.text().toInt();
+            //QT m_detail_level = element.text().toInt();
         }
         else if (name == "attr_section_height")
         {
@@ -560,7 +560,7 @@ void ClassShape::determine_best_mode(void)
     if (height() < (int) get_class_name_section_height() + (HANDLE_PADDING * 2))
     {
         mode = CLASS_NAME_ONLY;
-        m_detail_level = 0;
+        //QT m_detail_level = 0;
         return;
     }
 
@@ -910,12 +910,9 @@ int ClassShape::get_min_width()
 }
 
 
-void ClassShape::on_resize(bool setDetailLevel)
+#if 0
+void ClassShape::detailLevelChanged(void)
 {
-    if (!setDetailLevel)
-    {
-        m_detail_level = 50;
-    }
     mode_changed_manually = true;
     determine_best_mode(); 
     int section_sizes(height() - (HANDLE_PADDING * 2) - 
@@ -931,6 +928,7 @@ void ClassShape::on_resize(bool setDetailLevel)
 
     update();
 }
+#endif
 
 
 unsigned int ClassShape::get_class_name_section_height(void)

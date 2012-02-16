@@ -74,32 +74,6 @@ CanvasItem *queryObj = NULL;
 
 
 #if 0
-void processShapeAnimation(SDL_Event *event)
-{
-    ShapeObj *shape = (ShapeObj *) event->user.data1;
-    bool expand = (bool) event->user.data2;
-
-    bool finished = shape->change_detail_level(expand);
-    if ((lastCanvasRepaintN == canvasRepaintN))
-    {
-        // Forcing canvas_repaint, since it hasn't happened due to 
-        // any other events since the last move of the canvas.
-        repaint_canvas();
-    }
-    lastCanvasRepaintN = canvasRepaintN;
-
-    if (finished)
-    {
-        shape->setBeingResized(false);
-    }
-    else
-    {
-        SDLGui::postUserEvent(USEREVENT_SHAPE_RESIZE, 
-                event->user.data1, event->user.data2);
-    }
-}
-
-
 static Widget *overviewDialog = NULL;
 
 static void createOverviewDialog(QWidget **c)

@@ -123,7 +123,6 @@ class ClassShape: public RectangleShape {
             mode = newMode;
         }
         virtual int get_min_width(void);
-        virtual void on_resize(bool setDetailLevel);
         //QT virtual void change_label(void);
         void update_contents(UML_Class_Edit_Type, 
                 const std::vector<QString>& lines,

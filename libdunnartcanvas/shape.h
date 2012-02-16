@@ -131,12 +131,14 @@ class ShapeObj: public CanvasItem
                 const QRectF& shapeRect);
         void setLockedPosition(const bool val);
         bool hasLockedPosition(void);
-        virtual void on_resize(bool setDetailLevel = false);
         ConnMultiset getConnMultiset(void);
         virtual void deactivateAll(CanvasItemSet& selSet);
         virtual void findAttachedSet(CanvasItemSet& objSet);
         void setDecorativeImageFile(const std::string fileName);
-        void determine_good_text_dimensions(int *w, int *h);
+
+
+
+        //void determine_good_text_dimensions(int *w, int *h);
         //virtual void determine_best_dimensions(int *w, int *h);
         //virtual void determine_small_dimensions(int *w, int *h);
         virtual QPainterPath buildPainterPath(void);
@@ -158,6 +160,8 @@ class ShapeObj: public CanvasItem
         virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
         virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
         virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+        virtual void wheelEvent(QGraphicsSceneWheelEvent *event);
+
         virtual void routerAdd(void);
         virtual void routerRemove(void);
         virtual void routerMove(void);
@@ -167,13 +171,29 @@ class ShapeObj: public CanvasItem
         void move_to(const int x, const int y, bool store_undo,
                 bool from_solver, bool from_cider);
 
+        /**
+          * Override this to specify how many levels of detail your shape has.
+         */
+        virtual uint levelsOfDetail(void) const;
+
+        /**
+          * Override this to specify the size that your shape should be
+          * expanded to at each detail level.  The base level is 1.  Any
+          * subsequent levels will be 2, 3, ...
+         */
+        virtual QSizeF sizeForDetailLevel(uint level);
+
+        /**
+          * Check the current detail level.  You can use this when painting
+          * the shape.
+         */
+        uint currentDetailLevel(void) const;
+
         bool m_has_locked_position;
         QGraphicsSvgItem *m_lock_icon;
         QPixmap* decorativeImage;
         QPixmap* smallDecorativeImage;
         double smallDecorativeScale;
-        double m_detail_level;
-        bool beingResized;
 
     private:
         virtual void userMoveBy(qreal dx, qreal dy);
@@ -186,6 +206,8 @@ class ShapeObj: public CanvasItem
         QList<ConnectionPinInfo> m_connection_pins;
         bool m_size_locked;
         QVector<Handle *> m_handles;
+        uint m_detail_level;
+        bool m_being_resized;
 
         friend class Cluster;
 };

@@ -83,8 +83,7 @@ Cluster *newCluster(CanvasItemList& memberList, QString id)
 Cluster::Cluster(Canvas *canvas, const QDomElement& node, const QString& ns)
     : ShapeObj(x_cluster),
       avoidClusterRef(NULL),
-      rectangular(false),
-      m_detail_level(100)
+      rectangular(false)
 {
     setZValue(ZORD_Cluster);
     
@@ -137,8 +136,7 @@ Cluster::Cluster(Canvas *canvas, const QDomElement& node, const QString& ns)
 Cluster::Cluster(CanvasItemList& memberList, QString id)
     : ShapeObj(x_cluster),
       avoidClusterRef(NULL),
-      rectangular(false),
-      m_detail_level(100)
+      rectangular(false)
 {
     m_string_id = id;
     m_stroke_colour = m_fill_colour = clusterFillCol;
@@ -192,13 +190,14 @@ static const double maxCollapsedClusterSize = 80;
 
 void Cluster::changeDetailLevel(bool expand)
 {
+#if 0
     QDomDocument doc("XML");
-    double lastDetailLevel = m_detail_level;
+    uint lastDetailLevel = m_detail_level;
     bool shrink = !expand;
     
     if (expand)
     {
-        m_detail_level = 100;
+        m_detail_level = 1;
     }
     else
     {
@@ -221,7 +220,7 @@ void Cluster::changeDetailLevel(bool expand)
         {
             // The cluster is already smaller than maxCollapsedClusterSize, 
             // so don't shrink it.
-            m_detail_level = 100;
+            m_detail_level = 1;
             return;
         }
         m_expanded_size = clusterRect.size();
@@ -343,7 +342,7 @@ void Cluster::changeDetailLevel(bool expand)
     stepProportion = (endProportion - startProportion) / levelsOfDetail;
 
     double proportion;
-    for (int i = 1; i <= levelsOfDetail; ++i)
+    for (int i = 1; i <= 9; ++i)
     {
         if (i == levelsOfDetail)
         {
@@ -492,6 +491,7 @@ void Cluster::changeDetailLevel(bool expand)
         // sizes.
         canvas()->interrupt_graph_layout();
     }
+#endif
 }
 
 void Cluster::userMoveBy(qreal dx, qreal dy)
