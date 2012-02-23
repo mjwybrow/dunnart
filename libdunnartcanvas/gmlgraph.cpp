@@ -246,6 +246,7 @@ int Draw::x(double gx) {
 int Draw::y(double gy) {
     return static_cast<int>(sh*(gy - bounds.y)/bounds.height());
 }
+#if 0
 void Graph::createOverviewWindow(QWidget** overviewDialog, int xtop, int ytop) {
     Q_UNUSED (overviewDialog)
 
@@ -256,43 +257,12 @@ void Graph::createOverviewWindow(QWidget** overviewDialog, int xtop, int ytop) {
     selectOverview(cx, cy, false);
     expandNeighbours(startNode);
 }
+#endif
 
 double Graph::dist(const ogdf::node v, const double cx, const double cy) const {
     double x=GA.x(v), y=GA.y(v);
     double dx=cx-x, dy=cy-y;
     return sqrt(dx*dx+dy*dy);
-}
-
-void Graph::updateOverview() {
-    selectOverview(canvasOffset.x, canvasOffset.y, false);
-}
-
-void Graph::selectOverview(int mouseX, int mouseY, bool userClick) {
-    assert(ow!=NULL);
-    int cx, cy, cw, ch;
-    ow->getCanvasPosDim(cx,cy,cw,ch);
-    double mx=static_cast<double>(mouseX-cx)
-             /static_cast<double>(cw);
-    double my=static_cast<double>(mouseY-cy)
-             /static_cast<double>(ch);
-
-    QRectF page = canvas_->pageRect();
-    int ncxoff = -static_cast<int> (mx * page.width());
-    int ncyoff = -static_cast<int> (my * page.height());
-    
-    if (userClick)
-    {
-        // If we are handling a mouse click we want to centre the canvas view
-        // on the mouse position, rather than positioning the top-left of the
-        // view over the cursor.
-        //QT ncxoff += (canvas_view->width() / 2);
-        //QT ncyoff += (canvas_view->height() / 2);
-        printf("User clicked on overview at %d,%d\n",ncxoff,ncyoff);
-        expandNeighbours(mx*page.width(), my*page.height());
-    }
-    //QT move_canvas_offset(ncxoff, ncyoff, userClick);
-
-    relayoutOverview();
 }
 
 
@@ -663,7 +633,7 @@ void Graph::expandNeighbours(ShapeObj* shape) {
     expandNeighbours(centre);
 }
 void Graph::drawOverviewOverlay() {
-    ow->updateCanvasPosOverlay();
+    // ow->updateCanvasPosOverlay();
 }
 
 // XXX: This is pretty inefficient at the moment.
@@ -700,6 +670,7 @@ QColor Graph::getNodeColor(const ogdf::node v)
 
 
 void Graph::drawOverview() {
+#if 0
     assert(ow!=NULL);
     ow->clearSurface();
     ow->gmlGraph = this;
@@ -707,7 +678,6 @@ void Graph::drawOverview() {
 
     Draw draw(G, GA, overview, gbounds);
     
-#if 0
     if(UseClusters)
     {
         int col = 0;
@@ -768,7 +738,6 @@ void Graph::drawOverview() {
             draw.colour = Qt::black;
         }
     }
-#endif
 
     ogdf::node v;
     forall_nodes(v,G) {
@@ -806,14 +775,9 @@ void Graph::drawOverview() {
     }
 
     ow->updateWindowFromSurface();
+#endif
 }
-void OverviewWindow::getCanvasPosDim(int& xv, int& yv, int& wv, int& hv)
-{
-    xv = x() + 6;
-    yv = y() + 28;
-    wv = width() - 12;
-    hv = height() - 34;
-}
+
 
 void Graph::createShape(ogdf::node v) {
     createShape(v,Box(GA.x(v)-gbounds.x,GA.y(v)-gbounds.y,
@@ -1063,94 +1027,6 @@ void Graph::relayoutOverview() {
     // Update the ghost connector directions.
 }
 
-OverviewWindow::OverviewWindow(const int x, const int y):
-    QDockWidget("Graph Overview"),
-    _smallSurface(NULL)
-{
-    move(x, y);
-    setFixedSize(150, 172);
-
-    _largeSurface = new QPixmap(600, 600);
-
-    createOverviewArea();
-}
-OverviewWindow::~OverviewWindow() {
-    delete _largeSurface;
-}
-void OverviewWindow::clearSurface() {
-    _largeSurface->fill();
-}
-QPixmap* OverviewWindow::getSurface(void)
-{
-    return _largeSurface;
-}
-void OverviewWindow::updateCanvasPosOverlay(void)
-{
-#if 0
-    /// QT 
-    QPixmap target(_overviewArea.width(), _overviewArea.height());
-    
-    QPainter painter(&target);
-
-    painter.drawPixmap(2, 2, *_smallSurface);
-
-    QPolygonF scene_poly = canvas_view->mapToScene(0, 0, 
-            canvas_view->width(), canvas_view->height());
-    QRectF scene_rect = scene_poly.boundingRect();
-    // Canvas Pos overlay:
-    int sw = target.width() - 3, sh = target.height() - 3;
-    double pageW, pageH;
-    //QT getPageSize(NULL, NULL, &pageW, &pageH);
-    const Box w(static_cast<double>(-scene_rect.x())/pageW, 
-                static_cast<double>(-scene_rect.y())/pageH, 
-                Dim(static_cast<double>(scene_rect.width())/pageW, 
-                    static_cast<double>(scene_rect.height())/pageH));
-    int x1=static_cast<int>(sw*w.x), y1=static_cast<int>(sh*w.y),
-        x2=static_cast<int>(sw*w.X), y2=static_cast<int>(sh*w.Y), 
-        x3=static_cast<int>(sw),    y3=static_cast<int>(sh);
-    y1 = std::max(y1, 2);
-    y2 = std::max(y2, 2);
-    y1 = std::min(y1, sh);
-    y2 = std::min(y2, sh);
-    x1 = std::max(x1, 2);
-    x2 = std::max(x2, 2);
-    x1 = std::min(x1, sw);
-    x2 = std::min(x2, sw);
-    
-    QColor grey(0, 0, 0, 60);
-    painter.setPen(grey);
-    painter.setBrush(QBrush(grey));
-    painter.drawRect(QRect(QPoint(2,  2),QPoint(x3, y1)));
-    painter.drawRect(QRect(QPoint(2, y1 + 1),QPoint(x1, y2 - 1)));
-    painter.drawRect(QRect(QPoint(x2, y1 + 1),QPoint(x3, y2 - 1)));
-    painter.drawRect(QRect(QPoint(2, y2),QPoint(x3, y3)));
-
-    // Repaint.
-    _overviewArea.setPixmap(target);
-#endif
-}
-void OverviewWindow::updateWindowFromSurface(void)
-{
-    //QT Area::drawBoxSunken(target, 0, 0, target->w, target->h, YLABEL);
-    
-    QPainter painter(_smallSurface);
-    painter.drawPixmap(
-            QRect(0, 0, _overviewArea.width(), _overviewArea.height()),
-            *_largeSurface);
-    painter.end();
-
-    updateCanvasPosOverlay();
-}
-
-
-void OverviewWindow::createOverviewArea(void)
-{
-#if 0
-    _overviewArea = new Area(AREA_TYP_Blank, 
-            4, 25, width - 8, width - 8, DGREY, NULL, this);
-#endif
-    updateWindowFromSurface();
-}
 
 
 } // namespace gml

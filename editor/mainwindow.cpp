@@ -56,6 +56,7 @@
 #include "libdunnartcanvas/ui/propertieseditor.h"
 #include "libdunnartcanvas/ui/shapepickerdialog.h"
 #include "libdunnartcanvas/ui/undohistorydialog.h"
+#include "libdunnartcanvas/ui/canvasoverview.h"
 #include "libdunnartcanvas/pluginapplicationmanager.h"
 
 
@@ -195,6 +196,10 @@ MainWindow::MainWindow(Application *app)
             tr("Undo History"), this);
     m_action_show_undo_history_dialog->setCheckable(true);
 
+    m_action_show_canvas_overview_dialog = new QAction(
+            tr("Canvas Overview"), this);
+    m_action_show_canvas_overview_dialog->setCheckable(true);
+
     CanvasView *canvasview = m_tab_widget->currentCanvasView();
     Canvas *canvas = m_tab_widget->currentCanvas();
 
@@ -236,6 +241,7 @@ MainWindow::MainWindow(Application *app)
 
     m_view_menu = menuBar()->addMenu(tr("View"));
     QMenu *dialogs_menu = m_view_menu->addMenu(tr("Show Dialogs"));
+    dialogs_menu->addAction(m_action_show_canvas_overview_dialog);
     dialogs_menu->addAction(m_action_show_zoom_level_dialog);
     dialogs_menu->addSeparator();
     dialogs_menu->addAction(m_action_show_shape_picker_dialog);
@@ -357,6 +363,16 @@ MainWindow::MainWindow(Application *app)
             m_action_show_undo_history_dialog,  SLOT(setChecked(bool)));
     addDockWidget(Qt::LeftDockWidgetArea, m_dialog_undo_history);
     m_dialog_undo_history->hide();
+
+    m_dialog_canvas_overview = new CanvasOverviewDialog(canvasview, this);
+    connect(m_tab_widget, SIGNAL(currentCanvasViewChanged(CanvasView*)),
+            m_dialog_canvas_overview, SLOT(changeCanvasView(CanvasView*)));
+    connect(m_action_show_canvas_overview_dialog,  SIGNAL(triggered(bool)),
+            m_dialog_canvas_overview, SLOT(setVisible(bool)));
+    connect(m_dialog_canvas_overview, SIGNAL(visibilityChanged(bool)),
+            m_action_show_canvas_overview_dialog,  SLOT(setChecked(bool)));
+    addDockWidget(Qt::LeftDockWidgetArea, m_dialog_canvas_overview);
+    m_dialog_canvas_overview->hide();
 
     // Allow plugins to initialise themselves and add things like
     // menu items and dock widgets to the main window.

@@ -1176,6 +1176,8 @@ uint ShapeObj::levelsOfDetail(void) const
 // Default implementation.
 QSizeF ShapeObj::sizeForDetailLevel(uint level)
 {
+    Q_UNUSED (level)
+
     return size();
 }
 

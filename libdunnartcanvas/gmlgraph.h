@@ -89,27 +89,6 @@ struct Draw {
     Box bounds;
 };
 
-class Graph;
-
-class OverviewWindow : public QDockWidget {
-    Q_OBJECT;
-
-    public:
-        OverviewWindow(const int x, const int y);
-        ~OverviewWindow();
-        QPixmap *getSurface(void);
-        void updateWindowFromSurface(void);
-        Graph* gmlGraph;
-        void clearSurface();
-        void getCanvasPosDim(int& x, int& y, int& w, int& h);
-        void updateCanvasPosOverlay(void);
-        void createOverviewArea(void);
-    private slots:
-    private:
-        QPixmap *_largeSurface;
-        QPixmap *_smallSurface;
-        QLabel _overviewArea;
-};
 
 #include <list>
 typedef std::list<ogdf::node > NodeList;
@@ -117,10 +96,7 @@ typedef std::list<ogdf::node > NodeList;
 class Graph {
 public:
     Graph(Canvas *canvas, std::string gmlFile, Page page, COff coff);
-    void createOverviewWindow(QWidget**,int, int);
-    void updateOverview();
     void relayoutOverview();
-    void selectOverview(int mouseX, int mouseY, bool userClick);
     unsigned getCanvasShapesCount() const;
     void expandNeighbours(ShapeObj* shape);
     void expandNeighbours(double x, double y);
@@ -153,7 +129,6 @@ protected:
     ogdf::node startNode;
     Box gbounds;
     double scale;
-    OverviewWindow* ow;
     std::map<ShapeObj*,ogdf::node> nodes;
     std::map<std::string,NodeList > canvasClustersMap;
     CanvasItemList canvasClusters;

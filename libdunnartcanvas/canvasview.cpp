@@ -174,6 +174,12 @@ void CanvasView::dragMoveEvent(QDragMoveEvent *event)
     }
 }
 
+void CanvasView::scrollContentsBy(int dx, int dy)
+{
+    QGraphicsView::scrollContentsBy(dx, dy);
+    emit viewportChanged(viewportRect());
+}
+
 void CanvasView::dropEvent(QDropEvent *event)
 {
     if (canvas()->optStructuralEditingDisabled())
@@ -432,10 +438,7 @@ QAction *CanvasView::buildAndExecContextMenu(QMouseEvent *event,
     }
     else if (action == fitToViewport)
     {
-        // Get the current viewport rect.
-        QRectF scenerect = QRectF(mapToScene(0,0),
-                mapToScene(viewport()->width(), viewport()->height()));
-        canvas()->setPageRect(scenerect);
+        canvas()->setPageRect(viewportRect());
     }
     else if (action == fitToDiagram)
     {
@@ -453,11 +456,18 @@ QAction *CanvasView::buildAndExecContextMenu(QMouseEvent *event,
     return action;
 }
 
-QPointF CanvasView::centre(void) const
+// Get the current viewport rect.
+QRectF CanvasView::viewportRect(void) const
 {
     QRectF visibleRect(mapToScene(0,0),
             mapToScene(viewport()->width(), viewport()->height()));
-    return visibleRect.center();
+    return visibleRect;
+}
+
+
+QPointF CanvasView::centre(void) const
+{
+    return viewportRect().center();
 }
 
 void CanvasView::setCentre(QPointF newCentre)

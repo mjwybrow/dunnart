@@ -49,6 +49,7 @@ class CreateTemplateDialog;
 class PropertiesEditorDialog;
 class ShapePickerDialog;
 class UndoHistoryDialog;
+class CanvasOverviewDialog;
 
 static const int MAX_RECENT_FILES = 10;
 
@@ -112,6 +113,7 @@ class MainWindow : public QMainWindow
         QAction *m_action_show_properties_editor_dialog;
         QAction *m_action_show_shape_picker_dialog;
         QAction *m_action_show_undo_history_dialog;
+        QAction *m_action_show_canvas_overview_dialog;
         QAction *m_action_open_recent_file[MAX_RECENT_FILES];
         QAction *m_action_recent_file_separator;
         QAction *m_action_clear_recent_files;
@@ -131,6 +133,7 @@ class MainWindow : public QMainWindow
         PropertiesEditorDialog *m_dialog_properties_editor;
         ShapePickerDialog *m_dialog_shape_picker;
         UndoHistoryDialog *m_dialog_undo_history;
+        CanvasOverviewDialog *m_dialog_canvas_overview;
 };
 
 

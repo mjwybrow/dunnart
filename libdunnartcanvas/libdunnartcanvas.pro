@@ -38,7 +38,8 @@ FORMS = \
 	ui/createseparation.ui \
 	ui/connectorproperties.ui \
     ui/createtemplate.ui \
-    ui/shapepickerdialog.ui
+    ui/shapepickerdialog.ui \
+    ui/canvasoverview.ui
 
 SOURCES += \ 
 	FMMLayout.cpp \
@@ -90,7 +91,8 @@ SOURCES += \
     stronglyconnectedcomponents.cpp \
     connectionpininfo.cpp \
     canvasapplication.cpp \
-    pluginapplicationmanager.cpp
+    pluginapplicationmanager.cpp \
+    ui/canvasoverview.cpp
 
 HEADERS += \
 	FMMLayout.h \
@@ -147,7 +149,8 @@ HEADERS += \
     fileioplugininterface.h \
     applicationplugininterface.h \
     canvasapplication.h \
-    pluginapplicationmanager.h
+    pluginapplicationmanager.h \
+    ui/canvasoverview.h
 
 
 displaygithash {

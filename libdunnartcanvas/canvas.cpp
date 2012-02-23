@@ -365,13 +365,6 @@ void Canvas::postDiagramLoad(void)
         m_router->SimpleRouting = lastSimpleRouting;
     }
 
-#if 0
-    if (gmlGraph)
-    {
-        createOverviewDialog(NULL);
-    }
-#endif
-
     // QT clear_undo_stack();
 }
 

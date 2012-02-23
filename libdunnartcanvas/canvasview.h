@@ -54,8 +54,10 @@ class CanvasView : public QGraphicsView
         void postDiagramLoad(void);
         Canvas *canvas(void);
         void setScene(QGraphicsScene *scene);
+        QRectF viewportRect(void) const;
     signals:
         void canvasTransformChanged(const QTransform& transform);
+        void viewportChanged(QRectF viewRect);
     protected:
         virtual void mousePressEvent(QMouseEvent *event);
         virtual void mouseMoveEvent(QMouseEvent *event);
@@ -67,6 +69,7 @@ class CanvasView : public QGraphicsView
         virtual void dragMoveEvent(QDragMoveEvent *event);
         virtual QAction *buildAndExecContextMenu(QMouseEvent *event,
                 QMenu& menu);
+        virtual void scrollContentsBy(int dx, int dy);
         bool handleContextMenuEvent(QMouseEvent * event);
     private slots:
         void adjustSceneRect(QRectF rect);

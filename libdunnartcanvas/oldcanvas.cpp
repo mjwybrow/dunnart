@@ -74,26 +74,6 @@ CanvasItem *queryObj = NULL;
 
 
 #if 0
-static Widget *overviewDialog = NULL;
-
-static void createOverviewDialog(QWidget **c)
-{
-    assert(gmlGraph!=NULL);
-    if (overviewDialog)
-    {
-        overviewDialog->bring_to_front();
-        return;
-    }
-    
-    gmlGraph->createOverviewWindow(&overviewDialog,1,ytop);
-}
-    
-
-
-#endif
-
-
-#if 0
 // When a new node is added to the canvas, this function is called
 // to check for any constraints that need to be added to the new node
 // and/or any other objects already on the canvas.  For example, 
