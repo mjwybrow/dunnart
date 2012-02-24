@@ -96,23 +96,24 @@ ShapeObj *PluginShapeFactory::createShape(const QString& shapeType)
             newShape = shapeBuilders[qualifiedShapeType]->generateShapeOfType(
                     qualifiedShapeType);
         }
-
-        // If no plugin is found providing the requested shape, just return
-        // a generic RactangleShape().
-        if (newShape == NULL)
-        {
-            qWarning("PluginShapeFactory::createShape(): plugin for shape "
-                     "\"%s\" not found.", qPrintable(shapeType));
-            newShape = new RectangleShape();
-        }
-
-        if (newShape)
-        {
-            // Set the type and return the shape.
-            newShape->setItemType(shapeType);
-            return newShape;
-        }
     }
+
+    // If no plugin is found providing the requested shape, just return
+    // a generic RactangleShape().
+    if (newShape == NULL)
+    {
+        qWarning("PluginShapeFactory::createShape(): plugin for shape "
+                 "\"%s\" not found.", qPrintable(shapeType));
+        newShape = new RectangleShape();
+    }
+
+    if (newShape)
+    {
+        // Set the type and return the shape.
+        newShape->setItemType(shapeType);
+        return newShape;
+    }
+
     return NULL;
 }
 
