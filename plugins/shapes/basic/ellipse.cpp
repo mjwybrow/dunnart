@@ -1,8 +1,7 @@
 /*
  * Dunnart - Constraint-based Diagram Editor
  *
- * Copyright (C) 2003-2007  Michael Wybrow
- * Copyright (C) 2006-2010  Monash University
+ * Copyright (C) 2012  Monash University
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,23 +22,29 @@
  * Author(s): Michael Wybrow  <http://michael.wybrow.info/>
 */
 
+#include <QString>
 
+#include "libdunnartcanvas/canvasitem.h"
+using namespace dunnart;
 
-#ifndef ROUNDEDRECT_H
-#define ROUNDEDRECT_H
+#include "ellipse.h"
 
-#include "libdunnartcanvas/shape.h"
-using dunnart::ShapeObj;
+//===========================================================================
+//  "Ellipse" shape code:
 
-class RoundedRectShape: public ShapeObj
+EllipseShape::EllipseShape()
+    : ShapeObj("ellipse")
 {
-    public:
-        RoundedRectShape();
-        virtual ~RoundedRectShape() { }
+}
 
-        virtual QPainterPath buildPainterPath(void);
-};
+QPainterPath EllipseShape::buildPainterPath(void)
+{
+    QPainterPath painter_path;
+
+    painter_path.addEllipse(-width() / 2, -height() / 2, width(), height());
+
+    return painter_path;
+}
 
 
-#endif // ROUNDEDRECT_H
 // vim: filetype=cpp ts=4 sw=4 et tw=0 wm=0 cindent

@@ -9,8 +9,10 @@ include(../shape_plugin_options.pri)
 
 HEADERS       = \
     diamond.h \
-    roundedrect.h
+    roundedrect.h \
+    ellipse.h
 SOURCES       = plugin.cpp \
     diamond.cpp \
-    roundedrect.cpp
+    roundedrect.cpp \
+    ellipse.cpp
 

@@ -31,6 +31,7 @@ using namespace dunnart;
 
 #include "diamond.h"
 #include "roundedrect.h"
+#include "ellipse.h"
 
 class BasicShapesPlugin : public QObject, public ShapePluginInterface
 {
@@ -51,6 +52,7 @@ class BasicShapesPlugin : public QObject, public ShapePluginInterface
             shapes << "org.dunnart.shapes.rect";
             shapes << "org.dunnart.shapes.diamond";
             shapes << "org.dunnart.shapes.roundedRect";
+            shapes << "org.dunnart.shapes.ellipse";
             return shapes;
         }
         ShapeObj *generateShapeOfType(QString shapeType)
@@ -66,6 +68,10 @@ class BasicShapesPlugin : public QObject, public ShapePluginInterface
             else if (shapeType ==  "org.dunnart.shapes.roundedRect")
             {
                 return new RoundedRectShape();
+            }
+            else if (shapeType ==  "org.dunnart.shapes.ellipse")
+            {
+                return new EllipseShape();
             }
             return NULL;
         }
