@@ -243,7 +243,8 @@ Router::Router(const unsigned int flags)
     m_routing_options[nudgeOrthogonalSegmentsConnectedToShapes] = false;
     m_routing_options[improveHyperedgeRoutesMovingJunctions] = true;
     m_routing_options[penaliseOrthogonalSharedPathsAtConnEnds] = false;
-      
+    m_routing_options[nudgeOrthogonalTouchingColinearSegments] = false;
+
     m_hyperedge_rerouter.setRouter(this);
 }
 
@@ -2212,38 +2213,7 @@ void Router::outputInstanceToSVG(std::string instanceName)
     while (revConnRefIt != connRefs.rend())
     {
         ConnRef *connRef = *revConnRefIt;
-        fprintf(fp, "    ConnRef *connRef%u = new ConnRef(router, %u);\n",
-                connRef->id(), connRef->id());
-        if (connRef->m_src_connend)
-        {
-            connRef->m_src_connend->outputCode(fp, "src");
-            fprintf(fp, "    connRef%u->setSourceEndpoint(srcPt%u);\n",
-                    connRef->id(), connRef->id());
-        }
-        else if (connRef->src())
-        {
-            fprintf(fp, "    ConnEnd srcPt%u(Point(%g, %g), %u);\n",
-                    connRef->id(), connRef->src()->point.x,
-                    connRef->src()->point.y, connRef->src()->visDirections);
-            fprintf(fp, "    connRef%u->setSourceEndpoint(srcPt%u);\n",
-                    connRef->id(), connRef->id());
-        }
-        if (connRef->m_dst_connend)
-        {
-            connRef->m_dst_connend->outputCode(fp, "dst");
-            fprintf(fp, "    connRef%u->setDestEndpoint(dstPt%u);\n",
-                    connRef->id(), connRef->id());
-        }
-        else if (connRef->dst())
-        {
-            fprintf(fp, "    ConnEnd dstPt%u(Point(%g, %g), %u);\n",
-                    connRef->id(), connRef->dst()->point.x,
-                    connRef->dst()->point.y, connRef->dst()->visDirections);
-            fprintf(fp, "    connRef%u->setDestEndpoint(dstPt%u);\n",
-                    connRef->id(), connRef->id());
-        }
-        fprintf(fp, "    connRef%u->setRoutingType((ConnType)%u);\n\n", 
-                connRef->id(), connRef->routingType());
+        connRef->outputCode(fp);
         ++revConnRefIt;
     }
     fprintf(fp, "    router->processTransaction();\n");
@@ -2475,7 +2445,7 @@ void Router::outputInstanceToSVG(std::string instanceName)
             fprintf(fp, "style=\"fill: none; stroke: black; "
                     "stroke-width: 1px;\" />\n");
         }
-        
+
         ++connRefIt;
     }
     fprintf(fp, "</g>\n");
@@ -2552,6 +2522,27 @@ void Router::outputInstanceToSVG(std::string instanceName)
             }
             fprintf(fp, "style=\"fill: none; stroke: black; "
                     "stroke-width: 1px;\" />\n");
+        }
+        
+        ++connRefIt;
+    }
+    fprintf(fp, "</g>\n");
+
+    fprintf(fp, "<g inkscape:groupmode=\"layer\" "
+            "inkscape:label=\"ConnectorCheckpoints\""
+            ">\n");
+    connRefIt = connRefs.begin();
+    while (connRefIt != connRefs.end())
+    {
+        ConnRef *connRef = *connRefIt;
+    
+        for (size_t i = 0; i < connRef->m_checkpoints.size(); ++i)
+        {
+            fprintf(fp, "<circle id=\"checkpoint-%u-%d\" cx=\"%g\" cy=\"%g\" "
+                    "r=\"8\" style=\"stroke: none; fill: red; "
+                    "fill-opacity: 0.25;\"  />\n", connRef->id(), (int) i,
+                    connRef->m_checkpoints[i].x, 
+                    connRef->m_checkpoints[i].y);
         }
         
         ++connRefIt;

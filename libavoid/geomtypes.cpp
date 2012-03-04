@@ -73,6 +73,16 @@ bool Point::operator!=(const Point& rhs) const
 }
 
 
+bool Point::equals(const Point& rhs, double epsilon) const
+{
+    if ( (fabs(x - rhs.x) < epsilon) && (fabs(y - rhs.y) < epsilon) )
+    {
+        return true;
+    }
+    return false;
+}
+
+
 // Just defined to allow std::set<Point>.  Not particularly meaningful!
 bool Point::operator<(const Point& rhs) const
 {
@@ -448,7 +458,7 @@ Polygon Polygon::simplify(void) const
                 simplified.ps[j]) == 0)
         {
             // These three points make up two collinear segments, so just
-            // compine them into a single segment.
+            // combine them into a single segment.
             it = simplified.ps.erase(it);
         }
         else
