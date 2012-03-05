@@ -104,7 +104,7 @@ int main(int argc, char *argv[])
                 window.canvas()->setOptConnRoundingDist(7);
                 break;
             case 'z':
-                window.canvas()->router()->setRoutingPenalty(
+                window.canvas()->router()->setRoutingParameter(
                         Avoid::crossingPenalty, atof(mj_optarg));
                 break;
             case'w':

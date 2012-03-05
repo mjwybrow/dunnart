@@ -230,9 +230,9 @@ Canvas::Canvas()
     m_router->setRoutingOption(
             Avoid::nudgeOrthogonalSegmentsConnectedToShapes, true);
 
-    m_router->setRoutingPenalty(Avoid::segmentPenalty, 50);
-    m_router->setRoutingPenalty(Avoid::clusterCrossingPenalty, 0);
-    //m_router->setRoutingPenalty(Avoid::fixedSharedPathPenalty);
+    m_router->setRoutingParameter(Avoid::segmentPenalty, 50);
+    m_router->setRoutingParameter(Avoid::clusterCrossingPenalty, 0);
+    //m_router->setRoutingParameter(Avoid::fixedSharedPathPenalty);
 
     m_selection_resize_handles = QVector<SelectionResizeHandle *>(8);
     for (int i = 0; i < 8; ++i)
@@ -1293,7 +1293,7 @@ void Canvas::setOptPreventOverlaps(const bool value)
 
 void Canvas::setOptConnPenaltySegment(const int value)
 {
-    m_router->setRoutingPenalty(Avoid::segmentPenalty, (double) value);
+    m_router->setRoutingParameter(Avoid::segmentPenalty, (double) value);
 
     reroute_all_connectors(this);
 }
@@ -1391,7 +1391,7 @@ int Canvas::optConnectorRoundingDistance(void) const
 
 int Canvas::optConnPenaltySegment(void) const
 {
-    return (int) m_router->routingPenalty(Avoid::segmentPenalty);
+    return (int) m_router->routingParameter(Avoid::segmentPenalty);
 }
 
 double Canvas::optDirectedEdgeSeparationModifier(void) const
@@ -2833,8 +2833,11 @@ void Canvas::loadLayoutOptionsFromDomElement(const QDomElement& options)
     }
 
     optionalProp(options,x_penaliseCrossings,m_avoid_connector_crossings);
-    optionalProp(options,x_segmentPenalty,
-            router()->penaltyRef(Avoid::segmentPenalty));
+    double segment_penalty;
+    if (optionalProp(options,x_segmentPenalty, segment_penalty))
+    {
+        router()->setRoutingParameter(Avoid::segmentPenalty, segment_penalty);
+    }
     optionalProp(options,x_colourInterferingConnectors,
             m_opt_colour_interfering_connectors);
 
@@ -2876,7 +2879,7 @@ QDomElement Canvas::writeLayoutOptionsToDomElement(QDomDocument& doc) const
             optIdealEdgeLengthModifier());
     newProp(dunOpts, x_penaliseCrossings, m_avoid_connector_crossings);
     newProp(dunOpts, x_segmentPenalty,
-            router()->routingPenalty(Avoid::segmentPenalty));
+            router()->routingParameter(Avoid::segmentPenalty));
     newProp(dunOpts, x_colourInterferingConnectors,
             m_opt_colour_interfering_connectors);
     newProp(dunOpts, x_rubberBandRouting, optRubberBandRouting());
