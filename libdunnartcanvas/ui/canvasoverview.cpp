@@ -33,6 +33,7 @@
 #include "libdunnartcanvas/canvas.h"
 #include "libdunnartcanvas/canvasitem.h"
 #include "libdunnartcanvas/shape.h"
+#include "libdunnartcanvas/connector.h"
 
 
 namespace dunnart {
@@ -75,6 +76,7 @@ class CanvasOverviewWidget : public QWidget
 
             // Draw a white background.
             QPainter painter(this);
+            painter.setRenderHint(QPainter::Antialiasing);
             painter.setPen(Qt::white);
             painter.setBrush(Qt::white);
             QRectF drawingRect = QRectF(0, 0, width(), height());
@@ -106,10 +108,30 @@ class CanvasOverviewWidget : public QWidget
             m_transform.translate(diff.x(), diff.y());
             m_transform.scale(scale, scale);
 
+            // Draw edges in overview for each connector on the canvas.
+            painter.setPen(QColor(0, 0, 0, 100));
+            QList<CanvasItem *> items = canvas->items();
+            for (int i = 0; i < items.count(); ++i)
+            {
+                Connector *connector = dynamic_cast<Connector *> (items.at(i));
+                if (connector)
+                {
+                    QPair<ShapeObj *, ShapeObj *> endShapes =
+                            connector->getAttachedShapes();
+                    if (!endShapes.first || !endShapes.second)
+                    {
+                        continue;
+                    }
+
+                    QLineF line(endShapes.first->centrePos(),
+                                endShapes.second->centrePos());
+                    painter.drawLine(m_transform.map(line));
+                }
+            }
+
             // Draw Rectangles in overview for each shape on the canvas.
             painter.setPen(Qt::black);
-            painter.setBrush(Qt::black);
-            QList<CanvasItem *> items = canvas->items();
+            painter.setBrush(Qt::darkGray);
             QRectF shapeRect;
             for (int i = 0; i < items.count(); ++i)
             {
