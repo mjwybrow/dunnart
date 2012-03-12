@@ -41,7 +41,7 @@ class Application : public CanvasApplication
     public:
         Application(int & argc, char ** argv);
         MainWindow *mainWindow(void) const;
-        virtual bool openDiagram(QFileInfo *file);
+        virtual bool openDiagram(const QFileInfo& file);
     protected:
         bool event(QEvent *ev);
 };

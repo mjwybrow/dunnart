@@ -45,12 +45,12 @@ MainWindow *Application::mainWindow(void) const
 }
 
 
-bool Application::openDiagram(QFileInfo *file)
+bool Application::openDiagram(const QFileInfo& file)
 {
     MainWindow *main_window = mainWindow();
     if (main_window)
     {
-        return main_window->loadDiagram(file->absoluteFilePath());
+        return main_window->loadDiagram(file.absoluteFilePath());
     }
     return false;
 }

@@ -54,7 +54,7 @@ class CanvasApplication : public QApplication
         //! @brief   Open a new diagram of the given file.
         //!
         //! @param  file  The file to open.
-        virtual bool openDiagram(QFileInfo *file) = 0;
+        virtual bool openDiagram(const QFileInfo& file) = 0;
 
         QMainWindow *mainWindow(void) const;
         void setMainWindow(QMainWindow *window);
