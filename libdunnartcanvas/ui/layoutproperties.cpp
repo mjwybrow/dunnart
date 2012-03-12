@@ -109,7 +109,8 @@ void LayoutPropertiesDialog::changeCanvas(Canvas *canvas)
         disconnect(m_canvas, 0, this, 0);
         disconnect(this, 0, m_canvas, 0);
         disconnect(idealLengthSlider, 0, m_canvas, 0);
-        disconnect(downwardSeparationSlider, 0, m_canvas, 0);
+        disconnect(flowSeparationSlider, 0, m_canvas, 0);
+        disconnect(flowDirectionDial, 0, m_canvas, 0);
     }
     m_canvas = canvas;
 
@@ -148,20 +149,27 @@ void LayoutPropertiesDialog::changeCanvas(Canvas *canvas)
     connect(m_canvas, SIGNAL(optChangedIdealEdgeLengthModifier(double)),
             this, SLOT(changeIdealEdgeLength(double)));
 
-    connect(downwardSeparationSlider, SIGNAL(sliderMoved(int)),
-            m_canvas, SLOT(setOptDirectedEdgeSeparationModifierFromSlider(int)));
+    connect(flowSeparationSlider, SIGNAL(sliderMoved(int)),
+            m_canvas, SLOT(setOptFlowSeparationModifierFromSlider(int)));
     connect(m_canvas, SIGNAL(optChangedDirectedEdgeSeparationModifier(double)),
             this, SLOT(changeDirectedEdgeSeparationModifier(double)));
+
+    connect(flowDirectionDial, SIGNAL(valueChanged(int)),
+            m_canvas, SLOT(setOptFlowDirectionFromDial(int)));
+    connect(m_canvas, SIGNAL(optChangedFlowDirection(int)),
+            flowDirectionDial, SLOT(setValue(int)));
 
     // Set initial control values.
     idealLengthSlider->setSliderPosition(
             m_canvas->optIdealEdgeLengthModifier() * 100);
-    downwardSeparationSlider->setSliderPosition(
-            m_canvas->optDirectedEdgeSeparationModifier() * 100);
+    flowSeparationSlider->setSliderPosition(
+            m_canvas->optFlowSeparationModifier() * 100);
     bool value = m_canvas->optPreventOverlaps();
     preventOverlapsCheckBox->setChecked(value);
     preventOverlapsCheckBox2->setChecked(value);
     preserveTopologyCheckBox->setEnabled(value);
+
+    flowDirectionDial->setSliderPosition(m_canvas->optFlowDirection());
 
     value = m_canvas->optPreserveTopology();
     preserveTopologyCheckBox->setChecked(value);
@@ -190,22 +198,25 @@ void LayoutPropertiesDialog::changeStructuralLayoutMode(int mode)
             organicStructureButton->setChecked(true);
             flowStructureButton->setChecked(false);
             layeredStuctureButton->setChecked(false);
-            downwardSeparationLabel->setEnabled(false);
-            downwardSeparationSlider->setEnabled(false);
+            flowOptionsLabel->setEnabled(false);
+            flowSeparationSlider->setEnabled(false);
+            flowDirectionDial->setEnabled(false);
             break;
         case LAYOUT_STRUCTURE_FLOW:
             organicStructureButton->setChecked(false);
             flowStructureButton->setChecked(true);
             layeredStuctureButton->setChecked(false);
-            downwardSeparationLabel->setEnabled(true);
-            downwardSeparationSlider->setEnabled(true);
+            flowOptionsLabel->setEnabled(true);
+            flowSeparationSlider->setEnabled(true);
+            flowDirectionDial->setEnabled(true);
             break;
         case LAYOUT_STRUCTURE_LAYERED:
             organicStructureButton->setChecked(false);
             flowStructureButton->setChecked(false);
             layeredStuctureButton->setChecked(true);
-            downwardSeparationLabel->setEnabled(false);
-            downwardSeparationSlider->setEnabled(false);
+            flowOptionsLabel->setEnabled(true);
+            flowSeparationSlider->setEnabled(true);
+            flowDirectionDial->setEnabled(true);
             break;
         default:
             break;
@@ -229,7 +240,7 @@ void LayoutPropertiesDialog::changeAutomaticLayoutMode(bool auto_layout)
 
 void LayoutPropertiesDialog::changeDirectedEdgeSeparationModifier(double value)
 {
-    downwardSeparationSlider->setSliderPosition(value * 100);
+    flowSeparationSlider->setSliderPosition(value * 100);
 }
 
 void LayoutPropertiesDialog::changeIdealEdgeLength(double value)

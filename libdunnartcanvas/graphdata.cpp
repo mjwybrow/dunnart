@@ -151,6 +151,24 @@ GraphData::GraphData(Canvas *canvas, bool ignoreEdges,
 
         if (mode == GraphLayout::FLOW)
         {
+            // Direction.  Default down.
+            vpsc::Dim dimension = vpsc::YDIM;
+            bool flipped = false;
+            int direction = canvas_->optFlowDirection() % 4;
+            if (direction == Canvas::FlowUp)
+            {
+                flipped = true;
+            }
+            else if (direction == Canvas::FlowRight)
+            {
+                dimension = vpsc::XDIM;
+            }
+            else if (direction == Canvas::FlowLeft)
+            {
+                dimension = vpsc::XDIM;
+                flipped = true;
+            }
+
             // Set up downward edge constraints.
             // In the case that the graph isn't a DAG, i.e., has cycles, we
             // don't constrain any of the edges that form a cycle.  We do
@@ -178,11 +196,14 @@ GraphData::GraphData(Canvas *canvas, bool ignoreEdges,
                     cout << "generating directed constraint for conn("
                             << conn_vec[i]->getId() << ")" << endl;
 #endif
-                    ccs.push_back(new cola::SeparationConstraint(vpsc::YDIM,
-                            edge.first, edge.second,
+                    unsigned firstIndex = (flipped) ? edge.second : edge.first;
+                    unsigned secondIndex = (flipped) ? edge.first : edge.second;
+
+                    ccs.push_back(new cola::SeparationConstraint(dimension,
+                            firstIndex, secondIndex,
                             (canvas_->m_ideal_connector_length *
                              canvas_->optIdealEdgeLengthModifier() *
-                             canvas_->m_directed_edge_height_modifier)));
+                             canvas_->m_flow_separation_modifier)));
                     conn_vec[i]->setHasDownwardConstraint(true);
                 }
                 else

@@ -182,7 +182,7 @@ Canvas::Canvas()
       m_canvas_font_size(DEFAULT_CANVAS_FONT_SIZE)
 {
     m_ideal_connector_length = 100;
-    m_directed_edge_height_modifier = 0.5;
+    m_flow_separation_modifier = 0.5;
     m_sticky_nodes = false;
     m_downward_edges = false;
     m_avoid_connector_crossings = false;
@@ -207,6 +207,7 @@ Canvas::Canvas()
     m_opt_colour_interfering_connectors = false;
     m_opt_connector_rounding_distance = 5;
     m_opt_stuctural_editing_disabled = false;
+    m_opt_flow_direction = FlowDown;
 
     // Default list of connector colors. Use only dark colors (and full
     // opacity) since connectors are drawn as thin lines so light
@@ -1161,6 +1162,11 @@ int Canvas::optLayoutMode(void) const
     return (int) m_graphlayout->mode;
 }
 
+Canvas::FlowDirection Canvas::optFlowDirection(void) const
+{
+    return (FlowDirection) m_opt_flow_direction;
+}
+
 bool Canvas::optPreventOverlaps(void) const
 {
     return m_opt_prevent_overlaps;
@@ -1394,24 +1400,35 @@ int Canvas::optConnPenaltySegment(void) const
     return (int) m_router->routingParameter(Avoid::segmentPenalty);
 }
 
-double Canvas::optDirectedEdgeSeparationModifier(void) const
+double Canvas::optFlowSeparationModifier(void) const
 {
-    return m_directed_edge_height_modifier;
+    return m_flow_separation_modifier;
 }
 
-void Canvas::setOptDirectedEdgeSeparationModifier(const double value)
+void Canvas::setOptFlowSeparationModifier(const double value)
 {
-    m_directed_edge_height_modifier = value;
+    m_flow_separation_modifier = value;
     emit optChangedDirectedEdgeSeparationModifier(value);
     interrupt_graph_layout();
 }
 
-void Canvas::setOptDirectedEdgeSeparationModifierFromSlider(const int intValue)
+void Canvas::setOptFlowSeparationModifierFromSlider(const int intValue)
 {
     double doubleValue = intValue / 100.0;
-    setOptDirectedEdgeSeparationModifier(doubleValue);
+    setOptFlowSeparationModifier(doubleValue);
 }
 
+void Canvas::setOptFlowDirection(const FlowDirection value)
+{
+    m_opt_flow_direction = value;
+    emit optChangedFlowDirection(value);
+    interrupt_graph_layout();
+}
+
+void Canvas::setOptFlowDirectionFromDial(const int value)
+{
+    setOptFlowDirection((FlowDirection) value);
+}
 
 void Canvas::bringToFront(void)
 {
@@ -2732,7 +2749,8 @@ static const char *x_automaticGraphLayout =
         "automaticGraphLayout";
 static const char *x_avoidBuffer = "avoidBuffer";
 static const char *x_routingBuffer = "routingBuffer";
-static const char *x_downwardSeparation = "downwardSeparation";
+static const char *x_flowSeparation = "flowSeparation";
+static const char *x_flowDirection = "flowDirection";
 static const char *x_defaultIdealConnectorLength =
         "defaultIdealConnectorLength";
 static const char *x_pageBoundaryConstraints =
@@ -2823,7 +2841,8 @@ void Canvas::loadLayoutOptionsFromDomElement(const QDomElement& options)
     {
         routingBuffer = avoidBuffer;
     }
-    optionalProp(options,x_downwardSeparation,m_directed_edge_height_modifier);
+    optionalProp(options,x_flowSeparation,m_flow_separation_modifier);
+    optionalProp(options,x_flowDirection,m_opt_flow_direction);
 
     double ideal_connector_length_modifier;
     if (optionalProp(options,x_defaultIdealConnectorLength,
@@ -2873,7 +2892,11 @@ QDomElement Canvas::writeLayoutOptionsToDomElement(QDomDocument& doc) const
     {
         newProp(dunOpts, x_routingBuffer, routingBuffer);
     }
-    newProp(dunOpts, x_downwardSeparation, m_directed_edge_height_modifier);
+    newProp(dunOpts, x_flowSeparation, m_flow_separation_modifier);
+    if (m_opt_flow_direction != FlowDown)
+    {
+        newProp(dunOpts, x_flowDirection, m_opt_flow_direction);
+    }
     newProp(dunOpts, x_pageBoundaryConstraints, optFitWithinPage());
     newProp(dunOpts, x_defaultIdealConnectorLength,
             optIdealEdgeLengthModifier());

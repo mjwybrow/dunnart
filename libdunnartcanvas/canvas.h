@@ -118,11 +118,21 @@ class Canvas : public QGraphicsScene
     Q_PROPERTY (int connectorRoundingDistance READ optConnectorRoundingDistance WRITE setOptConnRoundingDist)
     Q_PROPERTY (int connectorSegmentPenalty READ optConnPenaltySegment WRITE setOptConnPenaltySegment)
     Q_PROPERTY (bool structuralEditingDisabled READ optStructuralEditingDisabled WRITE setOptStructuralEditingDisabled)
-    Q_PROPERTY (double directedEdgeSeparationModifier READ optDirectedEdgeSeparationModifier WRITE setOptDirectedEdgeSeparationModifier)
+    Q_PROPERTY (double flowSeparationModifier READ optFlowSeparationModifier WRITE setOptFlowSeparationModifier)
+    Q_PROPERTY (FlowDirection flowDirection READ optFlowDirection WRITE setOptFlowDirection)
+    Q_ENUMS (FlowDirection)
 
     public:
         Canvas();
         virtual ~Canvas();
+
+        enum FlowDirection
+        {
+            FlowDown  = 0,
+            FlowLeft  = 1,
+            FlowUp    = 2,
+            FlowRight = 3
+        };
 
         bool loadGmlDiagram(const QFileInfo& fileInfo);
         void loadSVGRootNodeAttributes(const QDomElement& svgRoot);
@@ -170,7 +180,8 @@ class Canvas : public QGraphicsScene
         int optConnectorRoundingDistance(void) const;
         int optConnPenaltySegment(void) const;
         int optLayoutMode(void) const;
-        double optDirectedEdgeSeparationModifier(void) const;
+        FlowDirection optFlowDirection(void) const;
+        double optFlowSeparationModifier(void) const;
 
         bool overlayRouterObstacles(void) const;
         bool overlayRouterVisGraph(void) const;
@@ -235,8 +246,10 @@ class Canvas : public QGraphicsScene
         void setOptConnRoundingDist(const int value);
         void setOptStructuralEditingDisabled(const bool value);
         void setOptLayoutMode(const int mode);
-        void setOptDirectedEdgeSeparationModifier(const double value);
-        void setOptDirectedEdgeSeparationModifierFromSlider(const int intValue);
+        void setOptFlowSeparationModifier(const double value);
+        void setOptFlowSeparationModifierFromSlider(const int intValue);
+        void setOptFlowDirection(const FlowDirection value);
+        void setOptFlowDirectionFromDial(const int value);
 
         void processResponseTasks(void);
         void processUndoResponseTasks(void);
@@ -269,6 +282,7 @@ class Canvas : public QGraphicsScene
         void optChangedIdealEdgeLengthModifier(double value);
         void optChangedLayoutMode(int mode);
         void optChangedDirectedEdgeSeparationModifier(double modifier);
+        void optChangedFlowDirection(int direction);
 
     private slots:
         void processLayoutUpdateEvent(void);
@@ -318,7 +332,7 @@ class Canvas : public QGraphicsScene
 
         double m_connector_nudge_distance;
         double m_ideal_connector_length;
-        double m_directed_edge_height_modifier;
+        double m_flow_separation_modifier;
         bool m_rectangle_constraint_test;
         bool m_sticky_nodes;
         bool m_downward_edges;
@@ -338,6 +352,7 @@ class Canvas : public QGraphicsScene
         bool m_opt_fit_within_page;
         bool m_opt_colour_interfering_connectors;
         bool m_opt_stuctural_editing_disabled;
+        int  m_opt_flow_direction;
         Actions m_actions;
 
         std::map<QString, QString> m_paste_id_map;
