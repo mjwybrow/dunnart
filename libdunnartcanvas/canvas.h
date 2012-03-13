@@ -317,7 +317,7 @@ class Canvas : public QGraphicsScene
         QTimer *m_layout_update_timer;
         QTimer *m_layout_finish_timer;
         bool m_processing_layout_updates;
-        QDomDocument m_clipboard;
+        QString m_clipboard;
         QRectF m_page;
         QRectF m_expanded_page;
         GraphLayout* m_graphlayout;

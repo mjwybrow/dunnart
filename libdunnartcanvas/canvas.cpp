@@ -1487,10 +1487,10 @@ void Canvas::copySelection(void)
     {
         return;
     }
-    m_clipboard = QDomDocument();
+    QDomDocument clipboard;
 
-    QDomElement svg = m_clipboard.createElement("svg");
-    m_clipboard.appendChild(svg);
+    QDomElement svg = clipboard.createElement("svg");
+    clipboard.appendChild(svg);
     newProp(svg, "xmlns", "http://www.w3.org/2000/svg");
     newProp(svg, "xmlns:dunnart", x_dunnartURI);
 
@@ -1500,17 +1500,22 @@ void Canvas::copySelection(void)
     for (int i = 0; i < selected_items.size(); ++i)
     {
         QDomElement elem =
-                selected_items.at(i)->to_QDomElement(XMLSS_ALL, m_clipboard);
+                selected_items.at(i)->to_QDomElement(XMLSS_ALL, clipboard);
 
         svg.appendChild(elem);
     }
+    m_clipboard = clipboard.toString();
     emit clipboardContentsChanged();
 }
 
 
 void Canvas::pasteSelection(void)
 {
-    if (!m_clipboard.hasChildNodes())
+    QDomDocument clipboard;
+    bool parseNamespaces = true;
+    clipboard.setContent(m_clipboard, parseNamespaces);
+
+    if (!clipboard.hasChildNodes())
     {
         // No children, so clipboard is empty.
         return;
@@ -1526,27 +1531,26 @@ void Canvas::pasteSelection(void)
     m_paste_bad_constraint_ids.clear();
 
     // Assign new clipboard IDs.
-    recursiveMapIDs(m_clipboard, dunnartNs, PASTE_UPDATEOBJIDS);
+    recursiveMapIDs(clipboard, dunnartNs, PASTE_UPDATEOBJIDS);
 
     // Update IDs for connectors and relationships.
-    recursiveMapIDs(m_clipboard, dunnartNs, PASTE_UPDATEIDPROPS);
+    recursiveMapIDs(clipboard, dunnartNs, PASTE_UPDATEIDPROPS);
 
     // Find bad distributions and separations.
-    recursiveMapIDs(m_clipboard, dunnartNs, PASTE_FINDBADDISTROS);
+    recursiveMapIDs(clipboard, dunnartNs, PASTE_FINDBADDISTROS);
 
     // Remove bad distributions and separations.
-    recursiveMapIDs(m_clipboard, dunnartNs, PASTE_REMOVEBADDISTROS);
+    recursiveMapIDs(clipboard, dunnartNs, PASTE_REMOVEBADDISTROS);
 
-    QDomElement root = m_clipboard.documentElement();
-
+    qDebug() << clipboard.toString();
     // Actually do the pasting, in correct order.
     for (int pass = 0; pass < PASS_LAST; ++pass)
     {
-        this->recursiveReadSVG(m_clipboard, dunnartNs, pass);
+        this->recursiveReadSVG(clipboard, dunnartNs, pass);
     }
 
     // Select all new shapes.
-    recursiveMapIDs(m_clipboard, dunnartNs, PASTE_SELECTSHAPES);
+    recursiveMapIDs(clipboard, dunnartNs, PASTE_SELECTSHAPES);
 
     // Find the centre of pasted items, so we know how much to move them.
     QPointF oldCentrePos = diagramBoundingRect(selectedItems()).center();
@@ -2574,8 +2578,8 @@ void Canvas::recursiveMapIDs(QDomNode start, const QString& ns, int pass)
             if (pass == PASTE_UPDATEIDPROPS)
             {
                 // Update single properties that refer to IDs.
-                singlePropUpdateID(element, x_srcID, ns);
-                singlePropUpdateID(element, x_dstID, ns);
+                singlePropUpdateID(element, x_srcID);
+                singlePropUpdateID(element, x_dstID);
                 singlePropUpdateID(element, x_constraintID);
                 singlePropUpdateID(element, x_objOneID);
                 singlePropUpdateID(element, x_objTwoID);
