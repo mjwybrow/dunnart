@@ -125,11 +125,46 @@ GraphData::GraphData(Canvas *canvas, bool ignoreEdges,
 
     // create nodes
     QList<CanvasItem *> canvasObjects = canvas->items();
+    double xMin = DBL_MAX, xMax = -DBL_MAX;
+    double yMin = DBL_MAX, yMax = -DBL_MAX;
     for(int i = 0; i < canvasObjects.size(); ++i)
     {
         if (ShapeObj *shape = isShapeForLayout(canvasObjects.at(i)))
         {
             shapeToNode(shape);
+
+            double centreX = rs[i]->getCentreX();
+            double centreY = rs[i]->getCentreY();
+            xMax = std::max(xMax, centreX);
+            xMin = std::min(xMin, centreX);
+            yMax = std::max(yMax, centreY);
+            yMin = std::min(yMin, centreY);
+        }
+    }
+
+    if (!ignoreEdges)
+    {
+        // If the nodes are all clumped at one position, then the layout
+        // won't be able to separate them, thus we jiggle them randomly
+        // a small amount.
+        double maxJiggleDistance = 12;
+        if (xMax == xMin)
+        {
+            for (size_t i = 0; i < rs.size(); ++i)
+            {
+                double jiggle = (qrand() / (double) RAND_MAX) * maxJiggleDistance;
+                qDebug("Jiggle X: %g", jiggle);
+                rs[i]->moveCentreX(jiggle);
+            }
+        }
+        if (yMax == yMin)
+        {
+            for (size_t i = 0; i < rs.size(); ++i)
+            {
+                double jiggle = (qrand() / (double) RAND_MAX) * maxJiggleDistance;
+                qDebug("Jiggle Y: %g", jiggle);
+                rs[i]->moveCentreY(jiggle);
+            }
         }
     }
 
