@@ -40,11 +40,11 @@ LayoutPropertiesDialog::LayoutPropertiesDialog(Canvas *canvas, QWidget *parent)
 
     m_mode_signal_mapper = new QSignalMapper(this);
     m_mode_signal_mapper->setMapping(
-            organicStructureButton, LAYOUT_STRUCTURE_ORGANIC);
+            organicStructureButton, Canvas::OrganicLayout);
     m_mode_signal_mapper->setMapping(
-            flowStructureButton, LAYOUT_STRUCTURE_FLOW);
+            flowStructureButton, Canvas::FlowLayout);
     m_mode_signal_mapper->setMapping(
-            layeredStuctureButton, LAYOUT_STRUCTURE_LAYERED);
+            layeredStuctureButton, Canvas::LayeredLayout);
 
     connect(m_mode_signal_mapper, SIGNAL(mapped(int)),
             this, SIGNAL(setOptStructuralLayoutMode(int)));
@@ -120,7 +120,7 @@ void LayoutPropertiesDialog::changeCanvas(Canvas *canvas)
             this, SLOT(changeAutomaticLayoutMode(bool)));
 
     connect(this, SIGNAL(setOptStructuralLayoutMode(int)),
-            m_canvas, SLOT(setOptLayoutMode(int)));
+            m_canvas, SLOT(setOptLayoutModeFromInt(int)));
     connect(m_canvas, SIGNAL(optChangedLayoutMode(int)),
             this, SLOT(changeStructuralLayoutMode(int)));
 
@@ -182,10 +182,6 @@ void LayoutPropertiesDialog::changeCanvas(Canvas *canvas)
     pageBoundaryCheckBox->setChecked(value);
     pageBoundaryCheckBox2->setChecked(value);
 
-#ifdef NOGRAPHVIZ
-    layeredStuctureButton->setDisabled(true);
-#endif
-
     changeAutomaticLayoutMode(m_canvas->optAutomaticGraphLayout());
     changeStructuralLayoutMode(m_canvas->optLayoutMode());
 }
@@ -194,7 +190,7 @@ void LayoutPropertiesDialog::changeStructuralLayoutMode(int mode)
 {
     switch(mode)
     {
-        case LAYOUT_STRUCTURE_ORGANIC:
+        case Canvas::OrganicLayout:
             organicStructureButton->setChecked(true);
             flowStructureButton->setChecked(false);
             layeredStuctureButton->setChecked(false);
@@ -202,7 +198,7 @@ void LayoutPropertiesDialog::changeStructuralLayoutMode(int mode)
             flowSeparationSlider->setEnabled(false);
             flowDirectionDial->setEnabled(false);
             break;
-        case LAYOUT_STRUCTURE_FLOW:
+        case Canvas::FlowLayout:
             organicStructureButton->setChecked(false);
             flowStructureButton->setChecked(true);
             layeredStuctureButton->setChecked(false);
@@ -210,7 +206,7 @@ void LayoutPropertiesDialog::changeStructuralLayoutMode(int mode)
             flowSeparationSlider->setEnabled(true);
             flowDirectionDial->setEnabled(true);
             break;
-        case LAYOUT_STRUCTURE_LAYERED:
+        case Canvas::LayeredLayout:
             organicStructureButton->setChecked(false);
             flowStructureButton->setChecked(false);
             layeredStuctureButton->setChecked(true);

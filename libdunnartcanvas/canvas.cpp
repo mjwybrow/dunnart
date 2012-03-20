@@ -22,7 +22,6 @@
  *
  * Author(s): Michael Wybrow  <http://michael.wybrow.info/>
 */
-
 #include <QtGui>
 #include <QtSvg>
 
@@ -1157,9 +1156,9 @@ bool Canvas::optAutomaticGraphLayout(void) const
     return m_opt_automatic_graph_layout;
 }
 
-int Canvas::optLayoutMode(void) const
+Canvas::LayoutMode Canvas::optLayoutMode(void) const
 {
-    return (int) m_graphlayout->mode;
+    return (LayoutMode) m_graphlayout->mode;
 }
 
 Canvas::FlowDirection Canvas::optFlowDirection(void) const
@@ -1236,11 +1235,16 @@ void Canvas::setOptAutomaticGraphLayout(const bool value)
     QApplication::restoreOverrideCursor();
 }
 
-void Canvas::setOptLayoutMode(const int mode)
+void Canvas::setOptLayoutMode(const LayoutMode mode)
 {
     m_graphlayout->setLayoutMode((GraphLayout::Mode) mode);
     emit optChangedLayoutMode(mode);
     fully_restart_graph_layout();
+}
+
+void Canvas::setOptLayoutModeFromInt(const int mode)
+{
+    setOptLayoutMode((LayoutMode) mode);
 }
 
 bool Canvas::optStructuralEditingDisabled(void) const
@@ -2156,7 +2160,7 @@ void Canvas::fully_restart_graph_layout(void)
     gl->runLevel=0;
     if (gl->mode == GraphLayout::LAYERED) 
     {
-        gl->runLevel=1;
+        //gl->runLevel=1;
     }
     gl->apply(!m_opt_automatic_graph_layout);
 }
@@ -2808,7 +2812,7 @@ void Canvas::loadLayoutOptionsFromDomElement(const QDomElement& options)
     int mode = gl->mode;
     if (optionalProp(options,x_layoutMode,mode))
     {
-        setOptLayoutMode(mode);
+        setOptLayoutMode((Canvas::LayoutMode) mode);
     }
 
     bool booleanVal = false;

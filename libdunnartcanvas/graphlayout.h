@@ -123,12 +123,12 @@ public:
 
     //! controls the style of layout
     enum Mode {
-        ORGANIC, //!< the standard force-directed layout with no automatically
-                 //   generated constraints
-        FLOW, //!< generates a vertical separation constraint for every pair of
-              //   edges so that the edge is required to point downwards
-        LAYERED //!< uses graphviz (dot) to generate a layered layout for
-                //   directed graphs
+        ORGANIC, //! The standard force-directed layout with no automatically
+                 //! generated constraints
+        FLOW,    //! Generates a vertical separation constraint for every pair
+                 //! of edges so that the edge is required to point downwards
+        LAYERED  //! Uses FLOW layout but also generates level alignment
+                 //! constraints so that nodes positions are in layers
     };
     Mode mode; //!< controls the style of layout
     //! selects a method to minimise layout stress.

@@ -420,8 +420,11 @@ struct GuidelinePosInfo : PosInfo {
     {
         Q_UNUSED (canvas)
 
-        ConstraintDebug("**  GUIDELINE\n");
-        guidePtr->updateFromLayout(gPos, hasPos);
+        if (guidePtr)
+        {
+            ConstraintDebug("**  GUIDELINE\n");
+            guidePtr->updateFromLayout(gPos, hasPos);
+        }
     }
     void fixGraphLayoutPosition(GraphData*,cola::Locks&,cola::Resizes&);
 };
@@ -628,12 +631,12 @@ PosInfo* returnPosInfoFactory(cola::CompoundConstraint *c) {
     if(cola::AlignmentConstraint *ac = dynamic_cast<cola::AlignmentConstraint*>(c)) {
         if(ac->isFixed()) {
             ac->unfixPos();
-            return new GuidelinePosInfo((Guideline*)ac->guide);
+            return new GuidelinePosInfo((Guideline*)ac->indicator);
         } 
-        if(ac->guide==NULL) { // no gui object associated with this alignment
+        if(ac->indicator==NULL) { // no gui object associated with this alignment
             return NULL;
         }
-        return new GuidelinePosInfo((Guideline*)ac->guide, ac->position());
+        return new GuidelinePosInfo((Guideline*)ac->indicator, ac->position());
     }
     if(cola::DistributionConstraint *dc = dynamic_cast<cola::DistributionConstraint*>(c)) {
         return new DistributionPosInfo((Distribution *)dc->indicator, dc->sep);

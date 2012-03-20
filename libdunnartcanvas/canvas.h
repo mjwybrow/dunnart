@@ -87,10 +87,6 @@ static const unsigned int ACTION_ADDITIONS      = 1;
 static const unsigned int ACTION_DELETIONS      = 2;
 static const unsigned int ACTION_MODIFICATIONS  = 4;
 
-static const int LAYOUT_STRUCTURE_ORGANIC = 0;
-static const int LAYOUT_STRUCTURE_FLOW    = 1;
-static const int LAYOUT_STRUCTURE_LAYERED = 2;
-
 static const int ModeSelection   = 1;
 static const int ModeConnection  = 2;
 
@@ -109,6 +105,9 @@ class Canvas : public QGraphicsScene
     Q_OBJECT
 
     Q_PROPERTY (bool automaticGraphLayout READ optAutomaticGraphLayout WRITE setOptAutomaticGraphLayout)
+    Q_PROPERTY (LayoutMode layoutMode READ optLayoutMode WRITE setOptLayoutMode)
+    Q_PROPERTY (FlowDirection flowDirection READ optFlowDirection WRITE setOptFlowDirection)
+    Q_PROPERTY (double flowSeparationModifier READ optFlowSeparationModifier WRITE setOptFlowSeparationModifier)
     Q_PROPERTY (bool preventOverlaps READ optPreventOverlaps WRITE setOptPreventOverlaps)
     Q_PROPERTY (bool preserveTopology READ optPreserveTopology WRITE setOptPreserveTopology)
     Q_PROPERTY (bool rubberBandRouting READ optRubberBandRouting WRITE setOptRubberBandRouting)
@@ -118,9 +117,8 @@ class Canvas : public QGraphicsScene
     Q_PROPERTY (int connectorRoundingDistance READ optConnectorRoundingDistance WRITE setOptConnRoundingDist)
     Q_PROPERTY (int connectorSegmentPenalty READ optConnPenaltySegment WRITE setOptConnPenaltySegment)
     Q_PROPERTY (bool structuralEditingDisabled READ optStructuralEditingDisabled WRITE setOptStructuralEditingDisabled)
-    Q_PROPERTY (double flowSeparationModifier READ optFlowSeparationModifier WRITE setOptFlowSeparationModifier)
-    Q_PROPERTY (FlowDirection flowDirection READ optFlowDirection WRITE setOptFlowDirection)
     Q_ENUMS (FlowDirection)
+    Q_ENUMS (LayoutMode)
 
     public:
         Canvas();
@@ -132,6 +130,13 @@ class Canvas : public QGraphicsScene
             FlowLeft  = 1,
             FlowUp    = 2,
             FlowRight = 3
+        };
+
+        enum LayoutMode
+        {
+            OrganicLayout = 0,
+            FlowLayout    = 1,
+            LayeredLayout = 2
         };
 
         bool loadGmlDiagram(const QFileInfo& fileInfo);
@@ -179,7 +184,7 @@ class Canvas : public QGraphicsScene
         double optIdealEdgeLengthModifier(void) const;
         int optConnectorRoundingDistance(void) const;
         int optConnPenaltySegment(void) const;
-        int optLayoutMode(void) const;
+        LayoutMode optLayoutMode(void) const;
         FlowDirection optFlowDirection(void) const;
         double optFlowSeparationModifier(void) const;
 
@@ -245,7 +250,8 @@ class Canvas : public QGraphicsScene
         void setOptConnPenaltySegment(const int value);
         void setOptConnRoundingDist(const int value);
         void setOptStructuralEditingDisabled(const bool value);
-        void setOptLayoutMode(const int mode);
+        void setOptLayoutMode(const LayoutMode mode);
+        void setOptLayoutModeFromInt(const int mode);
         void setOptFlowSeparationModifier(const double value);
         void setOptFlowSeparationModifierFromSlider(const int intValue);
         void setOptFlowDirection(const FlowDirection value);

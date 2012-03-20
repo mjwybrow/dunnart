@@ -27,6 +27,9 @@
  * GraphLayout constructs a cola graph representation from dunnart objects and maintains the
  * graph structure and various mapping lookups using the methods defined here
  */
+
+#include <algorithm>
+
 #include "libavoid/libavoid.h"
 
 // dunnart object definitions:
@@ -58,6 +61,56 @@ namespace dunnart {
 
 using namespace std;
 using namespace vpsc;
+
+// Convenience structure for levelAssignmentTraverse algorithm.
+struct NodeLevelInfo
+{
+        NodeLevelInfo()
+            : isRoot(true),
+              sighted(false),
+              level(0),
+              parentCount(0),
+              parentVisits(0)
+        {
+        }
+
+    std::set<unsigned> children;
+    bool isRoot;
+    bool sighted;
+    unsigned level;
+    unsigned parentCount;
+    unsigned parentVisits;
+};
+
+// This is similar to Kahn's 1962 topological sorting algorithm.
+// It is O(|V|+|E|).  It starts from each root, incrementing the levels
+// as it moves down the tree.  It waits when it gets to a node with multiple
+// parents and waits until it has been visited from every parent, and then
+// continues from there with the maximum level.
+// It also keeps track of the highestLevel, for later convenience.
+static void levelAssignmentTraverse(unsigned ind, unsigned newLevel,
+        unsigned& maxLevel, std::vector<NodeLevelInfo>& nodeInfo)
+{
+    // Set the node level.
+    nodeInfo[ind].level = std::max(nodeInfo[ind].level, newLevel);
+    maxLevel = std::max(maxLevel, nodeInfo[ind].level);
+    nodeInfo[ind].parentVisits++;
+
+    if (nodeInfo[ind].parentVisits < nodeInfo[ind].parentCount)
+    {
+        // Stop until we've reached this from every parent.
+        return;
+    }
+
+    // Recurse to set node levels of children.
+    for (std::set<unsigned>::iterator it = nodeInfo[ind].children.begin();
+            it != nodeInfo[ind].children.end(); ++it)
+    {
+        levelAssignmentTraverse(*it, nodeInfo[ind].level + 1, maxLevel,
+                nodeInfo);
+    }
+}
+
 
 GraphData::GraphData(Canvas *canvas, bool ignoreEdges, 
         GraphLayout::Mode mode, bool beautify, unsigned topologyNodesCount) 
@@ -140,7 +193,7 @@ GraphData::GraphData(Canvas *canvas, bool ignoreEdges,
     vector<Separation*> separationlist;
     if (!ignoreEdges)
     {
-        for(int i = 0; i < canvasObjects.size(); ++i)
+        for (int i = 0; i < canvasObjects.size(); ++i)
         {
             if (Connector *conn = dynamic_cast<Connector *> (canvasObjects.at(i)))
             {    
@@ -149,7 +202,7 @@ GraphData::GraphData(Canvas *canvas, bool ignoreEdges,
         }
         setupMultiEdges();
 
-        if (mode == GraphLayout::FLOW)
+        if ((mode == GraphLayout::FLOW)  || (mode == GraphLayout::LAYERED))
         {
             // Direction.  Default down.
             vpsc::Dim dimension = vpsc::YDIM;
@@ -179,6 +232,8 @@ GraphData::GraphData(Canvas *canvas, bool ignoreEdges,
             SCCDetector cycleDetector;
             QVector<int> sccIndexes =
                     cycleDetector.stronglyConnectedComponentIndexes(this);
+            std::vector<NodeLevelInfo> nodeInfo(shape_vec.size());
+
             for (uint i = 0; i < conn_vec.size(); ++i)
             {
                 if ( ! conn_vec[i]->isDirected() ||
@@ -205,11 +260,89 @@ GraphData::GraphData(Canvas *canvas, bool ignoreEdges,
                              canvas_->optIdealEdgeLengthModifier() *
                              canvas_->m_flow_separation_modifier)));
                     conn_vec[i]->setHasDownwardConstraint(true);
+
+                    if (mode == GraphLayout::LAYERED)
+                    {
+                        nodeInfo[firstIndex].children.insert(secondIndex);
+                        nodeInfo[secondIndex].parentCount++;
+                        nodeInfo[firstIndex].sighted = true;
+                        nodeInfo[secondIndex].sighted = true;
+                        nodeInfo[secondIndex].isRoot = false;
+                    }
                 }
                 else
                 {
                     conn_vec[i]->setHasDownwardConstraint(false);
                 }
+            }
+
+            // Apply level constraints.
+            if (mode == GraphLayout::LAYERED)
+            {
+                // Assign levels for each node.
+                unsigned maxLevel = 0;
+                for (size_t ind = 0; ind < shape_vec.size(); ++ind)
+                {
+                    if (nodeInfo[ind].isRoot && nodeInfo[ind].sighted)
+                    {
+                        levelAssignmentTraverse(ind, nodeInfo[ind].level + 1,
+                                maxLevel, nodeInfo);
+                    }
+                }
+
+                // Create list of nodes in each level.
+                std::vector<std::set<unsigned> > levelLists(maxLevel);
+                for (size_t ind = 0; ind < shape_vec.size(); ++ind)
+                {
+                    if (nodeInfo[ind].level > 0)
+                    {
+                        levelLists[nodeInfo[ind].level - 1].insert(ind);
+                    }
+                }
+
+                // Align each level.
+                for (size_t level = 0; level < maxLevel; ++level)
+                {
+                    std::set<unsigned>& nodes = levelLists[level];
+                    if (nodes.size() < 2)
+                    {
+                        // Don't bother aligning a single node.
+                        continue;
+                    }
+
+                    cola::AlignmentConstraint *alignment =
+                            new cola::AlignmentConstraint(dimension);
+                    for (std::set<unsigned>::iterator it = nodes.begin();
+                            it != nodes.end(); ++it)
+                    {
+                        alignment->addShape(*it, 0);
+                    }
+                    ccs.push_back(alignment);
+                }
+
+/*
+                // Code for aligning just children of each parent node.
+                for (size_t ind = 0; ind < childLists.size(); ++ind)
+                {
+                    std::set<unsigned>& children = childLists[ind];
+                    if (children.empty())
+                    {
+                        continue;
+                    }
+
+                    cola::AlignmentConstraint *alignment =
+                            new cola::AlignmentConstraint(dimension);
+                    for (std::set<unsigned>::iterator it = children.begin();
+                            it != children.end(); ++it)
+                    {
+                        if (parentCount[*it] == 1)
+                        {
+                            alignment->addShape(*it, 0);
+                        }
+                    }
+                    ccs.push_back(alignment);
+                }
+                */
             }
         }
     }
@@ -225,7 +358,7 @@ GraphData::GraphData(Canvas *canvas, bool ignoreEdges,
 
     generateRectangleConstraints(canvasObjects);
 
-    for(int i = 0; i < canvasObjects.size(); ++i)
+    for (int i = 0; i < canvasObjects.size(); ++i)
     {
         QGraphicsItem *co = canvasObjects.at(i);
         Guideline *guide = dynamic_cast<Guideline *> (co);
@@ -836,7 +969,7 @@ void GraphData::guideToAlignmentConstraint(Guideline* guide) {
     cola::AlignmentConstraint *ac = 
             new cola::AlignmentConstraint(dim, guide->position());
     ccMap[guide]=ac;
-    ac->guide=(void*)guide;
+    ac->indicator=(void*)guide;
     ccs.push_back(ac);
     for(RelsList::iterator i = guide->rels.begin();
             i!=guide->rels.end();i++) {

@@ -1309,7 +1309,8 @@ void Connector::paint(QPainter *painter,
 
     // Draw downward constraint indicator:
     if ( m_has_downward_constraint && showDecorations &&
-         (canvas()->optLayoutMode() == LAYOUT_STRUCTURE_FLOW) )
+         ( (canvas()->optLayoutMode() == Canvas::FlowLayout) ||
+           (canvas()->optLayoutMode() == Canvas::LayeredLayout) ) )
     {
         QColor colour(180, 0, 255, 25);
         QPen highlight(colour);
