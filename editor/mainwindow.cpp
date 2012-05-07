@@ -255,7 +255,7 @@ MainWindow::MainWindow(Application *app)
     dialogs_menu->addSeparator();
     dialogs_menu->addAction(m_action_show_layout_properties_dialog);
     dialogs_menu->addAction(m_action_show_connector_properties_dialog);
-    QMenu *overlays_menu = m_view_menu->addMenu(tr("Canvas Debug Overlays"));
+    QMenu *overlays_menu = m_view_menu->addMenu(tr("Canvas Debug Layers"));
     m_tab_widget->addDebugOverlayMenuActions(overlays_menu);
 
     m_layout_menu = menuBar()->addMenu("Layout");

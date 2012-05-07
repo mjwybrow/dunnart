@@ -147,15 +147,15 @@ CanvasTabWidget::CanvasTabWidget(QMainWindow *window) :
             tr("Pin/Unpin"), this);
 
     m_action_overlay_router_obstacles = new QAction(
-            tr("Router Obstacles"), this);
+            tr("Routing - Obstacles"), this);
     m_action_overlay_router_obstacles->setCheckable(true);
 
     m_action_overlay_router_visgraph = new QAction(
-            tr("Polyline Visibility Graph"), this);
+            tr("Routing - Polyline visibility graph"), this);
     m_action_overlay_router_visgraph->setCheckable(true);
 
     m_action_overlay_router_orthogonal_visgraph = new QAction(
-            tr("Orthogonal Visibility Graph"), this);
+            tr("Routing - Orthogonal visibility graph"), this);
     m_action_overlay_router_orthogonal_visgraph->setCheckable(true);
 }
 
@@ -466,9 +466,9 @@ bool CanvasTabWidget::tabCloseRequested(int index)
 
 void CanvasTabWidget::addDebugOverlayMenuActions(QMenu *overlay_menu)
 {
+    overlay_menu->addAction(m_action_overlay_router_obstacles);
     overlay_menu->addAction(m_action_overlay_router_visgraph);
     overlay_menu->addAction(m_action_overlay_router_orthogonal_visgraph);
-    overlay_menu->addAction(m_action_overlay_router_obstacles);
 }
 
 void CanvasTabWidget::addEditMenuActions(QMenu *edit_menu)

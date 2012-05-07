@@ -782,8 +782,9 @@ void Connector::applySimpleRoute(void)
         int yDir = (m_src_pt.y <= m_dst_pt.y) ? 1 : -1;
 
         bool leftToRight = (xDiff > yDiff);
-        if ((canvas()->optLayoutMode() > Canvas::FlowLayout) ||
-                (canvas()->optLayoutMode() > Canvas::LayeredLayout))
+        if (m_has_downward_constraint &&
+                ((canvas()->optLayoutMode() > Canvas::FlowLayout) ||
+                 (canvas()->optLayoutMode() > Canvas::LayeredLayout)))
         {
             // Use uniform connector direction during flow layout.
             Canvas::FlowDirection dir = canvas()->optFlowDirection();
