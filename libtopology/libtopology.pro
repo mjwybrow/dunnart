@@ -6,21 +6,15 @@ CONFIG += shared
 
 
 INCLUDEPATH += .. .
-INCLUDEPATH += .. ../libvpsc
+INCLUDEPATH += .. ../libvpsc ../libavoid ../libcola
 
 include(../common_options.qmake)
 CONFIG -= qt
 
-win32 {
-LIBS += -Wl,--allow-shlib-undefined
-}
-else {
-LIBS += -Wl,-undefined -Wl,dynamic_lookup
-}
-LIBS += -L$$DESTDIR -lvpsc
+LIBS += -L$$DESTDIR -lvpsc -lcola -lavoid
 
 # Input
 SOURCES += topology_constraints_constructor.cpp topology_graph.cpp topology_constraints.cpp compute_forces.cpp \
-              resize.cpp
-HEADERS += topology_constraints.h topology_graph.h topology_log.h util.h
+              resize.cpp cola_topology_addon.cpp
+HEADERS += topology_constraints.h topology_graph.h topology_log.h util.h cola_topology_addon.h
 

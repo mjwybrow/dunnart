@@ -41,6 +41,7 @@
 #include "libdunnartcanvas/separation.h"
 #include "libdunnartcanvas/cluster.h"
 #include "libtopology/topology_graph.h"
+#include "libtopology/cola_topology_addon.h"
 #include "libvpsc/rectangle.h"
 #include "libdunnartcanvas/templates.h"
 #include "libdunnartcanvas/template-constraints.h"
@@ -1180,11 +1181,20 @@ void GraphLayout::run(const bool shouldReinitialise)
     {
         if (shouldReinitialise)
         {
+            // Set topology connector so topology gets saved by makeFeasible.
+            topology::ColaTopologyAddon *topology =
+                    new topology::ColaTopologyAddon();
+            alg.setTopology(topology);
+
             alg.makeFeasible();
                     
             // Store topology after makeFeasible
-            alg.getTopology(&(m_graph->topologyNodes), 
-                    &(m_graph->topologyRoutes));
+            topology::ColaTopologyAddon *newTopology =
+                    dynamic_cast<topology::ColaTopologyAddon *>
+                    (alg.getTopology());
+            assert(newTopology);
+            m_graph->topologyNodes = newTopology->topologyNodes;
+            m_graph->topologyRoutes = newTopology->topologyRoutes;
 
             if (m_canvas->m_opt_preserve_topology)
             {
@@ -1194,8 +1204,9 @@ void GraphLayout::run(const bool shouldReinitialise)
 
         if (m_canvas->m_opt_preserve_topology)
         {
-            alg.setTopology(&(m_graph->topologyNodes), 
-                    &(m_graph->topologyRoutes));
+            topology::ColaTopologyAddon topology(
+                    m_graph->topologyNodes, m_graph->topologyRoutes);
+            alg.setTopology(&topology);
         }
     }
     alg.setUnsatisfiableConstraintInfo(&unsatisfiableX,&unsatisfiableY);

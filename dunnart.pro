@@ -4,9 +4,9 @@ TEMPLATE = subdirs
 SUBDIRS = \
 	libavoid \
 	libvpsc \
-        libtopology \
         libcola \
-	libogdf \
+        libtopology \
+        libogdf \
 	libdunnartcanvas \
 	plugins \
 	editor

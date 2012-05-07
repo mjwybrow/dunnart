@@ -3,14 +3,13 @@ TARGET = cola
 CONFIG += shared
 DEPENDPATH += .. .
 INCLUDEPATH += .. \
-    ../libvpsc \
-    ../libtopology
+    ../libvpsc
 include(../common_options.qmake)
 CONFIG -= qt
 
 #LIBS += -Wl,-undefined -Wl,dynamic_lookup
 
-LIBS += -L$$DESTDIR -lvpsc -ltopology
+LIBS += -L$$DESTDIR -lvpsc
 
 # Input
 SOURCES += cola.cpp \
