@@ -98,6 +98,7 @@ MainWindow::MainWindow(Application *app)
             this, SLOT(canvasFileInfoChanged(QFileInfo)));
     m_tab_widget->newTab();
     setCentralWidget(m_tab_widget);
+    app->setCanvasTabWidget(m_tab_widget);
 
     // Inital window size.
     resize(1020, 743);

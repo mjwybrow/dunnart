@@ -32,12 +32,14 @@
 #include "libdunnartcanvas/shapeplugininterface.h"
 #include "libdunnartcanvas/fileioplugininterface.h"
 #include "libdunnartcanvas/applicationplugininterface.h"
+#include "libdunnartcanvas/canvastabwidget.h"
 
 namespace dunnart {
 
 CanvasApplication::CanvasApplication(int & argc, char ** argv)
     : QApplication(argc, argv),
-      m_main_window(NULL)
+      m_main_window(NULL),
+      m_canvas_tab_widget(NULL)
 {
     QDir pluginsDir = QDir(qApp->applicationDirPath());
 #if defined(Q_OS_MAC)
@@ -100,7 +102,26 @@ void CanvasApplication::setMainWindow(QMainWindow *window)
     m_main_window = window;
 }
 
+void CanvasApplication::setCanvasTabWidget(CanvasTabWidget *tabWidget)
+{
+    if (m_canvas_tab_widget)
+    {
+        disconnect(m_canvas_tab_widget, 0, this, 0);
+    }
+    m_canvas_tab_widget = tabWidget;
 
+    if (m_canvas_tab_widget)
+    {
+        // Relay a few signals.
+        connect(m_canvas_tab_widget, SIGNAL(currentCanvasChanged(Canvas*)),
+                this, SIGNAL(currentCanvasChanged(Canvas*)));
+        connect(m_canvas_tab_widget, SIGNAL(currentCanvasViewChanged(CanvasView*)),
+                this, SIGNAL(currentCanvasViewChanged(CanvasView*)));
+        connect(m_canvas_tab_widget, SIGNAL(currentCanvasFileInfoChanged(QFileInfo)),
+                this, SIGNAL(currentCanvasFileInfoChanged(QFileInfo)));
+    }
 }
 
+
+}
 // vim: filetype=cpp ts=4 sw=4 et tw=0 wm=0 cindent
