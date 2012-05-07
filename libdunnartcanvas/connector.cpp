@@ -763,18 +763,95 @@ void Connector::applySimpleRoute(void)
         m_dst_pt.y = dstPt.y();
     }
 
-    Avoid::PolyLine route(2);
+    // Bend placement is halfway between endpoints.
+    double bendPlacement = 0.50;
 
-    route.ps[0].x = m_src_pt.x;
-    route.ps[0].y = m_src_pt.y;
-    route.ps[0].vn = Avoid::kUnassignedVertexNumber;
+    if (m_routing_type == orthogonal)
+    {
+        // Draw a simple orthogonal line.
+        Avoid::PolyLine route(4);
 
-    route.ps[1].x = m_dst_pt.x;
-    route.ps[1].y = m_dst_pt.y;
-    route.ps[1].vn = Avoid::kUnassignedVertexNumber;
+        // Source endpoint.
+        route.ps[0].x = m_src_pt.x;
+        route.ps[0].y = m_src_pt.y;
+        route.ps[0].vn = Avoid::kUnassignedVertexNumber;
 
-    bool updateLibavoid = true;
-    this->applyNewRoute(route, updateLibavoid);
+        double xDiff = fabs(m_src_pt.x - m_dst_pt.x);
+        double yDiff = fabs(m_src_pt.y - m_dst_pt.y);
+        int xDir = (m_src_pt.x <= m_dst_pt.x) ? 1 : -1;
+        int yDir = (m_src_pt.y <= m_dst_pt.y) ? 1 : -1;
+
+        bool leftToRight = (xDiff > yDiff);
+        if ((canvas()->optLayoutMode() > Canvas::FlowLayout) ||
+                (canvas()->optLayoutMode() > Canvas::LayeredLayout))
+        {
+            // Use uniform connector direction during flow layout.
+            Canvas::FlowDirection dir = canvas()->optFlowDirection();
+            // Enter and exit shapes in the direction of flow.
+            leftToRight = (dir == Canvas::FlowLeft) ||
+                    (dir == Canvas::FlowRight);
+            // Put the bend 3/4 of way to destination.
+            bendPlacement = 0.75;
+        }
+
+        // Midpoints.
+        if (leftToRight)
+        {
+            // o---+
+            //     |
+            //     +--->o
+
+            route.ps[1].x = m_src_pt.x + xDir * (bendPlacement * xDiff);
+            route.ps[1].y = m_src_pt.y;
+            route.ps[1].vn = Avoid::kUnassignedVertexNumber;
+
+            route.ps[2].x = m_src_pt.x + xDir * (bendPlacement * xDiff);
+            route.ps[2].y = m_dst_pt.y;
+            route.ps[2].vn = Avoid::kUnassignedVertexNumber;
+        }
+        else
+        {
+            // o
+            // |
+            // |
+            // +---+
+            //     |
+            //     v
+            //     o
+
+            route.ps[1].x = m_src_pt.x;
+            route.ps[1].y = m_src_pt.y + yDir * (bendPlacement * yDiff);
+            route.ps[1].vn = Avoid::kUnassignedVertexNumber;
+
+            route.ps[2].x = m_dst_pt.x;
+            route.ps[2].y = m_src_pt.y + yDir * (bendPlacement * yDiff);
+            route.ps[2].vn = Avoid::kUnassignedVertexNumber;
+        }
+
+        // Destination endpoint.
+        route.ps[3].x = m_dst_pt.x;
+        route.ps[3].y = m_dst_pt.y;
+        route.ps[3].vn = Avoid::kUnassignedVertexNumber;
+
+        bool updateLibavoid = true;
+        this->applyNewRoute(route, updateLibavoid);
+    }
+    else if (m_routing_type == polyline)
+    {
+        // Draw a simple straight line.
+        Avoid::PolyLine route(2);
+
+        route.ps[0].x = m_src_pt.x;
+        route.ps[0].y = m_src_pt.y;
+        route.ps[0].vn = Avoid::kUnassignedVertexNumber;
+
+        route.ps[1].x = m_dst_pt.x;
+        route.ps[1].y = m_dst_pt.y;
+        route.ps[1].vn = Avoid::kUnassignedVertexNumber;
+
+        bool updateLibavoid = true;
+        this->applyNewRoute(route, updateLibavoid);
+    }
 }
 
 void Connector::forceReroute(void)
