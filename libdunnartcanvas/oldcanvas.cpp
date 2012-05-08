@@ -240,21 +240,6 @@ void selection_returnInactive(QWidget **c)
 
 #if 0
 //============================================================================
-void remove_directed_edge_constraints(QWidget **c)
-{
-    for (CanvasItemList::iterator curr = selection.begin();
-            curr != selection.end(); ++ curr)
-    {
-        Conn *conn = dynamic_cast<Conn *> (*curr);
-        if (conn)
-        {
-            conn->isInEa(true);
-        }
-    }
-    interrupt_graph_layout(NULL);
-}
-
-
 void toggle_query_mode(QWidget **c)
 {
     if (queryMode == false)

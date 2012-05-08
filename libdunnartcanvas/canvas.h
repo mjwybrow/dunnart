@@ -147,6 +147,7 @@ class Canvas : public QGraphicsScene
         QString filename(void);
         QList<CanvasItem *> items(void) const;
         QList<CanvasItem *> selectedItems(void) const;
+        void setSelection(const QList<CanvasItem *>& newSelection);
         void postDiagramLoad(void);
         void setExpandedPage(const QRectF newExpandedPage);
         QRectF pageRect(void) const;

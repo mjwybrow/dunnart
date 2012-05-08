@@ -703,12 +703,6 @@ void ShapeObj::deactivateAll(CanvasItemSet& selSet)
 }
 
 
-bool ShapeObj::canBe(const unsigned int flags)
-{
-    return flags & (C_CLUSTERED | C_ALIGNED);
-}
-
-
 QColor ShapeObj::strokeColour(void) const
 {
     return m_stroke_colour;
@@ -1054,6 +1048,8 @@ ShapeObj::ShapeObj(const QString& itemType)
       m_being_resized(false)
 {
     setItemType(itemType);
+    setCanvasItemFlag(CanvasItem::ItemIsAlignable, true);
+    setCanvasItemFlag(CanvasItem::ItemIsClusterable, true);
 
     setHoverMessage("Shape \"%1\" - Drag to move. Hold ALT to drag free "
                     "from guidelines.");

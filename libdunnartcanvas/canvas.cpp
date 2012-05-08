@@ -1262,6 +1262,14 @@ void Canvas::setOptStructuralEditingDisabled(const bool value)
     emit optChangedStructuralEditingDisabled(m_opt_stuctural_editing_disabled);
 }
 
+void Canvas::setSelection(const QList<CanvasItem *>& newSelection)
+{
+    clearSelection();
+    for (int i = 0; i < newSelection.size(); ++i)
+    {
+        newSelection.at(i)->setSelected(true);
+    }
+}
 
 void Canvas::setOptPreserveTopology(const bool value)
 {
@@ -1999,7 +2007,7 @@ void Canvas::highlightIndicatorsForItemMove(CanvasItem *item)
 {
     bool vfound = false, hfound = false;
     ShapeObj *shape = dynamic_cast<ShapeObj *> (item);
-    if (shape && shape->canBe(C_ALIGNED))
+    if (shape && (shape->canvasItemFlags() & CanvasItem::ItemIsAlignable))
     {
         for (int i = 0; i < 6; i++)
         {
@@ -2105,7 +2113,7 @@ void Canvas::glueObjectsToIndicators(void)
     {
         bool vfound = false, hfound = false;
         ShapeObj *shape = dynamic_cast<ShapeObj *> (selection.at(s));
-        if (shape && shape->canBe(C_ALIGNED))
+        if (shape && (shape->canvasItemFlags() & CanvasItem::ItemIsAlignable))
         {
             for (int i = 0; i < 6; i++)
             {

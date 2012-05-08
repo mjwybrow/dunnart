@@ -58,11 +58,9 @@ Cluster *newCluster(CanvasItemList& memberList, QString id)
     for (CanvasItemList::iterator curr = memberList.begin();
             curr != memberList.end(); ++curr)
     {
-        ShapeObj *shape = dynamic_cast<ShapeObj *> (*curr);
-
-        if (shape && shape->canBe(C_CLUSTERED))
+        if ((*curr)->canvasItemFlags() && CanvasItem::ItemIsClusterable)
         {
-            members.push_back(shape);
+            members.push_back(*curr);
         }
     }
     if (members.empty())
@@ -86,7 +84,9 @@ Cluster::Cluster(Canvas *canvas, const QDomElement& node, const QString& ns)
       rectangular(false)
 {
     setZValue(ZORD_Cluster);
-    
+    setCanvasItemFlag(CanvasItem::ItemIsAlignable, false);
+    setCanvasItemFlag(CanvasItem::ItemIsClusterable, false);
+
     optionalProp(node, x_rectangular, rectangular, ns);
 
     members.clear();
@@ -141,14 +141,15 @@ Cluster::Cluster(CanvasItemList& memberList, QString id)
     m_string_id = id;
     m_stroke_colour = m_fill_colour = clusterFillCol;
     setZValue(ZORD_Cluster);
+    setCanvasItemFlag(CanvasItem::ItemIsAlignable, false);
+    setCanvasItemFlag(CanvasItem::ItemIsClusterable, false);
 
     members.clear();
     for (CanvasItemList::iterator curr = memberList.begin();
             curr != memberList.end(); ++curr)
     {
         ShapeObj *shape = dynamic_cast<ShapeObj *> (*curr);
-
-        if (shape && shape->canBe(C_CLUSTERED))
+        if (shape && (shape->canvasItemFlags() & CanvasItem::ItemIsClusterable))
         {
             members.push_back(shape);
         }
@@ -611,12 +612,6 @@ QAction *Cluster::buildAndExecContextMenu(QGraphicsSceneMouseEvent *event,
 }
 
 
-bool Cluster::canBe(const unsigned int flags)
-{
-    return flags & C_NONE;
-}
-
-
 void Cluster::calculateBoundary(void)
 {
     if (rectangular)
@@ -661,7 +656,7 @@ void Cluster::calculateBoundary(void)
     for (ShapeList::iterator curr = members.begin();
             curr != members.end(); ++curr)
     {
-        if (!(*curr)->canBe(C_CLUSTERED))
+        if (!((*curr)->canvasItemFlags() & CanvasItem::ItemIsClusterable))
         {
             qFatal(
                    "Cluster::calculateBoundary(): object %d can't be clustered",

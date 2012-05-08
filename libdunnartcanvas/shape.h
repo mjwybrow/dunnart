@@ -149,7 +149,6 @@ class ShapeObj: public CanvasItem
         virtual QRectF labelBoundingRect(void) const;
         void drawLabelAndImage(QPixmap *target, const int x, const int y);
         virtual void changeLabel(void);
-        virtual bool canBe(const unsigned int flags);
         Guideline *get_guide(atypes type);
         Guideline *new_guide(atypes type);
         double attachedGuidelinePosition(atypes type) const;

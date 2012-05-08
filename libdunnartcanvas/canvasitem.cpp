@@ -152,6 +152,7 @@ CanvasItem::CanvasItem(QGraphicsItem *parent, QString id, unsigned int lev)
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 #endif
     setCursor(Qt::OpenHandCursor);
+    setCanvasItemFlag(CanvasItem::ItemIsMovable, false);
 
     // Initial painter path.
     m_painter_path = buildPainterPath();
@@ -261,7 +262,7 @@ void CanvasItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     for (int i = 0; i < selected_items.size(); ++i)
     {
         CanvasItem *canvas_obj = selected_items.at(i);
-        if (canvas_obj->flags() & QGraphicsItem::ItemIsMovable)
+        if (canvas_obj->canvasItemFlags() & ItemIsMovable)
         {
             // Only move movable items.
             canvas_obj->userMoveBy(diff.x(), diff.y());
@@ -682,7 +683,6 @@ QPainterPath CanvasItem::painterPath(void) const
     return m_painter_path;
 }
 
-
 void CanvasItem::setPainterPath(QPainterPath path)
 {
     m_painter_path = path;
@@ -776,12 +776,22 @@ QAction *CanvasItem::buildAndExecContextMenu(QGraphicsSceneMouseEvent *event,
     return action;
 }
 
-
-bool CanvasItem::canBe(const unsigned int flags)
+void CanvasItem::setCanvasItemFlag(CanvasItemFlag flag, bool enabled)
 {
-    return flags & C_NONE;
+    if (enabled)
+    {
+        m_flags = m_flags | flag;
+    }
+    else
+    {
+        m_flags = m_flags & ~flag;
+    }
 }
 
+CanvasItem::CanvasItemFlags CanvasItem::canvasItemFlags(void) const
+{
+    return m_flags;
+}
 
 bool CanvasItem::isCollapsed(void)
 {
@@ -908,6 +918,9 @@ void CanvasItem::setAsInactive(bool inactive, CanvasItemSet fullSet)
 #if 0
 void CanvasItem::glowSetClipRect(SDL_Surface *surface)
 {
+    // Only display guides to edge of things they are connected to.
+    const bool two_tier_indicators = true;
+
     Guideline *guide = dynamic_cast<Guideline *> (this);
 
     if (connectedObjs[0] && connectedObjs[1])

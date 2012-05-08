@@ -624,7 +624,7 @@ Guideline *createAlignment(const atypes atype, CanvasItemList& objList)
     {
         ShapeObj *shape = dynamic_cast<ShapeObj *> (*sh);
         Guideline *guidesh = dynamic_cast<Guideline *> (*sh);
-        if (shape && shape->canBe(C_ALIGNED))
+        if (shape && (shape->canvasItemFlags() & CanvasItem::ItemIsAlignable))
         {
             if ((guide = shape->get_guide(atype)))
             {
@@ -647,7 +647,7 @@ Guideline *createAlignment(const atypes atype, CanvasItemList& objList)
     {
         ShapeObj *shape = dynamic_cast<ShapeObj *> (*sh);
         Guideline *guidesh = dynamic_cast<Guideline *> (*sh);
-        if (shape && shape->canBe(C_ALIGNED))
+        if (shape && (shape->canvasItemFlags() & CanvasItem::ItemIsAlignable))
         {
             if (first_shape)
             {

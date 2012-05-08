@@ -88,13 +88,13 @@ Connector::Connector()
     qRegisterMetaType<dunnart::Connector::ArrowHeadType>("ArrowHeadType");
     qRegisterMetaTypeStreamOperators<int>("ArrowHeadType");
 
+    setCanvasItemFlag(CanvasItem::ItemIsMovable, false);
+
     setItemType("connector");
 
     m_routing_type = polyline;
 
     m_offset_route.clear();
-
-    setFlag(QGraphicsItem::ItemIsMovable, false);
 
     setHoverMessage("Connector \"%1\" - Select to modify path, drag to move "
             "connector (disconnecting it from attached shapes).");
@@ -783,8 +783,8 @@ void Connector::applySimpleRoute(void)
 
         bool leftToRight = (xDiff > yDiff);
         if (m_has_downward_constraint &&
-                ((canvas()->optLayoutMode() > Canvas::FlowLayout) ||
-                 (canvas()->optLayoutMode() > Canvas::LayeredLayout)))
+                ((canvas()->optLayoutMode() == Canvas::FlowLayout) ||
+                 (canvas()->optLayoutMode() == Canvas::LayeredLayout)))
         {
             // Use uniform connector direction during flow layout.
             Canvas::FlowDirection dir = canvas()->optFlowDirection();
@@ -1476,6 +1476,7 @@ QAction *Connector::buildAndExecContextMenu(QGraphicsSceneMouseEvent *event,
             tr("Change to undirected") : tr("Change to directed"));
     QAction *swapDirection = menu.addAction(
             tr("Swap connector direction"));
+    menu.addSeparator();
     QAction *addCheckpoint = menu.addAction(
             tr("Add routing checkpoint at this point"));
 
@@ -1486,14 +1487,9 @@ QAction *Connector::buildAndExecContextMenu(QGraphicsSceneMouseEvent *event,
 
     QAction *action = CanvasItem::buildAndExecContextMenu(event, menu);
 
-    if (action == changeType)
+    if (action == addCheckpoint)
     {
-        RoutingType newRoutingType = (m_routing_type == orthogonal) ?
-                    polyline : orthogonal;
-        setRoutingType(newRoutingType);
-    }
-    else if (action == addCheckpoint)
-    {
+        // Checkpoint will only be added to connector under the cursor.
         Avoid::Point new_checkpoint(event->scenePos().x(), event->scenePos().y());
         std::vector<Avoid::Point> checkpoints = avoidRef->routingCheckpoints();
         checkpoints.push_back(new_checkpoint);
@@ -1504,17 +1500,44 @@ QAction *Connector::buildAndExecContextMenu(QGraphicsSceneMouseEvent *event,
         setSelected(false);
         setSelected(wasVisible);
     }
-    else if (action == swapDirection)
+    else
     {
-        this->swapDirection();
-        bool wasVisible = isSelected();
-        setSelected(false);
-        setSelected(wasVisible);
-    }
-    else if (action == changeDirected)
-    {
-        setDirected(!isDirected());
-        setSelected(true);
+        // These actions affect all connectors in the current selection.
+        QList<CanvasItem *> selected_items = canvas()->selectedItems();
+
+        // Or the unselected connector under the cursor if there is no
+        // selection at present.
+        if (selected_items.empty())
+        {
+            selected_items.append(this);
+        }
+
+        RoutingType newRoutingType = (m_routing_type == orthogonal) ?
+                polyline : orthogonal;
+
+        // For each connector.
+        for (int i = 0; i < selected_items.size(); ++i)
+        {
+            Connector *connector =
+                    dynamic_cast<Connector *> (selected_items.at(i));
+
+            if (connector)
+            {
+                if (action == changeType)
+                {
+                    connector->setRoutingType(newRoutingType);
+                }
+                else if (action == swapDirection)
+                {
+                    connector->swapDirection();
+                }
+                else if (action == changeDirected)
+                {
+                    connector->setDirected(!connector->isDirected());
+                }
+            }
+        }
+        canvas()->setSelection(selected_items);
     }
 
     return action;

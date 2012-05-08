@@ -66,7 +66,6 @@ class Cluster: public ShapeObj
         void recomputeBoundary(void);
         void setNewBoundary(std::vector<Avoid::Point>& points);
         void computeBoundingBox(void);
-        virtual bool canBe(const unsigned int flags);
         ShapeList& getMembers(void);
         ClusterShapeMap& getSmallShapeInfo(void)
         {

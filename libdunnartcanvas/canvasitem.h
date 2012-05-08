@@ -139,10 +139,6 @@ static const QColor HAZARD_COLOUR = QColor(255, 80,  0);
 
 static const int HANDLE_PADDING = 3;
 
-// Only display guides to edge of things they are connected to.
-static const bool two_tier_indicators = true;
-
-
 class Canvas;
 class CanvasItem;
 typedef QSet<CanvasItem *> CanvasItemSet;
@@ -155,6 +151,14 @@ class CanvasItem: public QGraphicsSvgItem
     Q_PROPERTY (QString id READ idString WRITE setIdString)
 
     public:
+        enum CanvasItemFlag
+        {
+            ItemIsMovable       = 0x1,
+            ItemIsAlignable     = 0x2,
+            ItemIsClusterable   = 0x3
+        };
+        Q_DECLARE_FLAGS(CanvasItemFlags, CanvasItemFlag)
+
         CanvasItem(QGraphicsItem *parent, QString id, unsigned int lev);
         virtual ~CanvasItem();
 
@@ -185,8 +189,8 @@ class CanvasItem: public QGraphicsSvgItem
         void glowSetClipRect(QPixmap *surface);
         void glowClearClipRect(QPixmap *surface);
         virtual void resizedCanvas(void)  { }
-        virtual bool canBe(const unsigned int flags);
         virtual bool isCollapsed(void);
+        CanvasItemFlags canvasItemFlags(void) const;
         void setAsCollapsed(bool collapsed);
         virtual void deactivateAll(CanvasItemSet& selSet) = 0;
         bool isInactive(void) const;
@@ -246,6 +250,8 @@ class CanvasItem: public QGraphicsSvgItem
         virtual void routerMove(void);
         virtual void routerResize(void);
 
+        void setCanvasItemFlag(CanvasItemFlag flag, bool enabled);
+
         QString m_string_id;
         uint m_internal_id;        
         bool m_is_collapsed;
@@ -264,6 +270,7 @@ class CanvasItem: public QGraphicsSvgItem
         QPainterPath m_painter_path;
         QSizeF m_size;
         QString m_hover_message;
+        CanvasItemFlags m_flags;
         bool m_constraint_conflict;
 };
 
@@ -283,10 +290,6 @@ enum {
     ZORD_ConnectorEndpoint
 };
 
-
-static const unsigned int C_NONE = 0;
-static const unsigned int C_ALIGNED = 1;
-static const unsigned int C_CLUSTERED = 2;
 
 inline QString qualify(const QString& prefix, const QString& name)
 {
@@ -325,6 +328,7 @@ bool optionalProp(const QDomElement& node, const QString& prop, T &arg,
     return gotProp;
 }
 
+Q_DECLARE_OPERATORS_FOR_FLAGS(CanvasItem::CanvasItemFlags)
 
 template <typename T>
 T essentialProp(const QDomElement& node, const QString& prop,

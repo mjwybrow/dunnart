@@ -38,8 +38,9 @@ PropertiesEditorDialog::PropertiesEditorDialog(Canvas *canvas, QWidget *parent)
     : QDockWidget(parent),
       m_canvas(NULL)
 {
-    this->setAllowedAreas(Qt::BottomDockWidgetArea | Qt::LeftDockWidgetArea |
-                          Qt::RightDockWidgetArea);
+    this->setAllowedAreas(Qt::DockWidgetAreas(
+            Qt::BottomDockWidgetArea | Qt::LeftDockWidgetArea |
+            Qt::RightDockWidgetArea));
     this->setWindowTitle(tr("Properties Editor"));
     this->setObjectName("PropertiesEditorDialog");
 
