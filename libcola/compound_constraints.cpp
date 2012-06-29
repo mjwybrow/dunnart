@@ -265,6 +265,23 @@ void AlignmentConstraint::generateSeparationConstraints(const vpsc::Dim dim,
     }
 }
 
+void AlignmentConstraint::updateVarIDsWithMapping(const VariableIDMap& idMap,
+        bool forward)
+{
+    for (SubConstraintInfoList::iterator o = _subConstraintInfo.begin();
+            o != _subConstraintInfo.end(); ++o) 
+    {
+        Offset *info = static_cast<Offset *> (*o);
+        if (forward)
+        {
+            info->varIndex = idMap.getMappingForVariable(info->varIndex);
+        }
+        else
+        {
+            info->varIndex = idMap.getReverseMappingForVariable(info->varIndex);
+        }
+    }
+}
 
 void AlignmentConstraint::printCreationCode(FILE *fp) const
 {
@@ -1293,6 +1310,99 @@ UnsatisfiableConstraintInfo::UnsatisfiableConstraintInfo(
       vrid(c->right->id), 
       gap(c->gap) 
 {
+}
+
+// Variable mapping.
+
+VariableIDMap::VariableIDMap()
+{
+}
+
+VariableIDMap::~VariableIDMap()
+{
+}
+
+typedef std::pair<unsigned, unsigned> IDPair;
+typedef std::list<IDPair> IDPairList;
+
+bool VariableIDMap::addMappingForVariable(const unsigned from, 
+        const unsigned to)
+{
+    bool found = false;
+    for (IDPairList::iterator it = m_mapping.begin(); it != m_mapping.end();
+            ++it)
+    {
+        IDPair& ids = *it;
+
+        if (ids.first == from)
+        {
+            found = true;
+            break;
+        }
+    }
+
+    if (!found)
+    {
+        m_mapping.push_back(std::make_pair(from, to));
+        return true;
+    }
+    //fprintf(stderr, "VariableIDMap: mapping already exists for var %u\n", from);
+    return false;
+}
+
+void VariableIDMap::printCreationCode(FILE *fp) const
+{
+    fprintf(fp, "    cola::VariableIDMap idMap;\n");
+    for (IDPairList::const_iterator it = m_mapping.begin();
+            it != m_mapping.end(); ++it)
+    {
+        fprintf(fp, "    idMap.addMappingForVariable(%u, %u);\n", 
+                it->first, it->second);
+    }
+    fprintf(fp, "    \n");
+}
+
+unsigned VariableIDMap::getMappingForVariable(const unsigned var) const
+{
+    for (IDPairList::const_iterator it = m_mapping.begin(); 
+            it != m_mapping.end(); ++it)
+    {
+        const IDPair& ids = *it;
+
+        if (ids.first == var)
+        {
+            return ids.second;
+        }
+    }
+
+    //fprintf(stderr, "Warning: mapping not found for var %u\n", var);
+    
+    // Just return original variable index.
+    return var;
+}
+
+unsigned VariableIDMap::getReverseMappingForVariable(const unsigned var) const
+{
+    for (IDPairList::const_iterator it = m_mapping.begin(); 
+            it != m_mapping.end(); ++it)
+    {
+        const IDPair& ids = *it;
+
+        if (ids.second == var)
+        {
+            return ids.first;
+        }
+    }
+
+    //fprintf(stderr, "Warning: reverse mapping not found for var %u\n", var);
+    
+    // Just return original variable index.
+    return var;
+}
+
+void VariableIDMap::clear(void)
+{
+    m_mapping.clear();
 }
 
 

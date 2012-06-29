@@ -42,6 +42,7 @@
 #include "libavoid/assertions.h"
 #include "libavoid/hyperedgetree.h"
 #include "libavoid/mtst.h"
+#include "libavoid/scanline.h"
 
 //#define NUDGE_DEBUG
 
@@ -56,32 +57,8 @@ static const int fixedID   = 1;
 // Weights:
 static const double freeWeight   = 0.00001;
 static const double strongWeight = 0.001;
+static const double strongerWeight = 1.0;
 static const double fixedWeight  = 100000;
-
-
-// ShiftSegment interface.
-class ShiftSegment
-{ 
-    public:
-        ShiftSegment(const size_t dim)
-            : dimension(dim)
-        {
-        }
-        virtual ~ShiftSegment()
-        {
-        }
-        virtual Point& lowPoint(void) = 0;
-        virtual Point& highPoint(void) = 0;
-        virtual const Point& lowPoint(void) const = 0;
-        virtual const Point& highPoint(void) const = 0;
-        virtual bool overlapsWith(const ShiftSegment *rhs,
-                const size_t dim) const = 0;
-        virtual bool immovable(void) const = 0;
-        
-        size_t dimension;
-        double minSpaceLimit;
-        double maxSpaceLimit;
-};
 
 
 class HyperEdgeShiftSegment : public ShiftSegment
@@ -342,6 +319,7 @@ class NudgingShiftSegment : public ShiftSegment
               fixed(false),
               finalSegment(false),
               endsInShape(false),
+              singleConnectedSegment(false),
               containsCheckpoint(false),
               sBend(isSBend),
               zBend(isZBend)
@@ -360,6 +338,7 @@ class NudgingShiftSegment : public ShiftSegment
               fixed(true),
               finalSegment(false),
               endsInShape(false),
+              singleConnectedSegment(false),
               containsCheckpoint(false),
               sBend(false),
               zBend(false)
@@ -407,6 +386,14 @@ class NudgingShiftSegment : public ShiftSegment
             if (nudgeFinalSegments && finalSegment)
             {
                 weight = strongWeight;
+                
+                if (singleConnectedSegment)
+                {
+                    // This is a single segment connector bridging
+                    // two shapes.  So, we want to try to keep it
+                    // centred rather than shift it.
+                    weight = strongerWeight;
+                }
             }
             else if (containsCheckpoint)
             {
@@ -602,6 +589,7 @@ class NudgingShiftSegment : public ShiftSegment
         bool fixed;
         bool finalSegment;
         bool endsInShape;
+        bool singleConnectedSegment;
         bool containsCheckpoint;
     private:
         bool sBend;
@@ -631,295 +619,6 @@ class NudgingShiftSegment : public ShiftSegment
 };
 typedef std::list<ShiftSegment *> ShiftSegmentList;
 
-
-struct Node;
-struct CmpNodePos { bool operator()(const Node* u, const Node* v) const; };
-
-typedef std::set<Node*,CmpNodePos> NodeSet;
-struct Node 
-{
-    Obstacle *v;
-    VertInf *c;
-    ShiftSegment *ss;
-    double pos;
-    double min[2], max[2];
-    Node *firstAbove, *firstBelow;
-    NodeSet::iterator iter;
-
-    Node(Obstacle *v, const double p)
-        : v(v),
-          c(NULL),
-          ss(NULL),
-          pos(p),
-          firstAbove(NULL),
-          firstBelow(NULL)
-    {   
-        //COLA_ASSERT(r->width()<1e40);
-        v->polygon().getBoundingRect(
-                &min[XDIM], &min[YDIM], &max[XDIM], &max[YDIM]);
-    }   
-    Node(VertInf *c, const double p)
-        : v(NULL),
-          c(c),
-          ss(NULL),
-          pos(p),
-          firstAbove(NULL),
-          firstBelow(NULL)
-    {
-        min[XDIM] = max[XDIM] = c->point.x;
-        min[YDIM] = max[YDIM] = c->point.y;
-    }   
-    Node(ShiftSegment *ss, const double p)
-        : v(NULL),
-          c(NULL),
-          ss(ss),
-          pos(p),
-          firstAbove(NULL),
-          firstBelow(NULL)
-    {
-        // These values shouldn't ever be used, so they don't matter.
-        min[XDIM] = max[XDIM] = min[YDIM] = max[YDIM] = 0;
-    }   
-    ~Node() 
-    {
-    }
-    // Find the first Node above in the scanline that is a shape edge,
-    // and does not have an open or close event at this position (meaning
-    // it is just about to be removed).
-    double firstObstacleAbove(size_t dim)
-    {
-        Node *curr = firstAbove;
-        while (curr && (curr->ss || (curr->max[dim] > pos)))
-        {
-            curr = curr->firstAbove;
-        }
-       
-        if (curr)
-        {
-            return curr->max[dim];
-        }
-        return -DBL_MAX;
-    }
-    // Find the first Node below in the scanline that is a shape edge,
-    // and does not have an open or close event at this position (meaning
-    // it is just about to be removed).
-    double firstObstacleBelow(size_t dim)
-    {
-        Node *curr = firstBelow;
-        while (curr && (curr->ss || (curr->min[dim] < pos)))
-        {
-            curr = curr->firstBelow;
-        }
-        
-        if (curr)
-        {
-            return curr->min[dim];
-        }
-        return DBL_MAX;
-    }
-    // Mark all connector segments above in the scanline as being able 
-    // to see to this shape edge.
-    void markShiftSegmentsAbove(size_t dim)
-    {
-        Node *curr = firstAbove;
-        while (curr && (curr->ss || (curr->pos > min[dim])))
-        {
-            if (curr->ss && (curr->pos <= min[dim]))
-            {
-                curr->ss->maxSpaceLimit = 
-                        std::min(min[dim], curr->ss->maxSpaceLimit);
-            }
-            curr = curr->firstAbove;
-        }
-    }
-    // Mark all connector segments below in the scanline as being able 
-    // to see to this shape edge.
-    void markShiftSegmentsBelow(size_t dim)
-    {
-        Node *curr = firstBelow;
-        while (curr && (curr->ss || (curr->pos < max[dim])))
-        {
-            if (curr->ss && (curr->pos >= max[dim]))
-            {
-                curr->ss->minSpaceLimit = 
-                        std::max(max[dim], curr->ss->minSpaceLimit);
-            }
-            curr = curr->firstBelow;
-        }
-    }
-    void findFirstPointAboveAndBelow(const size_t dim, const double linePos,
-            double& firstAbovePos, double& firstBelowPos, 
-            double& lastAbovePos, double& lastBelowPos)
-    {
-        firstAbovePos = -DBL_MAX;
-        firstBelowPos = DBL_MAX;
-        // We start looking left from the right side of the shape, 
-        // and vice versa. 
-        lastAbovePos = max[dim];
-        lastBelowPos = min[dim];
-
-        Node *curr = NULL;
-        bool eventsAtSamePos = false;
-        for (int direction = 0; direction < 2; ++direction)
-        {
-            // Look for obstacles in one direction, then the other.
-            curr = (direction == 0) ? firstAbove: firstBelow;
-
-            while (curr)
-            {
-                // The events are at a shared beginning or end of a shape or 
-                // connection point.  Note, connection points have the same 
-                // min and max value in the !dim dimension.
-                eventsAtSamePos = 
-                        (((linePos == max[!dim]) && 
-                          (linePos == curr->max[!dim])) || 
-                         ((linePos == min[!dim]) && 
-                          (linePos == curr->min[!dim])));
-                
-                if (curr->max[dim] <= min[dim])
-                {
-                    // Curr shape is completely to the left, 
-                    // so add it's right side as a limit
-                    firstAbovePos = std::max(curr->max[dim], firstAbovePos);
-                }
-                else if (curr->min[dim] >= max[dim])
-                {
-                    // Curr shape is completely to the right, 
-                    // so add it's left side as a limit
-                    firstBelowPos = std::min(curr->min[dim], firstBelowPos);
-                }
-                else if (!eventsAtSamePos)
-                {
-                    // Shapes that open or close at the same position do not
-                    // block visibility, so if they are not at same position
-                    // determine where they overlap.
-                    lastAbovePos = std::min(curr->min[dim], lastAbovePos);
-                    lastBelowPos = std::max(curr->max[dim], lastBelowPos);
-                }
-                curr = (direction == 0) ? curr->firstAbove : curr->firstBelow;
-            }
-        }    
-    }
-    double firstPointAbove(size_t dim) 
-    {
-        // We are looking for the first obstacle above this position,
-        // though we ignore shape edges if this point is inline with
-        // the edge of the obstacle.  That is, points have visibility
-        // along the edge of shapes.
-        size_t altDim = (dim + 1) % 2;
-        double result = -DBL_MAX;
-        Node *curr = firstAbove; 
-        while (curr) 
-        {
-            bool inLineWithEdge = (min[altDim] == curr->min[altDim]) ||
-                    (min[altDim] == curr->max[altDim]);
-            if ( ! inLineWithEdge && (curr->max[dim] <= pos) )
-            {
-                result = std::max(curr->max[dim], result);
-            }
-            curr = curr->firstAbove; 
-        } 
-        return result; 
-    } 
-    double firstPointBelow(size_t dim) 
-    { 
-        // We are looking for the first obstacle below this position,
-        // though we ignore shape edges if this point is inline with
-        // the edge of the obstacle.  That is, points have visibility
-        // along the edge of shapes.
-        size_t altDim = (dim + 1) % 2;
-        double result = DBL_MAX;
-        Node *curr = firstBelow; 
-        while (curr) 
-        { 
-            bool inLineWithEdge = (min[altDim] == curr->min[altDim]) ||
-                    (min[altDim] == curr->max[altDim]);
-            if ( ! inLineWithEdge && (curr->min[dim] >= pos) )
-            {
-                result = std::min(curr->min[dim], result);
-            }
-            curr = curr->firstBelow; 
-        }
-        return result;
-    } 
-    // This is a bit inefficient, but we won't need to do it once we have 
-    // connection points.
-    bool isInsideShape(size_t dimension)
-    {
-        for (Node *curr = firstBelow; curr; curr = curr->firstBelow)
-        {
-            if ((curr->min[dimension] < pos) && (pos < curr->max[dimension]))
-            {
-                return true;
-            }
-        }
-        for (Node *curr = firstAbove; curr; curr = curr->firstAbove)
-        {
-            if ((curr->min[dimension] < pos) && (pos < curr->max[dimension]))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-};
-
-
-bool CmpNodePos::operator() (const Node* u, const Node* v) const 
-{
-    if (u->pos != v->pos) 
-    {
-        return u->pos < v->pos;
-    }
-    
-    // Use the pointers to the base objects to differentiate them.
-    void *up = (u->v) ? (void *) u->v : 
-            ((u->c) ? (void *) u->c : (void *) u->ss);
-    void *vp = (v->v) ? (void *) v->v : 
-            ((v->c) ? (void *) v->c : (void *) v->ss);
-    return up < vp;
-}
-
-
-// Note: Open must come first.
-typedef enum {
-    Open = 1,
-    SegOpen = 2,
-    ConnPoint = 3, 
-    SegClose = 4,
-    Close = 5
-} EventType;
-
-
-struct Event
-{
-    Event(EventType t, Node *v, double p) 
-        : type(t),
-          v(v),
-          pos(p)
-    {};
-    EventType type;
-    Node *v;
-    double pos;
-};
-
-
-// Used for quicksort.  Must return <0, 0, or >0.
-int compare_events(const void *a, const void *b)
-{
-	Event *ea = *(Event**) a;
-	Event *eb = *(Event**) b;
-    if (ea->pos != eb->pos)
-    {
-        return (ea->pos < eb->pos) ? -1 : 1;
-    }
-    if (ea->type != eb->type)
-    {
-        return ea->type - eb->type;
-    }
-    COLA_ASSERT(ea->v != eb->v);
-    return ea->v - eb->v;
-}
 
 
 enum ScanVisDirFlag {
@@ -2543,7 +2242,9 @@ static void buildOrthogonalNudgingSegments(Router *router,
                             }
                         }
 
-                        bool withinShape = false;
+                        // Bitflags indicating whether this segment starts 
+                        // and/or ends in a shape.
+                        unsigned int endsInShapes = 0;
                         // Also limit their movement to the edges of the 
                         // shapes they begin or end within.
                         for (size_t k = 0; k < shapeLimits.size(); ++k)
@@ -2555,18 +2256,18 @@ static void buildOrthogonalNudgingSegments(Router *router,
                             {
                                 minLim = std::max(minLim, shapeMin);
                                 maxLim = std::min(maxLim, shapeMax);
-                                withinShape = true;
+                                endsInShapes |= 0x01;
                             }
                             if (insideRectBounds(displayRoute.ps[i], 
                                         shapeLimits[k]))
                             {
                                 minLim = std::max(minLim, shapeMin);
                                 maxLim = std::min(maxLim, shapeMax);
-                                withinShape = true;
+                                endsInShapes |= 0x10;
                             }
                         }
 
-                        if ( ! withinShape )
+                        if ( endsInShapes == 0 )
                         {
                             // If the segment is not within a shape, then we
                             // should limit it's nudging buffer so we don't
@@ -2590,7 +2291,15 @@ static void buildOrthogonalNudgingSegments(Router *router,
                                     *curr, indexLow, indexHigh, false, false, dim, 
                                     minLim, maxLim);
                             segment->finalSegment = true;
-                            segment->endsInShape = withinShape;
+                            segment->endsInShape = (endsInShapes > 0);
+                            if ((displayRoute.size() == 2) && 
+                                    (endsInShapes = 0x11))
+                            {
+                                // This is a single segment connector bridging
+                                // two shapes.  So, we want to try to keep the
+                                // segment centred rather than shift it.
+                                segment->singleConnectedSegment = true;
+                            }
                             segmentList.push_back(segment);
                         }
                     }
@@ -3036,6 +2745,52 @@ static ShiftSegmentList linesort(bool nudgeFinalSegments,
 
 typedef std::list<ShiftSegment *> ShiftSegmentPtrList;
 
+class PotentialSegmentConstraint
+{
+    public:
+        PotentialSegmentConstraint(unsigned index1, unsigned index2, 
+                const Variables& vs)
+            : index1(index1),
+              index2(index2),
+              vs(vs)
+        {
+        }
+
+        bool operator<(const PotentialSegmentConstraint rhs) const
+        {
+            return sepDistance() < rhs.sepDistance();
+        }
+        double sepDistance(void) const
+        {
+            if (!stillValid())
+            {
+                return 0;
+            }
+            return fabs(vs[index1]->finalPosition - vs[index2]->finalPosition);
+        }
+        bool stillValid(void) const
+        {
+            return (index1 != index2);
+        }
+        void rewriteIndex(unsigned oldIndex, unsigned newIndex)
+        {
+            if (index1 == oldIndex)
+            {
+                index1 = newIndex;
+            }
+
+            if (index2 == oldIndex)
+            {
+                index2 = newIndex;
+            }
+        }
+
+        unsigned index1;
+        unsigned index2;
+
+    private:
+        const Variables& vs;
+};
 
 static void nudgeOrthogonalRoutes(Router *router, size_t dimension, 
         PtOrderMap& pointOrders, ShiftSegmentList& segmentList)
@@ -3047,7 +2802,7 @@ static void nudgeOrthogonalRoutes(Router *router, size_t dimension,
     // If we can fit things with the desired separation distance, then
     // we try 10 times, reducing each time by a 10th of the original amount.
     double reductionSteps = 10.0;
-    bool justCentring = pointOrders.empty();
+    bool justUnifying = pointOrders.empty();
 
     // Do the actual nudging.
     ShiftSegmentList currentRegion;
@@ -3086,7 +2841,7 @@ static void nudgeOrthogonalRoutes(Router *router, size_t dimension,
             }
         }
 
-        if (! justCentring)
+        if (! justUnifying)
         {
             CmpLineOrder lineSortComp(pointOrders, dimension);
             currentRegion = linesort(nudgeFinalSegments, currentRegion,
@@ -3097,7 +2852,7 @@ static void nudgeOrthogonalRoutes(Router *router, size_t dimension,
         {
             // Save creating the solver instance if there is just one
             // immovable segment, or we're nudging a single segment.
-            if ( !justCentring || currentRegion.front()->immovable() )
+            if ( !justUnifying || currentRegion.front()->immovable() )
             {
                 delete currentRegion.front();
                 continue;
@@ -3105,6 +2860,7 @@ static void nudgeOrthogonalRoutes(Router *router, size_t dimension,
         }
 
         // Process these segments.
+        std::list<unsigned> freeIndexes;
         Variables vs;
         Constraints cs;
         Constraints gapcs;
@@ -3126,14 +2882,6 @@ static void nudgeOrthogonalRoutes(Router *router, size_t dimension,
             // Create a solver variable for the position of this segment.
             currSegment->createSolverVariable();
             
-            if (justCentring)
-            {
-                // If we are just doing centring, then we should use the
-                // same weights, otherwise we might move overlapping paths
-                // a tiny distance apart if they have different weights.
-                currSegment->variable->weight = freeWeight;
-            }
-
             vs.push_back(currSegment->variable);
             size_t index = vs.size() - 1;
 #ifdef NUDGE_DEBUG
@@ -3162,10 +2910,41 @@ static void nudgeOrthogonalRoutes(Router *router, size_t dimension,
                     currSegment->highPoint()[XDIM], currSegment->highPoint()[YDIM]);
 #endif
 
-            if (justCentring)
+            // Constrain to channel boundary.
+            if (!currSegment->fixed)
+            {
+                // If this segment sees a channel boundary to its left,
+                // then constrain its placement as such.
+                if (currSegment->minSpaceLimit > -CHANNEL_MAX)
+                {
+                    vs.push_back(new Variable(fixedID,
+                                currSegment->minSpaceLimit, fixedWeight));
+                    cs.push_back(new Constraint(vs[vs.size() - 1], vs[index],
+                                0.0));
+                }
+
+                // If this segment sees a channel boundary to its right,
+                // then constrain its placement as such.
+                if (currSegment->maxSpaceLimit < CHANNEL_MAX)
+                {
+                    vs.push_back(new Variable(fixedID,
+                                currSegment->maxSpaceLimit, fixedWeight));
+                    cs.push_back(new Constraint(vs[index], vs[vs.size() - 1],
+                                0.0));
+                }
+            }
+
+            if (justUnifying)
             {
                 // Just doing centring, not nudging.
-                // Thus, we don't need to constrain position.
+                // Record the index of the variable so we can use it as 
+                // a segment to potentially constrain to other segments.
+                if (currSegment->variable->weight == freeWeight)
+                {
+                    freeIndexes.push_back(index);
+                }
+                // Thus, we don't need to constrain position against other
+                // segments.
                 prevVars.push_back(&(*currSegment));
                 continue;
             }
@@ -3219,30 +2998,26 @@ static void nudgeOrthogonalRoutes(Router *router, size_t dimension,
                 }
             }
 
-            if (!currSegment->fixed)
-            {
-                // If this segment sees a channel boundary to its left,
-                // then constrain its placement as such.
-                if (currSegment->minSpaceLimit > -CHANNEL_MAX)
-                {
-                    vs.push_back(new Variable(fixedID,
-                                currSegment->minSpaceLimit, fixedWeight));
-                    cs.push_back(new Constraint(vs[vs.size() - 1], vs[index],
-                                0.0));
-                }
+            prevVars.push_back(&(*currSegment));
+        }
 
-                // If this segment sees a channel boundary to its right,
-                // then constrain its placement as such.
-                if (currSegment->maxSpaceLimit < CHANNEL_MAX)
+        std::list<PotentialSegmentConstraint> potentialConstraints;
+        if (justUnifying)
+        {
+            for (std::list<unsigned>::iterator curr = freeIndexes.begin();
+                    curr != freeIndexes.end(); ++curr)
+            {
+                for (std::list<unsigned>::iterator curr2 = curr;
+                        curr2 != freeIndexes.end(); ++curr2)
                 {
-                    vs.push_back(new Variable(fixedID,
-                                currSegment->maxSpaceLimit, fixedWeight));
-                    cs.push_back(new Constraint(vs[index], vs[vs.size() - 1],
-                                0.0));
+                    if (curr == curr2)
+                    {
+                        continue;
+                    }
+                    potentialConstraints.push_back(
+                            PotentialSegmentConstraint(*curr, *curr2, vs));
                 }
             }
-
-            prevVars.push_back(&(*currSegment));
         }
 #ifdef NUDGE_DEBUG
         for (unsigned i = 0;i < vs.size(); ++i)
@@ -3250,12 +3025,19 @@ static void nudgeOrthogonalRoutes(Router *router, size_t dimension,
             printf("-vs[%d]=%f\n", i, vs[i]->desiredPosition);
         }
 #endif
-        // Repeatedly try solving this with smaller separation distances till
-        // we find a solution that is satisfied.
+        // Repeatedly try solving this.  There are two cases:
+        //  -  When Unifying, we greedily place as many free segments as 
+        //     possible at the same positions, that way they have more 
+        //     accurate nudging orders determined for them in the Nudging
+        //     stage.
+        //  -  When Nudging, if we can't fit all the segments with the 
+        //     default nudging distance we try smaller separation 
+        //     distances till we find a solution that is satisfied.
+        bool justAddedConstraint = false;
         bool satisfied;
         do 
         {
-            IncSolver f(vs,cs);
+            IncSolver f(vs, cs);
             f.solve();
             satisfied = true;
             for (size_t i = 0; i < vs.size(); ++i) 
@@ -3271,17 +3053,85 @@ static void nudgeOrthogonalRoutes(Router *router, size_t dimension,
                 }
             }
 
-            if (!satisfied)
+            if (justUnifying)
             {
-                // Reduce the separation distance.
-                sepDist -= (baseSepDist / reductionSteps);
-                // And rewrite all the gap constraints to have the new reduced
-                // separation distance.
-                for (Constraints::iterator cIt = gapcs.begin(); 
-                        cIt != gapcs.end(); ++cIt)
+                // When we're centring, we'd like to greedily place as many
+                // segments as possible at the same positions, that way they
+                // have more accurate nudging orders determined for them.
+                // 
+                // We do this by taking pairs of adjoining free segments and 
+                // attempting to constrain them to have the same position, 
+                // starting from the closest up to the furthest.
+
+                if (justAddedConstraint)
                 {
-                    Constraint *constraint = *cIt;
-                    constraint->gap = sepDist;
+                    COLA_ASSERT(potentialConstraints.size() > 0);
+                    if (!satisfied)
+                    {
+                        // We couldn't satisfy the problem with the added
+                        // potential constraint, so we can't position these
+                        // segments together.  Roll back.
+                        potentialConstraints.pop_front();
+                        delete cs.back();
+                        cs.pop_back();
+                    }
+                    else
+                    {
+                        // We could position these two segments together.
+                        PotentialSegmentConstraint& pc =
+                                potentialConstraints.front();
+
+                        // Rewrite the indexes of these two variables to 
+                        // one, so we need not worry about redundant 
+                        // equality constraints.
+                        for (std::list<PotentialSegmentConstraint>::iterator
+                                it = potentialConstraints.begin();
+                                it != potentialConstraints.end(); ++it)
+                        {
+                            it->rewriteIndex(pc.index1, pc.index2);
+                        }
+                        potentialConstraints.pop_front();
+                    }
+                }
+                potentialConstraints.sort();
+                justAddedConstraint = false;
+
+                // Remove now invalid potential segment constraints.
+                // This could have been caused by the variable rewriting.
+                while (!potentialConstraints.empty() && 
+                       !potentialConstraints.front().stillValid())
+                {
+                    potentialConstraints.pop_front();
+                }
+
+                if (!potentialConstraints.empty())
+                {
+                    // We still have more possibilities to consider.
+                    // Create a constraint for this, add it, and mark as
+                    // unsatisfied, so the problem gets re-solved.
+                    PotentialSegmentConstraint& pc =
+                            potentialConstraints.front();
+                    COLA_ASSERT(pc.index1 != pc.index2);
+                    cs.push_back(new Constraint(vs[pc.index1], vs[pc.index2],
+                            0, true));
+                    satisfied = false;
+                    justAddedConstraint = true;
+                }
+            }
+            else
+            {
+                if (!satisfied)
+                {
+                    // Reduce the separation distance.
+                    sepDist -= (baseSepDist / reductionSteps);
+                    // And rewrite all the gap constraints to have the new 
+                    // reduced separation distance.
+                    for (Constraints::iterator cIt = gapcs.begin(); 
+                            cIt != gapcs.end(); ++cIt)
+                    {
+                        Constraint *constraint = *cIt;
+                        constraint->gap = sepDist;
+                    }
                 }
             }
         }
@@ -3322,76 +3172,6 @@ static void nudgeOrthogonalRoutes(Router *router, size_t dimension,
     }
 }
 
-static void buildConnectorRouteCheckpointCache(Router *router)
-{
-    for (ConnRefList::const_iterator curr = router->connRefs.begin(); 
-            curr != router->connRefs.end(); ++curr) 
-    {
-        ConnRef *conn = *curr;
-        if (conn->routingType() != ConnType_Orthogonal)
-        {
-            continue;
-        }
-
-        PolyLine& displayRoute = conn->displayRoute();
-        std::vector<Point> checkpoints = conn->routingCheckpoints();
-       
-        // Initialise checkpoint vector and set to false.  There will be
-        // one entry for each *segment* in the path, and the value indicates
-        // whether the segment is affected by a checkpoint.
-        displayRoute.segmentHasCheckpoint = 
-                std::vector<bool>(displayRoute.size() - 1, false);
-        size_t nCheckpoints = displayRoute.segmentHasCheckpoint.size();
-
-        for (size_t cpi = 0; cpi < checkpoints.size(); ++cpi)
-        {
-            for (size_t ind = 0; ind < displayRoute.size(); ++ind)
-            {
-                if (displayRoute.ps[ind].equals(checkpoints[cpi]))
-                {
-                    // The checkpoint is at a bendpoint, so mark the edge
-                    // before and after and being affected by checkpoints.
-                    if (ind > 0)
-                    {
-                        displayRoute.segmentHasCheckpoint[ind - 1] = true;
-                    }
-
-                    if (ind < nCheckpoints)
-                    {
-                        displayRoute.segmentHasCheckpoint[ind] = true;
-                    }
-                }
-                else if ((ind > 0) && pointOnLine(displayRoute.ps[ind - 1], 
-                         displayRoute.ps[ind], checkpoints[cpi]) )
-                {
-                    // If the checkpoint is on a segment, only that segment is
-                    // affected.
-                    displayRoute.segmentHasCheckpoint[ind - 1] = true;
-                }
-            }
-        }
-    }
-}
-
-
-static void clearConnectorRouteCheckpointCache(Router *router)
-{
-    for (ConnRefList::const_iterator curr = router->connRefs.begin(); 
-            curr != router->connRefs.end(); ++curr) 
-    {
-        ConnRef *conn = *curr;
-        if (conn->routingType() != ConnType_Orthogonal)
-        {
-            continue;
-        }
-
-        // Clear the cache.
-        PolyLine& displayRoute = conn->displayRoute();
-        displayRoute.segmentHasCheckpoint.clear();
-    }
-}
-
-
 extern void improveOrthogonalRoutes(Router *router)
 {
     router->timers.Register(tmOrthogNudge, timerStart);
@@ -3404,23 +3184,28 @@ extern void improveOrthogonalRoutes(Router *router)
     // can be moved away from their original positions during nudging.
     buildConnectorRouteCheckpointCache(router);
 
-    // Do centring first, by itself, to make nudging results a little better.
-    // XXX This is still not great.  In some ways we really want to consider
-    //     the ordering for all segments within a channel, rather than just
-    //     the overlapping cases.  This would address the problem where
-    //     initial routings can force crossings that could be avoided.
-    for (size_t dimension = 0; dimension < 2; ++dimension)
+    // Do Unifying first, by itself.  This greedily tries to position free
+    // segments in overlaping channels at the same position.  This way they
+    // have correct nudging orders determined for them since they will form
+    // shared paths, rather than segments just positioned as an results of
+    // the routing process.  Of course, don't do this when rerouting with
+    // a fixedSharedPathPenalty since these routes include extra segments 
+    // we want to keep apart which prevent some shared paths.
+    if (router->routingParameter(fixedSharedPathPenalty) == 0)
     {
-        // Empty pointOrders, so no nudging is conducted.
-        PtOrderMap pointOrders;
+        for (size_t dimension = 0; dimension < 2; ++dimension)
+        {
+            // Empty pointOrders, so no nudging is conducted.
+            PtOrderMap pointOrders;
 
-        ShiftSegmentList segmentList;
-        buildOrthogonalNudgingSegments(router, dimension, segmentList);
-        buildOrthogonalChannelInfo(router, dimension, segmentList);
-        nudgeOrthogonalRoutes(router, dimension, pointOrders, segmentList);
+            ShiftSegmentList segmentList;
+            buildOrthogonalNudgingSegments(router, dimension, segmentList);
+            buildOrthogonalChannelInfo(router, dimension, segmentList);
+            nudgeOrthogonalRoutes(router, dimension, pointOrders, segmentList);
+        }
     }
 
-    // Do the nudging itself.
+    // Do the Nudging and centring.
     for (size_t dimension = 0; dimension < 2; ++dimension)
     {
         // Build nudging info.
@@ -3438,6 +3223,8 @@ extern void improveOrthogonalRoutes(Router *router)
 
     // Resimplify all the display routes that may have been split.
     simplifyOrthogonalRoutes(router);
+
+    router->improveOrthogonalTopology();
  
     // Clear the segment-checkpoint cache for connectors.
     clearConnectorRouteCheckpointCache(router);
