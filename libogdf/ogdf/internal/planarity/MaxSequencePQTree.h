@@ -459,15 +459,15 @@ void MaxSequencePQTree<T,Y>::clientDefinedEmptyNode(PQNode<T,whaInfo*,Y>* nodePt
 
 	if (nodePtr->status() == ELIMINATED)
 	{	
-		emptyNode(nodePtr);
+		this->emptyNode(nodePtr);
 		nodePtr->status(ELIMINATED);
 	}
 	else if (nodePtr->status() == PERTROOT)
-		emptyNode(nodePtr);
+		this->emptyNode(nodePtr);
 	else {
 		// Node has an invalid status?
 		OGDF_ASSERT(nodePtr->status() == EMPTY)
-		emptyNode(nodePtr);
+		this->emptyNode(nodePtr);
 	}
 }
 
@@ -673,7 +673,7 @@ determineMinRemoveSequence(SListPure<PQLeafKey<T,whaInfo*,Y>*> &leafKeys,
 			nodePtr->getNodeInfo()->userStructInfo()->m_h = 0;
 			nodePtr->getNodeInfo()->userStructInfo()->m_a = 0;
 			if (nodePtr->getNodeInfo()->userStructInfo()->m_pertLeafCount < maxPertLeafCount)
-			   fullChildren(nodePtr->parent())->pushFront(nodePtr);        
+			   this->fullChildren(nodePtr->parent())->pushFront(nodePtr);        
 		}
 		else
 		{
@@ -682,7 +682,7 @@ determineMinRemoveSequence(SListPure<PQLeafKey<T,whaInfo*,Y>*> &leafKeys,
 			// This is done calling the function [[sumPertChild]].
 			nodePtr->getNodeInfo()->userStructInfo()->m_w = sumPertChild(nodePtr);
                                 
-			if (fullChildren(nodePtr)->size() == nodePtr->childCount())   
+			if (this->fullChildren(nodePtr)->size() == nodePtr->childCount())   
 			{
 				// computes the $h$- and $a$-numbers of a full node. The computation 
 				// is trivial. It also updates the list of full nodes of the parent
@@ -690,7 +690,7 @@ determineMinRemoveSequence(SListPure<PQLeafKey<T,whaInfo*,Y>*> &leafKeys,
 				nodePtr->status(FULL);
 				if (nodePtr->getNodeInfo()->userStructInfo()->m_pertLeafCount 
 					< maxPertLeafCount)
-					fullChildren(nodePtr->parent())->pushFront(nodePtr);
+					this->fullChildren(nodePtr->parent())->pushFront(nodePtr);
 				nodePtr->getNodeInfo()->userStructInfo()->m_h = 0;
 				nodePtr->getNodeInfo()->userStructInfo()->m_a = 0;
 			} 
@@ -704,7 +704,7 @@ determineMinRemoveSequence(SListPure<PQLeafKey<T,whaInfo*,Y>*> &leafKeys,
 				nodePtr->status(PARTIAL);
 				if (nodePtr->getNodeInfo()->userStructInfo()->m_pertLeafCount < 
 					maxPertLeafCount)
-					partialChildren(nodePtr->parent())->pushFront(nodePtr);
+					this->partialChildren(nodePtr->parent())->pushFront(nodePtr);
 
 				if (nodePtr->type() == PQNodeRoot::PNode)
 				   haNumPnode(nodePtr);
@@ -863,7 +863,7 @@ findMinWHASequence(StackPure<PQNode<T,whaInfo*,Y>*> &archiv,
 							childCount = 1;
 					}
 					nodePtr->pertChildCount(nodePtr->pertChildCount() + 
-						childCount - partialChildren(nodePtr)->size());
+						childCount - this->partialChildren(nodePtr)->size());
 				}	
 				else
 				{      
@@ -941,7 +941,7 @@ findMinWHASequence(StackPure<PQNode<T,whaInfo*,Y>*> &archiv,
 								childCount++;
 						}
 						nodePtr->pertChildCount(nodePtr->pertChildCount() + childCount -
-												partialChildren(nodePtr)->size());
+												this->partialChildren(nodePtr)->size());
 					}
 				}
 				else
@@ -996,8 +996,8 @@ findMinWHASequence(StackPure<PQNode<T,whaInfo*,Y>*> &archiv,
 		this chunk cleans up the information needed during the
 		computation at the [[nodePtr]].
 		*/
-		fullChildren(nodePtr)->clear();
-		partialChildren(nodePtr)->clear();
+		this->fullChildren(nodePtr)->clear();
+		this->partialChildren(nodePtr)->clear();
 		nodePtr->status(EMPTY);
 		nodePtr->getNodeInfo()->userStructInfo()->m_hChild1 = 0;
 		nodePtr->getNodeInfo()->userStructInfo()->m_hChild2 = 0;
@@ -1225,22 +1225,22 @@ markPertinentChildren(PQNode<T,whaInfo*,Y>  *nodePtr,
 	if (label == PERTINENT)
 	{
 		ListIterator<PQNode<T,whaInfo*,Y>*> it;
-		for (it = partialChildren(nodePtr)->begin(); it.valid(); it++)
+		for (it = this->partialChildren(nodePtr)->begin(); it.valid(); it++)
 			(*it)->getNodeInfo()->userStructInfo()->m_deleteTyp = deleteTyp;
-		for (it = fullChildren(nodePtr)->begin(); it.valid(); it++)
+		for (it = this->fullChildren(nodePtr)->begin(); it.valid(); it++)
 			(*it)->getNodeInfo()->userStructInfo()->m_deleteTyp = deleteTyp;
 	}
 	else if (label == PARTIAL)
 	{  
 		ListIterator<PQNode<T,whaInfo*,Y>*> it;
-		for (it = partialChildren(nodePtr)->begin(); it.valid(); it++)
+		for (it = this->partialChildren(nodePtr)->begin(); it.valid(); it++)
 			(*it)->getNodeInfo()->userStructInfo()->m_deleteTyp = deleteTyp;   
 	}
    
 	else
 	{
 		ListIterator<PQNode<T,whaInfo*,Y>*> it;
-		for (it = fullChildren(nodePtr)->begin(); it.valid(); it++)
+		for (it = this->fullChildren(nodePtr)->begin(); it.valid(); it++)
 			(*it)->getNodeInfo()->userStructInfo()->m_deleteTyp = deleteTyp;
 	}
 }
@@ -1301,7 +1301,7 @@ void MaxSequencePQTree<T,Y>::haNumPnode(PQNode<T,whaInfo*,Y> *nodePtr)
 	*/
 
 	ListIterator<PQNode<T,whaInfo*,Y>*> it;
-	for (it = partialChildren(nodePtr)->begin(); it.valid(); it++)
+	for (it = this->partialChildren(nodePtr)->begin(); it.valid(); it++)
 	{
 		currentNode = (*it);
 		sumParW = sumParW + currentNode->getNodeInfo()->userStructInfo()->m_w;
@@ -1838,7 +1838,7 @@ alpha1beta1Number(PQNode<T,whaInfo*,Y> *nodePtr,
 	PQNode<T,whaInfo*,Y>  *currentNode = 0;
   
 	ListIterator<PQNode<T,whaInfo*,Y>*> it;
-	for (it = fullChildren(nodePtr)->begin(); it.valid(); it++)
+	for (it = this->fullChildren(nodePtr)->begin(); it.valid(); it++)
 	{
 		currentNode = (*it);
 		sumAllW = sumAllW +
@@ -1852,7 +1852,7 @@ alpha1beta1Number(PQNode<T,whaInfo*,Y> *nodePtr,
 		}
 	}
    
-	for (it = partialChildren(nodePtr)->begin(); it.valid(); it++)
+	for (it = this->partialChildren(nodePtr)->begin(); it.valid(); it++)
 	{
 		currentNode = (*it);
 		sumAllW = sumAllW +
@@ -1895,9 +1895,9 @@ int MaxSequencePQTree<T,Y>::sumPertChild(PQNode<T,whaInfo*,Y> *nodePtr)
 
 	int                  sum = 0;
 	ListIterator<PQNode<T,whaInfo*,Y>*> it;
-	for (it = fullChildren(nodePtr)->begin(); it.valid(); it++)
+	for (it = this->fullChildren(nodePtr)->begin(); it.valid(); it++)
       sum = sum + (*it)->getNodeInfo()->userStructInfo()->m_w;
-	for (it = partialChildren(nodePtr)->begin(); it.valid(); it++)
+	for (it = this->partialChildren(nodePtr)->begin(); it.valid(); it++)
       sum = sum + (*it)->getNodeInfo()->userStructInfo()->m_w;
 
 	return sum;
