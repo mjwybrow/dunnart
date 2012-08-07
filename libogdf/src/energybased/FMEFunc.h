@@ -890,7 +890,7 @@ public:
 		currentEdgeLength = pLocalContext->pGlobalContext->pGraph->desiredEdgeLength();
 	};
 
-	inline void operator()(void) const
+	inline int operator()(void) const
 	{
 		return pGraph->numNodes();
 	};
