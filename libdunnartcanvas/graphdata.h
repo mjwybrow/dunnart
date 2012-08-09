@@ -134,7 +134,7 @@ public:
     //! topology routes only considered for the first topologyNodesCount nodes
     unsigned topologyNodesCount;
     // the xxxxToXxxx methods create cola objects for dunnart graph objects
-    void shapeToNode(ShapeObj* shape);
+    size_t shapeToNode(ShapeObj* shape);
     void connectorToEdge(Connector* conn);
     void dunnartClusterToCluster(Cluster* cluster);
     void guideToAlignmentConstraint(Guideline* guide);

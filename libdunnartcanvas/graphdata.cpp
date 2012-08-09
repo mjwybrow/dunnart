@@ -131,10 +131,10 @@ GraphData::GraphData(Canvas *canvas, bool ignoreEdges,
     {
         if (ShapeObj *shape = isShapeForLayout(canvasObjects.at(i)))
         {
-            shapeToNode(shape);
+            size_t nodeIndex = shapeToNode(shape);
 
-            double centreX = rs[i]->getCentreX();
-            double centreY = rs[i]->getCentreY();
+            double centreX = rs[nodeIndex]->getCentreX();
+            double centreY = rs[nodeIndex]->getCentreY();
             xMax = std::max(xMax, centreX);
             xMin = std::min(xMin, centreX);
             yMax = std::max(yMax, centreY);
@@ -769,7 +769,7 @@ unsigned GraphData::getConnectionPoint(const CPoint& connPointInfo)
  * creates a cola graph node from a dunnart Shape.
  * @param shape the Dunnart shape for which the cola graph node is created
  */
-void GraphData::shapeToNode(ShapeObj* shape) {
+size_t GraphData::shapeToNode(ShapeObj* shape) {
     assert(shape != NULL);
     double g=0;
     QRectF rect = shape->shapeRect(avoidBuffer + g);
@@ -795,6 +795,8 @@ void GraphData::shapeToNode(ShapeObj* shape) {
     }
 
     shape_vec.push_back(shape);
+
+    return rs.size() - 1;
 }
 void promotedups(cola::Cluster* c)
 {
