@@ -47,6 +47,9 @@ ConnectorPropertiesDialog::ConnectorPropertiesDialog(Canvas *canvas, QWidget *pa
     connect(pathOverlapPenaltySlider, SIGNAL(sliderMoved(int)),
             this, SIGNAL(setOptChangedConnPenaltyFixedSharedPath(int)));
 
+    connect(shapePaddingSlider, SIGNAL(sliderMoved(int)),
+            this, SIGNAL(setOptChangedRoutingShapeBuffer(int)));
+
     changeCanvas(canvas);
 }
 
@@ -64,16 +67,21 @@ void ConnectorPropertiesDialog::changeCanvas(Canvas *canvas)
     m_canvas = canvas;
 
     connect(this, SIGNAL(setOptChangedConnPenaltySegment(int)),
-            m_canvas, SLOT(setOptConnPenaltySegment(int)));
+            m_canvas, SLOT(setOptRoutingPenaltySegment(int)));
 
     connect(this, SIGNAL(setOptChangedConnRoundingDist(int)),
             m_canvas, SLOT(setOptConnRoundingDist(int)));
+
+    connect(this, SIGNAL(setOptChangedRoutingShapeBuffer(int)),
+            m_canvas, SLOT(setOptRoutingShapePadding(int)));
 
     // Set initial control values.
     roundedCornersSlider->setSliderPosition(
             m_canvas->optConnectorRoundingDistance());
     segmentPenaltySlider->setSliderPosition(
-            m_canvas->optConnPenaltySegment());
+            m_canvas->optRoutingPenaltySegment());
+    shapePaddingSlider->setSliderPosition(
+            m_canvas->optRoutingShapePadding());
 }
 
 }

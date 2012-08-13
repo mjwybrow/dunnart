@@ -378,38 +378,28 @@ QDomElement TextShape::to_QDomElement(const unsigned int subset,
 }
 
 
-Polygon *TextShape::poly(const double b, Polygon *p)
+Polygon TextShape::polygon(void) const
 {
     double sx = x();
     double sy = y();
     double sw = width(), sh = height();
     
-    if (p)
-    {
-        delete p;
-    }
-    p = new Avoid::Polygon(4);
-    
-    if (!p)
-    {
-        qFatal("Couldn't calloc memory in Freehand::poly()");
-    }
-    
-    p->_id = (int) m_internal_id;
+    Avoid::Polygon poly(4);
+    poly._id = (int) m_internal_id;
 
-    p->ps[0].x = sx + sw + b;
-    p->ps[0].y = sy - b;
+    poly.ps[0].x = sx + sw;
+    poly.ps[0].y = sy;
 
-    p->ps[1].x = sx + sw + b;
-    p->ps[1].y = sy + sh + b;
+    poly.ps[1].x = sx + sw;
+    poly.ps[1].y = sy + sh;
 
-    p->ps[2].x = sx - b;
-    p->ps[2].y = sy + sh + b; 
+    poly.ps[2].x = sx;
+    poly.ps[2].y = sy + sh;
 
-    p->ps[3].x = sx - b;
-    p->ps[3].y = sy - b;
+    poly.ps[3].x = sx;
+    poly.ps[3].y = sy;
 
-    return p;
+    return poly;
 }
 
 

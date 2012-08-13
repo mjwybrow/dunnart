@@ -207,32 +207,21 @@ void PolygonShape::setLabel(const QString& label)
 }
 
 
-Avoid::Polygon *PolygonShape::poly(const double b, Avoid::Polygon *p)
+Avoid::Polygon PolygonShape::polygon(void) const
 {
-    Q_UNUSED (b)
-    if (p)
-    {
-        delete p;
-    }
-    p = new Avoid::Polygon(_psn);
-    
-    if (!p)
-    {
-        qFatal("Couldn't calloc memory in Polygon::poly()");
-    }
-    
-    p->_id = (int) m_internal_id;
+    Avoid::Polygon poly(_psn);
+    poly._id = (int) m_internal_id;
 
     double sx = x() + HANDLE_PADDING;
     double sy = y() + HANDLE_PADDING;
 
     for (int i = 0; i < _psn; ++i)
     {
-        p->ps[i].x = _xps[i] + sx;
-        p->ps[i].y = _yps[i] + sy;
+        poly.ps[i].x = _xps[i] + sx;
+        poly.ps[i].y = _yps[i] + sy;
     }
 
-    return p;
+    return poly;
 }
 
 

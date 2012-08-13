@@ -521,7 +521,11 @@ void Cluster::routerAdd(void)
         Avoid::Router *router = canvas()->router();
 
         assert(avoidClusterRef == NULL);
-        Polygon poly(0);
+
+        // XXX Does this need to be libavoid version of the polygon instead?
+        //     See also routerMove().
+        Avoid::Polygon poly = polygon();
+
         avoidClusterRef =
                 new Avoid::ClusterRef(router, poly, internalId());
      }
@@ -563,10 +567,8 @@ void Cluster::routerMove(void)
         {
             return;
         }
-
-        Polygon *polygon = poly(0);
-        avoidClusterRef->setNewPoly(*polygon);
-        delete polygon;
+        Polygon poly = polygon();
+        avoidClusterRef->setNewPoly(poly);
     }
     else
     {
@@ -623,15 +625,12 @@ void Cluster::calculateBoundary(void)
         for (ShapeList::iterator curr = members.begin();
                 curr != members.end(); ++curr)
         {
-            double shMinX, shMinY, shMaxX, shMaxY;
-            //Avoid::Polygon *poly = (*curr)->shapePoly;
-            Avoid::Polygon *poly = (*curr)->poly(routingBuffer);
-            poly->getBoundingRect(&shMinX, &shMinY, &shMaxX, &shMaxY);
+            Avoid::Box bBox = (*curr)->avoidRef->routingBox();
 
-            minX = std::min(minX, shMinX);
-            minY = std::min(minY, shMinY);
-            maxX = std::max(maxX, shMaxX);
-            maxY = std::max(maxY, shMaxY);
+            minX = std::min(minX, bBox.min.x);
+            minY = std::min(minY, bBox.min.y);
+            maxX = std::max(maxX, bBox.max.x);
+            maxY = std::max(maxY, bBox.max.y);
         }
 
         boundary.clear();
@@ -662,11 +661,8 @@ void Cluster::calculateBoundary(void)
                    "Cluster::calculateBoundary(): object %d can't be clustered",
                    (*curr)->internalId());
         }
-        Avoid::Polygon *poly = (*curr)->poly(avoidBuffer);
-
-        totalPoints += poly->size();
-
-        delete poly;
+        Avoid::Polygon poly = (*curr)->avoidRef->routingPolygon();
+        totalPoints += poly.size();
     }
 
     std::valarray<double> xValues(totalPoints);
@@ -677,18 +673,16 @@ void Cluster::calculateBoundary(void)
     for (ShapeList::iterator curr = members.begin();
             curr != members.end(); ++curr)
     {
-        Avoid::Polygon *poly = (*curr)->poly(avoidBuffer);
+        Avoid::Polygon poly = (*curr)->avoidRef->routingPolygon();
 
-        for (size_t i = 0; i < poly->size(); ++i)
+        for (size_t i = 0; i < poly.size(); ++i)
         {
-            xValues[index + i] = poly->ps[i].x;
-            yValues[index + i] = poly->ps[i].y;
-            ids[index + i] = poly->id();
+            xValues[index + i] = poly.ps[i].x;
+            yValues[index + i] = poly.ps[i].y;
+            ids[index + i] = poly.id();
             vns[index + i] = i;
         }
-        index += poly->size();
-
-        delete poly;
+        index += poly.size();
     }
 
     hull::convex(xValues, yValues, hullIndexes);
@@ -849,29 +843,17 @@ QDomElement Cluster::to_QDomElement(const unsigned int subset,
 }
 
 
-Polygon *Cluster::poly(const double b, Polygon *p)
+Polygon Cluster::polygon(void) const
 {
-    Q_UNUSED (b)
-
-    if (p)
-    {
-        delete p;
-    }
-    p = new Avoid::Polygon(psn);
-    
-    if (!p)
-    {
-        qFatal("Couldn't calloc memory in Cluster::poly()");
-    }
-    
-    p->_id = (int) m_internal_id;
+    Avoid::Polygon poly(psn);
+    poly._id = (int) m_internal_id;
 
     for (int i = 0; i < psn; ++i)
     {
-        p->ps[i] = boundary[i];
+        poly.ps[i] = boundary[i];
     }
 
-    return p;
+    return poly;
 }
 
 

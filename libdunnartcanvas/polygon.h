@@ -52,7 +52,7 @@ class PolygonShape: public ShapeObj
         virtual void initWithXMLProperties(Canvas *canvas,
                 const QDomElement& node, const QString& ns);
 
-        Avoid::Polygon *poly(const double buffer, Avoid::Polygon *poly = NULL);
+        Avoid::Polygon polygon(void) const;
         virtual void setLabel(const QString& label);
         void setNewBoundary(int *xps, int *yps, int psn);
         void computeBoundingBoxAndNormalise(void);

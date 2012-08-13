@@ -109,13 +109,15 @@ class Canvas : public QGraphicsScene
     Q_PROPERTY (FlowDirection flowDirection READ optFlowDirection WRITE setOptFlowDirection)
     Q_PROPERTY (double flowSeparationModifier READ optFlowSeparationModifier WRITE setOptFlowSeparationModifier)
     Q_PROPERTY (bool preventOverlaps READ optPreventOverlaps WRITE setOptPreventOverlaps)
+    Q_PROPERTY (int shapeNonOverlapPadding READ optShapeNonoverlapPadding WRITE setOptShapeNonoverlapPadding)
     Q_PROPERTY (bool preserveTopology READ optPreserveTopology WRITE setOptPreserveTopology)
     Q_PROPERTY (bool rubberBandRouting READ optRubberBandRouting WRITE setOptRubberBandRouting)
     Q_PROPERTY (bool fitDiagramWithinPage READ optFitWithinPage WRITE setOptFitWithinPage)
     //Q_PROPERTY (bool colourInterferingConnectors READ optColourInterferingConnectors)
     Q_PROPERTY (double ideaEdgeLengthModifier READ optIdealEdgeLengthModifier WRITE setOptIdealEdgeLengthModifier)
+    Q_PROPERTY (int routingShapePadding READ optRoutingShapePadding WRITE setOptRoutingShapePadding)
     Q_PROPERTY (int connectorRoundingDistance READ optConnectorRoundingDistance WRITE setOptConnRoundingDist)
-    Q_PROPERTY (int connectorSegmentPenalty READ optConnPenaltySegment WRITE setOptConnPenaltySegment)
+    Q_PROPERTY (int routingSegmentPenalty READ optRoutingPenaltySegment WRITE setOptRoutingPenaltySegment)
     Q_PROPERTY (bool structuralEditingDisabled READ optStructuralEditingDisabled WRITE setOptStructuralEditingDisabled)
     Q_ENUMS (FlowDirection)
     Q_ENUMS (LayoutMode)
@@ -184,10 +186,12 @@ class Canvas : public QGraphicsScene
         bool optStructuralEditingDisabled(void) const;
         double optIdealEdgeLengthModifier(void) const;
         int optConnectorRoundingDistance(void) const;
-        int optConnPenaltySegment(void) const;
+        int optRoutingPenaltySegment(void) const;
+        int optRoutingShapePadding(void) const;
         LayoutMode optLayoutMode(void) const;
         FlowDirection optFlowDirection(void) const;
         double optFlowSeparationModifier(void) const;
+        int optShapeNonoverlapPadding(void) const;
 
         bool overlayRouterObstacles(void) const;
         bool overlayRouterVisGraph(void) const;
@@ -248,7 +252,8 @@ class Canvas : public QGraphicsScene
         void setOptPreserveTopology(const bool value);
         void setOptRubberBandRouting(const bool value);
         void setOptFitWithinPage(const bool value);
-        void setOptConnPenaltySegment(const int value);
+        void setOptRoutingPenaltySegment(const int value);
+        void setOptRoutingShapePadding(const int value);
         void setOptConnRoundingDist(const int value);
         void setOptStructuralEditingDisabled(const bool value);
         void setOptLayoutMode(const LayoutMode mode);
@@ -257,6 +262,7 @@ class Canvas : public QGraphicsScene
         void setOptFlowSeparationModifierFromSlider(const int intValue);
         void setOptFlowDirection(const FlowDirection value);
         void setOptFlowDirectionFromDial(const int value);
+        void setOptShapeNonoverlapPadding(const int value);
 
         void processResponseTasks(void);
         void processUndoResponseTasks(void);
@@ -290,6 +296,8 @@ class Canvas : public QGraphicsScene
         void optChangedLayoutMode(int mode);
         void optChangedDirectedEdgeSeparationModifier(double modifier);
         void optChangedFlowDirection(int direction);
+        void optChangedRoutingShapePadding(int padding);
+        void optChangedShapeNonoverlapPadding(int padding);
 
     private slots:
         void processLayoutUpdateEvent(void);
@@ -351,6 +359,7 @@ class Canvas : public QGraphicsScene
         bool m_force_orthogonal_connectors;
 
         double m_opt_ideal_edge_length_modifier;
+        double m_opt_shape_nonoverlap_padding;
         int  m_opt_connector_rounding_distance;
         bool m_opt_automatic_graph_layout;
         bool m_opt_prevent_overlaps;

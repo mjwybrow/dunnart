@@ -134,7 +134,7 @@ Graph::Graph(Canvas *canvas, string gmlFile, Page page, COff canvasOffset)
       UseClusters(canvas->useGmlClusters())
 {
     canvas->setOptIdealEdgeLengthModifier(scale);
-    avoidBuffer = 4;
+    canvas->setOptShapeNonoverlapPadding(4);
     GA.initAttributes(
             ogdf::GraphAttributes::nodeGraphics |
             ogdf::GraphAttributes::nodeLabel |

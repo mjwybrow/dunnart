@@ -222,7 +222,8 @@ struct ShapePosInfo : PosInfo {
         locked(false),
         resized(false) 
     { 
-        shapeRect = shapePtr->shapeRect(avoidBuffer);
+        double buffer = shapePtr->canvas()->optShapeNonoverlapPadding();
+        shapeRect = shapePtr->shapeRect(buffer);
         shapeRect.moveCenter(QPointF(x, y));
         processOrder = PosInfoProcessOrderShape;
     }
@@ -237,7 +238,8 @@ struct ShapePosInfo : PosInfo {
     {
         processOrder = PosInfoProcessOrderShape,
         assert(shapePtr!=NULL);
-        shapeRect = shapePtr->shapeRect(avoidBuffer);
+        double buffer = shapePtr->canvas()->optShapeNonoverlapPadding();
+        shapeRect = shapePtr->shapeRect(buffer);
     }
     void process(Canvas *canvas)
     {

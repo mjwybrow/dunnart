@@ -355,10 +355,8 @@ StlClassProbabilities FreehandShape::get_probability_map() const
 	return class_probs;
 }
 
-Polygon *FreehandShape::poly(const double b, Polygon *p)
+Polygon FreehandShape::polygon(void) const
 {
-    Q_UNUSED (b)
-    Q_UNUSED (p)
 #if 0
     // XXX: Just use a rectangle for the moment.
 

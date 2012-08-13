@@ -101,7 +101,7 @@ void PropertiesEditorDialog::canvasSelectionChanged()
         firstProperty = CanvasItem::staticMetaObject.propertyOffset();
     }
 
-    QtVariantProperty *property;
+    QtVariantProperty *property = NULL;
 
     const QMetaObject* metaObject = item->metaObject();
     QStringList properties;
@@ -173,6 +173,7 @@ void PropertiesEditorDialog::canvasSelectionChanged()
         //property->setAttribute(QLatin1String("minimum"), 0);
         //property->setAttribute(QLatin1String("maximum"), 100);
         property->setValue(propVariant);
+        Q_ASSERT(property);
         addProperty(property, propName);
     }
 }

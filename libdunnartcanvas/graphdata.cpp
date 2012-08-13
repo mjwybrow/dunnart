@@ -412,7 +412,8 @@ GraphData::GraphData(Canvas *canvas, bool ignoreEdges,
             dunnartClusterToCluster(cluster);
         } 
     }
-    clusterHierarchy.setRectBuffers(avoidBuffer * 2);
+    double buffer = canvas->optShapeNonoverlapPadding();
+    clusterHierarchy.setRectBuffers(buffer * 2);
     setUpRootCluster();
     // distribution constraints contain a list of pairs of alignment guidelines
     for(vector<Distribution*>::iterator i=distrolist.begin();i!=distrolist.end();i++)
@@ -772,7 +773,8 @@ unsigned GraphData::getConnectionPoint(const CPoint& connPointInfo)
 size_t GraphData::shapeToNode(ShapeObj* shape) {
     assert(shape != NULL);
     double g=0;
-    QRectF rect = shape->shapeRect(avoidBuffer + g);
+    double buffer = shape->canvas()->optShapeNonoverlapPadding();
+    QRectF rect = shape->shapeRect(buffer + g);
     unsigned nodeID=rs.size();
     snMap[shape]=nodeID;
     rootNodes.insert(nodeID);

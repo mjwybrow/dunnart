@@ -47,6 +47,7 @@ class LayoutPropertiesDialog : public QDockWidget, private Ui::LayoutProperties
         void optChangedPreventOverlaps(bool checked);
         void optChangedRubberBandRouting(bool checked);
         void optChangedFitWithinPage(bool checked);
+        void optChangedShapeNonoverlapPadding(int value);
 
         // Used privately for passing on state changes from the
         // canvas to widgets in this dialog.
@@ -56,6 +57,7 @@ class LayoutPropertiesDialog : public QDockWidget, private Ui::LayoutProperties
         void setOptRubberBandRouting(const bool value);
         void setOptFitWithinPage(const bool value);
         void setOptStructuralLayoutMode(const int value);
+        void setOptShapeNonoverlapPadding(const int value);
     private slots:
         void changeStructuralLayoutMode(int mode);
         void changeAutomaticLayoutMode(bool auto_layout);

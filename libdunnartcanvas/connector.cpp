@@ -59,10 +59,6 @@ using Avoid::Point;
 namespace dunnart {
 
 
-// For crossing counting to work as expected, 
-// we require that EDGEPORTSPACE == routingBuffer.
-#define EDGEPORTSPACE (routingBuffer)
-
 const QColor defaultConnLineCol = QColor(0, 0, 0);
 
 

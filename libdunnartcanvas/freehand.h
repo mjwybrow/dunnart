@@ -126,7 +126,7 @@ class FreehandShape: public ShapeObj
 
         void finalise(void);
         void addStroke(FreehandGeometry& geometry);
-        Avoid::Polygon *poly(const double buffer, Avoid::Polygon *poly = NULL);
+        Avoid::Polygon polygon(void) const;
         FreehandGeometry& getGeometry(void);
         void setPosition(int x, int y, bool from_cider);
         void setColour(unsigned int r, unsigned int g, unsigned int b);

@@ -94,6 +94,15 @@ LayoutPropertiesDialog::LayoutPropertiesDialog(Canvas *canvas, QWidget *parent)
     connect(this, SIGNAL(optChangedFitWithinPage(bool) ),
             pageBoundaryCheckBox2, SLOT(setChecked(bool)));
 
+    connect(spacingSlider, SIGNAL(sliderMoved(int)),
+            this, SIGNAL(setOptShapeNonoverlapPadding(int)));
+    connect(spacingSlider2, SIGNAL(sliderMoved(int)),
+            this, SIGNAL(setOptShapeNonoverlapPadding(int)));
+    connect(this, SIGNAL(optChangedShapeNonoverlapPadding(int)),
+            spacingSlider, SLOT(setValue(int)));
+    connect(this, SIGNAL(optChangedShapeNonoverlapPadding(int)),
+            spacingSlider2, SLOT(setValue(int)));
+
     // Preserve topology control should only be enabled when overlaps are.
     connect(this, SIGNAL(optChangedPreventOverlaps(bool) ),
             preserveTopologyCheckBox, SLOT(setEnabled(bool)));
@@ -159,6 +168,11 @@ void LayoutPropertiesDialog::changeCanvas(Canvas *canvas)
     connect(m_canvas, SIGNAL(optChangedFlowDirection(int)),
             flowDirectionDial, SLOT(setValue(int)));
 
+    connect(this, SIGNAL(setOptShapeNonoverlapPadding(int)),
+            m_canvas, SLOT(setOptShapeNonoverlapPadding(int)));
+    connect(m_canvas, SIGNAL(optChangedShapeNonoverlapPadding(int)),
+            this, SIGNAL(optChangedShapeNonoverlapPadding(int)));
+
     // Set initial control values.
     idealLengthSlider->setSliderPosition(
             m_canvas->optIdealEdgeLengthModifier() * 100);
@@ -170,6 +184,9 @@ void LayoutPropertiesDialog::changeCanvas(Canvas *canvas)
     preserveTopologyCheckBox->setEnabled(value);
 
     flowDirectionDial->setSliderPosition(m_canvas->optFlowDirection());
+
+    spacingSlider->setSliderPosition(m_canvas->optShapeNonoverlapPadding());
+    spacingSlider2->setSliderPosition(m_canvas->optShapeNonoverlapPadding());
 
     value = m_canvas->optPreserveTopology();
     preserveTopologyCheckBox->setChecked(value);

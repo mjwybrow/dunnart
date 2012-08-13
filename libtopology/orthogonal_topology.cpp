@@ -155,7 +155,7 @@ class LayoutEdgeSegment : public ShiftSegment
         }
         double nudgeDistance(void) const
         {
-            return connRef->router()->orthogonalNudgeDistance();
+            return connRef->router()->routingParameter(idealNudgingDistance);
         }
         bool immovable(void) const
         {
@@ -277,17 +277,10 @@ class LayoutObstacle
           obstacle(shape),
           variable(NULL)
     {
-       //double nudgeDistance = shape->router()->orthogonalNudgeDistance();
-        
         // Take the bounds of the shape
-        shape->polygon().getBoundingRect(
-                &min.x, &min.y, &max.x, &max.y);
-        /*
-        min.x += nudgeDistance;
-        min.y += nudgeDistance;
-        max.x -= nudgeDistance;
-        max.y -= nudgeDistance;
-        */
+        Avoid::Box bBox = shape->routingBox();
+        min = bBox.min;
+        max = bBox.max;
     }
     LayoutObstacle(JunctionRef *junction, const size_t dim)
         : dimension(dim),

@@ -61,7 +61,7 @@ class Cluster: public ShapeObj
 
         QDomElement to_QDomElement(const unsigned int subset,
                 QDomDocument& doc);
-        Avoid::Polygon *poly(const double buffer, Avoid::Polygon *poly = NULL);
+        Avoid::Polygon polygon(void) const;
         virtual void setLabel(const QString& label);
         void recomputeBoundary(void);
         void setNewBoundary(std::vector<Avoid::Point>& points);

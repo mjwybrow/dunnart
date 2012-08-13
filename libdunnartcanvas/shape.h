@@ -41,12 +41,6 @@ class ShapeConnectionPin;
 namespace dunnart {
 
 
-extern double avoidBuffer;
-extern double routingBuffer;
-
-static const double AVOID_BUFFER_SMALL  = 2.0;
-static const double AVOID_BUFFER_DIFFERENCE  = 3.5;
-
 static const double MIN_SHAPE_SIZE = 5;
 
 static const uint CENTRE_CONNECTION_PIN = 100;
@@ -143,8 +137,7 @@ class ShapeObj: public CanvasItem
         virtual void setSize(const QSizeF& size);
         void setPosAndSize(const QPointF& newCentrePos, const QSizeF& newSize);
         virtual void setCentrePos(const QPointF & pos);
-        virtual Avoid::Polygon *poly(const double buffer,
-                Avoid::Polygon *poly = NULL);
+        virtual Avoid::Polygon polygon(void) const;
         void paintLabel(QPainter *painter);
         virtual QRectF labelBoundingRect(void) const;
         void drawLabelAndImage(QPixmap *target, const int x, const int y);

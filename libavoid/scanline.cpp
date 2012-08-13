@@ -55,10 +55,13 @@ Node::Node(Obstacle *v, const double p)
       pos(p),
       firstAbove(NULL),
       firstBelow(NULL)
-{   
+{
+    Box bBox = v->routingBox();
+    min[XDIM] = bBox.min.x;
+    min[YDIM] = bBox.min.y;
+    max[XDIM] = bBox.max.x;
+    max[YDIM] = bBox.max.y;
     //COLA_ASSERT(r->width()<1e40);
-    v->polygon().getBoundingRect(
-            &min[XDIM], &min[YDIM], &max[XDIM], &max[YDIM]);
 }
 
 Node::Node(VertInf *c, const double p)
@@ -282,7 +285,7 @@ Event::Event(EventType t, Node *v, double p)
       v(v),
       pos(p)
 {
-};
+}
 
 
 // Used for quicksort.  Must return <0, 0, or >0.

@@ -63,10 +63,6 @@ namespace dunnart {
 const QColor shLineCol = QColor(0,   0,   0);
 const QColor shFillCol = QColor(240, 240, 210);
 
-
-double avoidBuffer = AVOID_BUFFER_SMALL;
-double routingBuffer = avoidBuffer;
-
 static QPixmap *infoIcon = NULL;
 
 const char *x_connectionPins = "connectionPins";
@@ -101,11 +97,10 @@ void ShapeObj::routerAdd(void)
     Avoid::Router *router = canvas()->router();
 
     // Create ShapeRef
-    Avoid::Polygon *polygon = poly(routingBuffer);
-    int pid = polygon->_id;
+    Avoid::Polygon poly = polygon();
+    int pid = poly._id;
     assert(avoidRef == NULL);
-    avoidRef = new Avoid::ShapeRef(router, *polygon, pid);
-    delete polygon;
+    avoidRef = new Avoid::ShapeRef(router, poly, pid);
 
     for (int i = 0; i < m_connection_pins.size(); ++i)
     {
@@ -180,9 +175,8 @@ void ShapeObj::routerMove(void)
     Avoid::Router *router = canvas()->router();
 
     // Move shape
-    Avoid::Polygon *polygon = poly(routingBuffer);
-    router->moveShape(avoidRef, *polygon);
-    delete polygon;
+    Avoid::Polygon poly = polygon();
+    router->moveShape(avoidRef, poly);
 }
 
 
@@ -841,7 +835,7 @@ void ShapeObj::paintShapeDecorations(QPainter *painter)
     }
 }
 
-
+#if 0
 static int wrapQString(const QString& text, int width, 
         const QFontMetrics& metrics, QStringList& lines)
 {
@@ -908,7 +902,7 @@ static int wrapQString(const QString& text, int width,
 
     return pixels;
 }
-
+#endif
 
 void ShapeObj::addXmlProps(const unsigned int subset, QDomElement& node,
         QDomDocument& doc)
@@ -997,34 +991,18 @@ void ShapeObj::setDecorativeImageFile(const std::string fileName) {
 #endif
 
 
-Avoid::Polygon *ShapeObj::poly(const double b, Avoid::Polygon *p)
+Avoid::Polygon ShapeObj::polygon(void) const
 {
     double sw = width();
     double sh = height();
     double sx = centrePos().x() - (sw / 2);
     double sy = centrePos().y() - (sh / 2);
    
-    if (p)
-    {
-        delete p;
-    }
-    p = new Avoid::Rectangle(Avoid::Point(sx - b, sy - b),
-                Avoid::Point(sx + sw + b, sy + sh + b));
-    
-    if (!p)
-    {
-        qFatal("Couldn't calloc memory in Rect::poly()");
-    }
-    
-    p->_id = (int) m_internal_id;
+    Avoid::Rectangle poly(Avoid::Point(sx, sy),
+                Avoid::Point(sx + sw, sy + sh));
+    poly._id = (int) m_internal_id;
 
-    for (int i = 0; i < 4; ++i)
-    {
-        p->ps[i].id = m_internal_id;
-        p->ps[i].vn = i;
-    }
-
-    return p;
+    return poly;
 }
 
 

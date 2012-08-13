@@ -44,6 +44,7 @@ class ConnectorPropertiesDialog : public QDockWidget, private Ui::ConnectorPrope
         // canvas.
         void optChangedConnRoundingDist(int value);
         void optChangedConnPenaltyCrossing(int value);
+        void optChangedRoutingShapeBuffer(int value);
         void optChangedConnPenaltySegment(int value);
         void optChangedConnPenaltyFixedSharedPath(int value);
         void optChangedConnPerformNudging(bool checked);
@@ -52,6 +53,7 @@ class ConnectorPropertiesDialog : public QDockWidget, private Ui::ConnectorPrope
         // canvas to widgets in this dialog.
         void setOptChangedConnRoundingDist(const int value);
         void setOptChangedConnPenaltyCrossing(const int value);
+        void setOptChangedRoutingShapeBuffer(const int value);
         void setOptChangedConnPenaltySegment(const int value);
         void setOptChangedConnPenaltyFixedSharedPath(const int value);
         void setOptChangedConnPerformNudging(const bool checked);
