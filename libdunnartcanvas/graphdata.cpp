@@ -260,7 +260,7 @@ GraphData::GraphData(Canvas *canvas, bool ignoreEdges,
             // Set up downward edge constraints.
             // In the case that the graph isn't a DAG, i.e., has cycles, we
             // don't constrain any of the edges that form a cycle.  We do
-            // this by coomputing the strongly connected components for the
+            // this by computing the strongly connected components for the
             // Graph and only add a downward edge constraint between two
             // nodes (connector endpoints) if they are not part of the same
             // strongly connected component.
@@ -289,14 +289,15 @@ GraphData::GraphData(Canvas *canvas, bool ignoreEdges,
                     unsigned firstIndex = (flipped) ? edge.second : edge.first;
                     unsigned secondIndex = (flipped) ? edge.first : edge.second;
 
-                    ccs.push_back(new cola::SeparationConstraint(dimension,
-                            firstIndex, secondIndex,
-                            (canvas_->m_ideal_connector_length *
-                             canvas_->optIdealEdgeLengthModifier() *
-                             canvas_->m_flow_separation_modifier)));
-                    conn_vec[i]->setHasDownwardConstraint(true);
-
-                    if (mode == GraphLayout::LAYERED)
+                    if (mode == GraphLayout::FLOW)
+                    {
+                        ccs.push_back(new cola::SeparationConstraint(dimension,
+                                firstIndex, secondIndex,
+                                (canvas_->m_ideal_connector_length *
+                                 canvas_->optIdealEdgeLengthModifier() *
+                                 canvas_->m_flow_separation_modifier)));
+                    }
+                    else if (mode == GraphLayout::LAYERED)
                     {
                         nodeInfo[firstIndex].children.insert(secondIndex);
                         nodeInfo[secondIndex].parentCount++;
@@ -304,6 +305,7 @@ GraphData::GraphData(Canvas *canvas, bool ignoreEdges,
                         nodeInfo[secondIndex].sighted = true;
                         nodeInfo[secondIndex].isRoot = false;
                     }
+                    conn_vec[i]->setHasDownwardConstraint(true);
                 }
                 else
                 {
@@ -327,23 +329,24 @@ GraphData::GraphData(Canvas *canvas, bool ignoreEdges,
 
                 // Create list of nodes in each level.
                 std::vector<std::set<unsigned> > levelLists(maxLevel);
+                std::vector<double> levelShapePadding(maxLevel, 0.0);
                 for (size_t ind = 0; ind < shape_vec.size(); ++ind)
                 {
                     if (nodeInfo[ind].level > 0)
                     {
-                        levelLists[nodeInfo[ind].level - 1].insert(ind);
+                        size_t level = nodeInfo[ind].level - 1;
+                        levelLists[level].insert(ind);
+                        levelShapePadding[level] = std::max(
+                                levelShapePadding[level],
+                                (rs[ind]->length(dimension) / 2.0));
                     }
                 }
 
                 // Align each level.
+                cola::AlignmentConstraint *prevLevelAlignment = NULL;
                 for (size_t level = 0; level < maxLevel; ++level)
                 {
                     std::set<unsigned>& nodes = levelLists[level];
-                    if (nodes.size() < 2)
-                    {
-                        // Don't bother aligning a single node.
-                        continue;
-                    }
 
                     cola::AlignmentConstraint *alignment =
                             new cola::AlignmentConstraint(dimension);
@@ -353,6 +356,21 @@ GraphData::GraphData(Canvas *canvas, bool ignoreEdges,
                         alignment->addShape(*it, 0);
                     }
                     ccs.push_back(alignment);
+
+                    if (prevLevelAlignment)
+                    {
+                        cola::AlignmentConstraint *first = (flipped) ?
+                                prevLevelAlignment : alignment;
+                        cola::AlignmentConstraint *second = (flipped) ?
+                                alignment : prevLevelAlignment;
+                        ccs.push_back(new cola::SeparationConstraint(dimension,
+                                first, second, levelShapePadding[level] +
+                                levelShapePadding[level - 1] +
+                                (canvas_->m_ideal_connector_length *
+                                 canvas_->optIdealEdgeLengthModifier() *
+                                 canvas_->m_flow_separation_modifier)));
+                    }
+                    prevLevelAlignment = alignment;
                 }
 
 /*
