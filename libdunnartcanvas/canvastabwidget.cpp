@@ -47,6 +47,7 @@ CanvasTabWidget::CanvasTabWidget(QMainWindow *window) :
     m_window(window),
     m_canvas(NULL)
 {
+    // Connect and respond to QTabWidget signals:
     connect(this, SIGNAL(currentChanged(int)),
             this, SLOT(currentChanged(int)));
     connect(this, SIGNAL(tabCloseRequested(int)),

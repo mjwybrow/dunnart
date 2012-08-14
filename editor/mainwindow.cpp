@@ -479,6 +479,10 @@ bool MainWindow::loadDiagram(const QString& filename)
 
     view()->postDiagramLoad();
 
+    // Cause widget settings values to notice updated preferences
+    // from the loaded diagram.
+    m_tab_widget->currentChanged(m_tab_widget->currentIndex());
+
     return successful;
 }
 
