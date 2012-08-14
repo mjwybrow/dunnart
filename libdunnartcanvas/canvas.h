@@ -44,6 +44,7 @@ class QSvgRenderer;
 class QUndoStack;
 class QUndoCommand;
 class QFileInfo;
+class QParallelAnimationGroup;
 
 class BuiltinLayoutFileIOPlugin;
 class BuiltinSVGFileIOPlugin;
@@ -326,6 +327,7 @@ class Canvas : public QGraphicsScene
         void clearIndicatorHighlights(const bool clearCache = false);
         void glueObjectsToIndicators(void);
         bool hasVisibleOverlays(void) const;
+        void updateConnectorsForLayout(void);
 
         double m_visual_page_buffer;
         QString m_filename;
@@ -408,6 +410,7 @@ class Canvas : public QGraphicsScene
         bool m_routing_event_posted;
         QFont *m_canvas_font;
         unsigned int m_canvas_font_size;
+        QParallelAnimationGroup *m_animation_group;
 
 #ifdef FPSTIMER
         clock_t startTime;
@@ -424,6 +427,8 @@ class Canvas : public QGraphicsScene
         friend class GraphData;
         friend class UndoMacro;
         friend class MainWindow;
+        friend struct ShapePosInfo;
+        friend class ObjectsRepositionedAnimation;
 
         friend class ::BuiltinLayoutFileIOPlugin;
         friend class ::BuiltinSVGFileIOPlugin;

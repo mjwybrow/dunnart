@@ -24,6 +24,7 @@
 */
 #include <QtGui>
 #include <QtSvg>
+#include <QParallelAnimationGroup>
 
 #include "libdunnartcanvas/canvas.h"
 #include "libdunnartcanvas/shape.h"
@@ -179,7 +180,8 @@ Canvas::Canvas()
       m_edit_mode(ModeSelection),
       m_routing_event_posted(false),
       m_canvas_font(NULL),
-      m_canvas_font_size(DEFAULT_CANVAS_FONT_SIZE)
+      m_canvas_font_size(DEFAULT_CANVAS_FONT_SIZE),
+      m_animation_group(NULL)
 {
     m_ideal_connector_length = 100;
     m_flow_separation_modifier = 0.5;
@@ -236,6 +238,8 @@ Canvas::Canvas()
     m_router->setRoutingParameter(Avoid::clusterCrossingPenalty, 0);
     //m_router->setRoutingParameter(Avoid::fixedSharedPathPenalty);
 
+    m_animation_group = new QParallelAnimationGroup();
+
     m_selection_resize_handles = QVector<SelectionResizeHandle *>(8);
     for (int i = 0; i < 8; ++i)
     {
@@ -261,6 +265,7 @@ Canvas::~Canvas()
 {
     delete m_graphlayout;
     delete m_router;
+    delete m_animation_group;
 
     if (m_svg_renderer)
     {
@@ -1851,6 +1856,16 @@ void Canvas::setNudgeDistance(const double dist)
     m_connector_nudge_distance = dist;
 }
 
+void Canvas::updateConnectorsForLayout(void)
+{
+    if ((!m_opt_preserve_topology || (m_graphlayout->runLevel != 1)) &&
+            !m_gml_graph && !m_batch_diagram_layout)
+    {
+        // Don't reroute connectors in the case of topology preserving layout.
+        reroute_connectors(this);
+    }
+}
+
 void Canvas::processLayoutUpdateEvent(void)
 {
     m_layout_update_timer->stop();
@@ -1876,12 +1891,7 @@ void Canvas::processLayoutUpdateEvent(void)
     }
 
     m_graphlayout->processReturnPositions();
-    if ((!m_opt_preserve_topology || (m_graphlayout->runLevel != 1)) &&
-            !m_gml_graph && !m_batch_diagram_layout)
-    {
-        // Don't reroute connectors in the case of topology preserving layout.
-        reroute_connectors(this);
-    }
+    updateConnectorsForLayout();
 
     //qDebug("processLayoutUpdateEvent %7d", ++layoutUpdates);
 }

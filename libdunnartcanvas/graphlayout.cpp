@@ -55,6 +55,8 @@
 
 namespace dunnart {
 
+static const int ANIMATION_DURATION = 100;
+
 // The order that we process returned PosInfos in.  Order matters because the
 // guideline length with depend on the positions of the aligned shapes, etc.
 enum PosInfoProcessOrder 
@@ -209,6 +211,25 @@ struct TraceLinePosInfo : PosInfo {
     unsigned colour;
 };
 
+// Animates shape movement.
+class ShapePositionAnimation : public QVariantAnimation
+{
+    public:
+        ShapePositionAnimation(ShapeObj *shape)
+            :m_shape(shape)
+        {
+        }
+        ~ShapePositionAnimation()
+        {
+        }
+        void updateCurrentValue(const QVariant &value)
+        {
+            m_shape->CanvasItem::setPos(value.toPointF());
+        }
+    private:
+        ShapeObj *m_shape;
+};
+
 /**
  * communicate position update info for a dunnart Shape from layout.
  */
@@ -248,11 +269,17 @@ struct ShapePosInfo : PosInfo {
         ConstraintDebug("**  SHAPE\n");
         if (!locked)
         {
-            //QPointF diff = QPointF(centreX, centreY) - shapePtr->pos();
+            //QPointF diff = shapeRect.center() - shapePtr->centrePos();
             //qDebug("Moving shape: (%g,%g)  %g\n", centreX, centreY,
             //        diff.manhattanLength());
 
-            shapePtr->cmd_setCentrePos(shapeRect.center());
+            // Do shape movement as an animation.
+            ShapePositionAnimation *animation =
+                    new ShapePositionAnimation(shapePtr);
+            animation->setDuration(ANIMATION_DURATION);
+            animation->setStartValue(shapePtr->centrePos());
+            animation->setEndValue(shapeRect.center());
+            canvas->m_animation_group->addAnimation(animation);
         }
     }
     void fixGraphLayoutPosition(GraphData*, cola::Locks&, cola::Resizes&);
@@ -907,6 +934,35 @@ int GraphLayout::initThread()
 
 }
 
+// Animation that is used to redraw connectors.
+class ObjectsRepositionedAnimation : public QAbstractAnimation
+{
+    public:
+        ObjectsRepositionedAnimation(Canvas *canvas)
+            :m_canvas(canvas)
+        {
+        }
+        ~ObjectsRepositionedAnimation()
+        {
+        }
+        int duration(void) const
+        {
+            return ANIMATION_DURATION;
+        }
+        void updateCurrentTime(const int value)
+        {
+            Q_UNUSED (value)
+
+            m_canvas->updateConnectorsForLayout();
+
+            // Update selection cue after nodes have moved.
+            bool computePositions = true;
+            m_canvas->repositionAndShowSelectionResizeHandles(computePositions);
+        }
+    private:
+        Canvas *m_canvas;
+};
+
 struct CmpPosInfoPtrs
 {
     bool operator()(const PosInfo *a, const PosInfo *b)
@@ -933,6 +989,11 @@ int GraphLayout::processReturnPositions()
     returnPositions.sort(CmpPosInfoPtrs());
 
     ConstraintDebug("\n*******START**********\n");
+
+    // Clear any remaining movement iteration, we are going to override it.
+    m_canvas->m_animation_group->stop();
+    m_canvas->m_animation_group->clear();
+
     m_canvas->m_processing_layout_updates = true;
     while (!returnPositions.empty())
     {
@@ -954,9 +1015,12 @@ int GraphLayout::processReturnPositions()
     }
     m_canvas->m_processing_layout_updates = false;
 
-    // Update selection cue after nodes have moved.
-    bool computePositions = true;
-    m_canvas->repositionAndShowSelectionResizeHandles(computePositions);
+    // Finish every animation step off with ObjectsRepositionedAnimation
+    // which can be used to redraw connectors.  Then start the animation.
+    ObjectsRepositionedAnimation *animation =
+            new ObjectsRepositionedAnimation(m_canvas);
+    m_canvas->m_animation_group->addAnimation(animation);
+    m_canvas->m_animation_group->start();
 
     ConstraintDebug("********END***********\n\n");
     //redraw_connectors(m_canvas);
