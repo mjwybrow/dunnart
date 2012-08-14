@@ -152,7 +152,7 @@ CanvasItem::CanvasItem(QGraphicsItem *parent, QString id, unsigned int lev)
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 #endif
     setCursor(Qt::OpenHandCursor);
-    setCanvasItemFlag(CanvasItem::ItemIsMovable, false);
+    setCanvasItemFlag(CanvasItem::ItemIsMovable, true);
 
     // Initial painter path.
     m_painter_path = buildPainterPath();
