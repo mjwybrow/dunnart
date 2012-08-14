@@ -359,12 +359,9 @@ GraphData::GraphData(Canvas *canvas, bool ignoreEdges,
 
                     if (prevLevelAlignment)
                     {
-                        cola::AlignmentConstraint *first = (flipped) ?
-                                prevLevelAlignment : alignment;
-                        cola::AlignmentConstraint *second = (flipped) ?
-                                alignment : prevLevelAlignment;
                         ccs.push_back(new cola::SeparationConstraint(dimension,
-                                first, second, levelShapePadding[level] +
+                                prevLevelAlignment, alignment,
+                                levelShapePadding[level] +
                                 levelShapePadding[level - 1] +
                                 (canvas_->m_ideal_connector_length *
                                  canvas_->optIdealEdgeLengthModifier() *
