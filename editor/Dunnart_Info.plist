@@ -8,6 +8,10 @@
     <string>Dunnart</string>
     <key>CFBundleGetInfoString</key>
     <string>2.0, Copyright 2003-2008 Michael Wybrow, Copyright 2006-2011 Monash University</string>
+    <key>NSPrincipalClass</key>
+    <string>NSApplication</string>
+    <key>NSHighResolutionCapable</key>
+    <true/>
     <key>CFBundleIconFile</key>
     <string>Dunnart.icns</string>
     <key>CFBundleIdentifier</key>
