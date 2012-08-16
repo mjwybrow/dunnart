@@ -37,4 +37,5 @@ HEADERS += cola.h \
     output_svg.h \
     cc_clustercontainmentconstraints.h \
     cc_nonoverlapconstraints.h \
+    unused.h \
     config.h
