@@ -210,6 +210,7 @@ Canvas::Canvas()
     m_opt_connector_rounding_distance = 5;
     m_opt_stuctural_editing_disabled = false;
     m_opt_flow_direction = FlowDown;
+    m_opt_layered_alignment_position = ShapeMiddle;
 
     // Default list of connector colors. Use only dark colors (and full
     // opacity) since connectors are drawn as thin lines so light
@@ -1385,6 +1386,38 @@ void Canvas::setOptIdealEdgeLengthModifier(double modifier)
     interrupt_graph_layout();
 }
 
+void Canvas::setOptLayeredAlignmentPosition(const LayeredAlignment pos)
+{
+    m_opt_layered_alignment_position = pos;
+    emit optChangedLayeredAlignmentPosition(pos);
+    interrupt_graph_layout();
+}
+
+void Canvas::setOptFlowSeparationModifier(const double value)
+{
+    m_flow_separation_modifier = value;
+    emit optChangedDirectedEdgeSeparationModifier(value);
+    interrupt_graph_layout();
+}
+
+void Canvas::setOptFlowSeparationModifierFromSlider(const int intValue)
+{
+    double doubleValue = intValue / 100.0;
+    setOptFlowSeparationModifier(doubleValue);
+}
+
+void Canvas::setOptFlowDirection(const FlowDirection value)
+{
+    m_opt_flow_direction = value;
+    emit optChangedFlowDirection(value);
+    interrupt_graph_layout();
+}
+
+void Canvas::setOptFlowDirectionFromDial(const int value)
+{
+    setOptFlowDirection((FlowDirection) value);
+}
+
 bool Canvas::hasVisibleOverlays(void) const
 {
     return m_overlay_router_obstacles || m_overlay_router_visgraph ||
@@ -1463,29 +1496,9 @@ double Canvas::optFlowSeparationModifier(void) const
     return m_flow_separation_modifier;
 }
 
-void Canvas::setOptFlowSeparationModifier(const double value)
+Canvas::LayeredAlignment Canvas::optLayeredAlignmentPosition(void) const
 {
-    m_flow_separation_modifier = value;
-    emit optChangedDirectedEdgeSeparationModifier(value);
-    interrupt_graph_layout();
-}
-
-void Canvas::setOptFlowSeparationModifierFromSlider(const int intValue)
-{
-    double doubleValue = intValue / 100.0;
-    setOptFlowSeparationModifier(doubleValue);
-}
-
-void Canvas::setOptFlowDirection(const FlowDirection value)
-{
-    m_opt_flow_direction = value;
-    emit optChangedFlowDirection(value);
-    interrupt_graph_layout();
-}
-
-void Canvas::setOptFlowDirectionFromDial(const int value)
-{
-    setOptFlowDirection((FlowDirection) value);
+    return m_opt_layered_alignment_position;
 }
 
 void Canvas::bringToFront(void)

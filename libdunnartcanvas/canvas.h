@@ -109,6 +109,7 @@ class Canvas : public QGraphicsScene
     Q_PROPERTY (LayoutMode layoutMode READ optLayoutMode WRITE setOptLayoutMode)
     Q_PROPERTY (FlowDirection flowDirection READ optFlowDirection WRITE setOptFlowDirection)
     Q_PROPERTY (double flowSeparationModifier READ optFlowSeparationModifier WRITE setOptFlowSeparationModifier)
+    Q_PROPERTY (LayeredAlignment layeredAlignmentPosition READ optLayeredAlignmentPosition WRITE setOptLayeredAlignmentPosition)
     Q_PROPERTY (bool preventOverlaps READ optPreventOverlaps WRITE setOptPreventOverlaps)
     Q_PROPERTY (int shapeNonOverlapPadding READ optShapeNonoverlapPadding WRITE setOptShapeNonoverlapPadding)
     Q_PROPERTY (bool preserveTopology READ optPreserveTopology WRITE setOptPreserveTopology)
@@ -122,8 +123,10 @@ class Canvas : public QGraphicsScene
     Q_PROPERTY (bool structuralEditingDisabled READ optStructuralEditingDisabled WRITE setOptStructuralEditingDisabled)
     Q_ENUMS (FlowDirection)
     Q_ENUMS (LayoutMode)
+    Q_ENUMS (LayeredAlignment)
 
     public:
+
         Canvas();
         virtual ~Canvas();
 
@@ -133,6 +136,13 @@ class Canvas : public QGraphicsScene
             FlowLeft  = 1,
             FlowUp    = 2,
             FlowRight = 3
+        };
+
+        enum LayeredAlignment
+        {
+            ShapeStart,
+            ShapeMiddle,
+            ShapeEnd
         };
 
         enum LayoutMode
@@ -193,6 +203,7 @@ class Canvas : public QGraphicsScene
         FlowDirection optFlowDirection(void) const;
         double optFlowSeparationModifier(void) const;
         int optShapeNonoverlapPadding(void) const;
+        LayeredAlignment optLayeredAlignmentPosition(void) const;
 
         bool overlayRouterObstacles(void) const;
         bool overlayRouterVisGraph(void) const;
@@ -264,6 +275,7 @@ class Canvas : public QGraphicsScene
         void setOptFlowDirection(const FlowDirection value);
         void setOptFlowDirectionFromDial(const int value);
         void setOptShapeNonoverlapPadding(const int value);
+        void setOptLayeredAlignmentPosition(const LayeredAlignment pos);
 
         void processResponseTasks(void);
         void processUndoResponseTasks(void);
@@ -299,6 +311,7 @@ class Canvas : public QGraphicsScene
         void optChangedFlowDirection(int direction);
         void optChangedRoutingShapePadding(int padding);
         void optChangedShapeNonoverlapPadding(int padding);
+        void optChangedLayeredAlignmentPosition(LayeredAlignment pos);
 
     private slots:
         void processLayoutUpdateEvent(void);
@@ -371,6 +384,7 @@ class Canvas : public QGraphicsScene
         bool m_opt_colour_interfering_connectors;
         bool m_opt_stuctural_editing_disabled;
         int  m_opt_flow_direction;
+        LayeredAlignment m_opt_layered_alignment_position;
         Actions m_actions;
 
         std::map<QString, QString> m_paste_id_map;
@@ -467,7 +481,11 @@ extern QRectF diagramBoundingRect(const QList<CanvasItem *>& list);
 
 
 }
-#endif // CANVAS_H_
 
+Q_DECLARE_METATYPE (dunnart::Canvas::FlowDirection)
+Q_DECLARE_METATYPE (dunnart::Canvas::LayeredAlignment)
+Q_DECLARE_METATYPE (dunnart::Canvas::LayoutMode)
+
+#endif // CANVAS_H_
 // vim: filetype=cpp ts=4 sw=4 et tw=0 wm=0 cindent
 

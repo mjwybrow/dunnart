@@ -123,6 +123,9 @@ GraphData::GraphData(Canvas *canvas, bool ignoreEdges,
     // Note that in Dunnart the coordinates of shapes are their top-left corners
     // while in constrained_majorization_layout we use the centres.
 
+    Canvas::LayeredAlignment layeredAlignment =
+            canvas_->optLayeredAlignmentPosition();
+
     // create nodes
     QList<CanvasItem *> canvasObjects = canvas->items();
     double xMin = DBL_MAX, xMax = -DBL_MAX;
@@ -329,16 +332,16 @@ GraphData::GraphData(Canvas *canvas, bool ignoreEdges,
 
                 // Create list of nodes in each level.
                 std::vector<std::set<unsigned> > levelLists(maxLevel);
-                std::vector<double> levelShapePadding(maxLevel, 0.0);
+                std::vector<double> levelShapeLength(maxLevel, 0.0);
                 for (size_t ind = 0; ind < shape_vec.size(); ++ind)
                 {
                     if (nodeInfo[ind].level > 0)
                     {
                         size_t level = nodeInfo[ind].level - 1;
                         levelLists[level].insert(ind);
-                        levelShapePadding[level] = std::max(
-                                levelShapePadding[level],
-                                (rs[ind]->length(dimension) / 2.0));
+                        levelShapeLength[level] = std::max(
+                                levelShapeLength[level],
+                                rs[ind]->length(dimension));
                     }
                 }
 
@@ -353,16 +356,39 @@ GraphData::GraphData(Canvas *canvas, bool ignoreEdges,
                     for (std::set<unsigned>::iterator it = nodes.begin();
                             it != nodes.end(); ++it)
                     {
-                        alignment->addShape(*it, 0);
+                        double offset = 0;
+                        double modifier = (flipped) ? -1 : 1;
+                        double distToEdge = rs[*it]->length(dimension) / 2.0;
+                        if (layeredAlignment == Canvas::ShapeStart)
+                        {
+                            offset = modifier * distToEdge;
+                        }
+                        else if (layeredAlignment == Canvas::ShapeEnd)
+                        {
+                            offset = modifier * -distToEdge;
+                        }
+                        alignment->addShape(*it, offset);
                     }
                     ccs.push_back(alignment);
 
                     if (prevLevelAlignment)
                     {
+                        double padding = 0;
+                        if (layeredAlignment == Canvas::ShapeMiddle)
+                        {
+                            padding = (levelShapeLength[level] / 2.0) +
+                                    (levelShapeLength[level - 1] / 2.0);
+                        }
+                        else if (layeredAlignment == Canvas::ShapeStart)
+                        {
+                            padding = levelShapeLength[level];
+                        }
+                        else if (layeredAlignment == Canvas::ShapeEnd)
+                        {
+                            padding = levelShapeLength[level - 1];
+                        }
                         ccs.push_back(new cola::SeparationConstraint(dimension,
-                                prevLevelAlignment, alignment,
-                                levelShapePadding[level] +
-                                levelShapePadding[level - 1] +
+                                prevLevelAlignment, alignment, padding +
                                 (canvas_->m_ideal_connector_length *
                                  canvas_->optIdealEdgeLengthModifier() *
                                  canvas_->m_flow_separation_modifier)));
