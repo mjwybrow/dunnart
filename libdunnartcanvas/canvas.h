@@ -384,7 +384,7 @@ class Canvas : public QGraphicsScene
         bool m_opt_colour_interfering_connectors;
         bool m_opt_stuctural_editing_disabled;
         int  m_opt_flow_direction;
-        LayeredAlignment m_opt_layered_alignment_position;
+        int m_opt_layered_alignment_position;
         Actions m_actions;
 
         std::map<QString, QString> m_paste_id_map;

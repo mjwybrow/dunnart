@@ -746,6 +746,7 @@ void Connector::applySimpleRoute(void)
 {
     QVariant srcPaddingVar = QVariant();
     QVariant dstPaddingVar = QVariant();
+    double connGroupPadding = 0.0;
     if (m_src_pt.shape)
     {
         // Use shape centre position for endpoint.
@@ -761,6 +762,12 @@ void Connector::applySimpleRoute(void)
         m_dst_pt.x = dstPt.x();
         m_dst_pt.y = dstPt.y();
         dstPaddingVar = m_dst_pt.shape->property("layeredStartChannelPadding");
+
+        // We're going to space the intermediate segment of orthogonal
+        // connectors apart, based on their source in the tree.  We should
+        // probably change this spacing based on the available space between
+        // levels, but for now we just make it a fixed amount of 10.0.
+        connGroupPadding = m_dst_pt.shape->property("layeredEndConnectorGroup").toDouble() * 10.0;
     }
 
     // Bend placement is halfway between endpoints.
@@ -797,8 +804,8 @@ void Connector::applySimpleRoute(void)
             // Enter and exit shapes in the direction of flow.
             leftToRight = (dir == Canvas::FlowLeft) ||
                     (dir == Canvas::FlowRight);
-            // Put the bend 3/4 of way to destination.
-            bendPlacement = 0.75;
+            // At the beginning of channel.
+            bendPlacement = 0.0;
 
             // Midpoints.
             if (leftToRight)
@@ -809,11 +816,13 @@ void Connector::applySimpleRoute(void)
 
                 xDiff -= (srcPadding + dstPadding);
 
-                route.ps[1].x = m_src_pt.x + xDir * (srcPadding + (bendPlacement * xDiff));
+                double xSegPos = m_dst_pt.x - xDir *
+                        (dstPadding + connGroupPadding + (bendPlacement * xDiff));
+                route.ps[1].x = xSegPos;
                 route.ps[1].y = m_src_pt.y;
                 route.ps[1].vn = Avoid::kUnassignedVertexNumber;
 
-                route.ps[2].x = m_src_pt.x + xDir * (srcPadding + (bendPlacement * xDiff));
+                route.ps[2].x = xSegPos;
                 route.ps[2].y = m_dst_pt.y;
                 route.ps[2].vn = Avoid::kUnassignedVertexNumber;
             }
@@ -829,12 +838,14 @@ void Connector::applySimpleRoute(void)
 
                 yDiff -= (srcPadding + dstPadding);
 
+                double ySegPos = m_dst_pt.y - yDir *
+                        (srcPadding + connGroupPadding + (bendPlacement * yDiff));
                 route.ps[1].x = m_src_pt.x;
-                route.ps[1].y = m_src_pt.y + yDir * (srcPadding + (bendPlacement * yDiff));
+                route.ps[1].y = ySegPos;
                 route.ps[1].vn = Avoid::kUnassignedVertexNumber;
 
                 route.ps[2].x = m_dst_pt.x;
-                route.ps[2].y = m_src_pt.y + yDir * (srcPadding + (bendPlacement * yDiff));
+                route.ps[2].y = ySegPos;
                 route.ps[2].vn = Avoid::kUnassignedVertexNumber;
             }
         }
@@ -855,11 +866,13 @@ void Connector::applySimpleRoute(void)
                 //     |
                 //     +--->o
 
-                route.ps[1].x = m_src_pt.x + xDir * (bendPlacement * xDiff);
+                double xSegPos = m_src_pt.x + xDir * (bendPlacement * xDiff);
+
+                route.ps[1].x = xSegPos;
                 route.ps[1].y = m_src_pt.y;
                 route.ps[1].vn = Avoid::kUnassignedVertexNumber;
 
-                route.ps[2].x = m_src_pt.x + xDir * (bendPlacement * xDiff);
+                route.ps[2].x = xSegPos;
                 route.ps[2].y = m_dst_pt.y;
                 route.ps[2].vn = Avoid::kUnassignedVertexNumber;
             }
@@ -873,12 +886,14 @@ void Connector::applySimpleRoute(void)
                 //     v
                 //     o
 
+                double ySegPos = m_src_pt.y + yDir * (bendPlacement * yDiff);
+
                 route.ps[1].x = m_src_pt.x;
-                route.ps[1].y = m_src_pt.y + yDir * (bendPlacement * yDiff);
+                route.ps[1].y = ySegPos;
                 route.ps[1].vn = Avoid::kUnassignedVertexNumber;
 
                 route.ps[2].x = m_dst_pt.x;
-                route.ps[2].y = m_src_pt.y + yDir * (bendPlacement * yDiff);
+                route.ps[2].y = ySegPos;
                 route.ps[2].vn = Avoid::kUnassignedVertexNumber;
             }
         }

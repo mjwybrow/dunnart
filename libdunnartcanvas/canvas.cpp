@@ -1498,7 +1498,7 @@ double Canvas::optFlowSeparationModifier(void) const
 
 Canvas::LayeredAlignment Canvas::optLayeredAlignmentPosition(void) const
 {
-    return m_opt_layered_alignment_position;
+    return (LayeredAlignment) m_opt_layered_alignment_position;
 }
 
 void Canvas::bringToFront(void)
@@ -2916,7 +2916,7 @@ void Canvas::loadLayoutOptionsFromDomElement(const QDomElement& options)
     }
 
     optionalProp(options,x_EXPERIMENTAL_rect,m_rectangle_constraint_test);
-    optionalProp(options,x_layeredAlignment,m_opt_shape_nonoverlap_padding);
+    optionalProp(options,x_avoidBuffer,m_opt_shape_nonoverlap_padding);
 
     double routingBuffer;
     if (optionalProp(options,x_routingBuffer,routingBuffer))
