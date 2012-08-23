@@ -302,6 +302,8 @@ GraphData::GraphData(Canvas *canvas, bool ignoreEdges,
                     }
                     else if (mode == GraphLayout::LAYERED)
                     {
+                        // Save the hierarchy information so we can align the
+                        // layers together.
                         nodeInfo[firstIndex].children.insert(secondIndex);
                         nodeInfo[secondIndex].parentCount++;
                         nodeInfo[firstIndex].sighted = true;
@@ -330,11 +332,18 @@ GraphData::GraphData(Canvas *canvas, bool ignoreEdges,
                     }
                 }
 
-                // Create list of nodes in each level.
+                // Create list of nodes in each level and remember the size
+                // of the largest
                 std::vector<std::set<unsigned> > levelLists(maxLevel);
                 std::vector<double> levelShapeLength(maxLevel, 0.0);
                 for (size_t ind = 0; ind < shape_vec.size(); ++ind)
                 {
+                    // Clear the layer channel padding information.
+                    shape_vec[ind]->setProperty("layeredStartChannelPadding",
+                            QVariant());
+                    shape_vec[ind]->setProperty("layeredEndChannelPadding",
+                            QVariant());
+                    // Store level information.
                     if (nodeInfo[ind].level > 0)
                     {
                         size_t level = nodeInfo[ind].level - 1;
@@ -349,11 +358,16 @@ GraphData::GraphData(Canvas *canvas, bool ignoreEdges,
                 cola::AlignmentConstraint *prevLevelAlignment = NULL;
                 for (size_t level = 0; level < maxLevel; ++level)
                 {
+                    // Set of nodes in this level.
                     std::set<unsigned>& nodes = levelLists[level];
 
+                    // Set layer channel padding information for each shape on
+                    // this level, and add it to the alignment relationship.
+                    // The channel padding information is used for centring
+                    // all connectors at the same point between levels.
                     cola::AlignmentConstraint *alignment =
                             new cola::AlignmentConstraint(dimension);
-                    for (std::set<unsigned>::iterator it = nodes.begin();
+                    for (std::set<unsigned>::const_iterator it = nodes.begin();
                             it != nodes.end(); ++it)
                     {
                         double offset = 0;
@@ -362,10 +376,25 @@ GraphData::GraphData(Canvas *canvas, bool ignoreEdges,
                         if (layeredAlignment == Canvas::ShapeStart)
                         {
                             offset = modifier * distToEdge;
+                            shape_vec[*it]->setProperty("layeredStartChannelPadding",
+                                    QVariant(distToEdge));
+                            shape_vec[*it]->setProperty("layeredEndChannelPadding",
+                                    QVariant(levelShapeLength[level] - distToEdge));
                         }
                         else if (layeredAlignment == Canvas::ShapeEnd)
                         {
                             offset = modifier * -distToEdge;
+                            shape_vec[*it]->setProperty("layeredStartChannelPadding",
+                                    QVariant((levelShapeLength[level] - distToEdge)));
+                            shape_vec[*it]->setProperty("layeredEndChannelPadding",
+                                    QVariant(distToEdge));
+                        }
+                        else
+                        {
+                            shape_vec[*it]->setProperty("layeredStartChannelPadding",
+                                    QVariant(levelShapeLength[level] / 2.0));
+                            shape_vec[*it]->setProperty("layeredEndChannelPadding",
+                                    QVariant(levelShapeLength[level] / 2.0));
                         }
                         alignment->addShape(*it, offset);
                     }
@@ -373,6 +402,7 @@ GraphData::GraphData(Canvas *canvas, bool ignoreEdges,
 
                     if (prevLevelAlignment)
                     {
+                        // Determine padding between this level and previous.
                         double padding = 0;
                         if (layeredAlignment == Canvas::ShapeMiddle)
                         {
@@ -387,6 +417,9 @@ GraphData::GraphData(Canvas *canvas, bool ignoreEdges,
                         {
                             padding = levelShapeLength[level - 1];
                         }
+
+                        // Create a separation constraint between this level's
+                        // alignment and the one for the previous level.
                         ccs.push_back(new cola::SeparationConstraint(dimension,
                                 prevLevelAlignment, alignment, padding +
                                 (canvas_->m_ideal_connector_length *

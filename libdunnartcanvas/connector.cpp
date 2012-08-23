@@ -744,12 +744,15 @@ void Connector::disconnect_from(ShapeObj *shape, uint pinClassID)
 
 void Connector::applySimpleRoute(void)
 {
+    QVariant srcPaddingVar = QVariant();
+    QVariant dstPaddingVar = QVariant();
     if (m_src_pt.shape)
     {
         // Use shape centre position for endpoint.
         QPointF srcPt = m_src_pt.shape->centrePos();
         m_src_pt.x = srcPt.x();
         m_src_pt.y = srcPt.y();
+        srcPaddingVar = m_src_pt.shape->property("layeredEndChannelPadding");
     }
     if (m_dst_pt.shape)
     {
@@ -757,6 +760,7 @@ void Connector::applySimpleRoute(void)
         QPointF dstPt = m_dst_pt.shape->centrePos();
         m_dst_pt.x = dstPt.x();
         m_dst_pt.y = dstPt.y();
+        dstPaddingVar = m_dst_pt.shape->property("layeredStartChannelPadding");
     }
 
     // Bend placement is halfway between endpoints.
@@ -779,6 +783,62 @@ void Connector::applySimpleRoute(void)
 
         bool leftToRight = (xDiff > yDiff);
         if (m_has_downward_constraint &&
+                srcPaddingVar.isValid() && dstPaddingVar.isValid() &&
+                (canvas()->optLayoutMode() == Canvas::LayeredLayout))
+        {
+            // We are doing Layered layout and we have information about the
+            // positions of the layer channel, so we can align the bends for
+            // all connectors bridging the same two levels.
+            double srcPadding = srcPaddingVar.toDouble();
+            double dstPadding = dstPaddingVar.toDouble();
+
+            // Use uniform connector direction during flow layout.
+            Canvas::FlowDirection dir = canvas()->optFlowDirection();
+            // Enter and exit shapes in the direction of flow.
+            leftToRight = (dir == Canvas::FlowLeft) ||
+                    (dir == Canvas::FlowRight);
+            // Put the bend 3/4 of way to destination.
+            bendPlacement = 0.75;
+
+            // Midpoints.
+            if (leftToRight)
+            {
+                // o---+
+                //     |
+                //     +--->o
+
+                xDiff -= (srcPadding + dstPadding);
+
+                route.ps[1].x = m_src_pt.x + xDir * (srcPadding + (bendPlacement * xDiff));
+                route.ps[1].y = m_src_pt.y;
+                route.ps[1].vn = Avoid::kUnassignedVertexNumber;
+
+                route.ps[2].x = m_src_pt.x + xDir * (srcPadding + (bendPlacement * xDiff));
+                route.ps[2].y = m_dst_pt.y;
+                route.ps[2].vn = Avoid::kUnassignedVertexNumber;
+            }
+            else
+            {
+                // o
+                // |
+                // |
+                // +---+
+                //     |
+                //     v
+                //     o
+
+                yDiff -= (srcPadding + dstPadding);
+
+                route.ps[1].x = m_src_pt.x;
+                route.ps[1].y = m_src_pt.y + yDir * (srcPadding + (bendPlacement * yDiff));
+                route.ps[1].vn = Avoid::kUnassignedVertexNumber;
+
+                route.ps[2].x = m_dst_pt.x;
+                route.ps[2].y = m_src_pt.y + yDir * (srcPadding + (bendPlacement * yDiff));
+                route.ps[2].vn = Avoid::kUnassignedVertexNumber;
+            }
+        }
+        else if (m_has_downward_constraint &&
                 ((canvas()->optLayoutMode() == Canvas::FlowLayout) ||
                  (canvas()->optLayoutMode() == Canvas::LayeredLayout)))
         {
@@ -787,42 +847,40 @@ void Connector::applySimpleRoute(void)
             // Enter and exit shapes in the direction of flow.
             leftToRight = (dir == Canvas::FlowLeft) ||
                     (dir == Canvas::FlowRight);
-            // Put the bend 3/4 of way to destination.
-            bendPlacement = 0.75;
-        }
 
-        // Midpoints.
-        if (leftToRight)
-        {
-            // o---+
-            //     |
-            //     +--->o
+            // Midpoints.
+            if (leftToRight)
+            {
+                // o---+
+                //     |
+                //     +--->o
 
-            route.ps[1].x = m_src_pt.x + xDir * (bendPlacement * xDiff);
-            route.ps[1].y = m_src_pt.y;
-            route.ps[1].vn = Avoid::kUnassignedVertexNumber;
+                route.ps[1].x = m_src_pt.x + xDir * (bendPlacement * xDiff);
+                route.ps[1].y = m_src_pt.y;
+                route.ps[1].vn = Avoid::kUnassignedVertexNumber;
 
-            route.ps[2].x = m_src_pt.x + xDir * (bendPlacement * xDiff);
-            route.ps[2].y = m_dst_pt.y;
-            route.ps[2].vn = Avoid::kUnassignedVertexNumber;
-        }
-        else
-        {
-            // o
-            // |
-            // |
-            // +---+
-            //     |
-            //     v
-            //     o
+                route.ps[2].x = m_src_pt.x + xDir * (bendPlacement * xDiff);
+                route.ps[2].y = m_dst_pt.y;
+                route.ps[2].vn = Avoid::kUnassignedVertexNumber;
+            }
+            else
+            {
+                // o
+                // |
+                // |
+                // +---+
+                //     |
+                //     v
+                //     o
 
-            route.ps[1].x = m_src_pt.x;
-            route.ps[1].y = m_src_pt.y + yDir * (bendPlacement * yDiff);
-            route.ps[1].vn = Avoid::kUnassignedVertexNumber;
+                route.ps[1].x = m_src_pt.x;
+                route.ps[1].y = m_src_pt.y + yDir * (bendPlacement * yDiff);
+                route.ps[1].vn = Avoid::kUnassignedVertexNumber;
 
-            route.ps[2].x = m_dst_pt.x;
-            route.ps[2].y = m_src_pt.y + yDir * (bendPlacement * yDiff);
-            route.ps[2].vn = Avoid::kUnassignedVertexNumber;
+                route.ps[2].x = m_dst_pt.x;
+                route.ps[2].y = m_src_pt.y + yDir * (bendPlacement * yDiff);
+                route.ps[2].vn = Avoid::kUnassignedVertexNumber;
+            }
         }
 
         // Destination endpoint.

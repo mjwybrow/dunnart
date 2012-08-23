@@ -140,9 +140,9 @@ class Canvas : public QGraphicsScene
 
         enum LayeredAlignment
         {
-            ShapeStart,
-            ShapeMiddle,
-            ShapeEnd
+            ShapeMiddle = 0,
+            ShapeStart = 1,
+            ShapeEnd = 2
         };
 
         enum LayoutMode

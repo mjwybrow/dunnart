@@ -2831,6 +2831,7 @@ static const char *x_avoidBuffer = "avoidBuffer";
 static const char *x_routingBuffer = "routingBuffer";
 static const char *x_flowSeparation = "flowSeparation";
 static const char *x_flowDirection = "flowDirection";
+static const char *x_layeredAlignment = "layeredAlignment";
 static const char *x_defaultIdealConnectorLength =
         "defaultIdealConnectorLength";
 static const char *x_pageBoundaryConstraints =
@@ -2915,7 +2916,7 @@ void Canvas::loadLayoutOptionsFromDomElement(const QDomElement& options)
     }
 
     optionalProp(options,x_EXPERIMENTAL_rect,m_rectangle_constraint_test);
-    optionalProp(options,x_avoidBuffer,m_opt_shape_nonoverlap_padding);
+    optionalProp(options,x_layeredAlignment,m_opt_shape_nonoverlap_padding);
 
     double routingBuffer;
     if (optionalProp(options,x_routingBuffer,routingBuffer))
@@ -2928,6 +2929,7 @@ void Canvas::loadLayoutOptionsFromDomElement(const QDomElement& options)
     }
     optionalProp(options,x_flowSeparation,m_flow_separation_modifier);
     optionalProp(options,x_flowDirection,m_opt_flow_direction);
+    optionalProp(options,x_layeredAlignment,m_opt_layered_alignment_position);
 
     double ideal_connector_length_modifier;
     if (optionalProp(options,x_defaultIdealConnectorLength,
@@ -2978,6 +2980,10 @@ QDomElement Canvas::writeLayoutOptionsToDomElement(QDomDocument& doc) const
     if (m_opt_flow_direction != FlowDown)
     {
         newProp(dunOpts, x_flowDirection, m_opt_flow_direction);
+    }
+    if (m_opt_layered_alignment_position != ShapeMiddle)
+    {
+        newProp(dunOpts, x_layeredAlignment, m_opt_layered_alignment_position);
     }
     newProp(dunOpts, x_pageBoundaryConstraints, optFitWithinPage());
     newProp(dunOpts, x_defaultIdealConnectorLength,
