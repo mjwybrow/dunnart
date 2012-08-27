@@ -815,7 +815,7 @@ void ShapeObj::paintShapeDecorations(QPainter *painter)
                 -(height() / 2), *infoIcon);
     }
 
-    if ( m_has_locked_position && showDecorations )
+    if ( m_is_pinned && showDecorations )
     {
         double iconSize = 25;
         if ( ! m_lock_icon )
@@ -955,7 +955,7 @@ void ShapeObj::addXmlProps(const unsigned int subset, QDomElement& node,
             newProp(node, "detailLevel", value);
         }
 
-        if (m_has_locked_position)
+        if (m_is_pinned)
         {
             newProp(node, x_lockedPosition, "1");
         }
@@ -1014,7 +1014,7 @@ Avoid::Polygon ShapeObj::polygon(void) const
 ShapeObj::ShapeObj(const QString& itemType)
     : CanvasItem(NULL, QString(), ZORD_Shape),
       avoidRef(NULL),
-      m_has_locked_position(false),
+      m_is_pinned(false),
       m_lock_icon(NULL),
       decorativeImage(NULL),
       smallDecorativeImage(NULL),
@@ -1098,7 +1098,7 @@ void ShapeObj::initWithXMLProperties(Canvas *canvas,
     value = nodeAttribute(node, ns, x_lockedPosition);
     if (!value.isNull())
     {
-        m_has_locked_position = (bool) value.toInt();
+        m_is_pinned = (bool) value.toInt();
     }
 
     value = nodeAttribute(node, ns, x_connectionPins);
@@ -1124,16 +1124,16 @@ ShapeObj::~ShapeObj()
 }
 
 
-void ShapeObj::setLockedPosition(const bool val)
+void ShapeObj::setPinned(const bool val)
 {
-    m_has_locked_position = val;
+    m_is_pinned = val;
     update();
 }
 
 
-bool ShapeObj::hasLockedPosition(void)
+bool ShapeObj::isPinned(void)
 {
-    return m_has_locked_position;
+    return m_is_pinned;
 }
 
 uint ShapeObj::currentDetailLevel(void) const

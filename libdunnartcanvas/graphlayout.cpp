@@ -1030,14 +1030,14 @@ int GraphLayout::processReturnPositions()
 
 void GraphLayout::lockShape(ShapeObj* shape)
 {
-    QSet<ShapeObj*>::iterator si = lockedShapes.find(shape);
-    if(si==lockedShapes.end()) {
-        lockedShapes.insert(shape);
+    QSet<ShapeObj*>::iterator si = pinnedShapes.find(shape);
+    if(si==pinnedShapes.end()) {
+        pinnedShapes.insert(shape);
     }
 }
 
 
-void GraphLayout::addLockedShapesToFixedList(void) 
+void GraphLayout::addPinnedShapesToFixedList(void)
 {
     CObjList list;
     QList<CanvasItem *> canvas_items = m_canvas->items();
@@ -1045,7 +1045,7 @@ void GraphLayout::addLockedShapesToFixedList(void)
     {
         if (ShapeObj *shape = isShapeForLayout(canvas_items.at(i))) 
         {
-            if (shape->hasLockedPosition())
+            if (shape->isPinned())
             {
                 list.push_back(shape);
             }
@@ -1054,7 +1054,7 @@ void GraphLayout::addLockedShapesToFixedList(void)
     addToFixedList(list);
 }
 
-void GraphLayout::lockUnselectedShapes(QWidget ** c)
+void GraphLayout::pinUnselectedShapes(QWidget ** c)
 {
     Q_UNUSED (c)
 
@@ -1078,20 +1078,20 @@ void GraphLayout::lockUnselectedShapes(QWidget ** c)
             // anything not in the selection is locked, everything else
             // is unlocked
             if(i==selected.end()) {
-                QSet<ShapeObj*>::iterator si = lockedShapes.find(shape);
-                if(si==lockedShapes.end()) {
-                    lockedShapes.insert(shape);
-                    shape->setLockedPosition(true);
+                QSet<ShapeObj*>::iterator si = pinnedShapes.find(shape);
+                if(si==pinnedShapes.end()) {
+                    pinnedShapes.insert(shape);
+                    shape->setPinned(true);
                 }
             } else {
-                lockedShapes.remove(shape);
-                shape->setLockedPosition(false);
+                pinnedShapes.remove(shape);
+                shape->setPinned(false);
             }
         }
     }
 }
 
-void GraphLayout::unlockAll(QWidget ** c)
+void GraphLayout::unpinAllShapes(QWidget ** c)
 {
     Q_UNUSED (c)
 
@@ -1100,8 +1100,8 @@ void GraphLayout::unlockAll(QWidget ** c)
     {
         if (ShapeObj *shape = isShapeForLayout(canvas_items.at(i))) 
         {
-            lockedShapes.remove(shape);
-            shape->setLockedPosition(false);
+            pinnedShapes.remove(shape);
+            shape->setPinned(false);
         }
     }
 }
@@ -1169,13 +1169,13 @@ void GraphLayout::apply(bool ignoreEdges)
     addToFixedList(actions.moveList);
     addToResizedList(actions.resizeList);
 
-    CObjList lockedShapesList;
-    foreach (ShapeObj *shape, lockedShapes)
+    CObjList pinnedShapesList;
+    foreach (ShapeObj *shape, pinnedShapes)
     {
-        lockedShapesList.push_back(shape);
+        pinnedShapesList.push_back(shape);
     }
-    addToFixedList(lockedShapesList);
-    addLockedShapesToFixedList();
+    addToFixedList(pinnedShapesList);
+    addPinnedShapesToFixedList();
     m_changed_list_mutex.unlock();
 
     m_layout_signal_mutex.lock();

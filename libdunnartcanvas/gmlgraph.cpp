@@ -287,7 +287,7 @@ struct LayoutCallback : public LayoutDoneCallback {
         } else {
             printf("graphexpl: Layout done... updating overview...\n");
             g->relayoutOverview();
-            gl->unlockAll(NULL);
+            gl->unpinAllShapes(NULL);
             delete layoutDoneCallback;
             layoutDoneCallback = NULL;
         }
@@ -574,7 +574,7 @@ void Graph::expandNeighbours(ogdf::node centre) {
     qDebug("expandNeighbours setting interrupt...");
     GraphLayout* gl=canvas()->layout();
     gl->setInterruptFromDunnart();
-    gl->unlockAll(NULL);
+    gl->unpinAllShapes(NULL);
     // vs is a list of nodes sorted such that nodes with shortest path lengths
     // from centre and most recent time stamps are at the front
     vector<ogdf::node> vs;

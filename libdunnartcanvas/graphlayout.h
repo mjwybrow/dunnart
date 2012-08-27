@@ -165,10 +165,10 @@ public:
     int initThread();
     //! lock the specified shape's position
     void lockShape(ShapeObj* sh);
-    //! unselected objects are locked (fixed in position)
-    void lockUnselectedShapes(QWidget **c);
+    //! unselected objects are pinned (fixed in position)
+    void pinUnselectedShapes(QWidget **c);
     //! unclocks all shapes
-    void unlockAll(QWidget **c);
+    void unpinAllShapes(QWidget **c);
     //! stores current shape positions for use in "sticky node" behaviour
     void initialise(void);
     //! called by GUI thread to update object positions in handling
@@ -201,7 +201,7 @@ private:
     cola::Locks locks;
     cola::Resizes resizes;
     std::map<ShapeObj*,ShapePosInfo*> fixedShapeLookup;
-    QSet<ShapeObj*> lockedShapes;
+    QSet<ShapeObj*> pinnedShapes;
     bool positionChangesFromDunnart;
     bool interruptFromDunnart;
     bool freeShiftFromDunnart;
@@ -213,7 +213,7 @@ private:
     void run(const bool shouldReinitialise);
     void showUnsatisfiable(cola::UnsatisfiableConstraintInfo* i);
     void addToFixedList(CObjList & objList);
-    void addLockedShapesToFixedList(void);
+    void addPinnedShapesToFixedList(void);
     void addToResizedList(CObjList & objList);
 
     friend struct PreIteration;

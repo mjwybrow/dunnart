@@ -847,21 +847,21 @@ void Canvas::customEvent(QEvent *event)
 }
 
 
-void Canvas::lockSelectedShapes(void)
+void Canvas::toggleSelectedShapePinning(void)
 {
     QList<CanvasItem *> selected_items = selectedItems();
     for (int i = 0; i < selected_items.size(); ++i)
     {
         if (ShapeObj *shape = isShapeForLayout(selected_items.at(i)))
         {
-            // Toggle position lock setting.
-            if (shape->hasLockedPosition())
+            // Toggle pinned position setting.
+            if (shape->isPinned())
             {
-                shape->setLockedPosition(false);
+                shape->setPinned(false);
             }
             else
             {
-                shape->setLockedPosition(true);
+                shape->setPinned(true);
             }
         }
     }

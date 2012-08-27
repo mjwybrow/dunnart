@@ -236,6 +236,7 @@ void CanvasTabWidget::currentChanged(int index)
     if (m_canvas)
     {
         disconnect(m_canvas, 0, this, 0);
+        disconnect(m_canvas, 0, m_action_automatic_layout, 0);
         disconnect(this, 0, m_canvas, 0);
     }
     m_canvas = canvasview->canvas();
@@ -254,27 +255,35 @@ void CanvasTabWidget::currentChanged(int index)
     connect(m_canvas, SIGNAL(optChangedStructuralEditingDisabled(bool)),
             this, SLOT(hideEditingControls(bool)));
 
+    m_action_bring_to_front->disconnect();
     connect(m_action_bring_to_front, SIGNAL(triggered()),
             m_canvas, SLOT(bringToFront()));
 
+    m_action_send_to_back->disconnect();
     connect(m_action_send_to_back,  SIGNAL(triggered()),
             m_canvas, SLOT(sendToBack()));
 
+    m_action_cut->disconnect();
     connect(m_action_cut, SIGNAL(triggered()),
             m_canvas, SLOT(cutSelection()));
 
+    m_action_copy->disconnect();
     connect(m_action_copy, SIGNAL(triggered()),
             m_canvas, SLOT(copySelection()));
 
+    m_action_paste->disconnect();
     connect(m_action_paste, SIGNAL(triggered()),
             m_canvas, SLOT(pasteSelection()));
 
+    m_action_delete->disconnect();
     connect(m_action_delete, SIGNAL(triggered()),
             m_canvas, SLOT(deleteSelection()));
 
+    m_action_select_all->disconnect();
     connect(m_action_select_all, SIGNAL(triggered()),
             m_canvas, SLOT(selectAll()));
 
+    m_action_automatic_layout->disconnect();
     connect(m_action_automatic_layout, SIGNAL(triggered(bool)),
             m_canvas, SLOT(setOptAutomaticGraphLayout(bool)));
     connect(m_canvas, SIGNAL(optChangedAutomaticLayout(bool)),
@@ -282,22 +291,27 @@ void CanvasTabWidget::currentChanged(int index)
     m_action_automatic_layout->setChecked(
             m_canvas->optAutomaticGraphLayout());
 
+    m_action_cola_debug_output->disconnect();
     connect(m_action_cola_debug_output, SIGNAL(triggered(bool)),
             m_canvas, SLOT(setDebugCOLAOutput(bool)));
 
+    m_action_lock->disconnect();
     connect(m_action_lock, SIGNAL(triggered()),
-            m_canvas, SLOT(lockSelectedShapes()));
+            m_canvas, SLOT(toggleSelectedShapePinning()));
 
+    m_action_overlay_router_obstacles->disconnect();
     connect(m_action_overlay_router_obstacles, SIGNAL(triggered(bool)),
             m_canvas, SLOT(setOverlayRouterObstacles(bool)));
     m_action_overlay_router_obstacles->setChecked(
             m_canvas->overlayRouterObstacles());
 
+    m_action_overlay_router_visgraph->disconnect();
     connect(m_action_overlay_router_visgraph, SIGNAL(triggered(bool)),
             m_canvas, SLOT(setOverlayRouterVisGraph(bool)));
     m_action_overlay_router_visgraph->setChecked(
             m_canvas->overlayRouterVisGraph());
 
+    m_action_overlay_router_orthogonal_visgraph->disconnect();
     connect(m_action_overlay_router_orthogonal_visgraph,
             SIGNAL(triggered(bool)),
             m_canvas, SLOT(setOverlayRouterOrthogonalVisGraph(bool)));

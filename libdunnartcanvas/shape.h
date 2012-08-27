@@ -96,6 +96,7 @@ class ShapeObj: public CanvasItem
     Q_PROPERTY (QColor fillColour READ fillColour WRITE setFillColour)
     Q_PROPERTY (QColor strokeColour READ strokeColour WRITE setStrokeColour)
     Q_PROPERTY (bool sizeLocked READ sizeLocked WRITE setSizeLocked)
+    Q_PROPERTY (bool pinned READ isPinned WRITE setPinned)
 
     UNDO_ACTION (ShapeObj, QPointF, centrePos, setCentrePos, UNDO_SHAPE_POS, "move shape")
     UNDO_ACTION (ShapeObj, QSizeF, size, setSize, UNDO_SHAPE_SIZE, "resize shape")
@@ -147,8 +148,8 @@ class ShapeObj: public CanvasItem
         double attachedGuidelinePosition(atypes type) const;
         static double attachedGuidelinePosition(atypes type,
                 const QRectF& shapeRect);
-        void setLockedPosition(const bool val);
-        bool hasLockedPosition(void);
+        void setPinned(const bool val);
+        bool isPinned(void);
         ConnMultiset getConnMultiset(void);
         virtual void deactivateAll(CanvasItemSet& selSet);
         virtual void findAttachedSet(CanvasItemSet& objSet);
@@ -207,7 +208,7 @@ class ShapeObj: public CanvasItem
          */
         uint currentDetailLevel(void) const;
 
-        bool m_has_locked_position;
+        bool m_is_pinned;
         QGraphicsSvgItem *m_lock_icon;
         QPixmap* decorativeImage;
         QPixmap* smallDecorativeImage;
