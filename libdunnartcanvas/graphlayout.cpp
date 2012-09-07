@@ -583,6 +583,13 @@ void GraphLayout::setInterruptFromDunnart(void)
     interruptFromDunnart = true;
     positionChangesFromDunnart = false;
     m_layout_signal_mutex.unlock();
+
+    // Clear any return PosInfos since they may now refer to
+    // invalid CanvasItems.
+    m_return_positions_mutex.lock();
+    clearReturnPosInfos();
+    retPositionsHandled = true;
+    m_return_positions_mutex.unlock();
 }
 
 void GraphLayout::setRestartFromDunnart(void)
@@ -748,10 +755,7 @@ public:
         }
 
         gl.m_return_positions_mutex.lock();
-        gl.retPositionsHandled = false;
-        for_each(gl.retPositions.begin(),gl.retPositions.end(),
-                delete_object());
-        gl.retPositions.clear();
+        gl.clearReturnPosInfos();
         for (unsigned i = 0; i < n; i++) {
             ShapeObj* shape = gl.m_graph->getShape(i);
             if (shape && (gl.fixedShapeLookup.find(shape) == 
@@ -1036,6 +1040,12 @@ void GraphLayout::lockShape(ShapeObj* shape)
     }
 }
 
+void GraphLayout::clearReturnPosInfos(void)
+{
+    retPositionsHandled = false;
+    for_each(retPositions.begin(), retPositions.end(), delete_object());
+    retPositions.clear();
+}
 
 void GraphLayout::addPinnedShapesToFixedList(void)
 {

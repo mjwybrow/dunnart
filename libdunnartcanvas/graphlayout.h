@@ -215,6 +215,7 @@ private:
     void addToFixedList(CObjList & objList);
     void addPinnedShapesToFixedList(void);
     void addToResizedList(CObjList & objList);
+    void clearReturnPosInfos(void);
 
     friend struct PreIteration;
     friend class PostIteration;

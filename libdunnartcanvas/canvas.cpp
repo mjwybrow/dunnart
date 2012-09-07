@@ -1677,6 +1677,12 @@ void Canvas::deleteSelection(void)
         return;
     }
 
+    // Finish dragging if we were in the middle of that.
+    if (m_dragged_item)
+    {
+        m_dragged_item->dragReleaseEvent(NULL);
+    }
+
     Actions& actions = getActions();
     actions.clear();
 
@@ -1689,6 +1695,7 @@ void Canvas::deleteSelection(void)
     QList<CanvasItem *> sel_copy = this->selectedItems();
     QList<ShapeObj *> sel_shapes;
 
+    stop_graph_layout();
     if (m_opt_stuctural_editing_disabled)
     {
         // If structural editing is disabled then we should only allow
@@ -1759,7 +1766,6 @@ void Canvas::deleteSelection(void)
         QUndoCommand *cmd = new CmdCanvasSceneRemoveItem(this, *sh);
         undoMacro->addCommand(cmd);
     }
-    interrupt_graph_layout();
     restart_graph_layout();
 }
 
