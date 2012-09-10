@@ -123,7 +123,7 @@ QPointF SvgShape::centrePos(void) const
 
 void SvgShape::setCentrePos(const QPointF& newPos)
 {
-    if (canvas() && !canvas()->processingLayoutUpdates())
+    if (canvas() && canvas()->layoutRunningAndNotProcessingUpdates())
     {
         Actions& actions = canvas()->getActions();
         actions.moveList.push_back(this);

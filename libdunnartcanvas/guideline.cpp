@@ -327,7 +327,7 @@ double Guideline::position(void) const
 
 void Guideline::setPosition(const double position)
 {
-    if (canvas() && !canvas()->processingLayoutUpdates())
+    if (canvas() && canvas()->layoutRunningAndNotProcessingUpdates())
     {
         Actions& actions = canvas()->getActions();
         actions.moveList.push_back(this);

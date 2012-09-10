@@ -96,7 +96,7 @@ GraphLayout::GraphLayout(Canvas *canvas)
       topologyNodesCount(10000),
       m_canvas(canvas),
       m_graph(NULL),
-      running(false),
+      m_is_running(false),
       retPositionsHandled(true),
       outputDebugFiles(false),
       positionChangesFromDunnart(false),
@@ -899,7 +899,7 @@ int GraphLayout::initThread()
             }
             
             firstRun = false;
-            running = false;
+            m_is_running = false;
             m_layout_signal_mutex.unlock();
 
             m_layout_mutex.lock();
@@ -920,7 +920,7 @@ int GraphLayout::initThread()
         bool currInterrupt = interruptFromDunnart;
         if (!freeShiftFromDunnart)
         {
-            running = true;
+            m_is_running = true;
             interruptFromDunnart = false;
             m_layout_signal_mutex.unlock();
             run(currInterrupt);
@@ -1191,7 +1191,7 @@ void GraphLayout::apply(bool ignoreEdges)
     m_changed_list_mutex.unlock();
 
     m_layout_signal_mutex.lock();
-    if (running)
+    if (m_is_running)
     {
         positionChangesFromDunnart = true;
         m_layout_signal_mutex.unlock();
@@ -1209,6 +1209,11 @@ void GraphLayout::setLayoutMode(Mode newMode)
 {
     mode = newMode;
     qDebug("Layout Mode set to %d", (int) mode);
+}
+
+bool GraphLayout::isRunning(void) const
+{
+    return m_is_running;
 }
 
 void GraphLayout::setOptimizationMethod(OptimizationMethod newOM)

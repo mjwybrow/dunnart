@@ -800,9 +800,9 @@ void Canvas::setDraggedItem(CanvasItem *item)
 }
 
 
-bool Canvas::processingLayoutUpdates(void) const
+bool Canvas::layoutRunningAndNotProcessingUpdates(void) const
 {
-    return m_processing_layout_updates;
+    return m_graphlayout->isRunning() && !m_processing_layout_updates;
 }
 
 void Canvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)

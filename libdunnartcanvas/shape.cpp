@@ -759,7 +759,7 @@ void ShapeObj::setPos(const QPointF& pos)
 
 void ShapeObj::setCentrePos(const QPointF & pos)
 {
-    if (canvas() && !canvas()->processingLayoutUpdates())
+    if (canvas() && canvas()->layoutRunningAndNotProcessingUpdates())
     {
         Actions& actions = canvas()->getActions();
         actions.moveList.push_back(this);
@@ -778,7 +778,7 @@ void ShapeObj::setSize(const QSizeF& newSize)
     {
         return;
     }
-    if (canvas() && !canvas()->processingLayoutUpdates())
+    if (canvas() && canvas()->layoutRunningAndNotProcessingUpdates())
     {
         Actions& actions = canvas()->getActions();
         actions.resizeList.push_back(this);

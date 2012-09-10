@@ -180,13 +180,15 @@ public:
     void setOptimizationMethod(OptimizationMethod newOM);
     GraphData *getGraphData(void);
     void setOutputDebugFiles(const bool value);
+    //! whether the layout thread is currently active.
+    bool isRunning(void) const;
 
 private:
     Canvas *m_canvas;
 
     //! the graph itself and mappings to/from dunnart objects
     GraphData *m_graph;
-    bool running;
+    bool m_is_running;
     // The following are lists of PosInfo used to communicate between the GUI
     PosInfos retPositions;
     PosInfos fixedPositions;

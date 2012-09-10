@@ -218,7 +218,7 @@ class Canvas : public QGraphicsScene
         bool isLayoutSuspended(void) const;
 
         void setDraggedItem(CanvasItem *item);
-        bool processingLayoutUpdates(void) const;
+        bool layoutRunningAndNotProcessingUpdates(void) const;
 
         QSvgRenderer *svgRenderer(void) const;
         QUndoStack *undoStack(void) const;
