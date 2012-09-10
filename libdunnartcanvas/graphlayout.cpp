@@ -718,7 +718,25 @@ public:
      * @return result of TestConvergence functor call
      */
     bool operator()(const double new_stress,
-                valarray<double> & X, valarray<double> & Y) {
+                valarray<double> & X, valarray<double> & Y)
+    {
+        bool ready = false;
+        
+        while (!ready)
+        {
+            gl.m_return_positions_mutex.lock();
+            ready = gl.retPositionsHandled;
+            gl.m_return_positions_mutex.unlock();
+
+            gl.m_layout_signal_mutex.lock();
+            bool finish = gl.askedToFinish;
+            gl.m_layout_signal_mutex.unlock();
+            if (finish)
+            {
+                return true;
+            }
+        }
+
         gl.m_layout_signal_mutex.lock();
         bool interrupt = gl.interruptFromDunnart | gl.freeShiftFromDunnart;
         gl.m_layout_signal_mutex.unlock();
@@ -736,23 +754,6 @@ public:
             }
             gl.m_layout_signal_mutex.unlock();
             return true;
-        }
-        
-        bool ready = false;
-        
-        while (!ready)
-        {
-            gl.m_return_positions_mutex.lock();
-            ready = gl.retPositionsHandled;
-            gl.m_return_positions_mutex.unlock();
-
-            gl.m_layout_signal_mutex.lock();
-            bool finish = gl.askedToFinish;
-            gl.m_layout_signal_mutex.unlock();
-            if (finish)
-            {
-                return true;
-            }
         }
 
         gl.m_return_positions_mutex.lock();
