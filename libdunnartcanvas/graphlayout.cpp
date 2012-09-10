@@ -589,6 +589,7 @@ void GraphLayout::setInterruptFromDunnart(void)
     m_return_positions_mutex.lock();
     clearReturnPosInfos();
     retPositionsHandled = true;
+    m_canvas->m_animation_group->clear();
     m_return_positions_mutex.unlock();
 }
 
