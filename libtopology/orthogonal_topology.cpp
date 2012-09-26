@@ -945,7 +945,6 @@ static void buildOrthogonalLayoutSegments(Router *router,
             continue;
         }
         Polygon& displayRoute = (*curr)->displayRoute();
-        std::vector<Point> checkpoints = (*curr)->routingCheckpoints();
         // Determine all line segments that we are interested in shifting. 
         // We don't consider the first or last segment of a path.
         for (size_t i = 1; i < displayRoute.size(); ++i)
@@ -1384,6 +1383,9 @@ static void setupOrthogonalLayoutConstraints(Router *router,
         cola::CompoundConstraint *cc = ccs[i];
         cc->updateVarIDsWithMapping(colaToCurrMap, reversed);
     }
+    for_each(valid.begin(), valid.end(), cola::delete_object());
+    for_each(vs.begin(), vs.end(), cola::delete_object());
+    for_each(segmentList.begin(), segmentList.end(), cola::delete_object());
     for_each(boundingBoxes.begin(), boundingBoxes.end(), cola::delete_object());
 }
 
@@ -1581,6 +1583,22 @@ bool AvoidTopologyAddon::outputCode(FILE *fp) const
                 "cluster%llu, idMap);\n", 
                 (unsigned long long) clusterHierarchy);
         fprintf(fp, "    router->setTopologyAddon(&topologyAddon);\n");
+    }
+    return true;
+}
+
+
+bool AvoidTopologyAddon::outputDeletionCode(FILE *fp) const
+{
+    if (fp)
+    {
+        if (clusterHierarchy)
+        {
+            fprintf(fp, "\n    delete cluster%llu;\n",
+                    (unsigned long long) clusterHierarchy);
+        }
+        fprintf(fp, "    for_each(rs.begin(), rs.end(), cola::delete_object());\n");
+        fprintf(fp, "    for_each(ccs.begin(), ccs.end(), cola::delete_object());\n\n");
     }
     return true;
 }

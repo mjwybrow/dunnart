@@ -252,9 +252,9 @@ void ConnectorCheckpointHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     int index = this->handleFlags();
     QPointF scenePosition = event->scenePos();
     Avoid::Point newPosition(scenePosition.x(), scenePosition.y());
-    std::vector<Avoid::Point> checkpoints =
+    std::vector<Avoid::Checkpoint> checkpoints =
             m_conn->avoidRef->routingCheckpoints();
-    checkpoints[index] = newPosition;
+    checkpoints[index].point = newPosition;
     m_conn->avoidRef->setRoutingCheckpoints(checkpoints);
     // XXX Horribly inefficient.
     reroute_connectors(m_conn->canvas(), true);
@@ -279,9 +279,9 @@ void ConnectorCheckpointHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
         if (action == removeCheckpoint)
         {
             size_t index = this->handleFlags();
-            std::vector<Avoid::Point> checkpoints =
+            std::vector<Avoid::Checkpoint> checkpoints =
                     m_conn->avoidRef->routingCheckpoints();
-            std::vector<Avoid::Point> newCheckpoints;
+            std::vector<Avoid::Checkpoint> newCheckpoints;
             for (size_t i = 0; i < checkpoints.size(); ++i)
             {
                 if (i != index)

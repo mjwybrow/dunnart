@@ -953,14 +953,7 @@ class CmpConnCostRef
         }
         bool operator() (const ConnCostRef& u, const ConnCostRef& v) const
         {
-            // Use the IDs for primary comparison.
-            if (u.second->id() == v.second->id())
-            {
-                return false;
-            }
-            
-            // If the IDs are different then order by lowest cost.
-            return u.first < v.first;
+            return (u.second->id() < v.second->id());
         }
 };
 
@@ -1075,6 +1068,19 @@ void Router::performSlowRoutingCallBack(double completeFraction)
     }
 }
 
+class CmpOrderedConnCostRef
+{
+    public:
+        CmpOrderedConnCostRef()
+        {
+        }
+        bool operator() (const ConnCostRef& u, const ConnCostRef& v) const
+        {
+            return (u.first < v.first);
+        }
+};
+typedef std::list<ConnCostRef> ConnCostRefList;
+
 
 void Router::improveCrossings(void)
 {
@@ -1179,8 +1185,10 @@ void Router::improveCrossings(void)
         for (ConnCostRefSetList::iterator setIt = fixedSharedPathConns.begin(); 
                 setIt != fixedSharedPathConns.end(); ++setIt)
         {
-            for (ConnCostRefSet::iterator connIt = setIt->begin(); 
-                    connIt != setIt->end(); ++connIt)
+            ConnCostRefList orderedConnList(setIt->begin(), setIt->end());
+            orderedConnList.sort(CmpOrderedConnCostRef());
+            for (ConnCostRefList::iterator connIt = orderedConnList.begin(); 
+                    connIt != orderedConnList.end(); ++connIt)
             {
                 if (pass == 0)
                 {
@@ -1189,7 +1197,7 @@ void Router::improveCrossings(void)
                     crossingConns.erase(*connIt);
                 }
 
-                if (connIt == setIt->begin())
+                if (connIt == orderedConnList.begin())
                 {
                     // Don't reroute the first connector in each set of 
                     // fixed shared paths.
@@ -1224,8 +1232,11 @@ void Router::improveCrossings(void)
 
         // Deal with crossing connector rerouting after the 
         // fixedSharedPath routing has been completed.
-        for (ConnCostRefSet::iterator connIt = crossingConns.begin(); 
-                    connIt != crossingConns.end(); ++connIt)
+        ConnCostRefList orderedConnList(crossingConns.begin(), 
+                crossingConns.end());
+        orderedConnList.sort(CmpOrderedConnCostRef());
+        for (ConnCostRefList::iterator connIt = orderedConnList.begin(); 
+                    connIt != orderedConnList.end(); ++connIt)
         {
             ConnRef *conn = connIt->second;
             if (pass == 0)
@@ -2134,6 +2145,8 @@ void Router::outputInstanceToSVG(std::string instanceName)
 
     fprintf(fp, "    router->processTransaction();\n");
     fprintf(fp, "    router->outputInstanceToSVG();\n");
+
+    m_topology_addon->outputDeletionCode(fp);
     fprintf(fp, "    delete router;\n");
     fprintf(fp, "    return 0;\n");
     fprintf(fp, "};\n");
@@ -2486,8 +2499,8 @@ void Router::outputInstanceToSVG(std::string instanceName)
             fprintf(fp, "<circle id=\"checkpoint-%u-%d\" cx=\"%g\" cy=\"%g\" "
                     "r=\"8\" style=\"stroke: none; fill: red; "
                     "fill-opacity: 0.25;\"  />\n", connRef->id(), (int) i,
-                    connRef->m_checkpoints[i].x, 
-                    connRef->m_checkpoints[i].y);
+                    connRef->m_checkpoints[i].point.x, 
+                    connRef->m_checkpoints[i].point.y);
         }
         
         ++connRefIt;

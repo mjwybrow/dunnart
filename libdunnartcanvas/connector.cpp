@@ -358,7 +358,8 @@ void Connector::loneSelectedChange(const bool value)
     }
     else // (value)
     {
-        std::vector<Avoid::Point> checkpoints = avoidRef->routingCheckpoints();
+        std::vector<Avoid::Checkpoint> checkpoints =
+                avoidRef->routingCheckpoints();
         m_handles.resize(checkpoints.size() + 2);
         m_handles[0] = new ConnectorEndpointHandle(this, SRCPT);
         canvas()->addItem(m_handles[0]);
@@ -374,7 +375,7 @@ void Connector::loneSelectedChange(const bool value)
         for (uint i = 0; i < checkpoints.size(); ++i)
         {
             m_handles[2 + i] = new ConnectorCheckpointHandle(this,
-                (int) i, checkpoints[i].x, checkpoints[i].y);
+                (int) i, checkpoints[i].point.x, checkpoints[i].point.y);
             m_handles.at(2 + i)->setVisible(true);
         }
     }
@@ -501,7 +502,7 @@ void Connector::addXmlProps(const unsigned int subset, QDomElement& node,
 
 void Connector::setRoutingCheckPoints(const QList<QPointF>& checkpoints)
 {
-    std::vector<Avoid::Point> avoid_checkpoints(checkpoints.size());
+    std::vector<Avoid::Checkpoint> avoid_checkpoints(checkpoints.size());
     for (int i = 0; i < checkpoints.size(); ++i)
     {
         QPointF point = checkpoints.at(i);
@@ -1486,10 +1487,12 @@ void Connector::paint(QPainter *painter,
     // Debug.
     if ( ! isSelected() && showDecorations )
     {
-        std::vector<Avoid::Point> checkpoints = avoidRef->routingCheckpoints();
+        std::vector<Avoid::Checkpoint> checkpoints =
+                avoidRef->routingCheckpoints();
         for (size_t i = 0; i < checkpoints.size(); ++i)
         {
-            QPointF checkpointPos(checkpoints[i].x, checkpoints[i].y);
+            QPointF checkpointPos(checkpoints[i].point.x,
+                    checkpoints[i].point.y);
             checkpointPos -= this->pos();
             painter->setPen(Qt::magenta);
             painter->setBrush(QBrush(Qt::magenta));
@@ -1559,8 +1562,10 @@ QAction *Connector::buildAndExecContextMenu(QGraphicsSceneMouseEvent *event,
     if (action == addCheckpoint)
     {
         // Checkpoint will only be added to connector under the cursor.
-        Avoid::Point new_checkpoint(event->scenePos().x(), event->scenePos().y());
-        std::vector<Avoid::Point> checkpoints = avoidRef->routingCheckpoints();
+        Avoid::Point new_checkpoint(event->scenePos().x(),
+                event->scenePos().y());
+        std::vector<Avoid::Checkpoint> checkpoints =
+                avoidRef->routingCheckpoints();
         checkpoints.push_back(new_checkpoint);
         avoidRef->makePathInvalid();
         avoidRef->setRoutingCheckpoints(checkpoints);
