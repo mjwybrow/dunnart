@@ -2,7 +2,6 @@
 
 TEMPLATE = subdirs
 
-SUBDIRS = shapes fileio application
+SUBDIRS = garuda
 
 CONFIG += ordered
-
