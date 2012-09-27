@@ -25,8 +25,6 @@
 #include <cassert>
 
 #include <QMessageBox>
-#include <QtXml>
-#include <arpa/inet.h>
 
 #include "appgarudaclient.h"
 #include "qt-json/json.h"
@@ -279,6 +277,8 @@ void AppGarudaClient::showCompatibleSoftwareFor(QString extension, QString forma
     // XXX Not in the Garuda alpha 2 for some reason.
     //body["fileExtension"] = extension;
     //body["fileFormat"] = format;
+    Q_UNUSED (extension)
+    Q_UNUSED (format)
 
     QVariantMap root;
     root["header"] = header;

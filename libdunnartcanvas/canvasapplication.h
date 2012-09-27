@@ -65,6 +65,7 @@ class CanvasApplication : public QApplication
 
         QMainWindow *mainWindow(void) const;
         void setMainWindow(QMainWindow *window);
+        Canvas *currentCanvas(void) const;
 
         //! @brief  Can be used to let CanvasApplication know if the
         //!         application uses a CanvasTabWidget.

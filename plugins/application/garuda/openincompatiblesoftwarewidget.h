@@ -38,6 +38,8 @@ namespace Ui {
 class OpenInCompatibleSoftwareWidget;
 }
 
+using dunnart::Canvas;
+
 class OpenInCompatibleSoftwareWidget : public QDockWidget
 {
         Q_OBJECT
@@ -49,15 +51,14 @@ class OpenInCompatibleSoftwareWidget : public QDockWidget
 
         void setContentsForResponse(const QVariantMap& response);
         void setAppGarudaClient(AppGarudaClient *appGarudaClient);
-        
+    public slots:
+        void changeCanvas(Canvas *canvas);
     private slots:
         void cellWasDoubleClicked(int row, int column);
-        void changeCanvas(dunnart::Canvas *canvas);
-        void diagramFilenameChanged(const QFileInfo& fileInfo);
     private:
         Ui::OpenInCompatibleSoftwareWidget *ui;
         AppGarudaClient *m_app_garuda_client;
-        dunnart::Canvas *m_canvas;
+        Canvas *m_canvas;
 };
 
 #endif // OPENINCOMPATIBLESOFTWAREWIDGET_H

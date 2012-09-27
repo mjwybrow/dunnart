@@ -102,6 +102,11 @@ void CanvasApplication::setMainWindow(QMainWindow *window)
     m_main_window = window;
 }
 
+Canvas *CanvasApplication::currentCanvas(void) const
+{
+    return m_canvas_tab_widget->currentCanvas();
+}
+
 void CanvasApplication::setCanvasTabWidget(CanvasTabWidget *tabWidget)
 {
     if (m_canvas_tab_widget)

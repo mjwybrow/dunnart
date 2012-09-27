@@ -100,7 +100,9 @@ class GarudaApplicationPlugin : public QObject, public ApplicationPluginInterfac
             else
             {
                 m_compatible_software = new OpenInCompatibleSoftwareWidget(
-                            NULL);
+                            m_canvas_application->currentCanvas());
+                connect(m_canvas_application, SIGNAL(currentCanvasChanged(Canvas*)),
+                        m_compatible_software, SLOT(changeCanvas(Canvas*)));
 
                 m_compatible_software->setAppGarudaClient(m_app_garuda_client);
                 m_compatible_software->setContentsForResponse(response);

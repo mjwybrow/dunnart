@@ -82,15 +82,21 @@ void OpenInCompatibleSoftwareWidget::setContentsForResponse(const QVariantMap& r
 
 void OpenInCompatibleSoftwareWidget::cellWasDoubleClicked(int row, int column)
 {
+    Q_UNUSED (column)
+
+    if (m_canvas->filename().isEmpty())
+    {
+        qDebug("Error: Can't send unsaved file.");
+        return;
+    }
+
     QTableWidget *tableWidget = ui->tableWidget;
 
-    // XXX hardcoded filename.
     m_app_garuda_client->loadFileIntoSoftware(
-                QFileInfo("/Users/mjwybrow/ws-git/dunnart/MAPK.layout"),
+                QFileInfo(m_canvas->filename()),
                 tableWidget->item(row, 0)->text(),
                 tableWidget->item(row, 1)->text());
     this->hide();
-    //qDebug() << "### " << row << tableWidget->item(row, 0)->text() << ", " << tableWidget->item(row, 1)->text();
 }
 
 void OpenInCompatibleSoftwareWidget::changeCanvas(dunnart::Canvas *canvas)
@@ -101,15 +107,7 @@ void OpenInCompatibleSoftwareWidget::changeCanvas(dunnart::Canvas *canvas)
         disconnect(this, 0, m_canvas, 0);
     }
     m_canvas = canvas;
-
-    connect(m_canvas, SIGNAL(diagramFilenameChanged(const QFileInfo& title)),
-            m_canvas, SLOT(diagramFilenameChanged(const QFileInfo& title)));
 }
 
-void OpenInCompatibleSoftwareWidget::diagramFilenameChanged(
-        const QFileInfo& fileInfo)
-{
-
-}
 
 // vim: filetype=cpp ts=4 sw=4 et tw=0 wm=0 cindent
