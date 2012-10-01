@@ -171,6 +171,9 @@ class LayoutEdgeSegment : public ShiftSegment
         }
         bool overlapsWith(const ShiftSegment *rhs, const size_t dim) const
         {
+            COLA_UNUSED(rhs);
+            COLA_UNUSED(dim);
+
             return false;
         }
         void updatePositionsFromSolver(void)
@@ -436,6 +439,8 @@ public:
           pos(p),
           shapeSide(ss)
     {
+        COLA_UNUSED(bvi);
+        COLA_UNUSED(fvi);
         COLA_ASSERT(begin < finish);
     }
     LineSegment(const double& bf, const double& p, VertInf *bfvi = NULL)
@@ -444,6 +449,7 @@ public:
           pos(p),
           shapeSide(false)
     {
+        COLA_UNUSED(bfvi);
     }
  
     // Order by begin, pos, finish.
@@ -573,6 +579,8 @@ static void processLayoutConstraintEvent(LayoutScanlineNodeSet& scanline,
         LineReps *lineReps, vpsc::Constraints& cs, 
         LayoutEdgeSegmentSeparations& less)
 {
+    COLA_UNUSED(lineReps);
+
     //size_t altDim = (dim + 1) % 2;
     Node *v = e->v;
 
@@ -1157,6 +1165,8 @@ static void setupOrthogonalLayoutConstraints(Router *router,
         cola::RootCluster *clusterHierarchy,
         LineReps *lineReps)
 {
+    COLA_UNUSED(router);
+
     int count = 1;
     if (segmentList.empty())
     {
