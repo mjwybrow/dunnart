@@ -89,6 +89,7 @@ void AppGarudaClient::sendData(const QString& string)
     QByteArray block = string.toUtf8().data();
     block.append("\n");
     int written = m_tcp_socket->write(block);
+    Q_UNUSED (written)
     assert (written == block.size());
     m_tcp_socket->flush();
 }
