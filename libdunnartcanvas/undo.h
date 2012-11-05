@@ -39,7 +39,7 @@ class CanvasItem;
 // The UndoMacro represents an object we can push to the undo stack
 // immediately, but that may has some of it's items modified later by
 // the automatically layout.  We can't do this using just children of
-// QUndoCommand cause the actions happen only when the parent is pushed
+// QUndoCommand because the actions happen only when the parent is pushed
 // to the undo stack and the SIGNALS are sent at the wrong time.  Hence,
 // we manually handle addition and merging in addCommand.
 //
@@ -139,21 +139,21 @@ private: \
     TYPE m_new_value; \
 }; \
 public: \
-void cmd_##SETTER(const TYPE newPos) \
+void cmd_##SETTER(const TYPE newValue) \
 { \
-    if (GETTER() == newPos) \
+    if (GETTER() == newValue) \
     { \
         return; \
     } \
     if (canvas()) \
     { \
         UndoMacro *macro = canvas()->currentUndoMacro(); \
-        Cmd##OBJECT##SETTER *cmd = new Cmd##OBJECT##SETTER(this, GETTER(), newPos); \
+        Cmd##OBJECT##SETTER *cmd = new Cmd##OBJECT##SETTER(this, GETTER(), newValue); \
         macro->addCommand(cmd); \
     } \
     else \
     { \
-        this->SETTER(newPos); \
+        this->SETTER(newValue); \
     } \
 }
 
