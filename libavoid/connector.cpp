@@ -52,7 +52,6 @@ ConnRef::ConnRef(Router *router, const unsigned int id)
       m_false_path(false),
       m_needs_repaint(false),
       m_active(false),
-      m_initialised(false),
       m_hate_crossings(false),
       m_route_dist(0),
       m_src_vert(NULL),
@@ -82,7 +81,6 @@ ConnRef::ConnRef(Router *router, const ConnEnd& src, const ConnEnd& dst,
       m_false_path(false),
       m_needs_repaint(false),
       m_active(false),
-      m_initialised(false),
       m_hate_crossings(false),
       m_route_dist(0),
       m_src_vert(NULL),
@@ -230,10 +228,9 @@ void ConnRef::common_updateEndPoint(const unsigned int type, ConnEnd connEnd)
     // so don't leave it looking like it is still connected.
     connEnd.m_conn_ref = NULL;
 
-    if (!m_initialised)
+    if (!m_active)
     {
         makeActive();
-        m_initialised = true;
     }
     
     VertInf *altered = NULL;
@@ -686,7 +683,7 @@ VertInf *ConnRef::start(void)
 
 bool ConnRef::isInitialised(void)
 {
-    return m_initialised;
+    return m_active;
 }
 
 
@@ -695,7 +692,6 @@ void ConnRef::unInitialise(void)
     m_router->vertices.removeVertex(m_src_vert);
     m_router->vertices.removeVertex(m_dst_vert);
     makeInactive();
-    m_initialised = false;
 }
 
 
@@ -832,6 +828,34 @@ bool validateBendPoint(VertInf *aInf, VertInf *bInf, VertInf *cInf)
 }
 
 
+std::pair<bool, bool> ConnRef::assignConnectionPinVisibility(const bool connect)
+{
+    // XXX This is kind of a hack for connection pins.  Probably we want to
+    //     not use m_src_vert and m_dst_vert.  For the moment we will clear
+    //     their visibility and give them visibility to the pins.
+    bool dummySrc = m_src_connend && m_src_connend->isPinConnection();
+    if (dummySrc)
+    {
+        m_src_vert->removeFromGraph();
+        if (connect)
+        {
+            m_src_connend->assignPinVisibilityTo(m_src_vert, m_dst_vert);
+        }
+    }
+    bool dummyDst = m_dst_connend && m_dst_connend->isPinConnection();
+    if (dummyDst)
+    {
+        m_dst_vert->removeFromGraph();
+        if (connect)
+        {
+            m_dst_connend->assignPinVisibilityTo(m_dst_vert, m_src_vert);
+        }
+    }
+
+    return std::make_pair(dummySrc, dummyDst);
+}
+
+
 bool ConnRef::generatePath(void)
 {
     if (!m_false_path && !m_needs_reroute_flag)
@@ -842,7 +866,7 @@ bool ConnRef::generatePath(void)
 
     if (!m_dst_vert || !m_src_vert)
     {
-        // Connector is not fully initialised..
+        // Connector is not fully initialised.
         return false;
     }
     
@@ -853,21 +877,8 @@ bool ConnRef::generatePath(void)
 
     m_start_vert = m_src_vert;
 
-    // XXX This is kind of a hack for connection pins.  Probably we want to
-    //     not use m_src_vert and m_dst_vert.  For the moment we will clear
-    //     their visibility and give them visibility to the pins.
-    bool dummySrc = m_src_connend && m_src_connend->isPinConnection();
-    if (dummySrc)
-    {
-        m_src_vert->removeFromGraph();
-        m_src_connend->assignPinVisibilityTo(m_src_vert, m_dst_vert);
-    }
-    bool dummyDst = m_dst_connend && m_dst_connend->isPinConnection();
-    if (dummyDst)
-    {
-        m_dst_vert->removeFromGraph();
-        m_dst_connend->assignPinVisibilityTo(m_dst_vert, m_src_vert);
-    }
+    // Visibility assignment for connection pins.
+    std::pair<bool, bool> isDummyAtEnd = assignConnectionPinVisibility(true);
     
     std::vector<Point> path;
     std::vector<VertInf *> vertices;
@@ -917,12 +928,12 @@ bool ConnRef::generatePath(void)
     std::vector<Point> clippedPath;
     std::vector<Point>::iterator pathBegin = path.begin();
     std::vector<Point>::iterator pathEnd = path.end();
-    if (path.size() > 2 && dummySrc)
+    if (path.size() > 2 && isDummyAtEnd.first)
     {
         ++pathBegin;
         m_src_connend->usePinVertex(vertices[1]);
     }
-    if (path.size() > 2 && dummyDst)
+    if (path.size() > 2 && isDummyAtEnd.second)
     {
         --pathEnd;
         m_dst_connend->usePinVertex(vertices[vertices.size() - 2]);
@@ -930,6 +941,9 @@ bool ConnRef::generatePath(void)
     clippedPath.insert(clippedPath.end(), pathBegin, pathEnd);
 
     // Would clear visibility for endpoints here if required.
+    
+    // Undo visibility assignment for connection pins.
+    assignConnectionPinVisibility(false);
 
     freeRoutes();
     PolyLine& output_route = m_route;
@@ -1840,6 +1854,40 @@ void ConnectorCrossings::countForSegment(size_t cIndex, const bool finalSegment)
                 bool front_same = (*(c_path[0]) == *(p_path[0]));
                 bool back_same  = (*(c_path[size - 1]) == *(p_path[size - 1]));
 
+                // Determine if the shared path originates at a junction.
+                bool terminatesAtJunction = false;
+                if (polyConnRef && connConnRef && (front_same || back_same))
+                {
+                    // To do this we find the two ConnEnds at the common 
+                    // end of the shared path.  Then check if they are 
+                    // attached to a junction and it is the same one.
+                    std::pair<ConnEnd, ConnEnd> connEnds = 
+                            connConnRef->endpointConnEnds();
+                    JunctionRef *connJunction = NULL;
+
+                    std::pair<ConnEnd, ConnEnd> polyEnds = 
+                            polyConnRef->endpointConnEnds();
+                    JunctionRef *polyJunction = NULL;
+                   
+                    // The front of the c_path corresponds to destination 
+                    // of the connector.
+                    connJunction = (front_same) ? connEnds.second.junction() : 
+                            connEnds.first.junction();
+                    bool use_first = back_same;
+                    if (p_dir_back)
+                    {
+                        // Reversed, so use opposite.
+                        use_first = !use_first;
+                    }
+                    // The front of the p_path corresponds to destination 
+                    // of the connector.
+                    polyJunction = (use_first) ? polyEnds.second.junction() :
+                            polyEnds.first.junction();
+                    
+                    terminatesAtJunction = (connJunction && 
+                            (connJunction == polyJunction));
+                }
+
                 if (sharedPaths)
                 {
                     // Store a copy of the shared path
@@ -1865,11 +1913,14 @@ void ConnectorCrossings::countForSegment(size_t cIndex, const bool finalSegment)
                         {
                             double pos = (*c_path[startPt])[dim];
                             // See if this is inline with either the start
-                            // or end point of both connectors.
+                            // or end point of both connectors.  We don't
+                            // count them as crossing if they originate at a
+                            // junction and are part of the same hyperedge.
                             if ( ((pos == poly.ps[0][dim]) ||
                                     (pos == poly.ps[poly_size - 1][dim])) &&
                                  ((pos == conn.ps[0][dim]) ||
-                                    (pos == conn.ps[cIndex][dim])) )
+                                    (pos == conn.ps[cIndex][dim])) &&
+                                 (terminatesAtJunction == false))
                             {
                                 crossingFlags |= CROSSING_SHARES_FIXED_SEGMENT;
                             }

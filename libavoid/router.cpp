@@ -440,7 +440,6 @@ bool Router::processTransaction(void)
     if ((actionList.empty() && (m_hyperedge_rerouter.count() == 0)) ||
             SimpleRouting)
     {
-        actionList.clear();
         return false;
     }
 
@@ -895,7 +894,8 @@ void Router::rerouteAndCallbackConnectors(void)
     }
 
     // Calculate and return connectors that are part of hyperedges and will
-    // be completely rerouted by that code so don't need to be rerouted here.
+    // be completely rerouted by that code and thus don't need to have routes
+    // generated here.
     ConnRefSet hyperedgeConns =
             m_hyperedge_rerouter.calcHyperedgeConnectors();
 
@@ -1108,6 +1108,12 @@ void Router::improveCrossings(void)
     for (ConnRefList::iterator i = connRefs.begin(); i != fin; ++i) 
     {
         Avoid::Polygon& iRoute = (*i)->routeRef();
+        if (iRoute.size() == 0)
+        {
+            // Rerouted hyperedges will have an empty route.
+            // We can't reroute these.
+            continue;
+        }
         ConnCostRef iCostRef = std::make_pair(cheapEstimatedCost(*i), *i);
         ConnRefList::iterator j = i;
         for (++j; j != fin; ++j) 
@@ -1142,10 +1148,10 @@ void Router::improveCrossings(void)
                         // Get costs of each path from the crossings object.
                         // For shared paths that cross at the end, these will 
                         // be the shared path length minus some amount if the
-                        //  diverging segment is not a bend.  For every
-                        // other path it will be cheapEstimatedCost().  We 
-                        // want low costs for straight segments so these are 
-                        // not rerouted.
+                        // diverging segment is not a bend.  For every other 
+                        // path it will be cheapEstimatedCost().  We want 
+                        // low costs for straight segments so these are not 
+                        // rerouted.
                         iCostRef.first = cross.firstSharedPathAtEndLength;
                         jCostRef.first = cross.secondSharedPathAtEndLength;
                     }
