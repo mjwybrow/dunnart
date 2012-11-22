@@ -136,6 +136,13 @@ void CanvasView::adjustSceneRect(QRectF new_scene_rect)
 }
 
 
+static QRectF expandRect(const QRectF& origRect, double amount)
+{
+    return (origRect.isEmpty()) ?
+            origRect : origRect.adjusted(-amount, -amount, amount, amount);
+}
+
+
 void CanvasView::dragEnterEvent(QDragEnterEvent *event)
 {
     if (canvas()->optStructuralEditingDisabled())
@@ -261,6 +268,29 @@ void CanvasView::mousePressEvent(QMouseEvent *event)
     QGraphicsView::mousePressEvent(event);
 }
 
+void CanvasView::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    if (canvas() == NULL)
+    {
+        return;
+    }
+
+    // Allow double-click to fit canvas to diagram.
+    if (event->button() == Qt::LeftButton)
+    {
+        if( !itemAt(event->pos()) )
+        {
+            double padding = 10.0;
+            zoomToShowRect(expandRect(
+                    diagramBoundingRect(canvas()->items()), padding));
+
+            return;
+        }
+    }
+
+    // Pass-through so double-clicks on canvas objects can go to them.
+    QGraphicsView::mouseDoubleClickEvent(event);
+}
 
 void CanvasView::mouseReleaseEvent(QMouseEvent *event)
 {
@@ -376,13 +406,6 @@ void CanvasView::keyReleaseEvent(QKeyEvent *keyEvent)
     {
         keyEvent->ignore();
     }
-}
-
-
-static QRectF expandRect(const QRectF& origRect, double amount)
-{
-    return (origRect.isEmpty()) ?
-            origRect : origRect.adjusted(-amount, -amount, amount, amount);
 }
 
 
