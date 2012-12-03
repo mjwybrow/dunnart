@@ -2008,10 +2008,20 @@ void Canvas::setLayoutSuspended(bool suspend)
 {
     if (suspend)
     {
+        // Stop the automatic layout.
         m_graphlayout->setLayoutSuspended(true);
     }
     else
     {
+        // Restart the automatic layout.
+        // Make it look like things just moved.
+        Actions& actions = getActions();
+        CanvasItemList selection = selectedItems();
+        for (int i = 0; i < selection.size(); ++i)
+        {
+            actions.moveList.push_back(selection.at(i));
+        }
+
         m_graphlayout->setLayoutSuspended(false);
         this->interrupt_graph_layout();
         this->restart_graph_layout();

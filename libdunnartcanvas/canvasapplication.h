@@ -91,6 +91,10 @@ class CanvasApplication : public QApplication
         //!         canvas changes.
         void currentCanvasFileInfoChanged(const QFileInfo& file);
 
+    private slots:
+        void windowFocusChanged(QWidget *old, QWidget *now);
+
+
     private:
         QMainWindow *m_main_window;
         CanvasTabWidget *m_canvas_tab_widget;

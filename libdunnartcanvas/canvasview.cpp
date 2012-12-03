@@ -343,7 +343,10 @@ void CanvasView::keyPressEvent(QKeyEvent *keyEvent)
 
     if (keyEvent->key() == Qt::Key_Alt)
     {
-        // Suspend the automatic layout.
+        // The user can temporarily suspend the layout while holding a key.
+        // This is known as ALT-dragging and can be used to add or remove
+        // shapes from constraint relationships and alter the network
+        // topology when topology preservation is turned on.
         canvas()->setLayoutSuspended(true);
 
         keyEvent->accept();
@@ -363,15 +366,12 @@ void CanvasView::keyReleaseEvent(QKeyEvent *keyEvent)
 
     if (keyEvent->key() == Qt::Key_Alt)
     {
-        // Restart the automatic layout.
-        // Make it look like things just moved.
-        Actions& actions = canvas()->getActions();
-        CanvasItemList selection = canvas()->selectedItems();
-        for (int i = 0; i < selection.size(); ++i)
+        if (canvas()->isLayoutSuspended())
         {
-            actions.moveList.push_back(selection.at(i));
+            // Cancel ALT-dragging when the user releases the key,
+            // if the layout is still suspended at this point.
+            canvas()->setLayoutSuspended(false);
         }
-        canvas()->setLayoutSuspended(false);
 
         keyEvent->accept();
     }

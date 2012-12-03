@@ -33,6 +33,7 @@
 #include "libdunnartcanvas/fileioplugininterface.h"
 #include "libdunnartcanvas/applicationplugininterface.h"
 #include "libdunnartcanvas/canvastabwidget.h"
+#include "libdunnartcanvas/canvas.h"
 
 namespace dunnart {
 
@@ -89,6 +90,9 @@ CanvasApplication::CanvasApplication(int & argc, char ** argv)
             appPluginManager->registerApplicationPlugin(appPlugin);
         }
     }
+
+    connect(this, SIGNAL(focusChanged(QWidget *, QWidget *)),
+            this, SLOT(windowFocusChanged(QWidget*, QWidget*)));
 }
 
 QMainWindow *CanvasApplication::mainWindow(void) const
@@ -126,6 +130,23 @@ void CanvasApplication::setCanvasTabWidget(CanvasTabWidget *tabWidget)
                 this, SIGNAL(currentCanvasFileInfoChanged(QFileInfo)));
     }
 }
+
+
+void CanvasApplication::windowFocusChanged(QWidget *old, QWidget *now)
+{
+    Q_UNUSED(old)
+    Q_UNUSED(now)
+
+    Canvas *canvas = currentCanvas();
+    if (canvas->isLayoutSuspended())
+    {
+        // If the window focus changed while we are ALT-dragging, then
+        // we should cancel the layout susepnsion and restart it.
+        canvas->setLayoutSuspended(false);
+    }
+
+}
+
 
 
 }
