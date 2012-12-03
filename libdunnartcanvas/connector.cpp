@@ -898,7 +898,35 @@ void Connector::applySimpleRoute(void)
                 route.ps[2].vn = Avoid::kUnassignedVertexNumber;
             }
         }
+        else
+        {
+            // Standard case.
+            // These use three segment paths rather than more optimal two
+            // segment paths since these show the edges representing the
+            // forces a little more clearly, and are also easier to perform
+            // orthogonal improvement on.
 
+            if (yDiff < xDiff)
+            {
+                route.ps[1].x = m_src_pt.x + (xDiff / 2.0) * xDir;
+                route.ps[1].y = m_src_pt.y;
+                route.ps[1].vn = Avoid::kUnassignedVertexNumber;
+
+                route.ps[2].x = m_src_pt.x + (xDiff / 2.0) * xDir;
+                route.ps[2].y = m_dst_pt.y;
+                route.ps[2].vn = Avoid::kUnassignedVertexNumber;
+            }
+            else
+            {
+                route.ps[1].x = m_src_pt.x;
+                route.ps[1].y = m_src_pt.y + (yDiff / 2.0) * yDir;
+                route.ps[1].vn = Avoid::kUnassignedVertexNumber;
+
+                route.ps[2].x = m_dst_pt.x;
+                route.ps[2].y = m_src_pt.y + (yDiff / 2.0) * yDir;
+                route.ps[2].vn = Avoid::kUnassignedVertexNumber;
+            }
+        }
         // Destination endpoint.
         route.ps[3].x = m_dst_pt.x;
         route.ps[3].y = m_dst_pt.y;
