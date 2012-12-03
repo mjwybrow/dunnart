@@ -294,40 +294,6 @@ void set_query_mode(const bool setting)
 
 
 #if 0
-static void buffer_change_callback(QWidget **c)
-{
-    if (automatic_graph_layout)
-    {
-        // XXX: Do we need to reroute connectors attached to the ports on
-        //      the edge of shapes so their endpoints change?
-        interrupt_graph_layout(c);
-    }
-    else
-    {
-        // Recompute the visibility graph with new spacing:
-        for (QWidget *go = canvas->get_children_head(); go; go = go->get_next())
-        {
-            ShapeObj *shape = dynamic_cast<ShapeObj *> (go);
-
-            if (shape)
-            {
-                bool store_undo = false;
-                visalgo->obj_move(shape, store_undo);
-            }
-        }
-
-        if (router) 
-        {
-            router->processTransaction();
-        }
-
-        bool force = true;
-        reroute_connectors(force);
-        repaint_canvas();
-    }
-}
-
-
 void relayout_selection(QWidget **c) {
     GraphLayout* gl = GraphLayout::getInstance();
     //gl->runLevel=1;
