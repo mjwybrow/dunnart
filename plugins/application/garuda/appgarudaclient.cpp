@@ -124,7 +124,7 @@ void AppGarudaClient::parseMessage(const QString &message)
     QVariantMap header = data["header"].toMap();
     QString action =  header["id"].toString();
 
-    if (action == "GetLoadableSoftwaresResponse")
+    if (action == "GetCompatibleSoftwareListResponse")
     {
         emit showCompatibleSoftwareResponse(data);
     }
@@ -132,6 +132,11 @@ void AppGarudaClient::parseMessage(const QString &message)
     {
         QVariantMap body = data["body"].toMap();
         QString filePath = body["filePath"].toString();
+        QString originSoftwareId = body["originSoftwareId"].toString();
+        QString originVersion = body["originVersion"].toString();
+        qDebug("Garuda: %s (%s) requests we load %s",
+               qPrintable(originSoftwareId), qPrintable(originVersion),
+               qPrintable(filePath));
         emit fileOpenRequest(filePath);
     }
 }
@@ -142,13 +147,7 @@ void AppGarudaClient::activateDunnartWithCore(void)
     header["id"] = "ActivateSoftwareRequest";
     header["version"] = "0.1";
 
-    QVariantMap software;
-    software["id"] = "Dunnart";
-    software["name"] = "";
-    software["version"] = "2.0";
-
     QVariantMap body;
-    body["software"] = software;
     body["softwareId"] = "Dunnart";
     body["version"] = "2.0";
 
@@ -177,29 +176,20 @@ void AppGarudaClient::registerDunnart(void)
     QVariantMap environments;
     environments["HOME"] = "home";
 
-    QVariantMap config;
-    config["id"] = "Dunnart";
-    config["name"] = "Dunnart";
-    config["version"] = "2.0";
-    config["workingDirectory"] = QDir::currentPath();
-    config["filePath"] = QCoreApplication::applicationFilePath();
-    config["inputFileFormats"] = fileFormats;
-    config["outputFileFormats"] = fileFormats;
-    config["environments"] = environments;
-
     QVariantMap body;
     body["softwareId"] = "Dunnart";
-    body["name"] = "Dunnart";
     body["version"] = "2.0";
-    body["workingDir"] = QDir::currentPath();
     body["filePath"] = QCoreApplication::applicationFilePath();
     body["inputFileFormats"] = fileFormats;
     body["outputFileFormats"] = fileFormats;
     body["environments"] = environments;
+    body["name"] = "Dunnart";
+
+    // Little unsure about this one:
+    body["workingDir"] = QDir::currentPath();
 
     QVariantMap root;
     root["header"] = header;
-    root["softwareConfig"] = config;
     root["body"] = body;
 
     QByteArray data = QtJson::Json::serialize(root);
@@ -210,16 +200,10 @@ void AppGarudaClient::registerDunnart(void)
 void AppGarudaClient::deregisterWithCore(void)
 {
     QVariantMap header;
-    header["id"] = "DeregisterSoftwareRequest";
+    header["id"] = "DeregisterFromGarudaRequest";
     header["version"] = "0.1";
 
-    QVariantMap software;
-    software["id"] = "Dunnart";
-    software["name"] = "";
-    software["version"] = "2.0";
-
     QVariantMap body;
-    body["software"] = software;
     body["softwareId"] = "Dunnart";
     body["version"] = "2.0";
 
@@ -236,23 +220,19 @@ void AppGarudaClient::loadFileIntoSoftware(QFileInfo fileInfo, QString softwareI
         QString softwareVersion)
 {
     QVariantMap header;
-    header["id"] = "LoadFileOntoSoftwareRequest";
+    header["id"] = "SentFileToSoftwareRequest";
     header["version"] = "0.1";
-
-    QVariantMap software;
-    software["id"] = softwareId;
-    software["name"] = "";
-    software["version"] = softwareVersion;
 
     QVariantMap body;
     body["filePath"] = fileInfo.absoluteFilePath();
     body["softwareId"] = softwareId;
     body["version"] = softwareVersion;
+    body["originSoftwareId"] = "Dunnart";
+    body["originSoftwareVersion"] = "2.0";
 
     QVariantMap root;
     root["header"] = header;
     root["body"] = body;
-    root["software"] = software;
 
     QByteArray data = QtJson::Json::serialize(root);
 
@@ -261,25 +241,16 @@ void AppGarudaClient::loadFileIntoSoftware(QFileInfo fileInfo, QString softwareI
 
 void AppGarudaClient::showCompatibleSoftwareFor(QString extension, QString format)
 {
+    // "GetLoadableSoftwaresRequest";
     QVariantMap header;
-    header["id"] = "GetLoadableSoftwaresRequest";
+    header["id"] = "GetCompatibleSoftwareListRequest";
     header["version"] = "0.1";
 
-    QVariantMap software;
-    software["id"] = "Dunnart";
-    software["name"] = "";
-    software["version"] = "2.0";
-
     QVariantMap body;
-    body["software"] = software;
     body["softwareId"] = "Dunnart";
     body["version"] = "2.0";
-
-    // XXX Not in the Garuda alpha 2 for some reason.
-    //body["fileExtension"] = extension;
-    //body["fileFormat"] = format;
-    Q_UNUSED (extension)
-    Q_UNUSED (format)
+    body["fileExtension"] = extension;
+    body["fileType"] = format;
 
     QVariantMap root;
     root["header"] = header;

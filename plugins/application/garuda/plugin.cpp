@@ -87,7 +87,7 @@ class GarudaApplicationPlugin : public QObject, public ApplicationPluginInterfac
         void showCompatibleSoftwareRequest()
         {
             m_app_garuda_client->showCompatibleSoftwareFor(
-                "txt", "TestSoftwareA");
+                "txt", "txt");
         }
 
         void showCompatibleSoftwareResponse(const QVariantMap& response)
