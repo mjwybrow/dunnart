@@ -173,6 +173,8 @@ Canvas::Canvas()
       m_undo_stack(NULL),
       m_current_undo_macro(NULL),
       m_hide_selection_handles(false),
+      m_overlay_router_raw_routes(false),
+      m_overlay_router_display_routes(false),
       m_overlay_router_obstacles(false),
       m_overlay_router_visgraph(false),
       m_overlay_router_orthogonal_visgraph(false),
@@ -685,6 +687,49 @@ void Canvas::drawForeground(QPainter *painter, const QRectF& rect)
             painter->setPen(pen);
             painter->drawPoint(pt1);
             painter->drawPoint(pt2);
+        }
+    }
+
+    const int routeWidth = 3;
+    if (m_overlay_router_raw_routes)
+    {
+        QColor colour(Qt::blue);
+        colour.setAlpha(50);
+        QPen pen(colour);
+        pen.setWidth(routeWidth);
+        pen.setCosmetic(true);
+        painter->setPen(pen);
+        for (Avoid::ConnRefList::const_iterator ci = router()->connRefs.begin();
+             ci != router()->connRefs.end(); ++ci)
+        {
+            Avoid::Polygon path = (*ci)->route();
+            QPolygonF points;
+            for (unsigned int i = 0; i < path.size(); ++i)
+            {
+                points << QPointF(path.ps[i].x, path.ps[i].y);
+            }
+            painter->drawPolyline(points);
+        }
+    }
+
+    if (m_overlay_router_display_routes)
+    {
+        QColor colour(Qt::blue);
+        colour.setAlpha(50);
+        QPen pen(colour);
+        pen.setWidth(routeWidth);
+        pen.setCosmetic(true);
+        painter->setPen(pen);
+        for (Avoid::ConnRefList::const_iterator ci = router()->connRefs.begin();
+                ci != router()->connRefs.end(); ++ci)
+        {
+            Avoid::Polygon path = (*ci)->displayRoute();
+            QPolygonF points;
+            for (unsigned int i = 0; i < path.size(); ++i)
+            {
+                points << QPointF(path.ps[i].x, path.ps[i].y);
+            }
+            painter->drawPolyline(points);
         }
     }
 
@@ -1420,7 +1465,8 @@ void Canvas::setOptFlowDirectionFromDial(const int value)
 
 bool Canvas::hasVisibleOverlays(void) const
 {
-    return m_overlay_router_obstacles || m_overlay_router_visgraph ||
+    return m_overlay_router_raw_routes|| m_overlay_router_display_routes ||
+            m_overlay_router_obstacles || m_overlay_router_visgraph ||
             m_overlay_router_orthogonal_visgraph;
 }
 
@@ -1444,6 +1490,32 @@ void Canvas::setOverlayRouterObstacles(const bool value)
 bool Canvas::overlayRouterObstacles(void) const
 {
     return m_overlay_router_obstacles;
+}
+
+void Canvas::setOverlayRouterRawRoutes(const bool value)
+{
+    m_overlay_router_raw_routes = value;
+    emit debugOverlayEnabled(hasVisibleOverlays());
+    this->update();
+}
+
+
+bool Canvas::overlayRouterRawRoutes(void) const
+{
+    return m_overlay_router_raw_routes;
+}
+
+void Canvas::setOverlayRouterDisplayRoutes(const bool value)
+{
+    m_overlay_router_display_routes = value;
+    emit debugOverlayEnabled(hasVisibleOverlays());
+    this->update();
+}
+
+
+bool Canvas::overlayRouterDisplayRoutes(void) const
+{
+    return m_overlay_router_display_routes;
 }
 
 void Canvas::setOverlayRouterVisGraph(const bool value)

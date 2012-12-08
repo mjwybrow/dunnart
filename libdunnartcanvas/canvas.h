@@ -205,6 +205,8 @@ class Canvas : public QGraphicsScene
         int optShapeNonoverlapPadding(void) const;
         LayeredAlignment optLayeredAlignmentPosition(void) const;
 
+        bool overlayRouterRawRoutes(void) const;
+        bool overlayRouterDisplayRoutes(void) const;
         bool overlayRouterObstacles(void) const;
         bool overlayRouterVisGraph(void) const;
         bool overlayRouterOrthogonalVisGraph(void) const;
@@ -280,6 +282,8 @@ class Canvas : public QGraphicsScene
         void processResponseTasks(void);
         void processUndoResponseTasks(void);
 
+        void setOverlayRouterRawRoutes(const bool value);
+        void setOverlayRouterDisplayRoutes(const bool value);
         void setOverlayRouterObstacles(const bool value);
         void setOverlayRouterVisGraph(const bool value);
         void setOverlayRouterOrthogonalVisGraph(const bool value);
@@ -416,6 +420,8 @@ class Canvas : public QGraphicsScene
         QVector<QRectF> m_selection_resize_info;
         bool m_hide_selection_handles;
 
+        bool m_overlay_router_raw_routes;
+        bool m_overlay_router_display_routes;
         bool m_overlay_router_obstacles;
         bool m_overlay_router_visgraph;
         bool m_overlay_router_orthogonal_visgraph;

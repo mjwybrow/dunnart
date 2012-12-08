@@ -102,6 +102,8 @@ private:
     QAction *m_action_overlay_router_obstacles;
     QAction *m_action_overlay_router_visgraph;
     QAction *m_action_overlay_router_orthogonal_visgraph;
+    QAction *m_action_overlay_router_raw_routes;
+    QAction *m_action_overlay_router_display_routes;
     QAction *m_action_edit_separator;
     QAction *m_action_edit_separator2;
 };

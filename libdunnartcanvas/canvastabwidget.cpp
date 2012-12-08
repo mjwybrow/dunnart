@@ -158,6 +158,14 @@ CanvasTabWidget::CanvasTabWidget(QMainWindow *window) :
     m_action_overlay_router_orthogonal_visgraph = new QAction(
             tr("Routing - Orthogonal visibility graph"), this);
     m_action_overlay_router_orthogonal_visgraph->setCheckable(true);
+
+    m_action_overlay_router_raw_routes = new QAction(
+            tr("Routing - Initial connector routes"), this);
+    m_action_overlay_router_raw_routes->setCheckable(true);
+
+    m_action_overlay_router_display_routes = new QAction(
+            tr("Routing - Improved connector routes"), this);
+    m_action_overlay_router_display_routes->setCheckable(true);
 }
 
 CanvasView *CanvasTabWidget::currentCanvasView(void) const
@@ -310,6 +318,18 @@ void CanvasTabWidget::currentChanged(int index)
             m_canvas, SLOT(setOverlayRouterVisGraph(bool)));
     m_action_overlay_router_visgraph->setChecked(
             m_canvas->overlayRouterVisGraph());
+
+    m_action_overlay_router_raw_routes->disconnect();
+    connect(m_action_overlay_router_raw_routes, SIGNAL(triggered(bool)),
+            m_canvas, SLOT(setOverlayRouterRawRoutes(bool)));
+    m_action_overlay_router_raw_routes->setChecked(
+            m_canvas->overlayRouterRawRoutes());
+
+    m_action_overlay_router_display_routes->disconnect();
+    connect(m_action_overlay_router_display_routes, SIGNAL(triggered(bool)),
+            m_canvas, SLOT(setOverlayRouterDisplayRoutes(bool)));
+    m_action_overlay_router_display_routes->setChecked(
+            m_canvas->overlayRouterDisplayRoutes());
 
     m_action_overlay_router_orthogonal_visgraph->disconnect();
     connect(m_action_overlay_router_orthogonal_visgraph,
@@ -484,6 +504,8 @@ void CanvasTabWidget::addDebugOverlayMenuActions(QMenu *overlay_menu)
     overlay_menu->addAction(m_action_overlay_router_obstacles);
     overlay_menu->addAction(m_action_overlay_router_visgraph);
     overlay_menu->addAction(m_action_overlay_router_orthogonal_visgraph);
+    overlay_menu->addAction(m_action_overlay_router_raw_routes);
+    overlay_menu->addAction(m_action_overlay_router_display_routes);
 }
 
 void CanvasTabWidget::addEditMenuActions(QMenu *edit_menu)
