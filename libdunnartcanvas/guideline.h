@@ -40,8 +40,6 @@ enum dirctn {
     GUIDE_TYPE_HORI = 101
 };
 
-static const int CONNECT_TYPE_MULTIWAY = 150;
-
 enum dtype {
     DIST_TOP = 0,
     DIST_MIDDLE = 1,
@@ -80,7 +78,6 @@ class Guideline: public Indicator
         virtual void deactivateAll(CanvasItemSet& selSet);
         void updateFromLayout(const double pos, const bool hasPos);
         void removeFromDistributions(const bool force);
-        void resizedCanvas(void);
         QPainterPath buildPainterPath(void);
         virtual void paint(QPainter *painter, 
                 const QStyleOptionGraphicsItem *option, QWidget *widget);

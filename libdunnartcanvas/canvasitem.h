@@ -188,7 +188,6 @@ class CanvasItem: public QGraphicsSvgItem
         void move_to(const int x, const int y, bool store_undo);
         void glowSetClipRect(QPixmap *surface);
         void glowClearClipRect(QPixmap *surface);
-        virtual void resizedCanvas(void)  { }
         virtual bool isCollapsed(void);
         CanvasItemFlags canvasItemFlags(void) const;
         void setAsCollapsed(bool collapsed);

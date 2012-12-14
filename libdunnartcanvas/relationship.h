@@ -26,12 +26,9 @@
 #ifndef RELATIONSHIP_H
 #define RELATIONSHIP_H
 
-#include <list>
-
 namespace dunnart {
 
 
-// if this changes, switchGuidelineAndAttachment needs to be updated
 enum atypes { ALIGN_TOP = 0, ALIGN_MIDDLE = 1, ALIGN_BOTTOM = 2,
         ALIGN_LEFT = 3, ALIGN_CENTER = 4, ALIGN_RIGHT = 5 };
 
@@ -62,8 +59,9 @@ class Relationship
                 QDomDocument& doc);
         void Activate(side s, bool by_undo = false);
         void Deactivate(side s, bool by_undo = false);
-        void OneWayUpdate(void);
-        void switchGuidelineAndAttachment(Guideline *g);
+   private:
+        void commonInit(void);
+
 };
 
 

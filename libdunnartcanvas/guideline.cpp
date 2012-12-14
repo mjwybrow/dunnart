@@ -81,21 +81,6 @@ void Guideline::initialiser(double position)
 }
 
 
-void Guideline::resizedCanvas(void)
-{
-// Adjust the length of guidelines due to resizing of the canvas.
-if (type == GUIDE_TYPE_VERT)
-{
-    //QT height = canvas->get_height() - 7;
-}
-else // if (type == GUIDE_TYPE_HORI)
-{
-    //QT width = canvas->get_width() - 7;
-}
-//QT set_noimages(width, height);
-}
-
-
 void Guideline::rangeOfAttachedShapes(double& min, double& max, int& nodes)
 {
     min = DBL_MAX;

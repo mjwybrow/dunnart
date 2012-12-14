@@ -123,11 +123,10 @@ Relationship::Relationship(Canvas *canvas, const QDomElement& node,
     //
 Relationship::Relationship(Guideline *g, ShapeObj *sh, atypes t, bool no_undo)
 {
+    commonInit();
+
     relType = REL_Align;
     shape = sh;
-    distro = NULL;
-    separation = NULL;
-    guide2 = NULL;
     type = t;
     guide = g;
     
@@ -137,54 +136,55 @@ Relationship::Relationship(Guideline *g, ShapeObj *sh, atypes t, bool no_undo)
 
 Relationship::Relationship(Distribution *d, Guideline *g1, Guideline *g2, bool no_undo)
 {
+    commonInit();
+
     relType = REL_Distr;
     assert(g1);
     assert(g2);
-    shape = NULL;
     distro = d;
-    separation = NULL;
     guide = g1;
     guide2 = g2;
     
     Activate(BOTH_SIDE, no_undo);
 }
 
+
 Relationship::Relationship(Separation *s, Guideline *g1, Guideline *g2, bool no_undo)
 {
+    commonInit();
+
     relType = REL_Separ;
     assert(g1);
     assert(g2);
-    shape = NULL;
-    distro = NULL;
     separation = s;
     guide = g1;
     guide2 = g2;
     
-    //QcFloat *q1GuV = g1->cVar->qcFloat();
-    //cVars.push_back(g1->cVar);
-    //QcFloat *q2GuV = g2->cVar->qcFloat();
-    //cVars.push_back(g2->cVar);
-    //QcFloat *qSepr = s->cSepr->qcFloat();
-    //cVars.push_back(s->cSepr);
-   
-    //constraint = (*qSepr - (*q2GuV - *q1GuV)  == 0);
     Activate(BOTH_SIDE, no_undo);
 }
 
     // This one is for unifying guidelines.
 Relationship::Relationship(Guideline *g1, Guideline *g2, bool no_undo)
 {
+    commonInit();
+
     relType = REL_Unify;
     assert(g1);
     assert(g2);
-    shape = NULL;
-    distro = NULL;
     guide = g1;
     guide2 = g2;
     
     Activate(BOTH_SIDE, no_undo);
 }
 
+void Relationship::commonInit(void)
+{
+    shape = NULL;
+    distro = NULL;
+    guide = NULL;
+    guide2 = NULL;
+    deadguide = NULL;
+}
 
 QDomElement Relationship::to_QDomElement(const unsigned int subset, 
         QDomDocument& doc)
@@ -396,26 +396,6 @@ void Relationship::Activate(side s, bool by_undo)
         }
     }
 #endif
-}
-
-
-// Takes a new guideline that has the opposite orientation to the
-// current guideline, replace the guide, and reassign the relationships
-void Relationship::switchGuidelineAndAttachment(Guideline *g) 
-{
-    Q_UNUSED (g)
-
-    guide = NULL; // update the current guide to the new guide
-  
-    //  Deactivate(PARASITE_SIDE);
-
-    // update the relationship types to suit the new guide,
-    // which will have the opposite orientation to the previous guide
-    type = atypes((type+3)%6); // works as long as there are 6 atypes
-  
-    //  Activate(EVERYTHING);
-
-    printf("atype = %d\n", type);
 }
 
 
