@@ -22,4 +22,5 @@ HEADERS += assertions.h connector.h debug.h geometry.h geomtypes.h graph.h libav
     hyperedge.h \
     hyperedgetree.h \
     actioninfo.h \
-    scanline.h
+    scanline.h \
+    dllexport.h
