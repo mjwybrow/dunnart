@@ -228,9 +228,6 @@ QDomElement Relationship::to_QDomElement(const unsigned int subset,
 
 void Relationship::Deactivate(side s, bool by_undo)
 {
-    RelsList *rlist = NULL;
-    RelsList::iterator rlistItem;
-            
     // If a guideline is deleted, delete the distribution.
     if (s == EVERYTHING)
     {
@@ -267,7 +264,7 @@ void Relationship::Deactivate(side s, bool by_undo)
         // UNDO bool care_order = true;
         // UNDO add_undo_record(DELTA_DEL_REL, this, s, care_order);
     }
-    if (s & PARASITE_SIDE)
+    if (s & BOTH_SIDE)
     {
         if (relType == REL_Align)
         {
@@ -275,64 +272,40 @@ void Relationship::Deactivate(side s, bool by_undo)
         }
         else if (relType == REL_Distr)
         {
-            // Must use a pointer so we modify the original list.
-            rlist =  &(guide->rels);
-            rlistItem = find(rlist->begin(), rlist->end(), this);
-            assert(rlistItem != rlist->end());
-            rlist->erase(rlistItem);
-
-            rlist =  &(guide2->rels);
-            rlistItem = find(rlist->begin(), rlist->end(), this);
-            assert(rlistItem != rlist->end());
-            rlist->erase(rlistItem);
+            guide->rels.removeOne(this);
+            guide2->rels.removeOne(this);
         }
         else if (relType == REL_Separ)
         {
-            // Must use a pointer so we modify the original list.
-            rlist =  &(guide->rels);
-            rlistItem = find(rlist->begin(), rlist->end(), this);
-            assert(rlistItem != rlist->end());
-            rlist->erase(rlistItem);
-
-            rlist =  &(guide2->rels);
-            rlistItem = find(rlist->begin(), rlist->end(), this);
-            assert(rlistItem != rlist->end());
-            rlist->erase(rlistItem);
+            guide->rels.removeOne(this);
+            guide2->rels.removeOne(this);
         }
         else if (relType == REL_Unify)
         {
             assert(s & BOTH_SIDE);
-            rlist =  &(guide2->rels);
-            rlistItem = find(rlist->begin(), rlist->end(), this);
-            assert(rlistItem != rlist->end());
-            rlist->erase(rlistItem);
+            guide2->rels.removeOne(this);
         }
-    }
-    if (s & HOST_SIDE)
-    { 
+
         // Must use a pointer so we modify the original list.
         if (relType == REL_Distr)
         {
-            rlist = &(distro->rels);
+            distro->rels.removeOne(this);
         }
         else if (relType == REL_Separ)
         {
-            rlist = &(separation->rels);
+            separation->rels.removeOne(this);
         }
         else
         {
-            rlist = &(guide->rels);
+            guide->rels.removeOne(this);
         }
-        rlistItem = find(rlist->begin(), rlist->end(), this);
-        assert(rlistItem != rlist->end());
-        rlist->erase(rlistItem);
     }
 }
 
 
 void Relationship::Activate(side s, bool by_undo)
 {
-    if (s & PARASITE_SIDE)
+    if (s & BOTH_SIDE)
     {
         if (relType == REL_Align)
         {
@@ -353,9 +326,7 @@ void Relationship::Activate(side s, bool by_undo)
             assert(s & BOTH_SIDE);
             guide->rels.push_back(this);
         }
-    }
-    if (s & HOST_SIDE)
-    {
+
         if (relType == REL_Align)
         {
             guide->rels.push_back(this);
@@ -378,24 +349,6 @@ void Relationship::Activate(side s, bool by_undo)
     {
         // UNDO add_undo_record(DELTA_ADD_REL, this, s);
     }
-
-    // This little check prevents them from being unhidden on creation
-    // or if they don't exist.
-#if 0
-    // QT
-    for (int i = 0; i < 2; i++)
-    {
-        if (indi[i] && indi[i]->is_hidden())
-        {
-            if (indi[i]->get_parent()->get_active_image_n() !=
-                    SHAPE_STATE_UNSELECTED)
-            {
-                indi[i]->set_active_image(1);
-            }
-            indi[i]->setVisible(true);
-        }
-    }
-#endif
 }
 
 

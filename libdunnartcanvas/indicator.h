@@ -38,7 +38,7 @@ namespace dunnart {
 
 class Handle;
 
-typedef std::list<Relationship *> RelsList;
+typedef QList<Relationship *> RelsList;
 
 
 class Indicator: public CanvasItem

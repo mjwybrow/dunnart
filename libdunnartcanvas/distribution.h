@@ -92,7 +92,7 @@ class Distribution: public Indicator
     private:
         Guideline *lockedGuideline(void) const;
         Guideline *draggedGuideline(void) const;
-        Guideline *guidelineAtPosition(size_t guideN) const;
+        Guideline *guidelineAtPosition(int guideN) const;
         void initialiser(void);
         virtual void userMoveBy(qreal dx, qreal dy);
 

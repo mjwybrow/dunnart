@@ -32,7 +32,7 @@ namespace dunnart {
 enum atypes { ALIGN_TOP = 0, ALIGN_MIDDLE = 1, ALIGN_BOTTOM = 2,
         ALIGN_LEFT = 3, ALIGN_CENTER = 4, ALIGN_RIGHT = 5 };
 
-enum side { PARASITE_SIDE = 1, HOST_SIDE = 2, BOTH_SIDE = 3, EVERYTHING = 7};
+enum side { BOTH_SIDE = 3, EVERYTHING = 7};
 
 class ShapeObj;
 class Guideline;

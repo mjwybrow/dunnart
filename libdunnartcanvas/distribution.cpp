@@ -283,7 +283,7 @@ bool Distribution::guideLessThan(Guideline *g1, Guideline *g2)
 void Distribution::recreate(void)
 {
     RelsList trels = rels;
-    trels.sort(RelationshipLessThan());
+    qSort(trels.begin(), trels.end(), RelationshipLessThan());
     
     double bx, by, bw, bh, first, last, size = 16;
 
@@ -696,9 +696,6 @@ void Distribution::deactivateAll(CanvasItemSet& selSet)
 
 void Distribution::RemoveGuideline(Guideline *g)
 {
-    RelsList *rlist = NULL;
-    RelsList::iterator rlistItem;
-            
     if (rels.size() < 2)
     {
         RemoveEntire();
@@ -730,15 +727,8 @@ void Distribution::RemoveGuideline(Guideline *g)
     {
         //UNDO add_undo_record(DELTA_DEL_REL, (*r), PARASITE_SIDE);
         
-        rlist =  &((*r)->guide->rels);
-        rlistItem = find(rlist->begin(), rlist->end(), (*r));
-        assert(rlistItem != rlist->end());
-        rlist->erase(rlistItem);
-
-        rlist =  &((*r)->guide2->rels);
-        rlistItem = find(rlist->begin(), rlist->end(), (*r));
-        assert(rlistItem != rlist->end());
-        rlist->erase(rlistItem);
+        (*r)->guide->rels.removeOne(*r);
+        (*r)->guide2->rels.removeOne(*r);
     }
 
     Distribution *newdistro = new Distribution(&guides, x(), y());
@@ -755,9 +745,6 @@ void Distribution::RemoveGuideline(Guideline *g)
 
 void Distribution::RemoveEntire(void)
 {
-    RelsList *rlist = NULL;
-    RelsList::iterator rlistItem;
-            
     RelsList::iterator r;
     for (r = rels.begin(); r != rels.end(); r++)
     {
@@ -765,15 +752,8 @@ void Distribution::RemoveEntire(void)
         
         // UNDO add_undo_record(DELTA_DEL_REL, (*r), PARASITE_SIDE);
         
-        rlist =  &((*r)->guide->rels);
-        rlistItem = find(rlist->begin(), rlist->end(), (*r));
-        assert(rlistItem != rlist->end());
-        rlist->erase(rlistItem);
-
-        rlist =  &((*r)->guide2->rels);
-        rlistItem = find(rlist->begin(), rlist->end(), (*r));
-        assert(rlistItem != rlist->end());
-        rlist->erase(rlistItem);
+        (*r)->guide->rels.removeOne(*r);
+        (*r)->guide2->rels.removeOne(*r);
     }
 
     // Actually delete the indicator:
@@ -815,7 +795,7 @@ Guideline *Distribution::draggedGuideline(void) const
     return guidelineAtPosition(draggedGuidelineN);
 }
 
-Guideline *Distribution::guidelineAtPosition(size_t position) const
+Guideline *Distribution::guidelineAtPosition(int position) const
 {
     assert(!rels.empty());
     
@@ -824,7 +804,7 @@ Guideline *Distribution::guidelineAtPosition(size_t position) const
         return rels.back()->guide2;
     }
     
-    size_t relN = 1;
+    int relN = 1;
     RelsList::const_iterator r = rels.begin();
     while (relN < position)
     {

@@ -270,8 +270,8 @@ double Separation::getSeparation(void)
 void Separation::recreate(void)
 {
     RelsList trels = rels;
-    trels.sort(relationshipLessThan);
-    
+    qSort(trels.begin(), trels.end(), relationshipLessThan);
+
     double bx, by, bw, bh, first, last, size = 12;
     
     if (rels.empty())
@@ -318,8 +318,6 @@ void Separation::recreate(void)
 
 void Separation::updateFromLayout(double newsep)
 {
-    //QWidget *gobj = this;
-
     double s = newsep;
 
     setAlpha(255);
@@ -707,9 +705,6 @@ void Separation::deactivateAll(CanvasItemSet& selSet)
 
 void Separation::RemoveGuideline(Guideline *g)
 {
-    RelsList *rlist = NULL;
-    RelsList::iterator rlistItem;
-            
     if (rels.size() < 2)
     {
         RemoveEntire();
@@ -741,15 +736,8 @@ void Separation::RemoveGuideline(Guideline *g)
     {
         // UNDO add_undo_record(DELTA_DEL_REL, (*r), PARASITE_SIDE);
         
-        rlist =  &((*r)->guide->rels);
-        rlistItem = find(rlist->begin(), rlist->end(), (*r));
-        assert(rlistItem != rlist->end());
-        rlist->erase(rlistItem);
-
-        rlist =  &((*r)->guide2->rels);
-        rlistItem = find(rlist->begin(), rlist->end(), (*r));
-        assert(rlistItem != rlist->end());
-        rlist->erase(rlistItem);
+        (*r)->guide->rels.removeOne(*r);
+        (*r)->guide2->rels.removeOne(*r);
     }
 
     Separation *newdistro = new Separation(&guides, gap, x(), y());
@@ -766,9 +754,6 @@ void Separation::RemoveGuideline(Guideline *g)
 
 void Separation::RemoveEntire(void)
 {
-    RelsList *rlist = NULL;
-    RelsList::iterator rlistItem;
-            
     RelsList::iterator r;
     for (r = rels.begin(); r != rels.end(); r++)
     {
@@ -776,16 +761,9 @@ void Separation::RemoveEntire(void)
         
         // UNDO add_undo_record(DELTA_DEL_REL, (*r), PARASITE_SIDE);
         
-        rlist =  &((*r)->guide->rels);
-        rlistItem = find(rlist->begin(), rlist->end(), (*r));
-        assert(rlistItem != rlist->end());
-        rlist->erase(rlistItem);
-
-        rlist =  &((*r)->guide2->rels);
-        rlistItem = find(rlist->begin(), rlist->end(), (*r));
-        assert(rlistItem != rlist->end());
-        rlist->erase(rlistItem);
-    }
+        (*r)->guide->rels.removeOne(*r);
+        (*r)->guide2->rels.removeOne(*r);
+     }
 
     // Actually delete the indicator:
     UndoMacro *macro = canvas()->currentUndoMacro();
