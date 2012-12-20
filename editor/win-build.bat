@@ -1,15 +1,15 @@
-set PATH=C:\QtSDK\mingw\bin;C:\QtSDK\Desktop\Qt\4.7.2\mingw\bin;C:\Program Files\Git\bin;C:\Program Files\Parallels\Parallels Tools\Applications;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem
+set PATH=C:\QtSDK\mingw\bin;C:\QtSDK\Desktop\Qt\4.8.1\mingw\bin;AppData\Local\Programs\Git\bin;%SystemRoot%\system32;%SystemRoot%;%SystemRoot%\System32\Wbem;%SYSTEMROOT%\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Microsoft Application Virtualization Client;C:\Program Files (x86)\QuickTime\QTSystem\;C:\Program Files (x86)\Google\Google Apps Sync\;C:\Program Files (x86)\PuTTY
 
 cd \ws-git\dunnart\editor
 
-C:\WINDOWS\pageant.exe generator-private.ppk
+pageant.exe generator-private.ppk
 
 del /q dunnart-win.zip
 
 cd ..
 
 
-set GIT_SSH=C:\WINDOWS\plink.exe
+set GIT_SSH=C:\Program Files (x86)\PuTTY\plink.exe
 
 git pull
 
