@@ -97,7 +97,7 @@ void CanvasView::setScene(QGraphicsScene *scene)
         connect(canvas(), SIGNAL(editModeChanged(int)),
                 this, SLOT(editModeChanged(int)));
         connect(canvas(), SIGNAL(canvasDrawingChanged()),
-                this, SLOT(repaintWholeCanvas()));
+                this, SLOT(repaintCanvasViewport()));
     }
 }
 
@@ -137,7 +137,7 @@ void CanvasView::adjustSceneRect(QRectF new_scene_rect)
     setSceneRect(scene_rect);
 }
 
-void CanvasView::repaintWholeCanvas(void)
+void CanvasView::repaintCanvasViewport(void)
 {
     // Trigger a repaint of the entire visible canvas viewport.
     canvas()->update(viewportRect());
