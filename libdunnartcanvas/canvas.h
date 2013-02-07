@@ -37,6 +37,7 @@
 #include <QString>
 #include <QDomDocument>
 #include <QUndoCommand>
+#include <QColor>
 
 class QToolBar;
 class QStatusBar;
@@ -121,6 +122,7 @@ class Canvas : public QGraphicsScene
     Q_PROPERTY (int connectorRoundingDistance READ optConnectorRoundingDistance WRITE setOptConnRoundingDist)
     Q_PROPERTY (int routingSegmentPenalty READ optRoutingPenaltySegment WRITE setOptRoutingPenaltySegment)
     Q_PROPERTY (bool structuralEditingDisabled READ optStructuralEditingDisabled WRITE setOptStructuralEditingDisabled)
+    Q_PROPERTY (QColor canvasBackgroundColour READ optCanvasBackgroundColour WRITE setOptCanvasBackgroundColour)
     Q_ENUMS (FlowDirection)
     Q_ENUMS (LayoutMode)
     Q_ENUMS (LayeredAlignment)
@@ -204,6 +206,7 @@ class Canvas : public QGraphicsScene
         double optFlowSeparationModifier(void) const;
         int optShapeNonoverlapPadding(void) const;
         LayeredAlignment optLayeredAlignmentPosition(void) const;
+        QColor optCanvasBackgroundColour(void) const;
 
         bool overlayRouterRawRoutes(void) const;
         bool overlayRouterDisplayRoutes(void) const;
@@ -278,6 +281,7 @@ class Canvas : public QGraphicsScene
         void setOptFlowDirectionFromDial(const int value);
         void setOptShapeNonoverlapPadding(const int value);
         void setOptLayeredAlignmentPosition(const LayeredAlignment pos);
+        void setOptCanvasBackgroundColour(const QColor colour);
 
         void processResponseTasks(void);
         void processUndoResponseTasks(void);
@@ -293,12 +297,12 @@ class Canvas : public QGraphicsScene
         // for printing documents as well as exporting SVG, PDF and PS files.
         bool isRenderingForPrinting(void) const;
         void setRenderingForPrinting(const bool printingMode);
-
         bool inSelectionMode(void) const;
         void postRoutingRequiredEvent(void);
 
     signals:
         void diagramFilenameChanged(const QFileInfo& title);
+        void canvasDrawingChanged(void);
         void debugOverlayEnabled(bool enabled);
         void clipboardContentsChanged(void);
         void editModeChanged(const int mode);
@@ -389,6 +393,7 @@ class Canvas : public QGraphicsScene
         bool m_opt_stuctural_editing_disabled;
         int  m_opt_flow_direction;
         int m_opt_layered_alignment_position;
+        QColor m_opt_canvas_background_colour;
         Actions m_actions;
 
         std::map<QString, QString> m_paste_id_map;

@@ -70,15 +70,23 @@ class CanvasOverviewWidget : public QWidget
         void paintEvent(QPaintEvent *event)
         {
             Q_UNUSED (event)
+            Canvas *canvas = NULL;
 
             // XXX Maybe we should cache this and recompute separately for
             //     transform changes, shape movement and viewport changes?
 
-            // Draw a white background.
             QPainter painter(this);
             painter.setRenderHint(QPainter::Antialiasing);
-            painter.setPen(Qt::white);
-            painter.setBrush(Qt::white);
+
+            // Fill the overview with the canvas background colour.
+            QColor backgroundColour = Qt::white;
+            if (m_canvasview)
+            {
+                canvas = m_canvasview->canvas();
+                backgroundColour = canvas->optCanvasBackgroundColour();
+            }
+            painter.setPen(backgroundColour);
+            painter.setBrush(backgroundColour);
             QRectF drawingRect = QRectF(0, 0, width(), height());
             painter.drawRect(drawingRect);
 
@@ -88,7 +96,6 @@ class CanvasOverviewWidget : public QWidget
             }
 
             // Compute the diagram bounds.
-            Canvas *canvas = m_canvasview->canvas();
             QRectF diagramBounds =  diagramBoundingRect(canvas->items());
             double buffer = 50;
             diagramBounds.adjust(-buffer, -buffer, buffer, buffer);
@@ -107,6 +114,11 @@ class CanvasOverviewWidget : public QWidget
             m_transform = QTransform();
             m_transform.translate(diff.x(), diff.y());
             m_transform.scale(scale, scale);
+
+            // Draw page outline on the canvas.
+            painter.setPen(Qt::darkGray);
+            painter.setBrush(Qt::white);
+            painter.drawRect(m_transform.mapRect(canvas->pageRect()));
 
             // Draw edges in overview for each connector on the canvas.
             painter.setPen(QColor(0, 0, 0, 100));

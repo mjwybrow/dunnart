@@ -74,6 +74,7 @@ class CanvasView : public QGraphicsView
         bool handleContextMenuEvent(QMouseEvent * event);
     private slots:
         void adjustSceneRect(QRectF rect);
+        void repaintWholeCanvas(void);
         void debugOverlayEnabled(bool enabled);
         void editModeChanged(int mode);
     private:

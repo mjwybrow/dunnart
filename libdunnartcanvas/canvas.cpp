@@ -214,6 +214,9 @@ Canvas::Canvas()
     m_opt_flow_direction = FlowDown;
     m_opt_layered_alignment_position = ShapeMiddle;
 
+    // Set default canvas background colour.
+    m_opt_canvas_background_colour = QColor(189, 189, 223);
+
     // Default list of connector colors. Use only dark colors (and full
     // opacity) since connectors are drawn as thin lines so light
     // colors will be hard to see.
@@ -537,7 +540,6 @@ void Canvas::setExpandedPage(const QRectF newExpandedPage)
     }
 }
 
-
 void Canvas::drawBackground(QPainter *painter, const QRectF& rect)
 {
     if ( m_rendering_for_printing )
@@ -553,7 +555,7 @@ void Canvas::drawBackground(QPainter *painter, const QRectF& rect)
     }
 
     // Draws purple background and the white page (if it is set).
-    painter->fillRect(rect, QColor(189, 189, 223));
+    painter->fillRect(rect, m_opt_canvas_background_colour);
     painter->fillRect(m_expanded_page, QColor(200, 200, 200));
     painter->fillRect(m_page, QColor(255, 255, 255));
     painter->setPen(QColor(110, 110, 110));
@@ -1261,6 +1263,12 @@ void Canvas::setDebugCOLAOutput(const bool value)
     m_graphlayout->setOutputDebugFiles(value);
 }
 
+QColor Canvas::optCanvasBackgroundColour(void) const
+{
+    return m_opt_canvas_background_colour;
+}
+
+
 int Canvas::optRoutingShapePadding(void) const
 {
     return (int) m_router->routingParameter(Avoid::shapeBufferDistance);
@@ -1461,6 +1469,12 @@ void Canvas::setOptFlowDirection(const FlowDirection value)
 void Canvas::setOptFlowDirectionFromDial(const int value)
 {
     setOptFlowDirection((FlowDirection) value);
+}
+
+void Canvas::setOptCanvasBackgroundColour(const QColor colour)
+{
+   m_opt_canvas_background_colour = colour;
+   emit canvasDrawingChanged();
 }
 
 bool Canvas::hasVisibleOverlays(void) const

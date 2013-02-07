@@ -96,6 +96,8 @@ void CanvasView::setScene(QGraphicsScene *scene)
                 this, SLOT(debugOverlayEnabled(bool)));
         connect(canvas(), SIGNAL(editModeChanged(int)),
                 this, SLOT(editModeChanged(int)));
+        connect(canvas(), SIGNAL(canvasDrawingChanged()),
+                this, SLOT(repaintWholeCanvas()));
     }
 }
 
@@ -133,6 +135,12 @@ void CanvasView::adjustSceneRect(QRectF new_scene_rect)
     //     connectors returning incorrect sizes at some point.
     scene_rect = scene_rect.united(canvas()->itemsBoundingRect());
     setSceneRect(scene_rect);
+}
+
+void CanvasView::repaintWholeCanvas(void)
+{
+    // Trigger a repaint of the entire visible canvas viewport.
+    canvas()->update(viewportRect());
 }
 
 
