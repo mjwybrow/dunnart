@@ -30,7 +30,6 @@
 #include <QtCore>
 #include <QtNetwork>
 
-
 class AppGarudaClient : public QObject
 {
     Q_OBJECT
@@ -69,6 +68,7 @@ class AppGarudaClient : public QObject
         int m_socket_descriptor;
         quint16 m_block_size;
         QString m_current_data;
+        QString m_app_uuid;
 };
 
 

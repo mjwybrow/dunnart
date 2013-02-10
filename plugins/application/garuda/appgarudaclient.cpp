@@ -32,7 +32,8 @@
 
 AppGarudaClient::AppGarudaClient(QObject *parent) :
     QObject(parent),
-    m_tcp_socket(NULL)
+    m_tcp_socket(NULL),
+    m_app_uuid("593387e0-7183-11e2-bcfd-0800200c9a66")
 {
     openSocket();
 
@@ -124,18 +125,18 @@ void AppGarudaClient::parseMessage(const QString &message)
     QVariantMap header = data["header"].toMap();
     QString action =  header["id"].toString();
 
-    if (action == "GetCompatibleSoftwareListResponse")
+    if (action == "GetCompatibleGadgetListResponse")
     {
         emit showCompatibleSoftwareResponse(data);
     }
-    else if (action == "LoadFileRequest")
+    else if (action == "LoadDataRequest")
     {
         QVariantMap body = data["body"].toMap();
-        QString filePath = body["filePath"].toString();
-        QString originSoftwareId = body["originSoftwareId"].toString();
-        QString originVersion = body["originVersion"].toString();
+        QString filePath = body["data"].toString();
+        QString originGadgetName = body["originGadgetName"].toString();
+        QString originGadgetUUID = body["originGadgetUUID"].toString();
         qDebug("Garuda: %s (%s) requests we load %s",
-               qPrintable(originSoftwareId), qPrintable(originVersion),
+               qPrintable(originGadgetName), qPrintable(originGadgetUUID),
                qPrintable(filePath));
         emit fileOpenRequest(filePath);
     }
@@ -144,12 +145,12 @@ void AppGarudaClient::parseMessage(const QString &message)
 void AppGarudaClient::activateDunnartWithCore(void)
 {
     QVariantMap header;
-    header["id"] = "ActivateSoftwareRequest";
+    header["id"] = "ActivateGadgetRequest";
     header["version"] = "0.1";
 
     QVariantMap body;
-    body["softwareId"] = "Dunnart";
-    body["version"] = "2.0";
+    body["gadgetName"] = "Dunnart";
+    body["gadgetUUID"] = m_app_uuid;
 
     QVariantMap root;
     root["header"] = header;
@@ -162,31 +163,43 @@ void AppGarudaClient::activateDunnartWithCore(void)
 
 void AppGarudaClient::registerDunnart(void)
 {
+    QDir pluginsDir = QDir(qApp->applicationDirPath());
+#if defined(Q_OS_MAC)
+    if (pluginsDir.dirName() == "MacOS") {
+        pluginsDir.cdUp();
+    }
+    pluginsDir.cd("Resources");
+#endif
+
     QVariantMap header;
-    header["id"] = "RegisterSoftwareRequest";
+    header["id"] = "RegisterGadgetRequest";
     header["version"] = "0.1";
 
+    QVariantList categoryList;
+    categoryList.append(QVariant("Layout"));
+
+    QVariantList screenshots;
+    screenshots.append(pluginsDir.absoluteFilePath("DunnartScreen.png"));
+
     QVariantMap layoutFormat;
-    layoutFormat["fileExtension"] = "xml";
-    layoutFormat["fileFormat"] = "TestSoftwareA";
+    layoutFormat["fileExtension"] = "svg";
+    layoutFormat["fileFormat"] = "txt";
 
     QVariantList fileFormats;
     fileFormats.append(layoutFormat);
 
-    QVariantMap environments;
-    environments["HOME"] = "home";
-
     QVariantMap body;
-    body["softwareId"] = "Dunnart";
-    body["version"] = "2.0";
-    body["filePath"] = QCoreApplication::applicationFilePath();
+    body["categoryList"] = categoryList;
+    body["description"] = "Dunnart is a prototype constraint-based diagram editor. It includes standard diagram editing capabilities, as well as advanced features such as constraint-based geometric placement tools (alignment, distribution, separation, non-overlap, and page containment), automatic object-avoiding poly-line connector routing, and continuous network layout.";
+    body["gadgetUUID"] = m_app_uuid;
+    body["iconPath"] = pluginsDir.absoluteFilePath("DunnartIcon.png");
     body["inputFileFormats"] = fileFormats;
     body["outputFileFormats"] = fileFormats;
-    body["environments"] = environments;
+    body["launchCommand"] = "open " + QCoreApplication::applicationFilePath();
     body["name"] = "Dunnart";
-
-    // Little unsure about this one:
-    body["workingDir"] = QDir::currentPath();
+    body["provider"] = "MArVL, Monash University";
+    body["screenshots"] = screenshots;
+    //body["version"] = "2.0";
 
     QVariantMap root;
     root["header"] = header;
@@ -199,6 +212,7 @@ void AppGarudaClient::registerDunnart(void)
 
 void AppGarudaClient::deregisterWithCore(void)
 {
+/*
     QVariantMap header;
     header["id"] = "DeregisterFromGarudaRequest";
     header["version"] = "0.1";
@@ -214,21 +228,22 @@ void AppGarudaClient::deregisterWithCore(void)
     QByteArray data = QtJson::Json::serialize(root);
 
     sendData(QString(data));
+*/
 }
 
-void AppGarudaClient::loadFileIntoSoftware(QFileInfo fileInfo, QString softwareId,
-        QString softwareVersion)
+void AppGarudaClient::loadFileIntoSoftware(QFileInfo fileInfo, QString softwareName,
+        QString softwareUUID)
 {
     QVariantMap header;
-    header["id"] = "SentFileToSoftwareRequest";
+    header["id"] = "SentDataToGadgetRequest";
     header["version"] = "0.1";
 
     QVariantMap body;
-    body["filePath"] = fileInfo.absoluteFilePath();
-    body["softwareId"] = softwareId;
-    body["version"] = softwareVersion;
-    body["originSoftwareId"] = "Dunnart";
-    body["originSoftwareVersion"] = "2.0";
+    body["data"] = fileInfo.absoluteFilePath();
+    body["gadgetName"] = "Dunnart";
+    body["gadgetUUID"] = m_app_uuid;
+    body["targetGadgetName"] = softwareName;
+    body["targetGadgetUUID"] = softwareUUID;
 
     QVariantMap root;
     root["header"] = header;
@@ -241,14 +256,13 @@ void AppGarudaClient::loadFileIntoSoftware(QFileInfo fileInfo, QString softwareI
 
 void AppGarudaClient::showCompatibleSoftwareFor(QString extension, QString format)
 {
-    // "GetLoadableSoftwaresRequest";
     QVariantMap header;
-    header["id"] = "GetCompatibleSoftwareListRequest";
+    header["id"] = "GetCompatibleGadgetListRequest";
     header["version"] = "0.1";
 
     QVariantMap body;
-    body["softwareId"] = "Dunnart";
-    body["version"] = "2.0";
+    body["gadgetName"] = "Dunnart";
+    body["gadgetUUID"] = m_app_uuid;
     body["fileExtension"] = extension;
     body["fileType"] = format;
 

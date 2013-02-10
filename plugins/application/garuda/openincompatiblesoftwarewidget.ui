@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>376</width>
+    <width>381</width>
     <height>315</height>
    </rect>
   </property>
@@ -14,14 +14,14 @@
    <bool>true</bool>
   </property>
   <property name="windowTitle">
-   <string>Compatible Garuda-enabled Software</string>
+   <string>Compatible Garuda-enabled Gadgets</string>
   </property>
   <widget class="QWidget" name="dockWidgetContents">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QLabel" name="label">
       <property name="text">
-       <string>Select a Garuda-enabled app to open the current file:</string>
+       <string>Select a Garuda-enabled gadget to open the current file:</string>
       </property>
      </widget>
     </item>
@@ -44,7 +44,7 @@
        <number>20</number>
       </property>
       <property name="columnCount">
-       <number>3</number>
+       <number>2</number>
       </property>
       <attribute name="horizontalHeaderVisible">
        <bool>true</bool>
@@ -80,17 +80,12 @@
       <row/>
       <column>
        <property name="text">
-        <string>Id</string>
+        <string>Gadget Name</string>
        </property>
       </column>
       <column>
        <property name="text">
-        <string>Version</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Name</string>
+        <string>UUID</string>
        </property>
       </column>
      </widget>

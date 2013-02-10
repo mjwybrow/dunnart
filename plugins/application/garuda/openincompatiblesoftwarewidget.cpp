@@ -42,6 +42,9 @@ OpenInCompatibleSoftwareWidget::OpenInCompatibleSoftwareWidget(
             this, SLOT(cellWasDoubleClicked(int,int)));
 
     changeCanvas(canvas);
+
+    QTableWidget *tableWidget = ui->tableWidget;
+    tableWidget->setColumnWidth(0, 200);
 }
 
 OpenInCompatibleSoftwareWidget::~OpenInCompatibleSoftwareWidget()
@@ -64,19 +67,16 @@ void OpenInCompatibleSoftwareWidget::setContentsForResponse(const QVariantMap& r
     QTableWidgetItem *newItem = NULL;
 
     QVariantMap body = response["body"].toMap();
-    QVariantList softwares = body["softwares"].toList();
+    QVariantList softwares = body["gadgets"].toList();
     for (int i = 0; i < softwares.count(); ++i)
     {
         QVariantMap software = softwares.at(i).toMap();
 
-        newItem = new QTableWidgetItem(software["id"].toString());
+        newItem = new QTableWidgetItem(software["name"].toString());
         tableWidget->setItem(i, 0, newItem);
 
-        newItem = new QTableWidgetItem(software["version"].toString());
+        newItem = new QTableWidgetItem(software["UUID"].toString());
         tableWidget->setItem(i, 1, newItem);
-
-        newItem = new QTableWidgetItem(software["name"].toString());
-        tableWidget->setItem(i, 2, newItem);
     }
 }
 
