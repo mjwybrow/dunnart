@@ -4,7 +4,7 @@
 PortSystem      1.0
 
 name            libsbml
-version         4.2.0
+version         5.7.0
 revision        1
 categories      devel
 platforms       macosx
@@ -20,13 +20,13 @@ long_description \
 homepage        http://sbml.org/Software/libSBML
 master_sites    sourceforge:sbml
 use_zip         yes
-distname        ${name}-${version}-src
+distname        libSBML-${version}-core-plus-packages-src
 
-worksrcdir      ${name}-${version}
+worksrcdir      libSBML-${version}-Source
 
-checksums           md5     669defb586a81d7e3a6fc27140b07e41 \
-                    sha1    f4c8d7942388073f540a858770db68b6ca810991 \
-                    rmd160  f9059c0d4cb318f1eb8795d2737759255d385a44
+checksums           md5     b0b9566b0e495a1431e7ad6206ad3f61 \
+                    sha1    4de97f21788fc0ecdad130d4b52990a977c46157 \
+                    rmd160  e0438fd81eda638ad3876a9dc198b53d572a5a78
 
 depends_lib     lib:libxml2:libxml2
 
