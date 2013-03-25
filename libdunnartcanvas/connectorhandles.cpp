@@ -250,16 +250,15 @@ void ConnectorCheckpointHandle::reposition(void)
 void ConnectorCheckpointHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     int index = this->handleFlags();
-    QPointF scenePosition = event->scenePos();
-    Avoid::Point newPosition(scenePosition.x(), scenePosition.y());
+    m_pos = event->scenePos();
+    Avoid::Point newPosition(m_pos.x(), m_pos.y());
     std::vector<Avoid::Checkpoint> checkpoints =
             m_conn->avoidRef->routingCheckpoints();
     checkpoints[index].point = newPosition;
     m_conn->avoidRef->setRoutingCheckpoints(checkpoints);
     // XXX Horribly inefficient.
     reroute_connectors(m_conn->canvas(), true);
-
-    Handle::mouseMoveEvent(event);
+    reposition();
 }
 
 void ConnectorCheckpointHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
