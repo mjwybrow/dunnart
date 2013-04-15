@@ -10,16 +10,11 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
+ * See the file LICENSE.LGPL distributed with the library.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library in the file LICENSE; if not, 
- * write to the Free Software Foundation, Inc., 59 Temple Place, 
- * Suite 330, Boston, MA  02111-1307  USA
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
  *
  * Author(s):  Tim Dwyer
 */
@@ -41,8 +36,6 @@ using straightener::generateClusterBoundaries;
 
 namespace cola {
 
-TestConvergence defaultTest(0.0001,100);
-
 ConstrainedMajorizationLayout
 ::ConstrainedMajorizationLayout(
         vector<Rectangle*>& rs,
@@ -50,18 +43,21 @@ ConstrainedMajorizationLayout
         RootCluster *clusterHierarchy,
         const double idealLength,
         const double * eLengths,
-        TestConvergence& done,
+        TestConvergence *doneTest,
         PreIteration* preIteration)
     : n(rs.size()),
       lap2(valarray<double>(n*n)), 
       Dij(valarray<double>(n*n)),
-      tol(1e-7), done(done), preIteration(preIteration),
+      tol(1e-7),
+      done(doneTest),
+      using_default_done(false),
+      preIteration(preIteration),
       X(valarray<double>(n)), Y(valarray<double>(n)),
       stickyNodes(false), 
       startX(valarray<double>(n)), startY(valarray<double>(n)),
       constrainedLayout(false),
       nonOverlappingClusters(false),
-      clusterHierarchy(clusterHierarchy), linearConstraints(NULL),
+      clusterHierarchy(clusterHierarchy),
       gpX(NULL), gpY(NULL),
       ccs(NULL),
       unsatisfiableX(NULL), unsatisfiableY(NULL),
@@ -73,10 +69,16 @@ ConstrainedMajorizationLayout
       externalSolver(false),
       majorization(true)
 {
+    if (done == NULL)
+    {
+        done = new TestConvergence();
+        using_default_done = true;
+    }
+
     boundingBoxes.resize(rs.size());
     copy(rs.begin(),rs.end(),boundingBoxes.begin());
 
-    done.reset();
+    done->reset();
 
     COLA_ASSERT(!straightenEdges||straightenEdges->size()==es.size());
 
@@ -364,7 +366,7 @@ void ConstrainedMajorizationLayout::run(bool x, bool y) {
                 gpY->unfixPos(l->getID());
             }
         }
-    } while(!done(compute_stress(Dij),X,Y));
+    } while(!(*done)(compute_stress(Dij),X,Y));
 }
 double ConstrainedMajorizationLayout::computeStress() {
     return compute_stress(Dij);
@@ -658,14 +660,3 @@ Rectangle bounds(vector<Rectangle*>& rs) {
 #endif
 
 } // namespace cola
-
-/*
-  Local Variables:
-  mode:c++
-  c-file-style:"stroustrup"
-  c-file-offsets:((innamespace . 0)(inline-open . 0))
-  indent-tabs-mode:nil
-  fill-column:99
-  End:
-*/
-// vim: filetype=cpp:expandtab:shiftwidth=4:tabstop=4:softtabstop=4 :

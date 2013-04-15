@@ -10,19 +10,14 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
+ * See the file LICENSE.LGPL distributed with the library.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library in the file LICENSE; if not, 
- * write to the Free Software Foundation, Inc., 59 Temple Place, 
- * Suite 330, Boston, MA  02111-1307  USA
- *
- * Author(s): Tim Dwyer
- *            Michael Wybrow
+ * Author(s):  Tim Dwyer
+ *             Michael Wybrow
  *
 */
 
@@ -88,11 +83,12 @@ void dumpSquareMatrix(unsigned n, T** L) {
 ConstrainedFDLayout::ConstrainedFDLayout(const vpsc::Rectangles& rs,
         const std::vector< Edge >& es, const double idealLength,
         const bool preventOverlaps, const double* eLengths, 
-        TestConvergence& done, PreIteration* preIteration) 
+        TestConvergence *doneTest, PreIteration* preIteration)
     : n(rs.size()),
       X(valarray<double>(n)),
       Y(valarray<double>(n)),
-      done(done),
+      done(doneTest),
+      using_default_done(false),
       preIteration(preIteration),
       topologyAddon(new TopologyAddonInterface()),
       rungekutta(true),
@@ -102,10 +98,16 @@ ConstrainedFDLayout::ConstrainedFDLayout(const vpsc::Rectangles& rs,
       m_idealEdgeLength(idealLength),
       m_generateNonOverlapConstraints(preventOverlaps)
 {
+    if (done == NULL)
+    {
+        done = new TestConvergence();
+        using_default_done = true;
+    }
+
     //FILELog::ReportingLevel() = logDEBUG1;
     FILELog::ReportingLevel() = logERROR;
     boundingBoxes = rs;
-    done.reset();
+    done->reset();
     unsigned i=0;
     for(vpsc::Rectangles::const_iterator ri=rs.begin();ri!=rs.end();++ri,++i) {
         X[i]=(*ri)->getCentreX();
@@ -134,7 +136,7 @@ void dijkstra(const unsigned s, const unsigned n, double* d,
     shortest_paths::dijkstra(s,n,d,es,&eLengthsArray);
 }
 
-/**
+/*
  * Sets up the D and G matrices.  D is the required euclidean distances
  * between pairs of nodes based on the shortest paths between them (using
  * m_idealEdgeLength*eLengths[edge] as the edge length, if eLengths array 
@@ -187,7 +189,7 @@ void getPosition(Position& X, Position& Y, Position& pos) {
         pos[i+n]=Y[i];
     }
 }
-/**
+/*
  * moves all rectangles to the desired position while respecting
  * constraints.
  * @param pos target positions of both axes
@@ -198,7 +200,7 @@ void ConstrainedFDLayout::setPosition(Position& pos) {
     moveTo(vpsc::HORIZONTAL,pos);
     moveTo(vpsc::VERTICAL,pos);
 }
-/**
+/*
  * Layout is performed by minimizing the P-stress goal function iteratively.
  * At each iteration taking a step in the steepest-descent direction.
  * x0 is the current position, x1 is the x0 - descentvector.
@@ -216,7 +218,7 @@ void ConstrainedFDLayout::computeDescentVectorOnBothAxes(
     getPosition(X,Y,x1);
 }
 
-/**
+/*
  * run() implements the main layout loop, taking descent steps until
  * stress is no-longer significantly reduced.
  * done is a callback used to check stress but also to report updated 
@@ -269,14 +271,14 @@ void ConstrainedFDLayout::run(const bool xAxis, const bool yAxis)
         setPosition(x1);
         stress=computeStress();
         FILE_LOG(logDEBUG) << "stress="<<stress;
-    } while(!done(stress,X,Y));
+    } while(!(*done)(stress,X,Y));
     for(unsigned i=0;i<n;i++) {
         vpsc::Rectangle *r=boundingBoxes[i];
     FILE_LOG(logDEBUG) << *r;
     }
     FILE_LOG(logDEBUG) << "ConstrainedFDLayout::run done.";
 }
-/**
+/*
  * Same as run, but only applies one iteration.  This may be useful
  * where it's too hard to implement a call-back (e.g. in java apps)
  */
@@ -701,6 +703,11 @@ void ConstrainedFDLayout::makeFeasible(void)
 
 ConstrainedFDLayout::~ConstrainedFDLayout()
 {
+    if (using_default_done)
+    {
+        delete done;
+    }
+
     for (unsigned i = 0; i < n; ++i)
     {
         delete [] G[i];
@@ -751,7 +758,7 @@ TopologyAddonInterface *ConstrainedFDLayout::getTopology(void)
 
 
 void setupVarsAndConstraints(unsigned n, const CompoundConstraints& ccs,
-        const vpsc::Dim dim, std::vector<vpsc::Rectangle*>& boundingBoxes,
+        const vpsc::Dim dim, vpsc::Rectangles& boundingBoxes,
         RootCluster *clusterHierarchy,
         vpsc::Variables& vs, vpsc::Constraints& cs, 
         valarray<double> &coords) 
@@ -784,7 +791,7 @@ void setupVarsAndConstraints(unsigned n, const CompoundConstraints& ccs,
 
 static void setupExtraConstraints(const CompoundConstraints& ccs,
         const vpsc::Dim dim, vpsc::Variables& vs, vpsc::Constraints& cs,
-        std::vector<vpsc::Rectangle*>& boundingBoxes)
+        vpsc::Rectangles& boundingBoxes)
 {
     for (CompoundConstraints::const_iterator c = ccs.begin();
             c != ccs.end(); ++c) 
@@ -850,7 +857,7 @@ void ConstrainedFDLayout::handleResizes(const Resizes& resizeList)
     topologyAddon->handleResizes(resizeList, n, X, Y, ccs, boundingBoxes,
             clusterHierarchy);
 }
-/**
+/*
  * move positions of nodes in specified axis while respecting constraints
  * @param dim axis
  * @param target array of desired positions (for both axes)
@@ -891,7 +898,7 @@ void ConstrainedFDLayout::moveTo(const vpsc::Dim dim, Position& target) {
     for_each(vs.begin(),vs.end(),delete_object());
     for_each(cs.begin(),cs.end(),delete_object());
 }
-/**
+/*
  * The following computes an unconstrained solution then uses Projection to
  * make this solution feasible with respect to constraints by moving things as
  * little as possible.  If "meta-constraints" such as avoidOverlaps or edge
@@ -948,7 +955,7 @@ double ConstrainedFDLayout::applyForcesAndConstraints(const vpsc::Dim dim, const
     for_each(cs.begin(),cs.end(),delete_object());
     return stress;
 }
-/**
+/*
  * Attempts to set coords=oldCoords-stepsize*d.  If this does not reduce
  * the stress from oldStress then stepsize is halved.  This is repeated
  * until stepsize falls below a threshhold.
@@ -983,7 +990,7 @@ double ConstrainedFDLayout::applyDescentVector(
     return computeStress();
 }
         
-/**
+/*
  * Computes:
  *  - the matrix of second derivatives (the Hessian) H, used in 
  *    calculating stepsize; and
@@ -1032,7 +1039,7 @@ void ConstrainedFDLayout::computeForces(
         }
     }
 }
-/**
+/*
  * Returns the optimal step-size in the direction d, given gradient g and 
  * hessian H.
  */
@@ -1053,7 +1060,7 @@ double ConstrainedFDLayout::computeStepSize(
     if(denominator==0) return 0;
     return numerator/denominator;
 }
-/**
+/*
  * Just computes the cost (Stress) at the current X,Y position
  * used to test termination.
  * This method will call preIteration if one is set.
@@ -1270,15 +1277,3 @@ void ConstrainedFDLayout::outputInstanceToSVG(std::string instanceName)
 
 
 } // namespace cola
-
-/*
-  Local Variables:
-  mode:c++
-  c-file-style:"stroustrup"
-  c-file-offsets:((innamespace . 0)(inline-open . 0))
-  indent-tabs-mode:nil
-  fill-column:99
-  End:
-*/
-// vim: filetype=cpp:cindent:expandtab:shiftwidth=4:tabstop=4:softtabstop=4 :
-
