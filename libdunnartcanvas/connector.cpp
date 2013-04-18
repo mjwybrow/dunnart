@@ -780,9 +780,7 @@ void Connector::applySimpleRoute(void)
         Avoid::PolyLine route(4);
 
         // Source endpoint.
-        route.ps[0].x = m_src_pt.x;
-        route.ps[0].y = m_src_pt.y;
-        route.ps[0].vn = Avoid::kUnassignedVertexNumber;
+        route.ps[0] = Point(m_src_pt.x, m_src_pt.y);
 
         double xDiff = fabs(m_src_pt.x - m_dst_pt.x);
         double yDiff = fabs(m_src_pt.y - m_dst_pt.y);
@@ -819,13 +817,9 @@ void Connector::applySimpleRoute(void)
 
                 double xSegPos = m_dst_pt.x - xDir *
                         (dstPadding + connGroupPadding + (bendPlacement * xDiff));
-                route.ps[1].x = xSegPos;
-                route.ps[1].y = m_src_pt.y;
-                route.ps[1].vn = Avoid::kUnassignedVertexNumber;
 
-                route.ps[2].x = xSegPos;
-                route.ps[2].y = m_dst_pt.y;
-                route.ps[2].vn = Avoid::kUnassignedVertexNumber;
+                route.ps[1] = Point(xSegPos, m_src_pt.y);
+                route.ps[2] = Point(xSegPos, m_dst_pt.y);
             }
             else
             {
@@ -841,13 +835,9 @@ void Connector::applySimpleRoute(void)
 
                 double ySegPos = m_dst_pt.y - yDir *
                         (srcPadding + connGroupPadding + (bendPlacement * yDiff));
-                route.ps[1].x = m_src_pt.x;
-                route.ps[1].y = ySegPos;
-                route.ps[1].vn = Avoid::kUnassignedVertexNumber;
 
-                route.ps[2].x = m_dst_pt.x;
-                route.ps[2].y = ySegPos;
-                route.ps[2].vn = Avoid::kUnassignedVertexNumber;
+                route.ps[1] = Point(m_src_pt.x, ySegPos);
+                route.ps[2] = Point(m_dst_pt.x, ySegPos);
             }
         }
         else if (m_has_downward_constraint &&
@@ -869,13 +859,8 @@ void Connector::applySimpleRoute(void)
 
                 double xSegPos = m_src_pt.x + xDir * (bendPlacement * xDiff);
 
-                route.ps[1].x = xSegPos;
-                route.ps[1].y = m_src_pt.y;
-                route.ps[1].vn = Avoid::kUnassignedVertexNumber;
-
-                route.ps[2].x = xSegPos;
-                route.ps[2].y = m_dst_pt.y;
-                route.ps[2].vn = Avoid::kUnassignedVertexNumber;
+                route.ps[1] = Point(xSegPos, m_src_pt.y);
+                route.ps[2] = Point(xSegPos, m_dst_pt.y);
             }
             else
             {
@@ -889,13 +874,8 @@ void Connector::applySimpleRoute(void)
 
                 double ySegPos = m_src_pt.y + yDir * (bendPlacement * yDiff);
 
-                route.ps[1].x = m_src_pt.x;
-                route.ps[1].y = ySegPos;
-                route.ps[1].vn = Avoid::kUnassignedVertexNumber;
-
-                route.ps[2].x = m_dst_pt.x;
-                route.ps[2].y = ySegPos;
-                route.ps[2].vn = Avoid::kUnassignedVertexNumber;
+                route.ps[1] = Point(m_src_pt.x, ySegPos);
+                route.ps[2] = Point(m_dst_pt.x, ySegPos);
             }
         }
         else
@@ -908,29 +888,21 @@ void Connector::applySimpleRoute(void)
 
             if (yDiff < xDiff)
             {
-                route.ps[1].x = m_src_pt.x + (xDiff / 2.0) * xDir;
-                route.ps[1].y = m_src_pt.y;
-                route.ps[1].vn = Avoid::kUnassignedVertexNumber;
-
-                route.ps[2].x = m_src_pt.x + (xDiff / 2.0) * xDir;
-                route.ps[2].y = m_dst_pt.y;
-                route.ps[2].vn = Avoid::kUnassignedVertexNumber;
+                route.ps[1] = Point(m_src_pt.x + (xDiff / 2.0) * xDir,
+                        m_src_pt.y);
+                route.ps[2] = Point(m_src_pt.x + (xDiff / 2.0) * xDir,
+                        m_dst_pt.y);
             }
             else
             {
-                route.ps[1].x = m_src_pt.x;
-                route.ps[1].y = m_src_pt.y + (yDiff / 2.0) * yDir;
-                route.ps[1].vn = Avoid::kUnassignedVertexNumber;
-
-                route.ps[2].x = m_dst_pt.x;
-                route.ps[2].y = m_src_pt.y + (yDiff / 2.0) * yDir;
-                route.ps[2].vn = Avoid::kUnassignedVertexNumber;
+                route.ps[1] = Point(m_src_pt.x,
+                        m_src_pt.y + (yDiff / 2.0) * yDir);
+                route.ps[2] = Point(m_dst_pt.x,
+                        m_src_pt.y + (yDiff / 2.0) * yDir);
             }
         }
         // Destination endpoint.
-        route.ps[3].x = m_dst_pt.x;
-        route.ps[3].y = m_dst_pt.y;
-        route.ps[3].vn = Avoid::kUnassignedVertexNumber;
+        route.ps[3] = Point(m_dst_pt.x, m_dst_pt.y);
 
         bool updateLibavoid = true;
         this->applyNewRoute(route, updateLibavoid);
@@ -940,13 +912,9 @@ void Connector::applySimpleRoute(void)
         // Draw a simple straight line.
         Avoid::PolyLine route(2);
 
-        route.ps[0].x = m_src_pt.x;
-        route.ps[0].y = m_src_pt.y;
-        route.ps[0].vn = Avoid::kUnassignedVertexNumber;
+        route.ps[0] = Point(m_src_pt.x, m_src_pt.y);
 
-        route.ps[1].x = m_dst_pt.x;
-        route.ps[1].y = m_dst_pt.y;
-        route.ps[1].vn = Avoid::kUnassignedVertexNumber;
+        route.ps[1] = Point(m_dst_pt.x, m_dst_pt.y);
 
         bool updateLibavoid = true;
         this->applyNewRoute(route, updateLibavoid);
