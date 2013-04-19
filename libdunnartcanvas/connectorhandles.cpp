@@ -207,8 +207,7 @@ void ConnectorEndpointHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     {
         m_conn->setNewEndpoint(index, event->scenePos(), NULL);
     }
-
-    Handle::mouseMoveEvent(event);
+    reposition();
 }
 
 
