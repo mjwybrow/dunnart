@@ -34,6 +34,7 @@
 #include "libdunnartcanvas/canvasitem.h"
 #include "libdunnartcanvas/shape.h"
 #include "libdunnartcanvas/connector.h"
+#include "libdunnartcanvas/cluster.h"
 
 
 namespace dunnart {
@@ -141,15 +142,32 @@ class CanvasOverviewWidget : public QWidget
                 }
             }
 
-            // Draw Rectangles in overview for each shape on the canvas.
-            painter.setPen(Qt::black);
-            painter.setBrush(Qt::darkGray);
+            // Draw light rectangles in overview for each cluster on canvas.
+            painter.setPen(Qt::darkGray);
+            painter.setBrush(Qt::lightGray);
             QRectF shapeRect;
             for (int i = 0; i < items.count(); ++i)
             {
-                ShapeObj *shape = dynamic_cast<ShapeObj *> (items.at(i));
-                if (shape)
+                Cluster *cluster = dynamic_cast<Cluster *> (items.at(i));
+                if (cluster)
                 {
+                    shapeRect.setSize(cluster->size());
+                    shapeRect.moveCenter(cluster->centrePos());
+                    painter.drawRect(m_transform.mapRect(shapeRect));
+                }
+            }
+
+
+            // Draw Rectangles in overview for each shape on the canvas.
+            painter.setPen(Qt::black);
+            painter.setBrush(Qt::darkGray);
+            for (int i = 0; i < items.count(); ++i)
+            {
+                ShapeObj *shape = dynamic_cast<ShapeObj *> (items.at(i));
+                Cluster *cluster = dynamic_cast<Cluster *> (items.at(i));
+                if (shape && !cluster)
+                {
+                    // Clusters are also shapes.
                     shapeRect.setSize(shape->size());
                     shapeRect.moveCenter(shape->centrePos());
                     painter.drawRect(m_transform.mapRect(shapeRect));
