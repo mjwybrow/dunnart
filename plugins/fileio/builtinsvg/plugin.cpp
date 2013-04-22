@@ -223,16 +223,17 @@ class BuiltinSVGFileIOPlugin : public QObject, public FileIOPluginInterface
             // Pro-origami files
             QTextStream stream(&file);
             QString content = stream.readAll();
-            content.replace("dunnart:type=", "type=");
-            content.replace(" position=", " bar=");
-            content.replace(" direction=", " foo=");
+            if (content.contains("sodipodi:guide dunnart:type=\"indGuide\""))
+            {
+                // This has v1 guidline descriptions that need to be rewritten.
+                content.replace(" direction=", " foo=");
+                content.replace(" position=", " bar=");
+                content.replace("sodipodi:guide", "dunnart:node");
+            }
+            content.replace("node dunnart:type=", "node type=");
             content.replace("dunnart:direction=", "direction=");
             content.replace("dunnart:position=", "position=");
             content.replace("dunnart:sepDistance=", "sepDistance=");
-            content.replace(" type=\"bio", " dunnart:type=\"bio");
-            content.replace(" type=\"rect", " dunnart:type=\"rect");
-            content.replace(" type=\"conn", " dunnart:type=\"conn");
-            content.replace("sodipodi:guide", "dunnart:node");
             content.replace("avoidBuffer=\"10\"", "avoidBuffer=\"6\"");
             content.replace("dunnart:xPos=", "dunnart:cx=");
             content.replace("dunnart:yPos=", "dunnart:cy=");
