@@ -273,6 +273,8 @@ void CanvasItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     canvas()->processResponseTasks();
 
     // Still do routing even when the layout thread is suspended.
+    // XXX We need to only reroute connectors attached to moved shape
+    //     during dragging if topology layout is turned on.
     if (canvas()->isLayoutSuspended())
     {
         reroute_connectors(canvas());

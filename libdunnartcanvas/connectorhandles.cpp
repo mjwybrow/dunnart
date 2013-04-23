@@ -40,6 +40,8 @@
 
 #include "libavoid/connector.h"
 #include "libavoid/connectionpin.h"
+#include "libavoid/router.h"
+#include "libavoid/shape.h"
 
 namespace dunnart {
 
@@ -184,24 +186,31 @@ void ConnectorEndpointHandle::paint(QPainter *painter,
 void ConnectorEndpointHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     int index = this->handleFlags();
+    QPair<ShapeObj *, ShapeObj *> attachedShapes = m_conn->getAttachedShapes();
+    ShapeObj *otherEndShape = (index == SRCPT) ? attachedShapes.second :
+            attachedShapes.first;
 
-    ShapeObj *attShape = NULL;
+    QPointF mousePoint = event->scenePos();
+    Avoid::ShapeRef *containingShapeRef = canvas()->router()->shapeContainingPoint(
+            Avoid::Point(mousePoint.x(), mousePoint.y()));
+    ShapeObj *containingShape = NULL;
     QList<CanvasItem *> canvas_items = m_conn->canvas()->items();
     for (int i = 0; i < canvas_items.size(); ++i)
     {
         ShapeObj *shape = dynamic_cast<ShapeObj *>
                 (canvas_items.at(i));
-        if (shape && shape->contains(event->scenePos() - shape->scenePos()))
+        if (shape && (shape != otherEndShape) &&
+                (shape->avoidRef == containingShapeRef))
         {
-            attShape = shape;
+            containingShape = shape;
             break;
         }
     }
 
-    if (attShape)
+    if (containingShape)
     {
-        m_conn->setNewEndpoint(index, attShape->centrePos(), attShape,
-                CENTRE_CONNECTION_PIN);
+        m_conn->setNewEndpoint(index, containingShape->centrePos(),
+                containingShape, CENTRE_CONNECTION_PIN);
     }
     else
     {
