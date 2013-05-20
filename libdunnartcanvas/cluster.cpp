@@ -98,10 +98,8 @@ Cluster::Cluster(Canvas *canvas, const QDomElement& node, const QString& ns)
         // lookup each shape and add it to the members list.
         QStringList list = value.split(" ", QString::SkipEmptyParts);
         qDebug() << list;
-        for (int i = 0; i < list.size(); ++i)
+        foreach (QString id, list)
         {
-            QString id = list.at(i);
-
             CanvasItem *cObj = canvas->getItemByID(id);
             if (cObj)
             {
@@ -269,7 +267,7 @@ void Cluster::changeDetailLevel(bool expand)
         minProportion = maxCollapsedClusterSize / m_expanded_size.height();
     }
     // Shrink to at least half size.
-    minProportion = std::min(minProportion, 0.5);
+    minProportion = qMin(minProportion, 0.5);
         
     double startProportion;
     double endProportion;
@@ -627,10 +625,10 @@ void Cluster::calculateBoundary(void)
         {
             Avoid::Box bBox = (*curr)->avoidRef->routingBox();
 
-            minX = std::min(minX, bBox.min.x);
-            minY = std::min(minY, bBox.min.y);
-            maxX = std::max(maxX, bBox.max.x);
-            maxY = std::max(maxY, bBox.max.y);
+            minX = qMin(minX, bBox.min.x);
+            minY = qMin(minY, bBox.min.y);
+            maxX = qMax(maxX, bBox.max.x);
+            maxY = qMax(maxY, bBox.max.y);
         }
 
         boundary.clear();

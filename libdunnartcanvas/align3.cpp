@@ -106,10 +106,10 @@ public:
 
 bool on_both_segments(double xs, double ys, int p[2][2][2])
 {
-    return (   xs >= std::min(p[0][0][0], p[0][1][0]) && xs <= std::max(p[0][0][0], p[0][1][0])
-               && ys >= std::min(p[0][0][1], p[0][1][1]) && ys <= std::max(p[0][0][1], p[0][1][1])
-               && xs >= std::min(p[1][0][0], p[1][1][0]) && xs <= std::max(p[1][0][0], p[1][1][0])
-               && ys >= std::min(p[1][0][1], p[1][1][1]) && ys <= std::max(p[1][0][1], p[1][1][1])
+    return (   xs >= qMin(p[0][0][0], p[0][1][0]) && xs <= qMax(p[0][0][0], p[0][1][0])
+               && ys >= qMin(p[0][0][1], p[0][1][1]) && ys <= qMax(p[0][0][1], p[0][1][1])
+               && xs >= qMin(p[1][0][0], p[1][1][0]) && xs <= qMax(p[1][0][0], p[1][1][0])
+               && ys >= qMin(p[1][0][1], p[1][1][1]) && ys <= qMax(p[1][0][1], p[1][1][1])
                );
 }
 
@@ -117,10 +117,10 @@ bool on_both_segments(double xs, double ys, int p[2][2][2])
 bool on_both_segments2(double xs, double ys, int p[2][2][2])
 {
     return on_both_segments(xs, ys, p) &&
-               ((   xs > std::min(p[0][0][0], p[0][1][0]) && xs < std::max(p[0][0][0], p[0][1][0])
-               || ys > std::min(p[0][0][1], p[0][1][1]) && ys < std::max(p[0][0][1], p[0][1][1]))
-               || (xs > std::min(p[1][0][0], p[1][1][0]) && xs < std::max(p[1][0][0], p[1][1][0])
-               || ys > std::min(p[1][0][1], p[1][1][1]) && ys < std::max(p[1][0][1], p[1][1][1]))
+               ((   xs > qMin(p[0][0][0], p[0][1][0]) && xs < qMax(p[0][0][0], p[0][1][0])
+               || ys > qMin(p[0][0][1], p[0][1][1]) && ys < qMax(p[0][0][1], p[0][1][1]))
+               || (xs > qMin(p[1][0][0], p[1][1][0]) && xs < qMax(p[1][0][0], p[1][1][0])
+               || ys > qMin(p[1][0][1], p[1][1][1]) && ys < qMax(p[1][0][1], p[1][1][1]))
                    );
 
 }
@@ -157,10 +157,10 @@ bool intersection(int p[2][2][2], bool common_node)
             || on_both_segments2(p[1][0][0], p[1][0][1], p)
             || on_both_segments2(p[1][1][0], p[1][1][1], p);
 
-            /*((p[0][0][1] >= std::min(p[1][0][1], p[1][1][1]) && p[0][0][1] <= std::max(p[1][0][1], p[1][1][1]))
-                                                          || (p[0][1][1] >= std::min(p[1][0][1], p[1][1][1]) && p[0][1][1] <= std::max(p[1][0][1], p[1][1][1]))
-                                                          ||(p[1][0][1] >= std::min(p[0][0][1], p[0][1][1]) && p[1][0][1] <= std::max(p[0][0][1], p[0][1][1]))
-                                                          || (p[1][1][1] >= std::min(p[0][0][1], p[0][1][1]) && p[1][1][1] <= std::max(p[0][0][1], p[0][1][1])));*/
+            /*((p[0][0][1] >= qMin(p[1][0][1], p[1][1][1]) && p[0][0][1] <= qMax(p[1][0][1], p[1][1][1]))
+                                                          || (p[0][1][1] >= qMin(p[1][0][1], p[1][1][1]) && p[0][1][1] <= qMax(p[1][0][1], p[1][1][1]))
+                                                          ||(p[1][0][1] >= qMin(p[0][0][1], p[0][1][1]) && p[1][0][1] <= qMax(p[0][0][1], p[0][1][1]))
+                                                          || (p[1][1][1] >= qMin(p[0][0][1], p[0][1][1]) && p[1][1][1] <= qMax(p[0][0][1], p[0][1][1])));*/
             if (count==3)
                 printf("%s(both vert)\n", result?"TRUE":"FALSE");
             return result;
@@ -1947,9 +1947,8 @@ void autoAlignSelection(Canvas *canvas) {
     ConnMultiset allConnMs;
     QList<CanvasItem *> canvas_selection = canvas->selectedItems();
 
-    for(int i = 0; i < canvas_selection.size(); ++i)
+    foreach (CanvasItem *co, canvas_selection)
     {
-        CanvasItem *co = canvas_selection.at(i);
         ShapeObj *shape = dynamic_cast<ShapeObj *> (co);
         if (shape)
         {
@@ -1977,12 +1976,12 @@ void autoAlignSelection(Canvas *canvas) {
                 minY = y;
                 maxY = y+h;
             }
-            max_width = std::max(max_width, w);
-            max_height = std::max(max_height, h);
-            maxX = std::max(maxX, x+w);
-            maxY = std::max(maxY, y+h);
-            minX = std::min(minX, x);
-            minY = std::min(minY, y);
+            max_width = qMax(max_width, w);
+            max_height = qMax(max_height, h);
+            maxX = qMax(maxX, x+w);
+            maxY = qMax(maxY, y+h);
+            minX = qMin(minX, x);
+            minY = qMin(minY, y);
         
             ConnMultiset connMs = shape->getConnMultiset();
             allConnMs.insert(connMs.begin(), connMs.end());
@@ -2167,9 +2166,9 @@ void autoAlignSelection(Canvas *canvas) {
 
     /* delete any existing alignment guides */
     QList<CanvasItem *> canvas_items = canvas->items();
-    for (int i = 0; i < canvas_items.size(); ++i)
+    foreach (CanvasItem *ci, canvas_items)
     {  
-        Guideline *guide = dynamic_cast<Guideline *>(canvas_items.at(i));
+        Guideline *guide = dynamic_cast<Guideline *> (ci);
         if (guide)
         {
             shape_select(guide);

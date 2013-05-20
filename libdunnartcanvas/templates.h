@@ -46,7 +46,6 @@ class Handle;
 
 
 typedef std::list<Guideline *> GuidelineList;
-typedef std::list<Distribution *> DistributionList;
 
 const int TEMPLATE_LINEAR_VERT = 0;
 const int TEMPLATE_LINEAR_HORI = 1;

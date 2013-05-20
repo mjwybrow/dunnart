@@ -59,8 +59,8 @@ Box::Box(double x, double y, const Dim d) :
     x(x), y(y), X(x+d.w), Y(y+d.h) {}
 
 void Box::grow(const Box n) {
-    x=std::min(x,n.x); y=std::min(y,n.y);
-    X=std::max(X,n.X); Y=std::max(Y,n.Y);
+    x=qMin(x,n.x); y=qMin(y,n.y);
+    X=qMax(X,n.X); Y=qMax(Y,n.Y);
 }
 
 double Box::width() const {
@@ -79,7 +79,7 @@ void Box::getCentre(double& cx, double& cy) {
 }
 
 bool intervalOverlap(double a, double b, double c, double d) {
-  return std::max(a, c) < std::min(b, d);
+  return qMax(a, c) < qMin(b, d);
   //return (a>c&&a<d) || (b>c&&b<d) || (c>a&&c<b) || (d>a&&d<b);
 }
 bool Box::overlaps(const Box o) const {

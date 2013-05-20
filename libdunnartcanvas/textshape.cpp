@@ -129,8 +129,8 @@ void TextShape::getTextDimensions(int *x, int *y, int *w, int *h, int *b,
                 &maxx, &miny, &maxy, &advance);
         if (!err)
         {
-            realH = std::max(realH, maxy - miny + 1);
-            overallMaxY = std::max(overallMaxY, maxy);
+            realH = qMax(realH, maxy - miny + 1);
+            overallMaxY = qMax(overallMaxY, maxy);
         }
         else
         {
@@ -177,9 +177,9 @@ void TextShape::setTextPositionByBaseline(int x, int b, bool from_cider)
 
 void TextShape::setColour(unsigned int r, unsigned int g, unsigned int b)
 {
-    _colour.setRed(std::min(r, (unsigned)255));
-    _colour.setGreen(std::min(g, (unsigned)255));
-    _colour.setBlue(std::min(b, (unsigned)255));
+    _colour.setRed(qMin(r, (unsigned)255));
+    _colour.setGreen(qMin(g, (unsigned)255));
+    _colour.setBlue(qMin(b, (unsigned)255));
 
     //bool regen_cache = true;
     //QT set_active_image(get_active_image_n(), regen_cache);

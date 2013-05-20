@@ -214,9 +214,9 @@ private:
     cola::UnsatisfiableConstraintInfos unsatisfiableX, unsatisfiableY;
     void run(const bool shouldReinitialise);
     void showUnsatisfiable(cola::UnsatisfiableConstraintInfo* i);
-    void addToFixedList(CObjList & objList);
+    void addToFixedList(CanvasItemsList & objList);
     void addPinnedShapesToFixedList(void);
-    void addToResizedList(CObjList & objList);
+    void addToResizedList(CanvasItemsList & objList);
     void clearReturnPosInfos(void);
 
     friend struct PreIteration;

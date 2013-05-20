@@ -559,18 +559,19 @@ void CanvasTabWidget::selectionChanged(void)
 {
     int shapeCount = 0;
     int indicatorCount = 0;
+    int selectedItemsCount = 0;
 
-    QList<CanvasItem *> selected_items = m_canvas->selectedItems();
-    for (int i = 0; i < selected_items.size(); ++i)
+    foreach (CanvasItem *item, m_canvas->selectedItems())
     {
-        if (dynamic_cast<ShapeObj *> (selected_items.at(i)))
+        if (dynamic_cast<ShapeObj *> (item))
         {
             shapeCount++;
         }
-        else if (dynamic_cast<Indicator *> (selected_items.at(i)))
+        else if (dynamic_cast<Indicator *> (item))
         {
             indicatorCount++;
         }
+        selectedItemsCount++;
     }
 
 #if 0
@@ -614,7 +615,7 @@ void CanvasTabWidget::selectionChanged(void)
     {
         // Allow cut, copy and deletion of non-empty selections so long
         // as structural editing isn't disbabled.
-        bool enabled = (selected_items.count() > 0);
+        bool enabled = (selectedItemsCount > 0);
         m_action_delete->setEnabled(enabled);
         m_action_cut->setEnabled(enabled);
         m_action_copy->setEnabled(enabled);

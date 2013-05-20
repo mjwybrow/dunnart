@@ -411,7 +411,7 @@ Polygon FreehandShape::polygon(void) const
 
 void FreehandShape::setColour(unsigned int r, unsigned int g, unsigned int b)
 {
-    _colour = QColor(std::min(r, (unsigned)255), std::min(g, (unsigned)255), std::min(b, (unsigned)255));
+    _colour = QColor(qMin(r, (unsigned)255), qMin(g, (unsigned)255), qMin(b, (unsigned)255));
 
     //bool regen_cache = true;
     //QT set_active_image(get_active_image_n(), regen_cache);
@@ -501,10 +501,10 @@ void FreehandGeometry::calcBBox(void)
         StlStroke::iterator pEnd = (*s).end();
         for (StlStroke::iterator p = (*s).begin(); p != pEnd; ++p)
         {
-            xmin = std::min(xmin, (int) (*p).x);
-            xmax = std::max(xmax, (int) (*p).x);
-            ymin = std::min(ymin, (int) (*p).y);
-            ymax = std::max(ymax, (int) (*p).y);
+            xmin = qMin(xmin, (int) (*p).x);
+            xmax = qMax(xmax, (int) (*p).x);
+            ymin = qMin(ymin, (int) (*p).y);
+            ymax = qMax(ymax, (int) (*p).y);
         }
     }
 

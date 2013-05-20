@@ -178,10 +178,10 @@ void PolygonShape::computeBoundingBoxAndNormalise(void)
     // Find the bounding box.
     for (int i = 0; i < _psn; ++i)
     {
-        xmin = std::min(xmin, (int)_xps[i]);
-        xmax = std::max(xmax, (int)_xps[i]);
-        ymin = std::min(ymin, (int)_yps[i]);
-        ymax = std::max(ymax, (int)_yps[i]);
+        xmin = qMin(xmin, (int)_xps[i]);
+        xmax = qMax(xmax, (int)_xps[i]);
+        ymin = qMin(ymin, (int)_yps[i]);
+        ymax = qMax(ymax, (int)_yps[i]);
     }
 
     x_ = xmin;

@@ -106,7 +106,7 @@ class CanvasOverviewWidget : public QWidget
             qreal yscale = drawingRect.height() /  diagramBounds.height();
 
             // Choose the smallest of the two scale values.
-            qreal scale = std::min(xscale, yscale);
+            qreal scale = qMin(xscale, yscale);
 
             // Scale uniformly, and transform to center in the overview.
             QTransform scaleTransform = QTransform::fromScale(scale, scale);

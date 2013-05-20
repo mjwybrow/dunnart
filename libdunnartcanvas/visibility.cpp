@@ -54,7 +54,6 @@ using namespace Avoid;
 //  Visibility Graph code:
 
 
-typedef std::list<VertInf *> PathIdList;
 // ConnPairSet is defined in interferencegraph.h
 typedef std::map<unsigned int, int> TallyMap;
 

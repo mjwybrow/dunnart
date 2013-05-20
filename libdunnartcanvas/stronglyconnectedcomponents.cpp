@@ -86,12 +86,12 @@ void SCCDetector::strongConnect(uint v)
             {
                 // Successor w has not yet been visited; recurse on it
                 strongConnect(w);
-                m_lowlinks[v] = std::min(m_lowlinks[v], m_lowlinks[w]);
+                m_lowlinks[v] = qMin(m_lowlinks[v], m_lowlinks[w]);
             }
             else if (m_in_stack[w])
             {
                 // Successor w is in stack S and hence in the current SCC
-                m_lowlinks[v] = std::min(m_lowlinks[v], m_indexes[w]);
+                m_lowlinks[v] = qMin(m_lowlinks[v], m_indexes[w]);
             }
         }
     }

@@ -438,7 +438,7 @@ void ClassShape::do_edit(UML_Class_Edit_Type edit_type)
             QString str = attribute_to_string(i);
             lines[i] = str;
             TTF_SizeText(mono, str.c_str(), &textw, NULL);
-            fwidth = std::max(fwidth, textw);
+            fwidth = qMax(fwidth, textw);
         }
         fypos = absypos + 25;
         lineCount = attributes.size() + extraLines;
@@ -451,14 +451,14 @@ void ClassShape::do_edit(UML_Class_Edit_Type edit_type)
             QString str = method_to_string(i);
             lines[i] = str;
             TTF_SizeText(mono, str.c_str(), &textw, NULL);
-            fwidth = std::max(fwidth, textw);
+            fwidth = qMax(fwidth, textw);
         }
         fypos = absypos + 27 + ((height - 23) / 2);
         lineCount = methods.size() + extraLines;
     }
     // Set minimum number of lines if inputing methods or attributes, or
     // use the current number of lines plus a couple of extra:
-    if (edit_type != EDIT_CLASS_NAME) lineCount = std::max(13, lineCount);
+    if (edit_type != EDIT_CLASS_NAME) lineCount = qMax(13, lineCount);
     fheight = (lineCount * texth) + padding;
     fwidth += padding + 40;
 
@@ -467,10 +467,10 @@ void ClassShape::do_edit(UML_Class_Edit_Type edit_type)
 
     int screenPadding = 8;
     // Make sure the text field doesn't go off the screen:
-    fxpos = std::min(fxpos, screen->w - (fwidth + screenPadding));
-    fxpos = std::max(fxpos, screenPadding);
-    fypos = std::min(fypos, screen->h - (fheight + screenPadding));
-    fypos = std::max(fypos, screenPadding);
+    fxpos = qMin(fxpos, screen->w - (fwidth + screenPadding));
+    fxpos = qMax(fxpos, screenPadding);
+    fypos = qMin(fypos, screen->h - (fheight + screenPadding));
+    fypos = qMax(fypos, screenPadding);
     
 
     Field *field = new Field(NULL, fxpos, fypos, fwidth, fheight);
@@ -521,7 +521,7 @@ int ClassShape::get_longest_text_width(UML_Class_Abbrev_Mode mode)
         if (mode < NO_TYPES)
             s += " : " + attributes[i].type;
         get_text_width(s, &width);
-        longest=std::max(longest, width+9);      //the + or - takes up 9 pixels.
+        longest=qMax(longest, width+9);      //the + or - takes up 9 pixels.
     } 
 
     //methods
@@ -548,7 +548,7 @@ int ClassShape::get_longest_text_width(UML_Class_Abbrev_Mode mode)
         if (mode < NO_TYPES)
             s += ":" + methods[i].return_type;
         get_text_width(s, &width);
-        longest=std::max(longest, width+9); //the + or - takes up 9 pixels..
+        longest=qMax(longest, width+9); //the + or - takes up 9 pixels..
     } 
     
     return longest;
@@ -590,9 +590,9 @@ void ClassShape::determine_best_dimensions(int *inner_width, int *h)
     *h = get_class_name_section_height();
     if (mode != CLASS_NAME_ONLY)
     {
-        attr_section_size = std::max(classLineHeight, 
+        attr_section_size = qMax(classLineHeight, 
                 (int)attributes.size()*classLineHeight) + 2;
-        method_section_size = std::max(classLineHeight, 
+        method_section_size = qMax(classLineHeight, 
                 (int)methods.size()*classLineHeight) + 2;
         *h += attr_section_size + method_section_size;
     }
@@ -918,9 +918,9 @@ void ClassShape::detailLevelChanged(void)
     int section_sizes(height() - (HANDLE_PADDING * 2) - 
             get_class_name_section_height());
     attr_section_size = 2 +
-            std::max(classLineHeight, (int)attributes.size() * classLineHeight);
+            qMax(classLineHeight, (int)attributes.size() * classLineHeight);
     method_section_size = 2 +
-            std::max(classLineHeight, (int)methods.size() * classLineHeight);
+            qMax(classLineHeight, (int)methods.size() * classLineHeight);
     double proportion = attr_section_size / 
             (double) (attr_section_size + method_section_size);
     attr_section_size = static_cast<int>(proportion * section_sizes);

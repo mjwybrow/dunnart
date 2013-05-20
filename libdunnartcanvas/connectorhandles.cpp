@@ -194,11 +194,9 @@ void ConnectorEndpointHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     Avoid::ShapeRef *containingShapeRef = canvas()->router()->shapeContainingPoint(
             Avoid::Point(mousePoint.x(), mousePoint.y()));
     ShapeObj *containingShape = NULL;
-    QList<CanvasItem *> canvas_items = m_conn->canvas()->items();
-    for (int i = 0; i < canvas_items.size(); ++i)
+    foreach (CanvasItem *item, m_conn->canvas()->items())
     {
-        ShapeObj *shape = dynamic_cast<ShapeObj *>
-                (canvas_items.at(i));
+        ShapeObj *shape = dynamic_cast<ShapeObj *> (item);
         if (shape && (shape != otherEndShape) &&
                 (shape->avoidRef == containingShapeRef))
         {
@@ -398,10 +396,9 @@ void ConnectionPinHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     if (m_new_conn)
     {
         ShapeObj *attShape = NULL;
-        QList<CanvasItem *> canvas_items = canvas->items();
-        for (int i = 0; i < canvas_items.size(); ++i)
+        foreach (CanvasItem *item, canvas->items())
         {
-            ShapeObj *shape = dynamic_cast<ShapeObj *> (canvas_items.at(i));
+            ShapeObj *shape = dynamic_cast<ShapeObj *> (item);
             if (shape == m_shape)
             {
                 continue;

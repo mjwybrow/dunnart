@@ -96,13 +96,13 @@ void Guideline::rangeOfAttachedShapes(double& min, double& max, int& nodes)
             QPointF shPos = (*curr)->shape->centrePos();
             if (get_dir() == GUIDE_TYPE_HORI)
             {
-                min = std::min(min, shPos.x());
-                max = std::max(max, shPos.x());
+                min = qMin(min, shPos.x());
+                max = qMax(max, shPos.x());
             }
             else
             {
-                min = std::min(min, shPos.y());
-                max = std::max(max, shPos.y());
+                min = qMin(min, shPos.y());
+                max = qMax(max, shPos.y());
             }
         }
     }
@@ -137,13 +137,13 @@ void Guideline::rangeOfAttachedObjects(double& min, double& max) const
         {
             if (get_dir() == GUIDE_TYPE_HORI)
             {
-                min = std::min(min, itemRect.left());
-                max = std::max(max, itemRect.right());
+                min = qMin(min, itemRect.left());
+                max = qMax(max, itemRect.right());
             }
             else
             {
-                min = std::min(min, itemRect.top());
-                max = std::max(max, itemRect.bottom());
+                min = qMin(min, itemRect.top());
+                max = qMax(max, itemRect.bottom());
             }
         }
     }

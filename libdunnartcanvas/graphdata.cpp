@@ -91,8 +91,8 @@ static void levelAssignmentTraverse(unsigned ind, unsigned newLevel,
         unsigned& maxLevel, std::vector<NodeLevelInfo>& nodeInfo)
 {
     // Set the node level.
-    nodeInfo[ind].level = std::max(nodeInfo[ind].level, newLevel);
-    maxLevel = std::max(maxLevel, nodeInfo[ind].level);
+    nodeInfo[ind].level = qMax(nodeInfo[ind].level, newLevel);
+    maxLevel = qMax(maxLevel, nodeInfo[ind].level);
     nodeInfo[ind].parentVisits++;
 
     if (nodeInfo[ind].parentVisits < nodeInfo[ind].parents.size())
@@ -137,10 +137,10 @@ GraphData::GraphData(Canvas *canvas, bool ignoreEdges,
 
             double centreX = rs[nodeIndex]->getCentreX();
             double centreY = rs[nodeIndex]->getCentreY();
-            xMax = std::max(xMax, centreX);
-            xMin = std::min(xMin, centreX);
-            yMax = std::max(yMax, centreY);
-            yMin = std::min(yMin, centreY);
+            xMax = qMax(xMax, centreX);
+            xMin = qMin(xMin, centreX);
+            yMax = qMax(yMax, centreY);
+            yMin = qMin(yMin, centreY);
         }
     }
 
@@ -349,7 +349,7 @@ GraphData::GraphData(Canvas *canvas, bool ignoreEdges,
                     {
                         size_t level = nodeInfo[ind].level - 1;
                         levelLists[level].insert(ind);
-                        levelShapeLength[level] = std::max(
+                        levelShapeLength[level] = qMax(
                                 levelShapeLength[level],
                                 rs[ind]->length(dimension));
                     }

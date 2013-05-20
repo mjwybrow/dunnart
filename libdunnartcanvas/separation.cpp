@@ -284,9 +284,9 @@ void Separation::recreate(void)
     }
     else if (type == GUIDE_TYPE_VERT)
     {
-        first = std::min(trels.front()->guide->x(),
+        first = qMin(trels.front()->guide->x(),
                 trels.front()->guide2->x());
-        last  = std::max(trels.back()->guide->x(),
+        last  = qMax(trels.back()->guide->x(),
                 trels.back()->guide2->x());
         
         bw = last - first + 8;
@@ -297,9 +297,9 @@ void Separation::recreate(void)
     }
     else // if (type == GUIDE_TYPE_HORI)
     {
-        first = std::min(trels.front()->guide->y(),
+        first = qMin(trels.front()->guide->y(),
                 trels.front()->guide2->y());
-        last  = std::max(trels.back()->guide->y(),
+        last  = qMax(trels.back()->guide->y(),
                 trels.back()->guide2->y());
         
         bw = size;
@@ -401,15 +401,15 @@ QPainterPath Separation::buildPainterPath(void)
             double gp1 = (*r)->guide->x();
             double gp2 = (*r)->guide2->x();
 
-            double pos1 = std::min(gp1, gp2) - x() + padding;
-            double pos2 = std::max(gp1, gp2) - x() - padding;
+            double pos1 = qMin(gp1, gp2) - x() + padding;
+            double pos2 = qMax(gp1, gp2) - x() - padding;
             
 #if 0
             if (sections > 1)
             {
                 double position = pos1 + halfSep - (padding / 2);
-                bridgeMin = std::min(bridgeMin, position);
-                bridgeMax = std::max(bridgeMax, position);
+                bridgeMin = qMin(bridgeMin, position);
+                bridgeMax = qMax(bridgeMax, position);
                 painter_path.moveTo(position, bridgePos);
                 painter_path.lineTo(position, markerPos);
             }
@@ -439,15 +439,15 @@ QPainterPath Separation::buildPainterPath(void)
             double gp1 = (*r)->guide->y();
             double gp2 = (*r)->guide2->y();
 
-            double pos1 = std::min(gp1, gp2) - y() + padding;
-            double pos2 = std::max(gp1, gp2) - y() - padding;
+            double pos1 = qMin(gp1, gp2) - y() + padding;
+            double pos2 = qMax(gp1, gp2) - y() - padding;
           
 #if 0
             if (sections > 1)
             {
                 double position = pos1 + halfSep - (padding / 2);
-                bridgeMin = std::min(bridgeMin, position);
-                bridgeMax = std::max(bridgeMax, position);
+                bridgeMin = qMin(bridgeMin, position);
+                bridgeMax = qMax(bridgeMax, position);
                 painter_path.moveTo(bridgePos, position);
                 painter_path.lineTo(markerPos, position);
             }
@@ -495,8 +495,8 @@ void Separation::paint(QPainter *painter,
         {
             double gp1 = (*r)->guide->x();
             double gp2 = (*r)->guide2->x();
-            double pos1 = std::min(gp1, gp2) - x() + padding;
-            double pos2 = std::max(gp1, gp2) - x() - padding;
+            double pos1 = qMin(gp1, gp2) - x() + padding;
+            double pos2 = qMax(gp1, gp2) - x() - padding;
 
             double pos = pos1 + (pos2 - pos1) / 2;
             double half = gap / 2 - padding;
@@ -525,8 +525,8 @@ void Separation::paint(QPainter *painter,
             double gp1 = (*r)->guide->y();
             double gp2 = (*r)->guide2->y();
 
-            double pos1 = std::min(gp1, gp2) - y() + padding;
-            double pos2 = std::max(gp1, gp2) - y() - padding;
+            double pos1 = qMin(gp1, gp2) - y() + padding;
+            double pos2 = qMax(gp1, gp2) - y() - padding;
 
             double pos = pos1 + (pos2 - pos1) / 2;
             double half = gap / 2 - padding;
@@ -808,7 +808,7 @@ void Separation::Resize(Guideline *guide, double origSep, const QPointF posDiff,
         //add_undo_record(DELTA_DRESIZE, this, guide, other, (int) oval);
     }
 
-    gap = std::max(origSep - (diffpos * 2), 0.);
+    gap = qMax(origSep - (diffpos * 2), 0.);
 
     canvas()->getActions().moveList.push_back(this);
 

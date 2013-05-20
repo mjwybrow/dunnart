@@ -641,7 +641,7 @@ void LinearTemplate::updatePositionFromSolver(const double pos, const bool store
         if (count > 0)
         {
             tHeight = bounds.height();
-            tWidth = std::max(bounds.width(), TEMPLATE_LENGTH);
+            tWidth = qMax(bounds.width(), TEMPLATE_LENGTH);
             xpos = bounds.center().x();
         }
         else // No shapes attached, use default length/thickness for width/height
@@ -1050,7 +1050,7 @@ void BranchedTemplate::recalc_min_width_and_height(double &min_width,
         if (gcount > 0) 
         {
             num_vert_nodes++;
-            if (*curr == centreguide) { num_horiz_nodes += std::min(2, (int)gcount); }
+            if (*curr == centreguide) { num_horiz_nodes += qMin(2, (int)gcount); }
             else if (gcount > max_horiz_nodes) { max_horiz_nodes = gcount; }
         }
     }
@@ -1141,7 +1141,7 @@ void BranchedTemplate::updatePositionFromSolver(const double pos, const bool sto
 
         if (count > 0) {
             // find the width range using the x positions of the nodes
-            range = std::max((cx2 - cx1), width());
+            range = qMax((cx2 - cx1), width());
       
             // There are shapes attached, use the position of the left-most shape
             xpos = cx1;
@@ -1161,7 +1161,7 @@ void BranchedTemplate::updatePositionFromSolver(const double pos, const bool sto
         // height is the distance from the first to the last guide + padding:
         if (guidelist.front() && guidelist.back()) {
              newH =
-                 std::max(
+                 qMax(
                      (((Guideline*) guidelist.back())->getPos() -
                       ((Guideline*) guidelist.front())->getPos() +
                       (buffer*2)),

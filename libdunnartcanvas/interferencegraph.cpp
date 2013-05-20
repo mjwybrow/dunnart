@@ -76,7 +76,7 @@ using namespace std;
 //
 // 
 InterferenceGraph::InterferenceGraph(ConnPairSet &interfering_conns) {
-   std::map<Connector *, Node *> connMap;  // map connectors to nodes in graph
+   QMap<Connector *, Node *> connMap;  // map connectors to nodes in graph
    Connector *conn1, *conn2;   // connectors that interfere, from interefering_conns
    Node *node1, *node2;   // nodes (new or existing) corresponding to above
 

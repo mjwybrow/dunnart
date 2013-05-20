@@ -67,13 +67,13 @@ class GraphLayout;
 class SelectionResizeHandle;
 class UndoMacro;
 
-typedef QList<CanvasItem *> CObjList;
+typedef QList<CanvasItem *> CanvasItemsList;
 
 class Actions {
     public:
         unsigned int flags;
-        CObjList moveList;
-        CObjList resizeList;
+        CanvasItemsList moveList;
+        CanvasItemsList resizeList;
 
         Actions();
         void clear(void);
@@ -396,8 +396,8 @@ class Canvas : public QGraphicsScene
         QColor m_opt_canvas_background_colour;
         Actions m_actions;
 
-        std::map<QString, QString> m_paste_id_map;
-        std::list<QString> m_paste_bad_constraint_ids;
+        QMap<QString, QString> m_paste_id_map;
+        QList<QString> m_paste_bad_constraint_ids;
         // list of nodes in other namespaces
         QList<QDomNode> m_external_node_list;
         QMap<QString, QString> m_extra_namespaces_map;
@@ -414,7 +414,7 @@ class Canvas : public QGraphicsScene
         // Access via interferingConnectorColours().
         QList<QColor> m_interfering_connector_colours;
 
-        std::map<int, Guideline *> m_vguides, m_hguides;
+        QMap<int, Guideline *> m_vguides, m_hguides;
         CanvasItem *m_dragged_item;
         CanvasItem *m_lone_selected_item;
         QUndoStack *m_undo_stack;

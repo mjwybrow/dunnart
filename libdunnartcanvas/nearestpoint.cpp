@@ -30,7 +30,8 @@
 */
 
  /*	point_on_curve.c	*/		
-									
+
+#include <QtGlobal>
 #include <cstdio>
 #include <cstdlib>
 #include <algorithm>
@@ -232,8 +233,8 @@ static Point2 *ConvertToBezierForm(
     n = DEGREE;
     m = DEGREE-1;
     for (k = 0; k <= n + m; k++) {
-		lb = std::max(0, k - m);
-		ub = std::min(k, n);
+                lb = qMax(0, k - m);
+                ub = qMin(k, n);
 		for (i = lb; i <= ub; i++) {
 	    	j = k - i;
 	    	w[i+j].y += cdTable[j][i] * z[j][i];
@@ -385,10 +386,10 @@ static int ControlPolygonFlatEnough(
     max_distance_below = 0.0;
     for (i = 1; i < degree; i++) {
 		if (distance[i] < 0.0) {
-	    	max_distance_below = std::min(max_distance_below, distance[i]);
+                max_distance_below = qMin(max_distance_below, distance[i]);
 		};
 		if (distance[i] > 0.0) {
-	    	max_distance_above = std::max(max_distance_above, distance[i]);
+                max_distance_above = qMax(max_distance_above, distance[i]);
 		}
     }
     free((char *)distance);
@@ -424,8 +425,8 @@ static int ControlPolygonFlatEnough(
     }
 
     /* Compute intercepts of bounding box	*/
-    left_intercept = std::min(intercept_1, intercept_2);
-    right_intercept = std::max(intercept_1, intercept_2);
+    left_intercept = qMin(intercept_1, intercept_2);
+    right_intercept = qMax(intercept_1, intercept_2);
 
     error = 0.5 * (right_intercept-left_intercept);    
     if (error < EPSILON) {

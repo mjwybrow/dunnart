@@ -313,15 +313,13 @@ bool optionalProp(const QDomElement& node, const QString& prop, T &arg,
         {
             arg = qVariantValue<T>(variant);
 
-            //std::cout << "Read \""<<prop.toStdString()<<"\"="<<
-            //        variant.toString().toLatin1().constData()<<std::endl;
+            //qDebug() << "Read \"" << prop << "\"=" << variant;
             gotProp = true;
         } 
         else
         {
-            std::cout << "WARNING: couldn't parse value for property \"" <<
-                    prop.toStdString() << "\": \"" << value.toStdString() <<
-                    "\"" << std::endl;
+            qDebug() << "WARNING: couldn't parse value for property \"" <<
+                    prop << "\": \"" << value << "\"";
         }
     }
     return gotProp;

@@ -381,8 +381,8 @@ void ShapeObj::determine_good_text_dimensions(int *w, int *h)
     *w = iw + 10;
     *h = lnsh + 10;
 
-    *w = std::max(*w, 24);
-    *h = std::max(*h, 24);
+    *w = qMax(*w, 24);
+    *h = qMax(*h, 24);
 }
 
 
@@ -400,7 +400,7 @@ void ShapeObj::determine_best_dimensions(int *w, int *h)
     if (decorativeImage)
     {
         // Add room for a preview:
-        *w = std::max(*w, decorativeImage->w + 13);
+        *w = qMax(*w, decorativeImage->w + 13);
         *h += decorativeImage->h + 6;
     }
 }
@@ -1093,7 +1093,7 @@ void ShapeObj::initWithXMLProperties(Canvas *canvas,
     }
     
     optionalProp(node, "detailLevel", m_detail_level, ns);
-    m_detail_level = std::max(m_detail_level, (uint) 1);
+    m_detail_level = qMax(m_detail_level, (uint) 1);
     
     value = nodeAttribute(node, ns, x_lockedPosition);
     if (!value.isNull())
@@ -1274,7 +1274,7 @@ void ShapeObj::drawLabelAndImage(SDL_Surface *target, const int x, const int y)
 
     double scaleX = (width - 11) / (double) decorativeImage->w;
     double scaleY = (height - lnsh - 13) / (double) decorativeImage->h;
-    double scale = std::min(scaleX, scaleY);
+    double scale = qMin(scaleX, scaleY);
     SDL_Surface *small = NULL;
     if (scale < 1.0)
     {
@@ -1390,10 +1390,10 @@ void ShapeObj::changeLabel(void)
 
     int screenPadding = 8;
     // Make sure the text field doesn't go off the screen:
-    fxpos = std::min(fxpos, screen->w - (fwidth + screenPadding));
-    fxpos = std::max(fxpos, screenPadding);
-    fypos = std::min(fypos, screen->h - (fheight + screenPadding));
-    fypos = std::max(fypos, screenPadding);
+    fxpos = qMin(fxpos, screen->w - (fwidth + screenPadding));
+    fxpos = qMax(fxpos, screenPadding);
+    fypos = qMin(fypos, screen->h - (fheight + screenPadding));
+    fypos = qMax(fypos, screenPadding);
     
     std::string labelStr(label);
     std::string nlStr("\n");
