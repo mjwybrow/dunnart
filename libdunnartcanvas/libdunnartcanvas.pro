@@ -43,13 +43,11 @@ FORMS = \
 
 SOURCES += \ 
 	FMMLayout.cpp \
-	align3.cpp \
 	oldcanvas.cpp \
 	canvasitem.cpp \
 	cluster.cpp \
 	connector.cpp \
 	distribution.cpp \
-	expand_grid.cpp \
 	freehand.cpp \
 	graphdata.cpp \
 	graphlayout.cpp \
@@ -96,13 +94,11 @@ SOURCES += \
 
 HEADERS += \
 	FMMLayout.h \
-	align3.h \
 	oldcanvas.h \
 	canvasitem.h \
 	cluster.h \
 	connector.h \
 	distribution.h \
-	expand_grid.h \
 	freehand.h \
 	gmlgraph.h \
 	graphdata.h \
