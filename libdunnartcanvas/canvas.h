@@ -306,6 +306,7 @@ class Canvas : public QGraphicsScene
         void debugOverlayEnabled(bool enabled);
         void clipboardContentsChanged(void);
         void editModeChanged(const int mode);
+        void layoutHasConverged(void);
 
         void optChangedAutomaticLayout(bool checked);
         void optChangedPreserveTopology(bool checked);

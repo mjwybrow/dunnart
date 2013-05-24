@@ -57,13 +57,6 @@ extern bool queryMode;
 extern CanvasItem *queryObj;
 
 
-struct LayoutDoneCallback {
-    virtual void notify() = 0;
-    virtual ~LayoutDoneCallback() {}
-};
-extern LayoutDoneCallback* layoutDoneCallback;
-
-
 }
 #endif  // OLDCANVAS_H
 

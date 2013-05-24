@@ -30,6 +30,7 @@
 #include <QLabel>
 #include <QPainter>
 #include <QColor>
+#include <QObject>
 
 #include <map>
 #include <ogdf/basic/Graph.h>
@@ -93,7 +94,9 @@ struct Draw {
 #include <list>
 typedef std::list<ogdf::node > NodeList;
 
-class Graph {
+class Graph : public QObject
+{
+    Q_OBJECT
 public:
     Graph(Canvas *canvas, std::string gmlFile, Page page, COff coff);
     void relayoutOverview();
@@ -140,6 +143,9 @@ protected:
     bool UseClusters;
 private:
     double dist(const ogdf::node v, const double cx, const double cy) const;
+    bool m_trigger_beautify_when_converged;
+private slots:
+    void layoutHasConverged(void);
 };
 
 } // namespace gml

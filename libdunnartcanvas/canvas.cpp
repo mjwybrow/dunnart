@@ -2031,10 +2031,7 @@ void Canvas::processLayoutFinishedEvent(void)
         changes = true;
     }
 
-    if (layoutDoneCallback!=NULL)
-    {
-        layoutDoneCallback->notify();
-    }
+    emit layoutHasConverged();
 
     if (m_batch_diagram_layout && !changes)
     {

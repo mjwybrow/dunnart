@@ -271,30 +271,7 @@ Canvas *Graph::canvas(void) const
     return canvas_;
 }
 
-struct LayoutCallback : public LayoutDoneCallback {
-    LayoutCallback(Graph* g, bool beautify=false) : g(g), beautify(beautify) {
-        printf("Creating gmlgraphexpl:LayoutCallback\n");
-    }
-    void notify() {
-        GraphLayout* gl= g->canvas()->layout();
-        if(!beautify) {
-            printf("beautify...\n");
-            delete layoutDoneCallback;
-            layoutDoneCallback = new LayoutCallback(g,true);
-            gl->topologyNodesCount = g->getCanvasShapesCount();
-            g->createClusters();
-            g->canvas()->interrupt_graph_layout();
-        } else {
-            printf("graphexpl: Layout done... updating overview...\n");
-            g->relayoutOverview();
-            gl->unpinAllShapes(NULL);
-            delete layoutDoneCallback;
-            layoutDoneCallback = NULL;
-        }
-    }
-    Graph* g;
-    bool beautify;
-};
+
 
 unsigned Graph::getCanvasShapesCount() const {
     return canvasShapes.size();
@@ -442,7 +419,9 @@ void Graph::drawConnectorGhosts(SDL_Surface *surface, int offx, int offy)
 
 void Graph::restartLayout(ogdf::node centre) {
     qDebug("Graph::restartLayout()");
-    layoutDoneCallback = new LayoutCallback(this);
+    m_trigger_beautify_when_converged = true;
+    connect(canvas(), SIGNAL(layoutHasConverged()),
+            this, SLOT(layoutHasConverged()));
     //fully_restart_graph_layout(NULL);
     ShapeObj* sh = shapes[centre];
     canvas()->layout()->lockShape(sh);
@@ -451,6 +430,27 @@ void Graph::restartLayout(ogdf::node centre) {
     // Centre first view.
     QList<QGraphicsView *> views = canvas()->views();
     views.first()->centerOn(sh->centrePos());
+}
+
+void Graph::layoutHasConverged(void)
+{
+    GraphLayout* gl = canvas()->layout();
+    if (m_trigger_beautify_when_converged)
+    {
+        printf("beautify...\n");
+        m_trigger_beautify_when_converged = false;
+        gl->topologyNodesCount = getCanvasShapesCount();
+        createClusters();
+        canvas()->interrupt_graph_layout();
+    }
+    else
+    {
+        printf("graphexpl: Layout done... updating overview...\n");
+        relayoutOverview();
+        gl->unpinAllShapes(NULL);
+        disconnect(canvas(), SIGNAL(layoutHasConverged()),
+                this, SLOT(layoutHasConverged()));
+    }
 }
 
 

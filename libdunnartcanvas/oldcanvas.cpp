@@ -64,9 +64,6 @@
 
 namespace dunnart {
 
-
-LayoutDoneCallback* layoutDoneCallback = NULL;
-
 QXmlNamespaceSupport namespaces;
 
 bool queryMode = false;
