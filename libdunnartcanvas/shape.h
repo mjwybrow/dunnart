@@ -143,8 +143,8 @@ class ShapeObj: public CanvasItem
         virtual QRectF labelBoundingRect(void) const;
         void drawLabelAndImage(QPixmap *target, const int x, const int y);
         virtual void changeLabel(void);
-        Guideline *get_guide(atypes type);
-        Guideline *new_guide(atypes type);
+        Guideline *attachedGuidelineOfType(atypes type);
+        Guideline *newGuidelineOfType(atypes type);
         double attachedGuidelinePosition(atypes type) const;
         static double attachedGuidelinePosition(atypes type,
                 const QRectF& shapeRect);
@@ -154,8 +154,6 @@ class ShapeObj: public CanvasItem
         virtual void deactivateAll(CanvasItemSet& selSet);
         virtual void findAttachedSet(CanvasItemSet& objSet);
         void setDecorativeImageFile(const std::string fileName);
-
-
 
         //void determine_good_text_dimensions(int *w, int *h);
         //virtual void determine_best_dimensions(int *w, int *h);

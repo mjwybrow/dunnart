@@ -32,8 +32,6 @@ namespace dunnart {
 enum atypes { ALIGN_TOP = 0, ALIGN_MIDDLE = 1, ALIGN_BOTTOM = 2,
         ALIGN_LEFT = 3, ALIGN_CENTER = 4, ALIGN_RIGHT = 5 };
 
-enum side { BOTH_SIDE = 3, EVERYTHING = 7};
-
 class ShapeObj;
 class Guideline;
 class Distribution;
@@ -44,21 +42,22 @@ class Relationship
     public:
         int relType;
         ShapeObj *shape;
-        Guideline *guide, *guide2, *deadguide;
+        Guideline *guide;
+        Guideline *guide2;
         Distribution *distro;
         Separation *separation;
         atypes type;
 
         Relationship(Guideline *g, ShapeObj *sh, atypes t, bool no_undo = false);
         Relationship(Distribution *d, Guideline *g, Guideline *g2, bool no_undo = false);
-        Relationship(Guideline *g, Guideline *g2, bool no_undo = false);
         Relationship(Separation *s, Guideline *g, Guideline *g2, bool no_undo = false);
         Relationship(Canvas *canvas, const QDomElement& node, 
                 const QString& dunNs, bool no_undo = false);
         QDomElement to_QDomElement(const unsigned int subset, 
                 QDomDocument& doc);
-        void Activate(side s, bool by_undo = false);
-        void Deactivate(side s, bool by_undo = false);
+        void activate(bool by_undo = false);
+        void deactivate(bool by_undo = false);
+        void removeGuideline(Guideline *deadguide);
    private:
         void commonInit(void);
 
@@ -67,7 +66,6 @@ class Relationship
 
 static const int REL_Align = 1;
 static const int REL_Distr = 2;
-static const int REL_Unify = 3;
 static const int REL_Separ = 4;
 
 

@@ -95,7 +95,7 @@ class DistributionHandle : public Handle {
             int hflags = this->handleFlags();
             hflags &= (HAN_TOP | HAN_BOT | HAN_RIGHT | HAN_LEFT);
 
-            int guidesN = distro->rels.size() + 1;
+            int guidesN = distro->relationships.size() + 1;
 
             int low  = distro->isReversed() ? guidesN : 1;
             int high = distro->isReversed() ? 1 : guidesN;
@@ -180,7 +180,7 @@ Distribution::Distribution(GuidelineList *guides, int xp, int yp)
     last->move_to(last->x(), last->y(), false, false);
 
     type = guides->front()->get_dir();
-    space = (last->position() - first->position()) / (double) rels.size();
+    space = (last->position() - first->position()) / (double) relationships.size();
     recreate();
     initialiser();
 
@@ -250,8 +250,8 @@ void Distribution::cascade_distance(int dist, unsigned int dir, CanvasItem **pat
         return;
     }
 
-    RelsList::iterator start = rels.begin();
-    RelsList::iterator finish = rels.end();
+    RelsList::iterator start = relationships.begin();
+    RelsList::iterator finish = relationships.end();
     if (start != finish)
     {
         if ((*start)->guide)
@@ -282,12 +282,12 @@ bool Distribution::guideLessThan(Guideline *g1, Guideline *g2)
 
 void Distribution::recreate(void)
 {
-    RelsList trels = rels;
+    RelsList trels = relationships;
     qSort(trels.begin(), trels.end(), RelationshipLessThan());
     
     double bx, by, bw, bh, first, last, size = 16;
 
-    if (rels.empty())
+    if (relationships.empty())
     {
         bx = x();
         by = y();
@@ -367,7 +367,7 @@ void Distribution::userMoveBy(qreal dx, qreal dy)
     // Move the attached guidelines
     Actions& actions = canvas()->getActions();
     QSet<Guideline *> guides;
-    for (RelsList::iterator g = rels.begin(); g != rels.end(); ++g)
+    for (RelsList::iterator g = relationships.begin(); g != relationships.end(); ++g)
     {
         guides.insert((*g)->guide);
         guides.insert((*g)->guide2);
@@ -419,7 +419,7 @@ QPainterPath Distribution::buildPainterPath(void)
     QPainterPath painter_path;
     
     double halfSep = fabs(space / 2);
-    int sections = (int) rels.size();
+    int sections = (int) relationships.size();
 
     const qreal one =  m_curr_path_one_pixel;
     const qreal gap = one * 2;
@@ -441,8 +441,8 @@ QPainterPath Distribution::buildPainterPath(void)
 
     if (type == GUIDE_TYPE_VERT)
     {
-        RelsList::iterator finish = rels.end();
-        for (RelsList::iterator r = rels.begin(); r != finish; ++r)
+        RelsList::iterator finish = relationships.end();
+        for (RelsList::iterator r = relationships.begin(); r != finish; ++r)
         {
             double gp1 = (*r)->guide->x();
             double gp2 = (*r)->guide2->x();
@@ -462,12 +462,12 @@ QPainterPath Distribution::buildPainterPath(void)
             {
                 // Need extra space for handles.
 
-                if (*r == rels.front())
+                if (*r == relationships.front())
                 {
                     pos1 += 4 * one;
                 }
                 
-                if (*r == rels.back())
+                if (*r == relationships.back())
                 {
                     pos2 -= 4 * one;
                 }
@@ -491,8 +491,8 @@ QPainterPath Distribution::buildPainterPath(void)
     }
     else // if (type == GUIDE_TYPE_HORI)
     {
-        RelsList::iterator finish = rels.end();
-        for (RelsList::iterator r = rels.begin(); r != finish; ++r)
+        RelsList::iterator finish = relationships.end();
+        for (RelsList::iterator r = relationships.begin(); r != finish; ++r)
         {
             double gp1 = (*r)->guide->y();
             double gp2 = (*r)->guide2->y();
@@ -512,12 +512,12 @@ QPainterPath Distribution::buildPainterPath(void)
             {
                 // Need extra space for handles.
 
-                if (*r == rels.front())
+                if (*r == relationships.front())
                 {
                     pos1 += 4 * one;
                 }
 
-                if (*r == rels.back())
+                if (*r == relationships.back())
                 {
                     pos2 -= 4 * one;
                 }
@@ -577,7 +577,7 @@ QDomElement Distribution::to_QDomElement(const unsigned int subset,
         newProp(node, x_yPos, y());
     }
 
-    for (RelsList::iterator r = rels.begin(); r != rels.end(); ++r)
+    for (RelsList::iterator r = relationships.begin(); r != relationships.end(); ++r)
     {
         QDomElement rxn = (*r)->to_QDomElement(subset, doc);
         node.appendChild(rxn);
@@ -591,13 +591,13 @@ dgtype Distribution::is_guide(Guideline *g)
 {
     Guideline *tmp1, *tmp2, *left, *right;
 
-    tmp1 = rels.front()->guide;
-    tmp2 = rels.front()->guide2;
+    tmp1 = relationships.front()->guide;
+    tmp2 = relationships.front()->guide2;
  
     left = (guideLessThan(tmp1, tmp2)) ? tmp1 : tmp2;
 
-    tmp1 = rels.back()->guide;
-    tmp2 = rels.back()->guide2;
+    tmp1 = relationships.back()->guide;
+    tmp2 = relationships.back()->guide2;
  
     right = (guideLessThan(tmp1, tmp2)) ? tmp2 : tmp1;
 
@@ -654,24 +654,24 @@ void Distribution::register_new_pos_diff(int dx, int dy)
 
 Guideline *Distribution::leftGuide(void) const
 {
-    return (rels.empty()) ? NULL : rels.front()->guide;
+    return (relationships.empty()) ? NULL : relationships.front()->guide;
 }
 
 
 Guideline *Distribution::rightGuide(void) const
 {
-    return (rels.empty()) ? NULL : rels.back()->guide2;
+    return (relationships.empty()) ? NULL : relationships.back()->guide2;
 }
 
 
 bool Distribution::isReversed(void) const
 {
-    if (rels.size() == 0)
+    if (relationships.size() == 0)
     {
         return false;
     }
     
-    if (rels.front()->guide->position() > rels.front()->guide2->position())
+    if (relationships.front()->guide->position() > relationships.front()->guide2->position())
     {
         return true;
     }
@@ -683,19 +683,13 @@ void Distribution::deactivateAll(CanvasItemSet& selSet)
 {
     Q_UNUSED (selSet)
 
-    if (rels.size() > 0)
-    {
-        // NOTE: This has a special effect in Deactivate() that,
-        //       deactivates the entire distribution.
-        rels.front()->deadguide = NULL;
-        rels.front()->Deactivate(EVERYTHING);
-    }
+    RemoveEntire();
 }
 
 
 void Distribution::RemoveGuideline(Guideline *g)
 {
-    if (rels.size() < 2)
+    if (relationships.size() < 2)
     {
         RemoveEntire();
         return;
@@ -705,7 +699,7 @@ void Distribution::RemoveGuideline(Guideline *g)
     GuidelineList guides;
     
     RelsList::iterator r;
-    for (r = rels.begin(); r != rels.end(); ++r)
+    for (r = relationships.begin(); r != relationships.end(); ++r)
     {
         // Add all guides from relationships to list except the deleted one.
         if (g != (*r)->guide)
@@ -722,12 +716,12 @@ void Distribution::RemoveGuideline(Guideline *g)
     // Remove duplicates
     guides.unique();
 
-    for (r = rels.begin(); r != rels.end(); r++)
+    for (r = relationships.begin(); r != relationships.end(); r++)
     {
         //UNDO add_undo_record(DELTA_DEL_REL, (*r), PARASITE_SIDE);
         
-        (*r)->guide->rels.removeOne(*r);
-        (*r)->guide2->rels.removeOne(*r);
+        (*r)->guide->relationships.removeOne(*r);
+        (*r)->guide2->relationships.removeOne(*r);
     }
 
     Distribution *newdistro = new Distribution(&guides, x(), y());
@@ -745,14 +739,14 @@ void Distribution::RemoveGuideline(Guideline *g)
 void Distribution::RemoveEntire(void)
 {
     RelsList::iterator r;
-    for (r = rels.begin(); r != rels.end(); r++)
+    for (r = relationships.begin(); r != relationships.end(); r++)
     {
         // Add delete of pos, to every distro-rel.
         
         // UNDO add_undo_record(DELTA_DEL_REL, (*r), PARASITE_SIDE);
         
-        (*r)->guide->rels.removeOne(*r);
-        (*r)->guide2->rels.removeOne(*r);
+        (*r)->guide->relationships.removeOne(*r);
+        (*r)->guide2->relationships.removeOne(*r);
     }
 
     // Actually delete the indicator:
@@ -771,7 +765,7 @@ void Distribution::shiftLockedGuideline(void)
     Guideline *guide = lockedGuideline();
     guide->unlock();
 
-    int guidesN = rels.size() + 1;
+    int guidesN = relationships.size() + 1;
 
     lockedGuidelineN = (lockedGuidelineN % guidesN) + 1;
     
@@ -796,15 +790,15 @@ Guideline *Distribution::draggedGuideline(void) const
 
 Guideline *Distribution::guidelineAtPosition(int position) const
 {
-    assert(!rels.empty());
+    assert(!relationships.empty());
     
-    if (position > rels.size())
+    if (position > relationships.size())
     {
-        return rels.back()->guide2;
+        return relationships.back()->guide2;
     }
     
     int relN = 1;
-    RelsList::const_iterator r = rels.begin();
+    RelsList::const_iterator r = relationships.begin();
     while (relN < position)
     {
         relN++;
@@ -819,7 +813,7 @@ void Distribution::Resize(Guideline *guide, const double newx, const double newy
 {
     Q_UNUSED (newogp)
 
-    Guideline *right = rels.back()->guide2;
+    Guideline *right = relationships.back()->guide2;
    
     Guideline *other = (newother) ? newother : lockedGuideline();
 
@@ -890,11 +884,11 @@ Distribution *createDistribution(QWidget *window, const dtype type,
         Guideline *guidesh = dynamic_cast<Guideline *> (*sh);
         if (shape)
         {
-            guide = shape->get_guide(atype);
+            guide = shape->attachedGuidelineOfType(atype);
             if (!guide)
             {
                 // No guideline, so create a new one:
-                guide = shape->new_guide(atype);
+                guide = shape->newGuidelineOfType(atype);
                 // UNDO add_undo_record(DELTA_MOVE, shape);
                 // UNDO add_undo_record(DELTA_ADD, guide);
                 new Relationship(guide, shape, atype);

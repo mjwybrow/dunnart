@@ -1196,8 +1196,8 @@ void GraphData::guideToAlignmentConstraint(Guideline* guide) {
     ccMap[guide]=ac;
     ac->indicator=(void*)guide;
     ccs.push_back(ac);
-    for(RelsList::iterator i = guide->rels.begin();
-            i!=guide->rels.end();i++) {
+    for(RelsList::iterator i = guide->relationships.begin();
+            i!=guide->relationships.end();i++) {
         double offset = 0;
         ShapeObj* s = (*i)->shape;
         // if s is null then it's a distribution constraint
@@ -1359,19 +1359,19 @@ void GraphData::branchedTemplateToConstraints(BranchedTemplate* templatPtr)
  */
 void GraphData::distroToDistributionConstraint(Distribution* distro) 
 {
-    if (distro->rels.size() < 1)
+    if (distro->relationships.size() < 1)
     {
         // Empty distribution.
         return;
     }
-    dirctn d = distro->rels.front()->guide->get_dir();
+    dirctn d = distro->relationships.front()->guide->get_dir();
     vpsc::Dim dim = (d==GUIDE_TYPE_HORI) ? vpsc::YDIM : vpsc::XDIM;
     cola::DistributionConstraint* dc = new cola::DistributionConstraint(dim);
     dc->indicator = (void *) distro;
     ccMap[distro]=dc;
     dc->sep = distro->getSeparation();
-    for (RelsList::iterator i = distro->rels.begin();
-            i!=distro->rels.end();i++) 
+    for (RelsList::iterator i = distro->relationships.begin();
+            i!=distro->relationships.end();i++) 
     {
         Guideline* g1 = (*i)->guide;
         Guideline* g2 = (*i)->guide2;
@@ -1392,20 +1392,20 @@ void GraphData::distroToDistributionConstraint(Distribution* distro)
  */
 void GraphData::separationToMultiSeparationConstraint(Separation* sep)
 {
-    if (sep->rels.empty())
+    if (sep->relationships.empty())
     {
         // Empty distribution.
         return;
     }
-    dirctn d = sep->rels.front()->guide->get_dir();
+    dirctn d = sep->relationships.front()->guide->get_dir();
     vpsc::Dim dim = (d==GUIDE_TYPE_HORI) ? vpsc::YDIM : vpsc::XDIM;
     bool equality = false; // Distributions have replaced equality separations.
     cola::MultiSeparationConstraint* c =
             new cola::MultiSeparationConstraint(dim, sep->gap, equality);
     c->indicator = (void *) sep;
     ccMap[sep]=c;
-    for(RelsList::iterator i = sep->rels.begin();
-            i!=sep->rels.end();i++) {
+    for(RelsList::iterator i = sep->relationships.begin();
+            i!=sep->relationships.end();i++) {
         Guideline* g1 = (*i)->guide;
         Guideline* g2 = (*i)->guide2;
         cola::AlignmentConstraint *ac1 =

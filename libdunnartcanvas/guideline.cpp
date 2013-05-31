@@ -29,6 +29,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QPainter>
+#include <QSet>
 
 #include "libdunnartcanvas/shared.h"
 #include "libdunnartcanvas/shape.h"
@@ -88,7 +89,7 @@ void Guideline::rangeOfAttachedShapes(double& min, double& max, int& nodes)
 
     nodes = 0;
 
-    for (RelsList::iterator curr = rels.begin(); curr != rels.end(); ++curr)
+    for (RelsList::iterator curr = relationships.begin(); curr != relationships.end(); ++curr)
     {
         if ((*curr)->shape)
         {
@@ -114,7 +115,7 @@ void Guideline::rangeOfAttachedObjects(double& min, double& max) const
     min = DBL_MAX;
     max = -DBL_MAX;
 
-    for (RelsList::const_iterator curr = rels.begin(); curr != rels.end(); ++curr)
+    for (RelsList::const_iterator curr = relationships.begin(); curr != relationships.end(); ++curr)
     {
         QRectF itemRect;
         if ((*curr)->shape)
@@ -191,7 +192,7 @@ QAction *Guideline::buildAndExecContextMenu(QGraphicsSceneMouseEvent *event,
     // Hide the menu item if the guideline is not attached to any
     // distribution relationships.
     bool attachedToDistributions = false;
-    for (RelsList::iterator r = rels.begin(); r != rels.end(); r++)
+    for (RelsList::iterator r = relationships.begin(); r != relationships.end(); r++)
     {
         if (dynamic_cast<Distribution *> ((*r)->distro))
         {
@@ -222,7 +223,7 @@ void Guideline::removeFromDistributions(const bool force)
     DistributionList dlist;
 
     // Don't delete using rels iterator, build a distrolist.
-    for (RelsList::iterator r = rels.begin(); r != rels.end(); r++)
+    for (RelsList::iterator r = relationships.begin(); r != relationships.end(); r++)
     {
         Distribution *distro = dynamic_cast<Distribution *> ((*r)->distro);
 
@@ -340,8 +341,8 @@ void Guideline::findAttachedSet(CanvasItemSet& objSet)
     }
     objSet.insert(this);
 
-    RelsList::iterator finish = rels.end();
-    for (RelsList::iterator r = rels.begin(); r != finish; r++)
+    RelsList::iterator finish = relationships.end();
+    for (RelsList::iterator r = relationships.begin(); r != finish; r++)
     {
         if ((*r)->shape)
         {
@@ -354,8 +355,8 @@ void Guideline::findAttachedSet(CanvasItemSet& objSet)
 void Guideline::addAttachedShapesToSet(CanvasItemSet& objSet)
 {
     // Add pointers to all shapes attached to this guidline into the objSet.
-    RelsList::iterator finish = rels.end();
-    for (RelsList::iterator r = rels.begin(); r != finish; r++)
+    RelsList::iterator finish = relationships.end();
+    for (RelsList::iterator r = relationships.begin(); r != finish; r++)
     {
         if ((*r)->shape)
         {
@@ -382,8 +383,8 @@ void Guideline::cascade_distance(int dist, unsigned int dir, CanvasItem **path)
         return;
     }
 
-    RelsList::iterator finish = rels.end();
-    for (RelsList::iterator r = rels.begin(); r != finish; r++)
+    RelsList::iterator finish = relationships.end();
+    for (RelsList::iterator r = relationships.begin(); r != finish; r++)
     {
         if ((*r)->shape)
         {
@@ -523,7 +524,7 @@ QDomElement Guideline::to_QDomElement(const unsigned int subset,
         newProp(node, x_position, position);
     }
 
-    for (RelsList::iterator r = rels.begin(); r != rels.end(); ++r)
+    for (RelsList::iterator r = relationships.begin(); r != relationships.end(); ++r)
     {
         if ((*r)->shape)
         {
@@ -541,10 +542,9 @@ void Guideline::deactivateAll(CanvasItemSet& selSet)
     Q_UNUSED (selSet)
 
     RelsList::iterator r;
-    while ( (r = rels.begin()) != rels.end() )
+    while ( (r = relationships.begin()) != relationships.end() )
     {
-        (*r)->deadguide = this;
-        (*r)->Deactivate(EVERYTHING);
+        (*r)->removeGuideline(this);
     }
 }
 
@@ -597,54 +597,83 @@ bool guideCompare(Guideline *g1, Guideline *g2)
     return *g1 < *g2;
 }
 
-
-
-Guideline *createAlignment(const atypes atype, CanvasItemList& objList)
+void Guideline::moveRelationshipsToGuideline(Guideline *targetGuideline)
 {
-    bool first_shape = true;
-    Guideline *guide = NULL;
-
-    for (CanvasItemList::iterator sh = objList.begin(); sh != objList.end();
-            sh++)
+    RelsList::iterator it;
+    while ( (it = relationships.begin()) != relationships.end() )
     {
-        ShapeObj *shape = dynamic_cast<ShapeObj *> (*sh);
-        Guideline *guidesh = dynamic_cast<Guideline *> (*sh);
-        if (shape && (shape->canvasItemFlags() & CanvasItem::ItemIsAlignable))
+        Relationship *relationship = *it;
+        relationship->deactivate();
+        if (relationship->guide == this)
         {
-            if ((guide = shape->get_guide(atype)))
-            {
-                // found a guide of this type.
-                break;
-            }
+            relationship->guide = targetGuideline;
         }
-        else if (guidesh)
+        if (relationship->guide2 == this)
         {
-            // Don't use horizontal guides for vertical alignment.
-            if (guidesh->get_dir() == atypes_to_dirctn(atype))
-            {
-                guide = guidesh;
-            }
-            break;
+            relationship->guide2 = targetGuideline;
         }
+        relationship->activate();
     }
-    for (CanvasItemList::iterator sh = objList.begin(); sh != objList.end();
-            ++sh)
+}
+
+
+Guideline *createAlignment(const atypes atype, CanvasItemList items)
+{
+    Guideline *alignmentGuideline = NULL;
+    QSet<Guideline *> guidelinesToMerge;
+
+    // Do a first pass to determine alignmentGuideline if there exists a
+    // usuable guideline, as well as record all the guidleines we need to
+    // merge with this one.
+    CanvasItemList::iterator it = items.begin();
+    while (it != items.end())
     {
-        ShapeObj *shape = dynamic_cast<ShapeObj *> (*sh);
-        Guideline *guidesh = dynamic_cast<Guideline *> (*sh);
+        ShapeObj *shape = dynamic_cast<ShapeObj *> (*it);
+        Guideline *guideline = dynamic_cast<Guideline *> (*it);
         if (shape && (shape->canvasItemFlags() & CanvasItem::ItemIsAlignable))
         {
-            if (first_shape)
+            // If this is a shape, does it have a relevant guideline.
+            guideline = shape->attachedGuidelineOfType(atype);
+        }
+        if (guideline && (guideline->get_dir() == atypes_to_dirctn(atype)))
+        {
+            if (alignmentGuideline == NULL)
             {
-                if (!guide)
+                // We use the first guidline as the alignmentGuideline.
+                alignmentGuideline = guideline;
+            }
+            else if (guideline != alignmentGuideline)
+            {
+                // We take note of subsequent guidelines for merging.
+                guidelinesToMerge.insert(guideline);
+                // And we remove this shape or guideline from the items list,
+                // since we will migrate all relationships from the guideline
+                // to the master one for the alignment.
+                it = items.erase(it);
+                continue;
+            }
+        }
+        ++it;
+    }
+
+    bool firstItem = true;
+    foreach (CanvasItem *item, items)
+    {
+        ShapeObj *shape = dynamic_cast<ShapeObj *> (item);
+        Guideline *guideline = dynamic_cast<Guideline *> (item);
+        if (shape && (shape->canvasItemFlags() & CanvasItem::ItemIsAlignable))
+        {
+            if (firstItem)
+            {
+                if (alignmentGuideline == NULL)
                 {
-                    guide = shape->new_guide(atype);
-                    // UNDO add_undo_record(DELTA_ADD, guide);
+                    alignmentGuideline = shape->newGuidelineOfType(atype);
                 }
                 else
                 {
-                    // Using a guide attached to a non-lead object,
-                    // need to move it.
+                    // Using a guideline attached to a non-lead shape, we
+                    // move the guideline to be positioned relative to the
+                    // lead shape.
 
                     d_printf("\t\tBring guideline to lead shape:\n");
                     
@@ -658,47 +687,54 @@ Guideline *createAlignment(const atypes atype, CanvasItemList& objList)
                     {
                         gy = value;
                     }
-                    guide->move_to(gx, gy, true, false);
+                    alignmentGuideline->move_to(gx, gy, true, false);
                 }
-                first_shape = false;
+                firstItem = false;
             }
-            Guideline *guide2 = shape->get_guide(atype);
+            Guideline *existingGuideline = shape->attachedGuidelineOfType(atype);
 
-            if (guide2 == NULL)
+            if (existingGuideline == NULL)
             {
+                // This shape isn't attached to a relevant guideline,
+                // so attach it.
                 // UNDO if (recUndo) add_undo_record(DELTA_MOVE, shape);
-                new Relationship(guide, shape, atype);
+                new Relationship(alignmentGuideline, shape, atype);
             }
-            else if (guide2 != guide)
+            else
             {
-                // UNDO if (recUndo) add_undo_record(DELTA_MOVE, guide2);
-                new Relationship(guide, guide2);
-            }
-            else // if (guide2 == guide)
-            {
-                // This is already attached, so do nothing.
+                assert(existingGuideline == alignmentGuideline);
             }
         }
-        else if (guidesh && (guidesh->get_dir() == atypes_to_dirctn(atype)))
+        else if (guideline && (guideline->get_dir() == atypes_to_dirctn(atype)))
         {
-            if (first_shape)
+            if (firstItem)
             {
                 // If this is the lead, do nothing to it.
-                first_shape = false;
+                firstItem = false;
             }
-            else if (guidesh != guide)
-            {
-                // UNDO if (recUndo) add_undo_record(DELTA_MOVE, guidesh);
-                new Relationship(guide, guidesh);
-            }
+            assert(guideline == alignmentGuideline);
         }
     }
-    if (!guide)
+
+    // Rewrite the relationships from the to-merge guidelines onto the
+    // master guideline for the alignment.
+    assert(alignmentGuideline);
+    UndoMacro *currentUndoMacro = alignmentGuideline->canvas()->currentUndoMacro();
+    foreach (Guideline *guideline, guidelinesToMerge)
+    {
+        guideline->moveRelationshipsToGuideline(alignmentGuideline);
+        QUndoCommand *cmd = new CmdCanvasSceneRemoveItem(
+                guideline->canvas(), guideline);
+        currentUndoMacro->addCommand(cmd);
+
+    }
+
+    if (!alignmentGuideline)
     {
         qWarning("No alignment created in createAlignment().");
     }
 
-    return guide;
+    return alignmentGuideline;
 }
 
 

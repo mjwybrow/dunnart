@@ -221,8 +221,8 @@ void Separation::cascade_distance(int dist, unsigned int dir, CanvasItem **path)
         return;
     }
 
-    RelsList::iterator start = rels.begin();
-    RelsList::iterator finish = rels.end();
+    RelsList::iterator start = relationships.begin();
+    RelsList::iterator finish = relationships.end();
     if (start != finish)
     {
         if ((*start)->guide)
@@ -269,12 +269,12 @@ double Separation::getSeparation(void)
 
 void Separation::recreate(void)
 {
-    RelsList trels = rels;
+    RelsList trels = relationships;
     qSort(trels.begin(), trels.end(), relationshipLessThan);
 
     double bx, by, bw, bh, first, last, size = 12;
     
-    if (rels.empty())
+    if (relationships.empty())
     {
         bx = x();
         by = y();
@@ -337,7 +337,7 @@ void Separation::userMoveBy(qreal dx, qreal dy)
     // Move tha attached guidelines
     Actions& actions = canvas()->getActions();
     std::set<Guideline *> guides;
-    for (RelsList::iterator g = rels.begin(); g != rels.end(); ++g)
+    for (RelsList::iterator g = relationships.begin(); g != relationships.end(); ++g)
     {
         guides.insert((*g)->guide);
         guides.insert((*g)->guide2);
@@ -377,7 +377,7 @@ QPainterPath Separation::buildPainterPath(void)
     // PainterPath of bounding rectange.
     //painter_path.addRect(-width() / 2, -height() / 2, width(), height());
 
-    int sections = (int) rels.size();
+    int sections = (int) relationships.size();
 
     const qreal one =  m_curr_path_one_pixel;
     const qreal gap = one * 2;
@@ -395,8 +395,8 @@ QPainterPath Separation::buildPainterPath(void)
 
     if (type == GUIDE_TYPE_VERT)
     {
-        RelsList::iterator finish = rels.end();
-        for (RelsList::iterator r = rels.begin(); r != finish; ++r)
+        RelsList::iterator finish = relationships.end();
+        for (RelsList::iterator r = relationships.begin(); r != finish; ++r)
         {
             double gp1 = (*r)->guide->x();
             double gp2 = (*r)->guide2->x();
@@ -433,8 +433,8 @@ QPainterPath Separation::buildPainterPath(void)
     }
     else // if (type == GUIDE_TYPE_HORI)
     {
-        RelsList::iterator finish = rels.end();
-        for (RelsList::iterator r = rels.begin(); r != finish; ++r)
+        RelsList::iterator finish = relationships.end();
+        for (RelsList::iterator r = relationships.begin(); r != finish; ++r)
         {
             double gp1 = (*r)->guide->y();
             double gp2 = (*r)->guide2->y();
@@ -490,8 +490,8 @@ void Separation::paint(QPainter *painter,
 
     if (type == GUIDE_TYPE_VERT)
     {
-        RelsList::iterator finish = rels.end();
-        for (RelsList::iterator r = rels.begin(); r != finish; ++r)
+        RelsList::iterator finish = relationships.end();
+        for (RelsList::iterator r = relationships.begin(); r != finish; ++r)
         {
             double gp1 = (*r)->guide->x();
             double gp2 = (*r)->guide2->x();
@@ -501,7 +501,7 @@ void Separation::paint(QPainter *painter,
             double pos = pos1 + (pos2 - pos1) / 2;
             double half = gap / 2 - padding;
 
-            if (r == rels.begin())
+            if (r == relationships.begin())
             {
                 handle_x = pos - half;
                 handles.front()->reposition();
@@ -519,8 +519,8 @@ void Separation::paint(QPainter *painter,
     }
     else // if (type == GUIDE_TYPE_HORI)
     {
-        RelsList::iterator finish = rels.end();
-        for (RelsList::iterator r = rels.begin(); r != finish; ++r)
+        RelsList::iterator finish = relationships.end();
+        for (RelsList::iterator r = relationships.begin(); r != finish; ++r)
         {
             double gp1 = (*r)->guide->y();
             double gp2 = (*r)->guide2->y();
@@ -531,7 +531,7 @@ void Separation::paint(QPainter *painter,
             double pos = pos1 + (pos2 - pos1) / 2;
             double half = gap / 2 - padding;
 
-            if (r == rels.begin())
+            if (r == relationships.begin())
             {
                 handle_y = pos - half;
                 handles.front()->reposition();
@@ -570,7 +570,7 @@ QDomElement Separation::to_QDomElement(const unsigned int subset,
         newProp(node, "id", idString());
     }
 
-    for (RelsList::iterator r = rels.begin(); r != rels.end(); ++r)
+    for (RelsList::iterator r = relationships.begin(); r != relationships.end(); ++r)
     {
         QDomElement rxn = (*r)->to_QDomElement(subset, doc);
         node.appendChild(rxn);
@@ -584,13 +584,13 @@ sgtype Separation::is_guide(Guideline *g)
 {
     Guideline *tmp1, *tmp2, *left, *right;
 
-    tmp1 = rels.front()->guide;
-    tmp2 = rels.front()->guide2;
+    tmp1 = relationships.front()->guide;
+    tmp2 = relationships.front()->guide2;
  
     left = (guideLessThan(tmp1, tmp2)) ? tmp1 : tmp2;
 
-    tmp1 = rels.back()->guide;
-    tmp2 = rels.back()->guide2;
+    tmp1 = relationships.back()->guide;
+    tmp2 = relationships.back()->guide2;
  
     right = (guideLessThan(tmp1, tmp2)) ? tmp2 : tmp1;
 
@@ -647,11 +647,11 @@ void Separation::register_new_pos_diff(int dx, int dy)
 
 Guideline *Separation::left_guide(void)
 {
-    if (rels.size() < 1)
+    if (relationships.size() < 1)
     {
         return NULL;
     }
-    Guideline *l = (is_reversed()) ? rels.back()->guide2 : rels.front()->guide;
+    Guideline *l = (is_reversed()) ? relationships.back()->guide2 : relationships.front()->guide;
          
     return l;
 }
@@ -659,11 +659,11 @@ Guideline *Separation::left_guide(void)
 
 Guideline *Separation::right_guide(void)
 {
-    if (rels.size() < 1)
+    if (relationships.size() < 1)
     {
         return NULL;
     }
-    Guideline *r = (is_reversed()) ? rels.front()->guide : rels.back()->guide2;
+    Guideline *r = (is_reversed()) ? relationships.front()->guide : relationships.back()->guide2;
          
     return r;
 }
@@ -673,13 +673,13 @@ bool Separation::is_reversed(void)
 {
     Guideline *tmp1, *tmp2;
 
-    if (rels.size() == 0)
+    if (relationships.size() == 0)
     {
         return false;
     }
     
-    tmp1 = rels.front()->guide;
-    tmp2 = rels.front()->guide2;
+    tmp1 = relationships.front()->guide;
+    tmp2 = relationships.front()->guide2;
          
     if (guideLessThan(tmp1, tmp2))
     {
@@ -693,19 +693,12 @@ void Separation::deactivateAll(CanvasItemSet& selSet)
 {
     Q_UNUSED (selSet)
 
-    if (rels.size() > 0)
-    {
-        // NOTE: This has a special effect in Deactivate() that,
-        //       deactivates the entire separation.
-        rels.front()->deadguide = NULL;
-        rels.front()->Deactivate(EVERYTHING);
-    }
+    RemoveEntire();
 }
-
 
 void Separation::RemoveGuideline(Guideline *g)
 {
-    if (rels.size() < 2)
+    if (relationships.size() < 2)
     {
         RemoveEntire();
         return;
@@ -715,7 +708,7 @@ void Separation::RemoveGuideline(Guideline *g)
     GuidelineList guides;
     
     RelsList::iterator r;
-    for (r = rels.begin(); r != rels.end(); ++r)
+    for (r = relationships.begin(); r != relationships.end(); ++r)
     {
         // Add all guides from relationships to list except the deleted one.
         if (g != (*r)->guide)
@@ -732,12 +725,12 @@ void Separation::RemoveGuideline(Guideline *g)
     // Remove duplicates
     guides.unique();
 
-    for (r = rels.begin(); r != rels.end(); r++)
+    for (r = relationships.begin(); r != relationships.end(); r++)
     {
         // UNDO add_undo_record(DELTA_DEL_REL, (*r), PARASITE_SIDE);
         
-        (*r)->guide->rels.removeOne(*r);
-        (*r)->guide2->rels.removeOne(*r);
+        (*r)->guide->relationships.removeOne(*r);
+        (*r)->guide2->relationships.removeOne(*r);
     }
 
     Separation *newdistro = new Separation(&guides, gap, x(), y());
@@ -755,14 +748,14 @@ void Separation::RemoveGuideline(Guideline *g)
 void Separation::RemoveEntire(void)
 {
     RelsList::iterator r;
-    for (r = rels.begin(); r != rels.end(); r++)
+    for (r = relationships.begin(); r != relationships.end(); r++)
     {
         // Add delete of pos, to every separation-rel.
         
         // UNDO add_undo_record(DELTA_DEL_REL, (*r), PARASITE_SIDE);
         
-        (*r)->guide->rels.removeOne(*r);
-        (*r)->guide2->rels.removeOne(*r);
+        (*r)->guide->relationships.removeOne(*r);
+        (*r)->guide2->relationships.removeOne(*r);
      }
 
     // Actually delete the indicator:
@@ -784,13 +777,13 @@ void Separation::shiftLockedGuideline(void)
 
 Guideline *Separation::lockedGuideline(void)
 {
-    int relsN = rels.size();
+    int relsN = relationships.size();
     if (relsN < 1)
     {
         return NULL;
     }
     
-    RelsList::iterator r = rels.begin();
+    RelsList::iterator r = relationships.begin();
     return (*r)->guide;
 }
 
@@ -837,11 +830,11 @@ Separation *createSeparation(QWidget *window, const dtype type,
         if (shape)
         {
             canvas_copy = shape->canvas();
-            guide = shape->get_guide(atype);
+            guide = shape->attachedGuidelineOfType(atype);
             if (!guide)
             {
                 // No guideline, so create a new one:
-                guide = shape->new_guide(atype);
+                guide = shape->newGuidelineOfType(atype);
                 // UNDO add_undo_record(DELTA_MOVE, shape);
                 // UNDO add_undo_record(DELTA_ADD, guide);
                 new Relationship(guide, shape, atype);

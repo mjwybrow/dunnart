@@ -92,6 +92,8 @@ class Guideline: public Indicator
         void rangeOfAttachedObjects(double& min, double& max) const;
         bool operator<(const Guideline& rhs) const;
         bool operator==(const Guideline& rhs) const;
+        void moveRelationshipsToGuideline(Guideline *tagetGuideline);
+
     protected:
         virtual QAction *buildAndExecContextMenu(
                 QGraphicsSceneMouseEvent *event, QMenu& menu);
@@ -113,7 +115,7 @@ typedef std::list<Guideline *> GuidelineList;
 
 
 extern bool guideCompare(Guideline *g1, Guideline *g2);
-extern Guideline *createAlignment(const atypes atype, CanvasItemList& objList);
+extern Guideline *createAlignment(const atypes atype, CanvasItemList items);
 
 
 }

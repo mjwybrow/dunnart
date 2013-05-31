@@ -2106,7 +2106,7 @@ void Canvas::createIndicatorHighlightCache(void)
             // We don't want guides that are being moved, because they
             // are attached via multi-way constraints to selected shapes.
             bool invalid = false;
-            for (RelsList::iterator r = g->rels.begin(); r != g->rels.end();
+            for (RelsList::iterator r = g->relationships.begin(); r != g->relationships.end();
                     r++)
             {
                 if ((*r)->shape && (*r)->shape->isSelected())
@@ -2176,41 +2176,6 @@ bool Canvas::inSelectionMode(void) const
 {
     return (m_edit_mode == ModeSelection);
 }
-
-/*
-void highlightIndicators(Shape *shape, const QRectF& shapeRect)
-{
-    Canvas *canvas = shape->canvas();
-    bool vfound = false, hfound = false;
-
-    // QT nx -= canvas->get_xpos() + cxoff;
-    // QT ny -= canvas->get_ypos() + cyoff;
-    for (int i = 0; i < 6; i++)
-    {
-        if (!(shape->rels[i]))
-        {
-            double pos = ShapeObj::attachedGuidelinePosition((atypes) i, shapeRect);
-
-            if (!hfound && (i < 3))
-            {
-                if (m_hguides.find(pos) != m_hguides.end())
-                {
-                    m_hguides[pos]->setHighlighted(true);
-                    m_hguides[pos]->update();
-                }
-            }
-            else if (!vfound && (i >= 3))
-            {
-                if (m_vguides.find(pos) != m_vguides.end())
-                {
-                    m_vguides[pos]->setHighlighted(true);
-                    m_vguides[pos]->update();
-                }
-            }
-        }
-    }
-}
-*/
 
 void Canvas::clearIndicatorHighlights(const bool clearCache)
 {

@@ -345,7 +345,6 @@ class Canvas : public QGraphicsScene
         void setInterferingConnectorColours(const QString colourListString);
         void hideSelectionResizeHandles(void);
         void createIndicatorHighlightCache(void);
-        //static void highlightIndicators(ShapeObj *shape, const QRectF& shapeRect);
         void clearIndicatorHighlights(const bool clearCache = false);
         void glueObjectsToIndicators(void);
         bool hasVisibleOverlays(void) const;

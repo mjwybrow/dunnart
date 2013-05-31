@@ -80,7 +80,7 @@ Relationship::Relationship(Canvas *canvas, const QDomElement& node,
         }
         else
         {
-            Activate(BOTH_SIDE, no_undo);
+            activate(no_undo);
         }
     }
     else if (relTypeStr == x_distribution)
@@ -97,7 +97,7 @@ Relationship::Relationship(Canvas *canvas, const QDomElement& node,
         assert(guide);
         assert(guide2);
         
-        Activate(BOTH_SIDE, no_undo);
+        activate(no_undo);
     }
     else if (relTypeStr == x_separation)
     {
@@ -113,7 +113,7 @@ Relationship::Relationship(Canvas *canvas, const QDomElement& node,
         assert(guide);
         assert(guide2);
         
-        Activate(BOTH_SIDE, no_undo);
+        activate(no_undo);
     }
 }
 
@@ -130,7 +130,7 @@ Relationship::Relationship(Guideline *g, ShapeObj *sh, atypes t, bool no_undo)
     type = t;
     guide = g;
     
-    Activate(BOTH_SIDE, no_undo);
+    activate(no_undo);
 }
 
 
@@ -145,7 +145,7 @@ Relationship::Relationship(Distribution *d, Guideline *g1, Guideline *g2, bool n
     guide = g1;
     guide2 = g2;
     
-    Activate(BOTH_SIDE, no_undo);
+    activate(no_undo);
 }
 
 
@@ -160,22 +160,9 @@ Relationship::Relationship(Separation *s, Guideline *g1, Guideline *g2, bool no_
     guide = g1;
     guide2 = g2;
     
-    Activate(BOTH_SIDE, no_undo);
+    activate(no_undo);
 }
 
-    // This one is for unifying guidelines.
-Relationship::Relationship(Guideline *g1, Guideline *g2, bool no_undo)
-{
-    commonInit();
-
-    relType = REL_Unify;
-    assert(g1);
-    assert(g2);
-    guide = g1;
-    guide2 = g2;
-    
-    Activate(BOTH_SIDE, no_undo);
-}
 
 void Relationship::commonInit(void)
 {
@@ -183,7 +170,7 @@ void Relationship::commonInit(void)
     distro = NULL;
     guide = NULL;
     guide2 = NULL;
-    deadguide = NULL;
+    separation = NULL;
 }
 
 QDomElement Relationship::to_QDomElement(const unsigned int subset, 
@@ -225,126 +212,67 @@ QDomElement Relationship::to_QDomElement(const unsigned int subset,
     return node;
 }
 
-
-void Relationship::Deactivate(side s, bool by_undo)
+void Relationship::removeGuideline(Guideline *deadguide)
 {
     // If a guideline is deleted, delete the distribution.
-    if (s == EVERYTHING)
+    if (relType == REL_Distr)
     {
-        if (relType == REL_Distr)
-        {
-            if (!deadguide)
-            {
-                distro->RemoveEntire();
-                return;
-            }
-            else
-            {
-                distro->RemoveGuideline(deadguide);
-                return;
-            }
-        }
-        else if (relType == REL_Separ)
-        {
-            if (!deadguide)
-            {
-                separation->RemoveEntire();
-                return;
-            }
-            else
-            {
-                separation->RemoveGuideline(deadguide);
-                return;
-            }
-        }
+        distro->RemoveGuideline(deadguide);
     }
+    else if (relType == REL_Separ)
+    {
+        separation->RemoveGuideline(deadguide);
+    }
+}
 
+void Relationship::deactivate(bool by_undo)
+{
     if (!by_undo)
     {
         // UNDO bool care_order = true;
         // UNDO add_undo_record(DELTA_DEL_REL, this, s, care_order);
     }
-    if (s & BOTH_SIDE)
-    {
-        if (relType == REL_Align)
-        {
-            shape->rels[type] = NULL;
-        }
-        else if (relType == REL_Distr)
-        {
-            guide->rels.removeOne(this);
-            guide2->rels.removeOne(this);
-        }
-        else if (relType == REL_Separ)
-        {
-            guide->rels.removeOne(this);
-            guide2->rels.removeOne(this);
-        }
-        else if (relType == REL_Unify)
-        {
-            assert(s & BOTH_SIDE);
-            guide2->rels.removeOne(this);
-        }
 
-        // Must use a pointer so we modify the original list.
-        if (relType == REL_Distr)
-        {
-            distro->rels.removeOne(this);
-        }
-        else if (relType == REL_Separ)
-        {
-            separation->rels.removeOne(this);
-        }
-        else
-        {
-            guide->rels.removeOne(this);
-        }
+    if (relType == REL_Align)
+    {
+        shape->rels[type] = NULL;
+        guide->relationships.removeOne(this);
+    }
+    else if (relType == REL_Distr)
+    {
+        distro->relationships.removeOne(this);
+        guide->relationships.removeOne(this);
+        guide2->relationships.removeOne(this);
+    }
+    else if (relType == REL_Separ)
+    {
+        separation->relationships.removeOne(this);
+        guide->relationships.removeOne(this);
+        guide2->relationships.removeOne(this);
     }
 }
 
 
-void Relationship::Activate(side s, bool by_undo)
+void Relationship::activate(bool by_undo)
 {
-    if (s & BOTH_SIDE)
+    if (relType == REL_Align)
     {
-        if (relType == REL_Align)
-        {
-            shape->rels[type] = this;
-        }
-        else if (relType == REL_Distr)
-        {
-            guide->rels.push_back(this);
-            guide2->rels.push_back(this);
-        }
-        else if (relType == REL_Separ)
-        {
-            guide->rels.push_back(this);
-            guide2->rels.push_back(this);
-        }
-        else if (relType == REL_Unify)
-        {
-            assert(s & BOTH_SIDE);
-            guide->rels.push_back(this);
-        }
-
-        if (relType == REL_Align)
-        {
-            guide->rels.push_back(this);
-        }
-        else if (relType == REL_Distr)
-        {
-            distro->rels.push_back(this);
-        }
-        else if (relType == REL_Separ)
-        {
-            separation->rels.push_back(this);
-        }
-        else if (relType == REL_Unify)
-        {
-            assert(s & BOTH_SIDE);
-            guide2->rels.push_back(this);
-        }
+        shape->rels[type] = this;
+        guide->relationships.push_back(this);
     }
+    else if (relType == REL_Distr)
+    {
+        distro->relationships.push_back(this);
+        guide->relationships.push_back(this);
+        guide2->relationships.push_back(this);
+    }
+    else if (relType == REL_Separ)
+    {
+        separation->relationships.push_back(this);
+        guide->relationships.push_back(this);
+        guide2->relationships.push_back(this);
+    }
+
     if (!by_undo)
     {
         // UNDO add_undo_record(DELTA_ADD_REL, this, s);

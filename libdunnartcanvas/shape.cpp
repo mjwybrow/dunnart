@@ -282,7 +282,7 @@ void ShapeObj::userMoveBy(qreal dx, qreal dy)
         {
             if (rels[i])
             {
-                rels[i]->Deactivate(BOTH_SIDE);
+                rels[i]->deactivate();
             }
         }
     }
@@ -355,13 +355,6 @@ void ShapeObj::paint(QPainter *painter,
     paintShapeDecorations(painter);
 }
 
-
-static const int ALBUT_L = 200 + ALIGN_LEFT;
-static const int ALBUT_C = 200 + ALIGN_CENTER;
-static const int ALBUT_R = 200 + ALIGN_RIGHT;
-static const int ALBUT_T = 200 + ALIGN_TOP;
-static const int ALBUT_M = 200 + ALIGN_MIDDLE;
-static const int ALBUT_B = 200 + ALIGN_BOTTOM;
 
 #if 0
 void ShapeObj::determine_good_text_dimensions(int *w, int *h)
@@ -565,7 +558,7 @@ QAction *ShapeObj::buildAndExecContextMenu(QGraphicsSceneMouseEvent *event,
         if (action == dettachActions[i])
         {
             canvas()->beginUndoMacro(tr("Dettach From Guideline"));
-            rels[i]->Deactivate(BOTH_SIDE);
+            rels[i]->deactivate();
             canvas()->interrupt_graph_layout();
         }
     }
@@ -688,7 +681,7 @@ void ShapeObj::deactivateAll(CanvasItemSet& selSet)
     {
         if (rels[i])
         {
-            rels[i]->Deactivate(BOTH_SIDE);
+            rels[i]->deactivate();
         }
     }
 
@@ -1345,7 +1338,7 @@ void ShapeObj::move_to(const int xn, const int yn, bool store_undo,
             {
                 if (rels[i])
                 {
-                    rels[i]->Deactivate(BOTH_SIDE);
+                    rels[i]->deactivate();
                 }
             }
         }
@@ -1367,7 +1360,7 @@ void ShapeObj::setPosAndSize(const QPointF& newCentrePos,
         {
             if (rels[i])
             {
-                rels[i]->Deactivate(BOTH_SIDE);
+                rels[i]->deactivate();
             }
         }
     }
@@ -1419,7 +1412,7 @@ void ShapeObj::changeLabel(void)
 }
 
 
-Guideline *ShapeObj::get_guide(atypes type)
+Guideline *ShapeObj::attachedGuidelineOfType(atypes type)
 {
     if (rels[type])
     {
@@ -1474,8 +1467,9 @@ double ShapeObj::attachedGuidelinePosition(atypes type, const QRectF& shapeRect)
 }
 
 
-Guideline *ShapeObj::new_guide(atypes type)
+Guideline *ShapeObj::newGuidelineOfType(atypes type)
 {
+    assert(attachedGuidelineOfType(type) == NULL);
     Guideline *guide =  new Guideline(atypes_to_dirctn(type), attachedGuidelinePosition(type));
     QUndoCommand *cmd = new CmdCanvasSceneAddItem(canvas(), guide);
     canvas()->currentUndoMacro()->addCommand(cmd);

@@ -575,8 +575,8 @@ QRectF getAttachedObjectsBounds(Indicator *ind, double buffer,
     size_t count = 0;
     QRectF bounds;
 
-    for (RelsList::iterator curr = ind->rels.begin();
-            curr != ind->rels.end(); ++curr)
+    for (RelsList::iterator curr = ind->relationships.begin();
+            curr != ind->relationships.end(); ++curr)
     {
         CanvasItem *other = NULL;
         if ((*curr)->shape) other = (*curr)->shape;
