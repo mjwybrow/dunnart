@@ -223,6 +223,10 @@ void Relationship::removeGuideline(Guideline *deadguide)
     {
         separation->RemoveGuideline(deadguide);
     }
+    else
+    {
+        deactivate();
+    }
 }
 
 void Relationship::deactivate(bool by_undo)
