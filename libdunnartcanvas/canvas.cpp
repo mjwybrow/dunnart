@@ -168,6 +168,7 @@ Canvas::Canvas()
       m_use_gml_clusters(true),
       m_connector_nudge_distance(0),
       m_opt_ideal_edge_length_modifier(1.0),
+      m_opt_shape_nonoverlap_padding(0.0),
       m_dragged_item(NULL),
       m_lone_selected_item(NULL),
       m_undo_stack(NULL),
