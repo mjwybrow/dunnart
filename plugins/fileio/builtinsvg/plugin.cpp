@@ -225,7 +225,7 @@ class BuiltinSVGFileIOPlugin : public QObject, public FileIOPluginInterface
             QString content = stream.readAll();
             if (content.contains("sodipodi:guide dunnart:type=\"indGuide\""))
             {
-                // This has v1 guidline descriptions that need to be rewritten.
+                // This has v1 guideline descriptions that need to be rewritten.
                 content.replace(" direction=", " foo=");
                 content.replace(" position=", " bar=");
                 content.replace("sodipodi:guide", "dunnart:node");

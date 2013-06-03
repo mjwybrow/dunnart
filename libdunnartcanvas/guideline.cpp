@@ -354,7 +354,7 @@ void Guideline::findAttachedSet(CanvasItemSet& objSet)
 
 void Guideline::addAttachedShapesToSet(CanvasItemSet& objSet)
 {
-    // Add pointers to all shapes attached to this guidline into the objSet.
+    // Add pointers to all shapes attached to this guideline into the objSet.
     RelsList::iterator finish = relationships.end();
     for (RelsList::iterator r = relationships.begin(); r != finish; r++)
     {
@@ -639,7 +639,7 @@ Guideline *createAlignment(const atypes atype, CanvasItemList items)
         {
             if (alignmentGuideline == NULL)
             {
-                // We use the first guidline as the alignmentGuideline.
+                // We use the first guideline as the alignmentGuideline.
                 alignmentGuideline = guideline;
             }
             else if (guideline != alignmentGuideline)

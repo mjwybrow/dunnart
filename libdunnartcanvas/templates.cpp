@@ -535,7 +535,7 @@ void LinearTemplate::startResize(void)
     beginResizeRange = maxAttached - minAttached;
 }
 
-// Need this code because moving a shape or the guidline will handle
+// Need this code because moving a shape or the guideline will handle
 // most of the constraints 
 void LinearTemplate::userMoveBy(qreal diff_x, qreal diff_y)
 {
