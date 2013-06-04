@@ -35,7 +35,7 @@ HEADERS += cola.h \
     sparse_matrix.h \
     straightener.h \
     output_svg.h \
-    shortest_path.h \
+    shortest_paths.h \
     cc_clustercontainmentconstraints.h \
     cc_nonoverlapconstraints.h \
     unused.h \
