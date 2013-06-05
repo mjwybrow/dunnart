@@ -147,25 +147,24 @@ GraphData::GraphData(Canvas *canvas, bool ignoreEdges,
     if (!ignoreEdges)
     {
         // If the nodes are all clumped at one position, then the layout
-        // won't be able to separate them, thus we jiggle them randomly
-        // a small amount.
-        double maxJiggleDistance = 12;
+        // won't be able to separate them, thus we distribute them a small
+        // amount.
         if (xMax == xMin)
         {
             for (size_t i = 0; i < rs.size(); ++i)
             {
-                double jiggle = (qrand() / (double) RAND_MAX) * maxJiggleDistance;
-                qDebug("Jiggle X: %g", jiggle);
-                rs[i]->moveCentreX(jiggle);
+                double jiggle = ((double) i) - (rs.size() / 2);
+                //qDebug("Clumped: offset X: %g", jiggle);
+                rs[i]->offset(jiggle, 0.0);
             }
         }
         if (yMax == yMin)
         {
             for (size_t i = 0; i < rs.size(); ++i)
             {
-                double jiggle = (qrand() / (double) RAND_MAX) * maxJiggleDistance;
-                qDebug("Jiggle Y: %g", jiggle);
-                rs[i]->moveCentreY(jiggle);
+                double jiggle = ((double) i) - (rs.size() / 2);
+                //qDebug("Clumped: offset Y: %g", jiggle);
+                rs[i]->offset(0.0, jiggle);
             }
         }
     }
