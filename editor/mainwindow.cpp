@@ -34,6 +34,8 @@
 #include <QDebug>
 #include <QCloseEvent>
 #include <QFileInfo>
+#include <QSettings>
+#include <QDir>
 
 #include "mainwindow.h"
 #include "canvastabwidget.h"
@@ -492,8 +494,18 @@ void MainWindow::documentOpen(void)
     QString filter = tr("Dunnart diagrams (") +
             fileIOFactory->openableFileTypesString() + ")";
 
+    // Determine the working directory.
+    QSettings settings;
+    QString workingDir(QDir::homePath());
+    QVariant workingDirSetting =
+            settings.value("workingDirectory");
+    if (workingDirSetting.isValid())
+    {
+        workingDir = workingDirSetting.toString();
+    }
+
     QString fileName = QFileDialog::getOpenFileName(this,
-            tr("Open Diagram"), QDir::homePath(), filter);
+            tr("Open Diagram"), workingDir, filter);
     if (!fileName.isEmpty())
     {
         loadDiagram(fileName);
