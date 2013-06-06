@@ -259,11 +259,8 @@ Canvas::Canvas()
             SLOT(selectionChangeTriggers()));
 
 #ifdef FPSTIMER
-    feasibleStartTime = 0;
-    feasibleEndTime = 0;
-    totalTime = 0;
-    updates = 0;
-    timerRunning = false;
+    m_convergence_update_count = 0;
+    m_convergence_timer_running = false;
 #endif
 }
 
@@ -1956,12 +1953,12 @@ void Canvas::processLayoutUpdateEvent(void)
 
     //qDebug("LayoutUpdateEvent");
 #ifdef FPSTIMER
-    if (!timerRunning)
+    if (!m_convergence_timer_running)
     {
-        startTime = clock();
-        timerRunning = true;
+        m_convergence_timer.start();
+        m_convergence_timer_running = true;
     }
-    updates++;
+    m_convergence_update_count++;
 #endif
     foreach (CanvasItem *item, items())
     {
@@ -1983,25 +1980,16 @@ void Canvas::processLayoutFinishedEvent(void)
     m_layout_finish_timer->stop();
 
     //qDebug("LayoutFinishedEvent");
-#if 0
 #ifdef FPSTIMER
-    if (timerRunning)
+    if (m_convergence_timer_running)
     {
-        stopTime = clock();
-        timerRunning = false;
-        totalTime = stopTime - startTime;
-        double totalSecs = totalTime / (double) CLOCKS_PER_SEC;
-        double convergeSecs = (stopTime - clickUpTime) /
-                (double) CLOCKS_PER_SEC;
-        double feasibleSecs = (feasibleEndTime - feasibleStartTime) /
-                (double) CLOCKS_PER_SEC;
+        double elapsedSecs = m_convergence_timer.elapsed() / 1000.0;
 
-        printf("************** Avg Framerate: %g\n", updates / totalSecs);
-        printf("************** Time to converge: %g\n", convergeSecs);
-        printf("************** makeFeasible time: %g\n", feasibleSecs);
-        updates = 0;
+        printf("************** Avg Framerate: %g\n", m_convergence_update_count / elapsedSecs);
+        printf("************** Time to converge: %g\n", elapsedSecs);
+        m_convergence_update_count = 0;
+        m_convergence_timer_running = false;
     }
-#endif
 #endif
     /*
     if (!straighten_bends &&

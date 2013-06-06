@@ -38,6 +38,7 @@
 #include <QDomDocument>
 #include <QUndoCommand>
 #include <QColor>
+#include <QElapsedTimer>
 
 class QToolBar;
 class QStatusBar;
@@ -438,14 +439,9 @@ class Canvas : public QGraphicsScene
         QParallelAnimationGroup *m_animation_group;
 
 #ifdef FPSTIMER
-        clock_t startTime;
-        clock_t clickUpTime;
-        clock_t stopTime;
-        clock_t feasibleStartTime = 0;
-        clock_t feasibleEndTime = 0;
-        clock_t totalTime = 0;
-        unsigned int updates = 0;
-        bool timerRunning = false;
+        QElapsedTimer m_convergence_timer;
+        unsigned int m_convergence_update_count;
+        bool m_convergence_timer_running;
 #endif
 
         friend class GraphLayout;
