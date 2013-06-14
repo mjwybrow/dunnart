@@ -132,7 +132,7 @@ void floyd_warshall(
     for(unsigned k=0; k<n; k++) {
         for(unsigned i=0; i<n; i++) {
             for(unsigned j=0; j<n; j++) {
-                D[i][j]=min(D[i][j],D[i][k]+D[k][j]);
+                D[i][j]=std::min(D[i][j],D[i][k]+D[k][j]);
             }
         }
     }
