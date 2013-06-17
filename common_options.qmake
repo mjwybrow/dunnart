@@ -9,7 +9,7 @@ DESTDIR = $$DUNNARTBASE/build
 
 # Source common options from a parent project if this exists
 # in a directory one level up.
-contains($$list($$[QT_VERSION]), 4.*) {
+lessThan(QT_MAJOR_VERSION, 5) {
     error("Dunnart requires Qt 5.0 or greater.")
 }
 include("$$DUNNARTBASE/../common_options.qmake", "", true)

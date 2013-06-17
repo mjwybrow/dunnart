@@ -447,7 +447,7 @@ QAction *CanvasView::buildAndExecContextMenu(QMouseEvent *event,
         zoomToFitPage->setDisabled(true);
     }
 
-    QAction *action = menu.exec(event->globalPos(), fitToDiagram);
+    QAction *action = menu.exec(event->globalPos());
 
     double padding = 10;
     if (action == zoomToFitDiagram)
