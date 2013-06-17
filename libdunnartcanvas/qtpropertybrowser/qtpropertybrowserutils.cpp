@@ -1,55 +1,57 @@
 /****************************************************************************
 **
-** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the tools applications of the Qt Toolkit.
+** This file is part of the Qt Solutions component.
 **
-** $QT_BEGIN_LICENSE:LGPL$
-** Commercial License Usage
-** Licensees holding valid commercial Qt licenses may use this file in
-** accordance with the commercial license agreement provided with the
-** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Digia.  For licensing terms and
-** conditions see http://qt.digia.com/licensing.  For further information
-** use the contact form at http://qt.digia.com/contact-us.
+** $QT_BEGIN_LICENSE:BSD$
+** You may use this file under the terms of the BSD license as follows:
 **
-** GNU Lesser General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU Lesser
-** General Public License version 2.1 as published by the Free Software
-** Foundation and appearing in the file LICENSE.LGPL included in the
-** packaging of this file.  Please review the following information to
-** ensure the GNU Lesser General Public License version 2.1 requirements
-** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
+** "Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
+**   * Redistributions of source code must retain the above copyright
+**     notice, this list of conditions and the following disclaimer.
+**   * Redistributions in binary form must reproduce the above copyright
+**     notice, this list of conditions and the following disclaimer in
+**     the documentation and/or other materials provided with the
+**     distribution.
+**   * Neither the name of Digia Plc and its Subsidiary(-ies) nor the names
+**     of its contributors may be used to endorse or promote products derived
+**     from this software without specific prior written permission.
 **
-** In addition, as a special exception, Digia gives you certain additional
-** rights.  These rights are described in the Digia Qt LGPL Exception
-** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
-** GNU General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU
-** General Public License version 3.0 as published by the Free Software
-** Foundation and appearing in the file LICENSE.GPL included in the
-** packaging of this file.  Please review the following information to
-** ensure the GNU General Public License version 3.0 requirements will be
-** met: http://www.gnu.org/copyleft/gpl.html.
-**
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
 **
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
 
-#include "qtpropertybrowserutils_p.h"
-#include <QtWidgets/QApplication>
-#include <QtGui/QPainter>
-#include <QtWidgets/QHBoxLayout>
-#include <QtGui/QMouseEvent>
-#include <QtWidgets/QCheckBox>
-#include <QtWidgets/QLineEdit>
-#include <QtWidgets/QMenu>
-#include <QtCore/QLocale>
 
+#include "qtpropertybrowserutils_p.h"
+#include <QApplication>
+#include <QPainter>
+#include <QHBoxLayout>
+#include <QMouseEvent>
+#include <QCheckBox>
+#include <QLineEdit>
+#include <QMenu>
+#include <QStyleOption>
+
+#if QT_VERSION >= 0x040400
 QT_BEGIN_NAMESPACE
+#endif
 
 QtCursorDatabase::QtCursorDatabase()
 {
@@ -213,26 +215,6 @@ QString QtPropertyBrowserUtils::fontValueText(const QFont &f)
            .arg(f.family()).arg(f.pointSize());
 }
 
-QString QtPropertyBrowserUtils::dateFormat()
-{
-    QLocale loc;
-    return loc.dateFormat(QLocale::ShortFormat);
-}
-
-QString QtPropertyBrowserUtils::timeFormat()
-{
-    QLocale loc;
-    // ShortFormat is missing seconds on UNIX.
-    return loc.timeFormat(QLocale::LongFormat);    
-}
-
-QString QtPropertyBrowserUtils::dateTimeFormat()
-{
-    QString format = dateFormat();
-    format += QLatin1Char(' ');
-    format += timeFormat();
-    return format;
-}
 
 QtBoolEdit::QtBoolEdit(QWidget *parent) :
     QWidget(parent),
@@ -300,6 +282,15 @@ void QtBoolEdit::mousePressEvent(QMouseEvent *event)
         QWidget::mousePressEvent(event);
     }
 }
+
+void QtBoolEdit::paintEvent(QPaintEvent *)
+{
+    QStyleOption opt;
+    opt.init(this);
+    QPainter p(this);
+    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}
+
 
 
 QtKeySequenceEdit::QtKeySequenceEdit(QWidget *parent)
@@ -438,6 +429,14 @@ void QtKeySequenceEdit::keyReleaseEvent(QKeyEvent *e)
     m_lineEdit->event(e);
 }
 
+void QtKeySequenceEdit::paintEvent(QPaintEvent *)
+{
+    QStyleOption opt;
+    opt.init(this);
+    QPainter p(this);
+    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}
+
 bool QtKeySequenceEdit::event(QEvent *e)
 {
     if (e->type() == QEvent::Shortcut ||
@@ -449,4 +448,9 @@ bool QtKeySequenceEdit::event(QEvent *e)
     return QWidget::event(e);
 }
 
+
+
+
+#if QT_VERSION >= 0x040400
 QT_END_NAMESPACE
+#endif
