@@ -2,7 +2,7 @@
 QT           += xml svg
 TEMPLATE      = lib
 CONFIG       += qt plugin
-TARGET        = $$qtLibraryTarget(shapes_sbgn)
+TARGET        = $$qtLibraryTarget(org.dunnart.SBGNShapesPlugin)
 
 include(../../../common_options.qmake)
 include(../shape_plugin_options.pri)

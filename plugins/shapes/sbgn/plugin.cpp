@@ -23,7 +23,7 @@
 */
 
 
-#include <QtGui>
+#include <QtWidgets>
 #include <QObject>
 
 #include "libdunnartcanvas/shapeplugininterface.h"
@@ -45,6 +45,7 @@ class SBGNShapesPlugin : public QObject, public ShapePluginInterface
 {
     Q_OBJECT
         Q_INTERFACES (dunnart::ShapePluginInterface)
+        Q_PLUGIN_METADATA (IID "org.dunnart.SBGNShapesPlugin")
 
     public:
         SBGNShapesPlugin()
@@ -130,7 +131,6 @@ class SBGNShapesPlugin : public QObject, public ShapePluginInterface
         }
 };
 
-Q_EXPORT_PLUGIN2(shapes_sbgn, SBGNShapesPlugin)
 
 // Because there is no header file, we need to load the MOC file here to 
 // cause Qt to generate it for us.

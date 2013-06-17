@@ -120,7 +120,7 @@ CanvasTabWidget::CanvasTabWidget(QMainWindow *window) :
             this, SLOT(setCanvasEditModeFromAction(QAction*)));
 
     m_action_delete = new QAction(tr("Delete"), this);
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
     m_action_delete->setShortcut(tr("Backspace"));
 #else
     m_action_delete->setShortcuts(QKeySequence::Delete);

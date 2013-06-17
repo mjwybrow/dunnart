@@ -24,7 +24,8 @@
 */
 
 
-#include <QtGui>
+#include <QtWidgets>
+#include <QGraphicsSceneMouseEvent>
 
 #include <algorithm>
 #include <climits>
@@ -817,7 +818,7 @@ void ShapeObj::paintShapeDecorations(QPainter *painter)
                     ":/resources/images/pushpin.svg", this);
 
             QSizeF s =  m_lock_icon->sceneBoundingRect().size() / iconSize;
-            m_lock_icon->scale( 1 / s.rwidth(), 1 / s.rheight() );
+            m_lock_icon->setScale( 1 / s.rwidth());
         }
         m_lock_icon->setPos((width() / 2) - iconSize + 6, -4 - (height() / 2));
         m_lock_icon->show();
@@ -1297,6 +1298,9 @@ void ShapeObj::drawLabelAndImage(SDL_Surface *target, const int x, const int y)
 void ShapeObj::move_to(const int xn, const int yn, bool store_undo,
         bool from_solver, bool from_cider)
 {
+    Q_UNUSED (from_solver)
+    Q_UNUSED (from_cider)
+
     // Can't be an action from both the solver and Cider.
     assert(!(from_solver && from_cider));
 

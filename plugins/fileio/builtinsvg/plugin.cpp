@@ -26,7 +26,7 @@
 //! Plugin that adds support for reading and writing Dunnart's native
 //! annotated SVG file format.
 
-#include <QtGui>
+#include <QtWidgets>
 #include <QObject>
 #include <QFileInfo>
 #include <QDomDocument>
@@ -58,6 +58,7 @@ class BuiltinSVGFileIOPlugin : public QObject, public FileIOPluginInterface
 {
     Q_OBJECT
         Q_INTERFACES (dunnart::FileIOPluginInterface)
+        Q_PLUGIN_METADATA (IID "org.dunnart.BuiltinSVGFileIOPlugin")
 
     public:
         BuiltinSVGFileIOPlugin()
@@ -270,8 +271,7 @@ class BuiltinSVGFileIOPlugin : public QObject, public FileIOPluginInterface
         }
 };
 
-
-Q_EXPORT_PLUGIN2(fileio_builtinsvg, BuiltinSVGFileIOPlugin)
+Q_PLUGIN_METADATA (IID "org.dunnart.BuiltinSVGFileIOPlugin")
 
 // Because there is no header file, we need to load the MOC file here to 
 // cause Qt to generate it for us.

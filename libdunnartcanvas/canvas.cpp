@@ -22,7 +22,7 @@
  *
  * Author(s): Michael Wybrow  <http://michael.wybrow.info/>
 */
-#include <QtGui>
+#include <QtWidgets>
 #include <QtSvg>
 #include <QParallelAnimationGroup>
 
@@ -1835,7 +1835,7 @@ void Canvas::deleteSelection(void)
 
 // Delay, in milliseconds, to give the event loop time to respond to normal
 // events like mouse movements.  A delay of zero will flood the event queue.
-static const unsigned int updateEventDelay = 15;
+static const unsigned int updateEventDelay = 40;
 
 void Canvas::startLayoutUpdateTimer(void)
 {

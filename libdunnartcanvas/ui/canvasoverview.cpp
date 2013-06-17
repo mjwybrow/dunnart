@@ -24,7 +24,7 @@
 */
 
 #include <QtCore>
-#include <QtGui>
+#include <QtWidgets>
 
 #include "canvasoverview.h"
 

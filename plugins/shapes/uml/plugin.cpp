@@ -22,7 +22,7 @@
  * Author(s): Michael Wybrow  <http://michael.wybrow.info/>
 */
 
-#include <QtGui>
+#include <QtWidgets>
 #include <QObject>
 
 #include "libdunnartcanvas/shapeplugininterface.h"
@@ -35,6 +35,7 @@ class UMLShapesPlugin : public QObject, public ShapePluginInterface
 {
     Q_OBJECT
         Q_INTERFACES (dunnart::ShapePluginInterface)
+        Q_PLUGIN_METADATA (IID "org.dunnart.UMLShapesPlugin")
 
     public:
         UMLShapesPlugin()
@@ -61,7 +62,6 @@ class UMLShapesPlugin : public QObject, public ShapePluginInterface
         }
 };
 
-Q_EXPORT_PLUGIN2(shapes_uml, UMLShapesPlugin)
 
 // Because there is no header file, we need to load the MOC file here to 
 // cause Qt to generate it for us.

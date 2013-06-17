@@ -25,7 +25,7 @@
 //! @file
 //! Plugin that adds support for working with the Garuda platform.
 
-#include <QtGui>
+#include <QtWidgets>
 #include <QtCore>
 
 #include "libdunnartcanvas/applicationplugininterface.h"
@@ -44,6 +44,7 @@ class GarudaApplicationPlugin : public QObject, public ApplicationPluginInterfac
 {
     Q_OBJECT
     Q_INTERFACES (dunnart::ApplicationPluginInterface)
+    Q_PLUGIN_METADATA (IID "org.dunnart.GarudaApplicationPlugin")
 
     public:
         GarudaApplicationPlugin()
@@ -121,8 +122,6 @@ class GarudaApplicationPlugin : public QObject, public ApplicationPluginInterfac
         CanvasApplication *m_canvas_application;
         OpenInCompatibleSoftwareWidget *m_compatible_software;
 };
-
-Q_EXPORT_PLUGIN2(application_garuda, GarudaApplicationPlugin)
 
 // Because there is no header file, we need to load the MOC file here to 
 // cause Qt to generate it for us.

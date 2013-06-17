@@ -309,9 +309,9 @@ bool optionalProp(const QDomElement& node, const QString& prop, T &arg,
     if (!value.isNull())
     {
         QVariant variant(value);
-        if (qVariantCanConvert<T>(variant))
+        if (variant.canConvert<T>())
         {
-            arg = qVariantValue<T>(variant);
+            arg = variant.value<T>();
 
             //qDebug() << "Read \"" << prop << "\"=" << variant;
             gotProp = true;

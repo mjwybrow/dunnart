@@ -79,11 +79,6 @@ Connector::Connector()
       m_is_dotted(false),
       m_is_lone_selected(false)
 {
-    qRegisterMetaType<dunnart::Connector::RoutingType>("RoutingType");
-    qRegisterMetaTypeStreamOperators<int>("RoutingType");
-    qRegisterMetaType<dunnart::Connector::ArrowHeadType>("ArrowHeadType");
-    qRegisterMetaTypeStreamOperators<int>("ArrowHeadType");
-
     setCanvasItemFlag(CanvasItem::ItemIsMovable, false);
 
     setItemType("connector");

@@ -2,7 +2,7 @@
 QT           += xml svg network
 TEMPLATE      = lib
 CONFIG       += qt plugin
-TARGET        = $$qtLibraryTarget(application_garuda)
+TARGET        = $$qtLibraryTarget(org.dunnart.GarudaApplicationPlugin)
 
 include(../../../common_options.qmake)
 include(../application_plugin_options.pri)

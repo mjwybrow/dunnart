@@ -25,7 +25,7 @@
 //! @file
 //! Plugin that adds support for reading and writing .layout documents.
 
-#include <QtGui>
+#include <QtWidgets>
 #include <QObject>
 #include <QFileInfo>
 #include <QDomDocument>
@@ -58,6 +58,7 @@ class BuiltinLayoutFileIOPlugin : public QObject, public FileIOPluginInterface
 {
     Q_OBJECT
         Q_INTERFACES (dunnart::FileIOPluginInterface)
+        Q_PLUGIN_METADATA (IID "org.dunnart.BuiltinLayoutFileIOPlugin")
 
     public:
         BuiltinLayoutFileIOPlugin()
@@ -320,8 +321,6 @@ void BuiltinLayoutFileIOPlugin::createFromLayoutXML(Canvas *canvas,
     }
 }
 
-
-Q_EXPORT_PLUGIN2(fileio_builtinlayout, BuiltinLayoutFileIOPlugin)
 
 // Because there is no header file, we need to load the MOC file here to 
 // cause Qt to generate it for us.

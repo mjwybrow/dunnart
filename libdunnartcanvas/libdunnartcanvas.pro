@@ -8,7 +8,7 @@ DEPENDPATH +=  .. ../libogdf .
 INCLUDEPATH += .. ../libogdf .
 
 CONFIG += link_pkgconfig qt thread
-QT += xml svg
+QT += xml svg widgets
 PKGCONFIG += 
 
 include(../common_options.qmake)

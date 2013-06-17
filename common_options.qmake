@@ -1,17 +1,18 @@
 # -----------------------------
 
+# Mac build of Qt 5 ships without pkg-config support.
+QT_CONFIG -= no-pkg-config
+
 DUNNARTBASE = $$PWD
 
 DESTDIR = $$DUNNARTBASE/build
 
 # Source common options from a parent project if this exists
 # in a directory one level up.
-contains($$list($$[QT_VERSION]), 4.5.*) {
-  include("$$DUNNARTBASE/../common_options.qmake")
-} else {
-  # From 4.6 onwards, Qt warns about missing includes
-  include("$$DUNNARTBASE/../common_options.qmake", "", true)
+contains($$list($$[QT_VERSION]), 4.*) {
+    error("Dunnart requires Qt 5.0 or greater.")
 }
+include("$$DUNNARTBASE/../common_options.qmake", "", true)
 
 # -----------------------------
 

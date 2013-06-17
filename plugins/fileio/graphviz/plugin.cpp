@@ -26,7 +26,7 @@
 //! Plugin that adds support for reading and writing Graphviz's 'dot'
 //! file format.
 
-#include <QtGui>
+#include <QtWidgets>
 #include <QObject>
 #include <QFileInfo>
 #include <QDomDocument>
@@ -104,6 +104,7 @@ class GraphvizFileIOPlugin : public QObject, public FileIOPluginInterface
 {
     Q_OBJECT
         Q_INTERFACES (dunnart::FileIOPluginInterface)
+        Q_PLUGIN_METADATA (IID "org.dunnart.GraphvizFileIOPlugin")
 
     public:
         GraphvizFileIOPlugin()
@@ -143,7 +144,7 @@ class GraphvizFileIOPlugin : public QObject, public FileIOPluginInterface
         {
             QString filename = fileInfo.absoluteFilePath();
 
-            FILE *fp = fopen(filename.toAscii().data(), "r");
+            FILE *fp = fopen(filename.toLatin1().data(), "r");
             if (fp == NULL)
             {
                 errorMessage = tr("File could not be opened for reading.");
@@ -303,8 +304,6 @@ class GraphvizFileIOPlugin : public QObject, public FileIOPluginInterface
         }
 };
 
-
-Q_EXPORT_PLUGIN2(fileio_graphviz, GraphvizFileIOPlugin)
 
 // Because there is no header file, we need to load the MOC file here to 
 // cause Qt to generate it for us.

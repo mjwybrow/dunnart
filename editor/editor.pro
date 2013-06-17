@@ -7,8 +7,15 @@ DEPENDPATH += ..
 TARGET = Dunnart
 
 CONFIG += link_pkgconfig qt thread warn_off
-QT += xml svg
+QT += xml svg widgets printsupport
 PKGCONFIG += 
+
+usemactoolbar {
+  macx {
+    DEFINES += USE_MAC_TOOLBAR
+    QT += macextras
+  }
+}
 
 include(../common_options.qmake)
 

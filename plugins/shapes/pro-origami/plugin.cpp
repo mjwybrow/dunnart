@@ -22,8 +22,9 @@
  * Author(s): Michael Wybrow  <http://michael.wybrow.info/>
 */
 
-#include <QtGui>
+#include <QtWidgets>
 #include <QObject>
+#include <QtGlobal>
 
 #include "libdunnartcanvas/shapeplugininterface.h"
 #include "libdunnartcanvas/shape.h"
@@ -36,6 +37,7 @@ class ProOrigamiShapesPlugin : public QObject, public ShapePluginInterface
 {
     Q_OBJECT
         Q_INTERFACES (dunnart::ShapePluginInterface)
+        Q_PLUGIN_METADATA (IID "org.dunnart.ProOrigamiShapesPlugin")
 
     public:
         ProOrigamiShapesPlugin()
@@ -66,7 +68,6 @@ class ProOrigamiShapesPlugin : public QObject, public ShapePluginInterface
         }
 };
 
-Q_EXPORT_PLUGIN2(shapes_proorigami, ProOrigamiShapesPlugin)
 
 // Because there is no header file, we need to load the MOC file here to 
 // cause Qt to generate it for us.

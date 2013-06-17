@@ -25,7 +25,7 @@
 //! @file
 //! Plugin that adds support for reading GML documents.
 
-#include <QtGui>
+#include <QtWidgets>
 #include <QObject>
 #include <QFileInfo>
 
@@ -47,6 +47,7 @@ class BuiltinGMLFileIOPlugin : public QObject, public FileIOPluginInterface
 {
     Q_OBJECT
         Q_INTERFACES (dunnart::FileIOPluginInterface)
+        Q_PLUGIN_METADATA (IID "org.dunnart.BuiltinGMLFileIOPlugin")
 
     public:
         BuiltinGMLFileIOPlugin()
@@ -90,7 +91,6 @@ class BuiltinGMLFileIOPlugin : public QObject, public FileIOPluginInterface
         }
 };
 
-Q_EXPORT_PLUGIN2(fileio_builtingml, BuiltinGMLFileIOPlugin)
 
 // Because there is no header file, we need to load the MOC file here to 
 // cause Qt to generate it for us.

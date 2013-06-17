@@ -37,6 +37,10 @@
 #include <QSettings>
 #include <QDir>
 
+#if defined(Q_OS_MAC) && defined(USE_MAC_TOOLBAR)
+#include <QMacNativeToolBar>
+#endif
+
 #include "mainwindow.h"
 #include "canvastabwidget.h"
 #include "application.h"
@@ -70,7 +74,6 @@ MainWindow::MainWindow(Application *app)
       m_application(app)
 {
     app->setMainWindow(this);
-    setUnifiedTitleAndToolBarOnMac(true);
     setDocumentMode(true);
 
     QCoreApplication::setOrganizationName("Dunnart");
@@ -82,7 +85,7 @@ MainWindow::MainWindow(Application *app)
         "QGraphicsView {"
             "border: 0px;"
         "}"
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
         "QTabBar::tab:top {"
             "font-family: \"Lucida Grande\";"
             "font-size: 11px;"
@@ -209,7 +212,7 @@ MainWindow::MainWindow(Application *app)
     // Create statusBar, and assign it to the canvas.
     canvas->setStatusBar(statusBar());
 
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
     // Make the status bar font size slightly smaller.
     QFont statusBarFont = statusBar()->font();
     statusBarFont.setPointSize(statusBarFont.pointSize() - 2);
@@ -264,11 +267,6 @@ MainWindow::MainWindow(Application *app)
     m_layout_menu = menuBar()->addMenu("Layout");
     m_tab_widget->addLayoutMenuActions(m_layout_menu);
     
-    m_edit_toolbar = addToolBar(tr("Edit toolbar"));
-    m_edit_toolbar->setIconSize(QSize(24, 24));
-    m_edit_toolbar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    m_tab_widget->addEditToolBarActions(m_edit_toolbar);
-
     m_dialog_zoomLevel = new ZoomLevel(canvasview);
     connect(m_tab_widget, SIGNAL(currentCanvasViewChanged(CanvasView*)),
             m_dialog_zoomLevel, SLOT(changeCanvasView(CanvasView*)));
@@ -390,9 +388,22 @@ MainWindow::MainWindow(Application *app)
     m_help_menu->addAction(m_about_action);
 
     // Restore window geometry and Dock Widget geometry.
-    QSettings settings;
-    restoreGeometry(settings.value("geometry").toByteArray());
-    restoreState(settings.value("windowState").toByteArray());
+  //  QSettings settings;
+  //  restoreGeometry(settings.value("geometry").toByteArray());
+  //  restoreState(settings.value("windowState").toByteArray());
+
+    // This must be created after the geometry has been restored, otherwise
+    // the toolbar can be hidden in weird ways.
+    m_edit_toolbar = new QToolBar(tr("Edit toolbar"), this);
+    m_edit_toolbar->setIconSize(QSize(24, 24));
+    m_edit_toolbar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    m_edit_toolbar->setMovable(false);
+    m_tab_widget->addEditToolBarActions(m_edit_toolbar);
+#if defined(Q_OS_MAC) && defined(USE_MAC_TOOLBAR)
+    QMacNativeToolBar *macToolBar = QtMacExtras::setNativeToolBar(m_edit_toolbar);
+    macToolBar->setIconSize(QMacToolButton::IconSizeSmall);
+#endif
+    addToolBar(Qt::TopToolBarArea, m_edit_toolbar);
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)

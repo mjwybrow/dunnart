@@ -27,6 +27,7 @@
 #include <QLabel>
 #include <QGridLayout>
 #include <QMouseEvent>
+#include <QDrag>
 
 #include "shapepickerdialog.h"
 #include "canvas.h"
