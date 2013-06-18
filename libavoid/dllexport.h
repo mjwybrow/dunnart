@@ -19,21 +19,21 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
  *
- * Author(s):   Michael Wybrow <mjwybrow@users.sourceforge.net>
+ * Author(s):   Michael Wybrow
 */
 
 
 #ifndef AVOID_DLLEXPORT_H
 #define AVOID_DLLEXPORT_H
 
-#ifdef _MSC_VER
-	#ifdef LIBAVOID_EXPORTS
-		#define AVOID_EXPORT __declspec(dllexport)
-	#else
-		#define AVOID_EXPORT __declspec(dllimport)
-	#endif
+#if defined(_MSC_VER) && !defined(LIBAVOID_NO_DLL)
+    #ifdef LIBAVOID_EXPORTS
+        #define AVOID_EXPORT __declspec(dllexport)
+    #else
+        #define AVOID_EXPORT __declspec(dllimport)
+    #endif
 #else
-	#define AVOID_EXPORT
+    #define AVOID_EXPORT
 #endif
 
 #endif
