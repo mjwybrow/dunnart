@@ -34,7 +34,7 @@ CONFIG(debug, release|debug) {
 	DEFINES *= NDEBUG
 	macx {
 		# QMAKE_MAC_SDK=/Developer/SDKs/MacOSX10.5.sdk
-		CONFIG += x86_64 x86
+		# CONFIG += x86_64 x86
 	}
 }
 

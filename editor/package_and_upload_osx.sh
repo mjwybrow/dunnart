@@ -1,7 +1,7 @@
 #!/bin/sh -x
 
-MACPORTS=/opt/local-macports-with-a-really-very-quite-long-directory-name
-QT=/usr/local/Qt4.7
+MACPORTS=/opt/local
+QT=$HOME/Qt5.1.0/5.1.0-rc1/clang_64
 
 export PATH=$QT/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin
 
@@ -12,7 +12,7 @@ macdeployqt Dunnart.app
 
 for LIB in Dunnart.app/Contents/Frameworks/libdunnartcanvas.1.0.0.dylib Dunnart.app/Contents/PlugIns/*.dylib
 do
-	for QTLIB in QtCore QtGui QtSvg QtXml
+	for QTLIB in QtCore QtGui QtMacExtras QtNetwork QtPrintSupport QtSvg QtWidgets QtXml
 	do
 		/usr/bin/install_name_tool -change $QT/lib/$QTLIB.framework/Versions/4/$QTLIB @executable_path/../Frameworks/$QTLIB.framework/Versions/4/$QTLIB $LIB
 		/usr/bin/install_name_tool -change $QTLIB.framework/Versions/4/$QTLIB @executable_path/../Frameworks/$QTLIB.framework/Versions/4/$QTLIB $LIB

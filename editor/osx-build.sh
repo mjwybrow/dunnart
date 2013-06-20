@@ -1,17 +1,17 @@
 #!/bin/sh -x
 
-MACPORTS=/opt/local-macports-with-a-really-very-quite-long-directory-name
-QT=/usr/local/Qt4.7
+MACPORTS=/opt/local
+QT=$HOME/Qt5.1.0/5.1.0-rc1/clang_64
 
 export PATH=$QT/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:$MACPORTS/bin
 
-cd /Users/mjwybrow/ws-git/dunnart
+cd $HOME/build/dunnart
 
 rm -f  dunnart-osx.tar.gz
 
 git pull
 
-./qmake.sh nightlybuild
+./qmake.sh clang nightlybuild
 #qmake dunnart.pro -r -config release -spec win32-g++
 
 make
