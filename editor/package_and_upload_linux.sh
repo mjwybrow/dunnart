@@ -5,9 +5,9 @@ export PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin
 ( 
 cd ..
 
-for QTLIB in QtCore QtGui QtSvg QtXml
+for QTLIB in Qt5Core Qt5Gui Qt5Network Qt5PrintSupport Qt5Svg Qt5Widgets Qt5Xml
 do
-	cp /usr/lib/lib$QTLIB.so.4 build/
+	cp /usr/lib/i386-linux-gnu/lib$QTLIB.so.5 build/
 done 
 
 

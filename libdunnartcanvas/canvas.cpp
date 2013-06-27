@@ -22,6 +22,10 @@
  *
  * Author(s): Michael Wybrow  <http://michael.wybrow.info/>
 */
+
+// Make sure that SIZE_MAX is available from the first includion of limits.h
+#define __STDC_LIMIT_MACROS
+
 #include <QtWidgets>
 #include <QtSvg>
 #include <QParallelAnimationGroup>
