@@ -3,7 +3,7 @@
  *
  * libavoid - Fast, Incremental, Object-avoiding Line Router
  *
- * Copyright (C) 2004-2009  Monash University
+ * Copyright (C) 2004-2013  Monash University
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -31,6 +31,7 @@
 #include <vector>
 #include <climits>
 
+#include "libavoid/makepath.h"
 #include "libavoid/vertices.h"
 #include "libavoid/geometry.h"
 #include "libavoid/connector.h"
@@ -39,6 +40,8 @@
 #include "libavoid/router.h"
 #include "libavoid/debug.h"
 #include "libavoid/assertions.h"
+
+//#define ESTIMATED_COST_DEBUG
 
 namespace Avoid {
 
@@ -50,7 +53,7 @@ class ANode
         double h;        // Heuristic
         double f;        // Formula f = g + h
         
-        int prevIndex;   // Index into DONE for the previous ANode.
+        ANode *prevNode; // VertInf for the previous ANode.
         int timeStamp;   // Time-stamp used to determine exploration order of
                          // seemingly equal paths during orthogonal routing.
 
@@ -59,7 +62,7 @@ class ANode
               g(0),
               h(0),
               f(0),
-              prevIndex(-1),
+              prevNode(NULL),
               timeStamp(time)
         {
         }
@@ -68,11 +71,72 @@ class ANode
               g(0),
               h(0),
               f(0),
-              prevIndex(-1),
+              prevNode(NULL),
               timeStamp(-1)
         {
         }
 };
+
+class AStarPathPrivate
+{
+    public:
+        AStarPathPrivate()
+            : m_available_nodes(),
+              m_available_array_size(0),
+              m_available_array_index(0),
+              m_available_node_index(0)
+        {
+        }
+        ~AStarPathPrivate()
+        {
+            // Free memory
+            for (size_t i = 0; i < m_available_nodes.size(); ++i)
+            {
+                delete[] m_available_nodes[i];
+            }
+        }
+        // Returns a pointer to an ANode for aStar search, but allocates
+        // these in blocks 
+        ANode *newANode(const ANode& node, const bool addToPending = true)
+        {
+            const size_t blockSize = 5000;
+            if ((m_available_array_index + 1 > m_available_array_size) ||
+                    (m_available_node_index >= blockSize))
+            {
+                m_available_nodes.push_back(new ANode[blockSize]);
+                ++m_available_array_size;
+                m_available_node_index = 0;
+                m_available_array_index = m_available_array_size - 1;
+            }
+            
+            ANode *nodes = m_available_nodes[m_available_array_index];
+            ANode *newNode = &(nodes[m_available_node_index++]);
+            *newNode = node;
+            if (addToPending)
+            {
+                node.inf->aStarPendingNodes.push_back(newNode);
+            }
+            return newNode;
+        }
+        void search(ConnRef *lineRef, VertInf *src, VertInf *tar, 
+                VertInf *start);
+
+    private:
+        void determineEndPointLocation(double dist, VertInf *start,
+                VertInf *target, VertInf *other, int level);
+
+        std::vector<ANode *> m_available_nodes;
+        size_t m_available_array_size;
+        size_t m_available_array_index;
+        size_t m_available_node_index;
+ 
+        // For determining estimated cost target.
+        bool m_only_on_far_side;
+        VertInf *m_far_point;
+        int m_connection_pins_count;
+        unsigned int m_cost_target_directions;
+};
+
 
 
 // This returns the opposite result (>) so that when used with stl::make_heap, 
@@ -81,28 +145,33 @@ class ANode
 // it back into a heap) when getting the next node to examine.  This way we
 // get better complexity -- logarithmic pushes and pops to the heap.
 //
-bool operator<(const ANode &a, const ANode &b)
+class ANodeCmp
+{
+    public:
+    ANodeCmp()
+    {
+    }
+bool operator()(const ANode *a, const ANode *b)
 {
     // We need to use an epsilon here since otherwise the multiple addition
     // of floating point numbers that makes up the 'f' values cause a problem
     // with routings occasionally being non-deterministic.
-    double epsilon = 0.0000001;
-    if (fabs(a.f - b.f) > epsilon)
+    if (fabs(a->f - b->f) > 0.0000001)
     {
-        return a.f > b.f;
+        return a->f > b->f;
     }
-    if (a.timeStamp != b.timeStamp)
+    if (a->timeStamp != b->timeStamp)
     {
         // Tiebreaker, if two paths have equal cost, then choose the one with
         // the highest timeStamp.  This corresponds to the furthest point
         // explored along the straight-line path.  When exploring we give the
         // directions the following timeStamps; left:1, right:2 and forward:3,
         // then we always try to explore forward first.
-        return a.timeStamp < b.timeStamp;
+        return a->timeStamp < b->timeStamp;
     }
-    COLA_ASSERT(a.prevIndex != b.prevIndex);
-    return a.prevIndex > b.prevIndex;
+    return false;
 }
+};
 
 
 static double Dot(const Point& l, const Point& r)
@@ -138,13 +207,13 @@ static double angleBetween(const Point& p1, const Point& p2, const Point& p3)
 // Construct a temporary Polygon path given several VertInf's for a connector.
 //
 static void constructPolygonPath(Polygon& connRoute, VertInf *inf2, 
-        VertInf *inf3, std::vector<ANode>& done, int inf1Index)
+        VertInf *inf3, ANode *inf1Node)
 {
     // Don't include colinear points.
     bool simplified = true;
 
     int routeSize = 2;
-    for (int curr = inf1Index; curr >= 0; curr = done[curr].prevIndex)
+    for (ANode *curr = inf1Node; curr != NULL; curr = curr->prevNode)
     {
         routeSize += 1;
     }
@@ -153,19 +222,18 @@ static void constructPolygonPath(Polygon& connRoute, VertInf *inf2,
     connRoute.ps[routeSize - 1] = inf3->point;
     connRoute.ps[routeSize - 2] = inf2->point;
     routeSize -= 3;
-    for (int curr = inf1Index; curr >= 0; curr = done[curr].prevIndex)
+    for (ANode *curr = inf1Node; curr != NULL; curr = curr->prevNode)
     {
         if (!simplified)
         {
             // Add new point.
-            connRoute.ps[routeSize] = done[curr].inf->point;
+            connRoute.ps[routeSize] = curr->inf->point;
             routeSize -= 1;
             continue;
         }
             
-        
-        if ((curr == inf1Index) || 
-                vecDir(done[curr].inf->point, connRoute.ps[routeSize + 1], 
+        if ((curr == inf1Node) || 
+                vecDir(curr->inf->point, connRoute.ps[routeSize + 1], 
                     connRoute.ps[routeSize + 2]) != 0)
         {
             // Add new point if this is the earlier than the last segment
@@ -173,13 +241,13 @@ static void constructPolygonPath(Polygon& connRoute, VertInf *inf2,
             // Note, you can't collapse the 'last' segment with previous 
             // segments, or if this just intersects another line you risk 
             // penalising it once for each collapsed line segment.
-            connRoute.ps[routeSize] = done[curr].inf->point;
+            connRoute.ps[routeSize] = curr->inf->point;
             routeSize -= 1;
         }
         else
         {
             // The last point is inline with this one, so update it.
-            connRoute.ps[routeSize + 1] = done[curr].inf->point;
+            connRoute.ps[routeSize + 1] = curr->inf->point;
         }
     }
 
@@ -204,9 +272,10 @@ static void constructPolygonPath(Polygon& connRoute, VertInf *inf2,
 // cost associated with this route.
 //
 static double cost(ConnRef *lineRef, const double dist, VertInf *inf2, 
-        VertInf *inf3, std::vector<ANode>& done, int inf1Index)
+        VertInf *inf3, ANode *inf1Node)
 {
-    VertInf *inf1 = (inf1Index >= 0) ?  done[inf1Index].inf : NULL;
+    bool isOrthogonal = (lineRef->routingType() == ConnType_Orthogonal);
+    VertInf *inf1 = (inf1Node) ? inf1Node->inf : NULL;
     double result = dist;
     Polygon connRoute;
 
@@ -226,7 +295,7 @@ static double cost(ConnRef *lineRef, const double dist, VertInf *inf2,
 
             double rad = M_PI - angleBetween(p1, p2, p3);
 
-            if (rad > 0)
+            if ((rad > 0) && !isOrthogonal)
             {
                 // Make `xval' between 0--10 then take its log so small
                 // angles are not penalised as much as large ones.
@@ -260,13 +329,12 @@ static double cost(ConnRef *lineRef, const double dist, VertInf *inf2,
     {
         if (connRoute.empty())
         {
-            constructPolygonPath(connRoute, inf2, inf3, done, inf1Index);
+            constructPolygonPath(connRoute, inf2, inf3, inf1Node);
         }
         // There are clusters so do cluster routing.
         for (ClusterRefList::const_iterator cl = router->clusterRefs.begin(); 
                 cl != router->clusterRefs.end(); ++cl)
         {
-            bool isOrthogonal = (lineRef->routingType() == ConnType_Orthogonal);
             Polygon cBoundary = (isOrthogonal) ?
                     (*cl)->rectangularPolygon() : (*cl)->polygon();
             if (cBoundary.size() <= 2)
@@ -306,7 +374,7 @@ static double cost(ConnRef *lineRef, const double dist, VertInf *inf2,
     {
         if (connRoute.empty())
         {
-            constructPolygonPath(connRoute, inf2, inf3, done, inf1Index);
+            constructPolygonPath(connRoute, inf2, inf3, inf1Node);
         }
         ConnRefList::const_iterator curr, finish = router->connRefs.end();
         for (curr = router->connRefs.begin(); curr != finish; ++curr)
@@ -345,51 +413,365 @@ static double cost(ConnRef *lineRef, const double dist, VertInf *inf2,
     return result;
 }
 
+// Directions for estimated orthgonal cost, as bitflags.
+static const unsigned int CostDirectionN = 1;
+static const unsigned int CostDirectionE = 2;
+static const unsigned int CostDirectionS = 4;
+static const unsigned int CostDirectionW = 8;
+
+#ifdef ESTIMATED_COST_DEBUG
+static void printDirections(FILE *fp, unsigned int directions)
+{
+    if (directions & CostDirectionN)
+    {
+        fprintf(fp, "N ");
+    }
+    if (directions & CostDirectionE)
+    {
+        fprintf(fp, "E ");
+    }
+    if (directions & CostDirectionS)
+    {
+        fprintf(fp, "S ");
+    }
+    if (directions & CostDirectionW)
+    {
+        fprintf(fp, "W ");
+    }
+}
+#endif
+
+// Returns the number of directions for the argument.
+static unsigned int orthogonalDirectionsCount(const unsigned int directions)
+{
+    unsigned int count = 0;
+    if (directions & CostDirectionN)
+    {
+        ++count;
+    }
+    if (directions & CostDirectionE)
+    {
+        ++count;
+    }
+    if (directions & CostDirectionS)
+    {
+        ++count;
+    }
+    if (directions & CostDirectionW)
+    {
+        ++count;
+    }
+    return count;
+}
+
+// Returns the directions of point b from point a.
+static unsigned int orthogonalDirection(const Point &a, const Point &b)
+{
+    unsigned int result = 0;
+
+    if (b.y > a.y)
+    {
+        result |= CostDirectionS;
+    }
+    else if (b.y < a.y)
+    {
+        result |= CostDirectionN;
+    }
+
+    if (b.x > a.x)
+    {
+        result |= CostDirectionE;
+    }
+    else if (b.x < a.x)
+    {
+        result |= CostDirectionW;
+    }
+
+    return result;
+}
+
+// Returns the direction to the right of the given direction.
+static unsigned int dirRight(unsigned int direction)
+{
+    if (direction == CostDirectionN)
+    {
+        return CostDirectionE;
+    }
+    else if (direction == CostDirectionE)
+    {
+        return CostDirectionS;
+    }
+    else if (direction == CostDirectionS)
+    {
+        return CostDirectionW;
+    }
+    else if (direction == CostDirectionW)
+    {
+        return CostDirectionN;
+    }
+    
+    // Should not be possible to reach here.
+    COLA_ASSERT(false);
+    return direction;
+}
+
+// Returns the direction to the left of the given direction.
+static unsigned int dirLeft(unsigned int direction)
+{
+    if (direction == CostDirectionN)
+    {
+        return CostDirectionW;
+    }
+    else if (direction == CostDirectionE)
+    {
+        return CostDirectionN;
+    }
+    else if (direction == CostDirectionS)
+    {
+        return CostDirectionE;
+    }
+    else if (direction == CostDirectionW)
+    {
+        return CostDirectionS;
+    }
+    
+    // Should not be possible to reach here.
+    COLA_ASSERT(false);
+    return direction;
+}
+
+// Returns the reverse direction to the given direction.
+static unsigned int dirReverse(unsigned int direction)
+{
+    if (direction == CostDirectionN)
+    {
+        return CostDirectionS;
+    }
+    else if (direction == CostDirectionE)
+    {
+        return CostDirectionW;
+    }
+    else if (direction == CostDirectionS)
+    {
+        return CostDirectionN;
+    }
+    else if (direction == CostDirectionW)
+    {
+        return CostDirectionE;
+    }
+    
+    // Should not be possible to reach here.
+    COLA_ASSERT(false);
+    return direction;
+}
+
+// Given Point curr with a direction of currDir, returns the nimimum number 
+// of bends to reach Point dest with the entry direction of destDir
+// 
+// This is used for estimating the bend penalty cost to the target point
+// from the current point of the search. The geometry was described in the 
+// "Orthogonal Connector Routing" paper, although the version described 
+// there is incorrect.
+//
+int bends(const Point& curr, unsigned int currDir, const Point& dest,
+        unsigned int destDir)
+{
+        // Bend counts from 'o' to 'D' should be:
+        //
+        //                1            1            3
+        //                v            v            v
+        //            2 > o < 2    2 > o < 2    4 > o < 2
+        //                ^            ^            ^
+        //                3            3            3
+        //                                      
+        //   0 > o < 4                 D-->             4 > o < 4
+        //       ^                                          ^
+        //       1                                          3
+        //
+    COLA_ASSERT(currDir != 0);
+    unsigned int currToDestDir = orthogonalDirection(curr, dest);
+    unsigned int reverseDestDir = dirReverse(destDir);
+    bool currDirPerpendicularToDestDir =
+            (currDir == dirLeft(destDir)) || (currDir == dirRight(destDir));
+
+    if ((currDir == destDir) &&
+             (currToDestDir == currDir))
+    {
+        //                                      
+        //   0 > o                     D--> 
+        //
+        return 0;
+    }
+    else if (currDirPerpendicularToDestDir &&
+             (currToDestDir == (destDir | currDir)))
+    {
+        //
+        //                1
+        //                v
+        //                o
+        //                 
+        //                                      
+        //                             D-->
+        //
+        return 1;
+    }
+    else if (currDirPerpendicularToDestDir &&
+             (currToDestDir == currDir))
+    {
+        //
+        //                             1
+        //                             v
+        //                             o
+        //                 
+        //                                      
+        //                             D-->
+        //
+        return 1;
+    }
+    else if (currDirPerpendicularToDestDir &&
+             (currToDestDir == destDir))
+    {
+        //
+        //       o                     D-->
+        //       ^
+        //       1
+        //
+        return 1;
+    }
+    else if ((currDir == destDir) && 
+             (currToDestDir != currDir) &&
+             !(currToDestDir & reverseDestDir))
+    {
+        //
+        //            2 > o        2 > o
+        //
+        //                                      
+        //                             D-->
+        //
+        return 2;
+    }
+    else if (currDir == reverseDestDir && 
+             (currToDestDir != destDir) &&
+             (currToDestDir != currDir))
+    {
+        //
+        //                o < 2        o < 2       o < 2
+        //
+        //                                      
+        //                             D-->
+        //
+        return 2;
+    }
+    else if (currDirPerpendicularToDestDir &&
+             (currToDestDir != (destDir | currDir)) && 
+             (currToDestDir != currDir))
+    {
+        //
+        //                                          3
+        //                                          v
+        //                o            o            o
+        //                ^            ^            ^
+        //                3            3            3
+        //                                      
+        //                             D-->                 o
+        //                                                  ^
+        //                                                  3
+        //
+        return 3;
+    }
+    else if ((currDir == reverseDestDir) && 
+             ((currToDestDir == destDir) || (currToDestDir == currDir)))
+    {
+        //
+        //                                      
+        //                                      
+        //       o < 4                 D-->                 o < 4
+        //
+        return 4;
+    }
+    else if ((currDir == destDir) && 
+             (currToDestDir & reverseDestDir))
+    {
+        //
+        //                                      4 > o
+        //                                      
+        //                                      
+        //                             D-->             4 > o
+        //
+        return 4;
+    }
+
+    // Should not be possible to reach here.
+    COLA_ASSERT(false);
+    return 0;
+}
+
 
 static double estimatedCost(ConnRef *lineRef, const Point *last, 
-        const Point& a, const Point& b)
+        const Point& curr, const VertInf *costTar, 
+        const unsigned int costTarDirs)
 {
+    Point costTarPoint = costTar->point;
+
     if (lineRef->routingType() == ConnType_PolyLine)
     {
-        return euclideanDist(a, b);
+        return euclideanDist(curr, costTarPoint);
     }
     else // Orthogonal
     {
-        // XXX: This currently just takes into account the compulsory
-        //      bend but will have to be updated when port direction 
-        //      information is available.
-        int num_penalties = 0;
-        double xmove = b.x - a.x;
-        double ymove = b.y - a.y;
-        if (!last)
+        double dist = manhattanDist(curr, costTarPoint);
+
+        int bendCount = 0;
+        double xmove = costTarPoint.x - curr.x;
+        double ymove = costTarPoint.y - curr.y;
+        if (last == NULL)
         {
-            // Just two points.
+            // This is just the initial point.  Penalise it simply if it is 
+            // not inline with the target in either the x- or y-dimension.
             if ((xmove != 0) && (ymove != 0))
             {
-                num_penalties += 1;
+                bendCount += 1;
             }
         }
-        else
+        else if (dist > 0)
         {
-            // We have three points, so we know the direction of the 
-            // previous segment.
-            double rad = M_PI - angleBetween(*last, a, b);
-            if (rad > (M_PI / 2))            
+            // We have two points and a non-zero distance, so we know 
+            // the segment direction.
+
+            unsigned int currDir = orthogonalDirection(*last, curr);
+            if ((currDir > 0) && (orthogonalDirectionsCount(currDir) == 1))
             {
-                // Target point is back in the direction of the first point,
-                // so at least two bends are required.
-                num_penalties += 2;
-            }
-            else if (rad > 0)
-            {
-                // To the side, so at least one bend.
-                num_penalties += 1;
+                // Suitably high value, then we find the minimum.
+                bendCount = 10;
+
+                // Find the minimum bent penalty given all the possible 
+                // directions at the target point.
+                if (costTarDirs & CostDirectionN)
+                {
+                    bendCount = std::min(bendCount,
+                            bends(curr, currDir, costTarPoint, CostDirectionN));
+                }
+                if (costTarDirs & CostDirectionE)
+                {
+                    bendCount = std::min(bendCount,
+                            bends(curr, currDir, costTarPoint, CostDirectionE));
+                }
+                if (costTarDirs & CostDirectionS)
+                {
+                    bendCount = std::min(bendCount,
+                            bends(curr, currDir, costTarPoint, CostDirectionS));
+                }
+                if (costTarDirs & CostDirectionW)
+                {
+                    bendCount = std::min(bendCount,
+                            bends(curr, currDir, costTarPoint, CostDirectionW));
+                }
             }
         }
-        double penalty = num_penalties * 
+        double penalty = bendCount *
                 lineRef->router()->routingParameter(segmentPenalty);
 
-        return manhattanDist(a, b) + penalty;
+        return dist + penalty;
     }
 }
 
@@ -429,20 +811,188 @@ static inline bool pointAlignedWithOneOf(const Point& point,
     return false;
 }
 
+AStarPath::AStarPath(void)
+    : m_private(new AStarPathPrivate())
+{
+}
+
+AStarPath::~AStarPath(void)
+{
+    delete m_private;
+}
+
+void AStarPath::search(ConnRef *lineRef, VertInf *src, VertInf *tar, VertInf *start)
+{
+    m_private->search(lineRef, src, tar, start);
+}
+
+void AStarPathPrivate::determineEndPointLocation(double dist, VertInf *start, 
+        VertInf *target, VertInf *other, int level)
+{
+    COLA_UNUSED(level);
+
+    Point otherPoint = other->point;
+
+#ifdef ESTIMATED_COST_DEBUG
+    fprintf(stderr," - %g %g ", otherPoint.x, otherPoint.y);
+#endif
+
+    if (manhattanDist(start->point, otherPoint) < dist)
+    {
+        m_only_on_far_side = false;
+    }
+    else
+    {
+        m_far_point = other;
+#ifdef ESTIMATED_COST_DEBUG
+        fprintf(stderr,"far ");
+#endif
+    }
+
+#ifdef ESTIMATED_COST_DEBUG
+    fprintf(stderr, "%s", (level == 1) ? "--" : "- ");
+#endif
+
+    unsigned int thisDirs = orthogonalDirection(other->point, target->point);
+    m_cost_target_directions |= thisDirs;
+#ifdef ESTIMATED_COST_DEBUG
+    printDirections(stderr, thisDirs);
+    fprintf(stderr,"\n");
+#endif
+}
 
 // Returns the best path from src to tar using the cost function.
 //
 // The path is worked out using the aStar algorithm, and is encoded via
-// prevIndex values for each ANode which point back to the previous ANode's
-// position in the DONE vector.  At completion, this order is written into
-// the pathNext links in each of the VerInfs along the path.
+// prevNode values for each ANode which point back to the previous ANode.
+// At completion, this order is written into the pathNext links in each 
+// of the VerInfs along the path.
 //
-// The aStar STL code is based on public domain code available on the
-// internet.
+// The aStar STL code is originally based on public domain code available 
+// on the internet.
 //
-void aStarPath(ConnRef *lineRef, VertInf *src, VertInf *tar, VertInf *start)
+void AStarPathPrivate::search(ConnRef *lineRef, VertInf *src, VertInf *tar, VertInf *start)
 {
+    ANodeCmp pendingCmp;
+
     bool isOrthogonal = (lineRef->routingType() == ConnType_Orthogonal);
+
+    if (start == NULL)
+    {
+        start = src;
+    }
+
+    VertInf *costTar = tar;
+    m_cost_target_directions = 0;
+
+    // Find a target point to use for cost estimate for orthogonal routing..
+    //
+    // If the connectivity is only on the far side we need to estimate to the
+    // point on the far side.  Otherwise for orthogonal routing we can explore
+    // all the space in between before we pay the extra cost to explore this
+    // area.  This is especially true given many orthogoonal routes have 
+    // equivalent costs.
+#ifdef ESTIMATED_COST_DEBUG
+    fprintf(stderr,"== aStar  %g %g ==\n", tar->point.x, tar->point.y);
+#endif
+    if (isOrthogonal && tar->id.isConnPt())
+    {
+        // The target is a connector endpoint and the connector is orthogonal.
+        double dist = manhattanDist(start->point, tar->point);
+        m_only_on_far_side = true;
+        m_far_point = NULL;
+        m_connection_pins_count = 0;
+        for (EdgeInfList::const_iterator it = tar->orthogVisList.begin(); 
+                it != tar->orthogVisList.end(); ++it)
+        {
+            // For each edge from the target endpoint, find the other vertex.
+            EdgeInf *edge = *it;
+            VertInf *other = edge->otherVert(tar);
+            if (other->id.isConnectionPin())
+            {
+                // If this is a connection pin we need to do this process
+                // another time since the current edge will be a dummy 
+                // zero-length edge.
+                ++m_connection_pins_count;
+                VertInf *replacementTar = other;
+                for (EdgeInfList::const_iterator it = 
+                        replacementTar->orthogVisList.begin(); 
+                        it != replacementTar->orthogVisList.end(); ++it)
+                {
+                    EdgeInf *edge = *it;
+                    VertInf *other = edge->otherVert(replacementTar);
+                    if ((other == replacementTar) || 
+                            (other->point == replacementTar->point))
+                    {
+                        // Ignore edge we came from, or zer-length edges.
+                        continue;
+                    }
+
+                    // Determine possible target endpoint directions and 
+                    // position.
+                    determineEndPointLocation(dist, start, replacementTar,
+                            other, 2);
+                }
+                continue;
+            }
+                    
+            // Determine possible target endpoint directions and position.
+            determineEndPointLocation(dist, start, tar, other, 1);
+        }
+
+        // Set the new target vertex for cost estimations.
+        if (m_connection_pins_count > 1)
+        {
+            // If there are multiple connection pins that this connector is
+            // routing to, we just do the normal more costly routing to the
+            // original target, with assumed visibility in all directions.
+            // This is to maintain previous behaviour.
+            // XXX We could look at doing something smarter here.
+            m_cost_target_directions = (CostDirectionN | CostDirectionE | 
+                    CostDirectionS | CostDirectionW);
+            costTar = tar;
+
+        }
+        else if (m_only_on_far_side)
+        {
+            // If all targets are on the far side, use one of these.
+            m_cost_target_directions = 0;
+            costTar = m_far_point;
+            COLA_ASSERT(costTar);
+
+            // For that target, look at viable visibility edges to work
+            // out directions for this vertex that can be used for cost
+            // estimation.
+            for (EdgeInfList::const_iterator it = 
+                    costTar->orthogVisList.begin(); 
+                    it != costTar->orthogVisList.end(); ++it)
+            {
+                EdgeInf *edge = *it;
+                VertInf *other = edge->otherVert(costTar);
+                if (other->id.isConnPt())
+                {
+                    // Ignore other connector endpoints.
+                    continue;
+                }
+                m_cost_target_directions |= 
+                        orthogonalDirection(other->point, costTar->point);
+            }
+        }
+    }
+    else
+    {
+        // For polyline routing, assume target has visibility is all 
+        // directions for the purpose of cost estimations.
+        m_cost_target_directions = (CostDirectionN | CostDirectionE | 
+                CostDirectionS | CostDirectionW);
+    }
+
+#ifdef ESTIMATED_COST_DEBUG
+    fprintf(stderr,"== %g %g - ", costTar->point.x, costTar->point.y);
+    printDirections(stderr, m_cost_target_directions);
+    fprintf(stderr,"\n");
+#endif
+
 
     double (*dist)(const Point& a, const Point& b) = 
         (isOrthogonal) ? manhattanDist : euclideanDist;
@@ -457,17 +1007,15 @@ void aStarPath(ConnRef *lineRef, VertInf *src, VertInf *tar, VertInf *start)
     }
     endPoints.push_back(tar->point);
     
-    std::vector<ANode> PENDING;     // STL Vectors chosen because of rapid
-    std::vector<ANode> DONE;        // insertions/deletions at back,
-    size_t DONE_size = 0;
-    ANode Node, BestNode;           // Temporary Node and BestNode
+    // Heap of PENDING nodes.
+    std::vector<ANode *> PENDING;
+    PENDING.reserve(1000);
+
+    size_t exploredCount = 0;
+    ANode node, ati;
+    ANode *bestNode = NULL;         // Temporary bestNode
     bool bNodeFound = false;        // Flag if node is found in container
     int timestamp = 1;
-
-    if (start == NULL)
-    {
-        start = src;
-    }
 
     Router *router = lineRef->router();
     if (router->RubberBandRouting && (start != src))
@@ -489,44 +1037,44 @@ void aStarPath(ConnRef *lineRef, VertInf *src, VertInf *tar, VertInf *start)
             VertInf *curr = router->vertices.getVertexByID(vID);
             COLA_ASSERT(curr != NULL);
 
-            Node = ANode(curr, timestamp++);
+            node = ANode(curr, timestamp++);
             if (!last)
             {
-                Node.inf = src;
-                Node.g = 0;
-                Node.h = estimatedCost(lineRef, NULL, Node.inf->point, 
-                        tar->point);
-                Node.f = Node.g + Node.h;
+                node.inf = src;
+                node.g = 0;
+                node.h = estimatedCost(lineRef, NULL, node.inf->point, 
+                                       costTar, m_cost_target_directions);
+                node.f = node.g + node.h;
             }
             else
             {
-                double edgeDist = dist(BestNode.inf->point, curr->point);
+                double edgeDist = dist(bestNode->inf->point, curr->point);
 
-                Node.g = BestNode.g + cost(lineRef, edgeDist, BestNode.inf, 
-                        Node.inf, DONE, BestNode.prevIndex);
+                node.g = bestNode->g + cost(lineRef, edgeDist, bestNode->inf, 
+                        node.inf, bestNode->prevNode);
 
                 // Calculate the Heuristic.
-                Node.h = estimatedCost(lineRef, &(BestNode.inf->point),
-                        Node.inf->point, tar->point);
+                node.h = estimatedCost(lineRef, &(bestNode->inf->point),
+                        node.inf->point, costTar, m_cost_target_directions);
 
                 // The A* formula
-                Node.f = Node.g + Node.h;
+                node.f = node.g + node.h;
                 
-                // Point parent to last BestNode (pushed onto DONE)
-                Node.prevIndex = DONE_size - 1;
+                // Point parent to last bestNode
+                node.prevNode = bestNode;
             }
 
             if (curr != start)
             {
-                BestNode = Node;
-
-                DONE.push_back(BestNode);
-                BestNode.inf->aStarDoneIndexes.push_back(DONE_size);
-                DONE_size++;
+                bool addToPending = false;
+                bestNode = newANode(node, addToPending);
+                bestNode->inf->aStarDoneNodes.push_back(bestNode);
+                ++exploredCount;
             }
             else
             {
-                PENDING.push_back(Node);
+                ANode * newNode = newANode(node);
+                PENDING.push_back(newNode);
             }
 
             rIndx++;
@@ -540,30 +1088,35 @@ void aStarPath(ConnRef *lineRef, VertInf *src, VertInf *tar, VertInf *start)
             // If we are doing checkpoint routing and have already done one
             // path, then we have an existing segment to consider for the 
             // cost of the  choice from the start node, so we add a dummy 
-            // node to the DONE list representing it.  This causes us to 
-            // search in a collinear direction from the previous segment.
-            ANode node = ANode(start->pathNext, timestamp++);
-            DONE.push_back(node);
-            DONE_size++;
+            // nodes as if they were already in the Done set.  This causes 
+            // us to first search in a collinear direction from the previous 
+            // segment.
+            bool addToPending = false;
+            bestNode = newANode(ANode(start->pathNext, timestamp++), 
+                    addToPending);
+            bestNode->inf->aStarDoneNodes.push_back(bestNode);
+            ++exploredCount;
         }
 
         // Create the start node
-        Node = ANode(src, timestamp++);
-        Node.g = 0;
-        Node.h = estimatedCost(lineRef, NULL, Node.inf->point, tar->point);
-        Node.f = Node.g + Node.h;
-        Node.prevIndex = DONE_size - 1;
+        node = ANode(src, timestamp++);
+        node.g = 0;
+        node.h = estimatedCost(lineRef, NULL, node.inf->point, costTar, 
+                m_cost_target_directions);
+        node.f = node.g + node.h;
         // Set a null parent, so cost function knows this is the first segment.
+        node.prevNode = bestNode;
 
         // Populate the PENDING container with the first location
-        PENDING.push_back(Node);
+        ANode *newNode = newANode(node);
+        PENDING.push_back(newNode);
     }
 
     tar->pathNext = NULL;
 
     // Create a heap from PENDING for sorting
     using std::make_heap; using std::push_heap; using std::pop_heap;
-    make_heap( PENDING.begin(), PENDING.end() );
+    make_heap( PENDING.begin(), PENDING.end(), pendingCmp);
 
     // Continue until the queue is empty.
     while (!PENDING.empty())
@@ -571,28 +1124,41 @@ void aStarPath(ConnRef *lineRef, VertInf *src, VertInf *tar, VertInf *start)
         // Set the Node with lowest f value to BESTNODE.
         // Since the ANode operator< is reversed, the head of the
         // heap is the node with the lowest f value.
-        BestNode = PENDING.front();
+        bestNode = PENDING.front();
+        VertInf *bestNodeInf = bestNode->inf;
+
+        // Remove this node from the aStarPendingList
+        std::list<ANode *>::iterator finishIt = 
+                bestNodeInf->aStarPendingNodes.end();
+        for (std::list<ANode *>::iterator currInd = 
+                bestNodeInf->aStarPendingNodes.begin(); currInd != finishIt; 
+                ++currInd)
+        {
+            if (*currInd == bestNode)
+            {
+                bestNodeInf->aStarPendingNodes.erase(currInd);
+                break;
+            }
+        }
 
         // Pop off the heap.  Actually this moves the
         // far left value to the far right.  The node
         // is not actually removed since the pop is to
         // the heap and not the container.
-        pop_heap(PENDING.begin(), PENDING.end());
+        pop_heap(PENDING.begin(), PENDING.end(), pendingCmp);
         // Remove node from right (the value we pop_heap'd)
         PENDING.pop_back();
 
-        // Push the BestNode onto DONE
-        DONE.push_back(BestNode);
-        BestNode.inf->aStarDoneIndexes.push_back(DONE_size);
-        DONE_size++;
+        // Add the bestNode into the Done set.
+        bestNodeInf->aStarDoneNodes.push_back(bestNode);
+        ++exploredCount;
 
-        VertInf *prevInf = (BestNode.prevIndex >= 0) ?
-                DONE[BestNode.prevIndex].inf : NULL;
+        VertInf *prevInf = (bestNode->prevNode) ? bestNode->prevNode->inf : NULL;
 #if 0
         db_printf("Considering... ");
-        db_printf(" %g %g  ", BestNode.inf->point.x, BestNode.inf->point.y);
-        BestNode.inf->id.db_print();
-        db_printf(" - g: %3.1f h: %3.1f back: ", BestNode.g, BestNode.h);
+        db_printf(" %g %g  ", bestNodeInf->point.x, bestNodeInf->point.y);
+        bestNodeInf->id.db_print();
+        db_printf(" - g: %3.1f h: %3.1f back: ", bestNode->g, bestNode->h);
         if (prevInf)
         {
             db_printf(" %g %g", prevInf->point.x, prevInf->point.y);
@@ -601,25 +1167,19 @@ void aStarPath(ConnRef *lineRef, VertInf *src, VertInf *tar, VertInf *start)
         db_printf("\n");
 #endif
 
-        if (BestNode.inf == tar)
+        if (bestNodeInf == tar)
         {
             // This node is our goal.
 #ifdef PATHDEBUG
             db_printf("LINE %10d  Steps: %4d  Cost: %g\n", lineRef->id(), 
-                    (int) DONE_size, BestNode.f);
+                    (int) exploredCount, bestNode->f);
 #endif
             
             // Correct all the pathNext pointers.
-            ANode curr;
-            for (curr = BestNode; curr.prevIndex > 0; 
-                    curr = DONE[curr.prevIndex])
+            for (ANode *curr = bestNode; curr->prevNode; curr = curr->prevNode)
             {
-                curr.inf->pathNext = DONE[curr.prevIndex].inf;
+                curr->inf->pathNext = curr->prevNode->inf;
             }
-            // Check that we've gone through the complete path.
-            COLA_ASSERT(curr.prevIndex == 0);
-            // Fill in the final pathNext pointer.
-            curr.inf->pathNext = DONE[curr.prevIndex].inf;
 
             // Exit from the search
             break;
@@ -627,7 +1187,7 @@ void aStarPath(ConnRef *lineRef, VertInf *src, VertInf *tar, VertInf *start)
 
         // Check adjacent points in graph and add them to the queue.
         EdgeInfList& visList = (!isOrthogonal) ?
-                BestNode.inf->visList : BestNode.inf->orthogVisList;
+                bestNodeInf->visList : bestNodeInf->orthogVisList;
         if (isOrthogonal)
         {
             // We would like to explore in a structured way, 
@@ -645,27 +1205,27 @@ void aStarPath(ConnRef *lineRef, VertInf *src, VertInf *tar, VertInf *start)
                 continue;
             }
 
-            Node = ANode((*edge)->otherVert(BestNode.inf), timestamp++);
-
+            node = ANode((*edge)->otherVert(bestNodeInf), timestamp++);
+            
             // Set the index to the previous ANode that we reached
-            // this ANode through (the last BestNode pushed onto DONE).
-            Node.prevIndex = DONE_size - 1;
+            // this ANode via.
+            node.prevNode = bestNode;
 
-            VertInf *prevInf = (BestNode.prevIndex >= 0) ?
-                    DONE[BestNode.prevIndex].inf : NULL;
+            VertInf *prevInf = (bestNode->prevNode) ?
+                    bestNode->prevNode->inf : NULL;
 
             // Don't bother looking at the segment we just arrived along.
-            if (prevInf && (prevInf == Node.inf))
+            if (prevInf && (prevInf == node.inf))
             {
                 continue;
             }
 
-            if (Node.inf->id.isConnectionPin())
+            if (node.inf->id.isConnectionPin())
             {
-                if ( !( (BestNode.inf == lineRef->src()) &&
+                if ( !( (bestNodeInf == lineRef->src()) &&
                         lineRef->src()->id.isDummyPinHelper()
                       ) &&
-                     !( Node.inf->hasNeighbour(lineRef->dst(), isOrthogonal) &&
+                     !( node.inf->hasNeighbour(lineRef->dst(), isOrthogonal) &&
                         lineRef->dst()->id.isDummyPinHelper())
                       )
                 {
@@ -675,9 +1235,9 @@ void aStarPath(ConnRef *lineRef, VertInf *src, VertInf *tar, VertInf *start)
                     continue;
                 }
             }
-            else if (Node.inf->id.isConnPt())
+            else if (node.inf->id.isConnPt())
             {
-                if ((Node.inf != tar))
+                if ((node.inf != tar))
                 {
                     // Don't check connector endpoints vertices unless they
                     // are the target endpoint.
@@ -695,8 +1255,8 @@ void aStarPath(ConnRef *lineRef, VertInf *src, VertInf *tar, VertInf *start)
                 // Also, don't check if the previous point was a dummy for a
                 // connection pin and this happens to be placed diagonally 
                 // from here, i.e., when both of notInline{X,Y} are true.
-                Point& bestPt = BestNode.inf->point;
-                Point& nextPt = Node.inf->point;
+                Point& bestPt = bestNodeInf->point;
+                Point& nextPt = node.inf->point;
 
                 bool notInlineX = prevInf && (prevInf->point.x != bestPt.x);
                 bool notInlineY = prevInf && (prevInf->point.y != bestPt.y);
@@ -705,7 +1265,7 @@ void aStarPath(ConnRef *lineRef, VertInf *src, VertInf *tar, VertInf *start)
                 {
                     if (nextPt.y < bestPt.y)
                     {
-                        if (!(BestNode.inf->orthogVisPropFlags & YL_EDGE) &&
+                        if (!(bestNodeInf->orthogVisPropFlags & YL_EDGE) &&
                                 !pointAlignedWithOneOf(bestPt, endPoints, XDIM))
                         {
                             continue;
@@ -713,7 +1273,7 @@ void aStarPath(ConnRef *lineRef, VertInf *src, VertInf *tar, VertInf *start)
                     }
                     else if (nextPt.y > bestPt.y)
                     {
-                        if (!(BestNode.inf->orthogVisPropFlags & YH_EDGE) &&
+                        if (!(bestNodeInf->orthogVisPropFlags & YH_EDGE) &&
                                 !pointAlignedWithOneOf(bestPt, endPoints, XDIM))
                         {
                             continue;
@@ -725,7 +1285,7 @@ void aStarPath(ConnRef *lineRef, VertInf *src, VertInf *tar, VertInf *start)
                 {
                     if (nextPt.x < bestPt.x)
                     {
-                        if (!(BestNode.inf->orthogVisPropFlags & XL_EDGE) &&
+                        if (!(bestNodeInf->orthogVisPropFlags & XL_EDGE) &&
                                 !pointAlignedWithOneOf(bestPt, endPoints, YDIM))
                         {
                             continue;
@@ -733,7 +1293,7 @@ void aStarPath(ConnRef *lineRef, VertInf *src, VertInf *tar, VertInf *start)
                     }
                     else if (nextPt.x > bestPt.x)
                     {
-                        if (!(BestNode.inf->orthogVisPropFlags & XH_EDGE) &&
+                        if (!(bestNodeInf->orthogVisPropFlags & XH_EDGE) &&
                                 !pointAlignedWithOneOf(bestPt, endPoints, YDIM))
                         {
                             continue;
@@ -751,7 +1311,7 @@ void aStarPath(ConnRef *lineRef, VertInf *src, VertInf *tar, VertInf *start)
 
             if (!isOrthogonal &&
                   (!router->RubberBandRouting || (start == src)) && 
-                  (validateBendPoint(prevInf, BestNode.inf, Node.inf) == false))
+                  (validateBendPoint(prevInf, bestNodeInf, node.inf) == false))
             {
                 // The bendpoint is not valid, i.e., is a zigzag corner, so...
                 continue;
@@ -760,39 +1320,55 @@ void aStarPath(ConnRef *lineRef, VertInf *src, VertInf *tar, VertInf *start)
                 // can go the *really* long way round.
             }
 
-            Node.g = BestNode.g + cost(lineRef, edgeDist, BestNode.inf, 
-                    Node.inf, DONE, BestNode.prevIndex);
+            node.g = bestNode->g + cost(lineRef, edgeDist, bestNodeInf, 
+                    node.inf, bestNode->prevNode);
 
             // Calculate the Heuristic.
-            Node.h = estimatedCost(lineRef, &(BestNode.inf->point),
-                    Node.inf->point, tar->point);
+            if (node.inf == tar)
+            {
+                // If the current node is our target, then it should have no
+                // further cost.
+                node.h = 0;
+                node.g = bestNode->g;
+            }
+            else
+            {
+                node.h = estimatedCost(lineRef, &(bestNodeInf->point),
+                        node.inf->point, costTar, m_cost_target_directions);
+            }
 
             // The A* formula
-            Node.f = Node.g + Node.h;
+            node.f = node.g + node.h;
 
 #if 0
-            db_printf("-- Adding: %g %g  ", Node.inf->point.x, 
-                    Node.inf->point.y);
-            Node.inf->id.db_print();
-            db_printf(" - g: %3.1f h: %3.1f \n", Node.g, Node.h);
+            db_printf("-- Adding: %g %g  ", node.inf->point.x, 
+                    node.inf->point.y);
+            node.inf->id.db_print();
+            db_printf(" - g: %3.1f h: %3.1f \n", node.g, node.h);
 #endif
 
             bNodeFound = false;
 
+    
             // Check to see if already on PENDING
-            size_t PENDING_size = PENDING.size();
-            for (unsigned int i = 0; i < PENDING_size; i++)
+            std::list<ANode *>::const_iterator finish = node.inf->aStarPendingNodes.end();
+            for (std::list<ANode *>::const_iterator currInd = 
+                    node.inf->aStarPendingNodes.begin(); currInd != finish; ++currInd)
             {
-                ANode& ati = PENDING[i];
-                if ((Node.inf == ati.inf) &&
-                        (DONE[Node.prevIndex].inf == DONE[ati.prevIndex].inf))
+                ati = **currInd;
+                // The (node.prevNode == ati.prevNode) is redundant, but may
+                // save checking the mosre costly prevNode->inf test if the
+                // Nodes are the same.
+                if ((node.inf == ati.inf) && 
+                        ((node.prevNode == ati.prevNode) ||
+                         (node.prevNode->inf == ati.prevNode->inf)))
                 {
                     // If already on PENDING
-                    if (Node.g < ati.g)
+                    if (node.g < ati.g)
                     {
-                        PENDING[i] = Node;
-
-                        make_heap( PENDING.begin(), PENDING.end() );
+                        // Replace the existing node in PENDING
+                        **currInd = node;
+                        make_heap( PENDING.begin(), PENDING.end(), pendingCmp);
                     }
                     bNodeFound = true;
                     break;
@@ -800,53 +1376,46 @@ void aStarPath(ConnRef *lineRef, VertInf *src, VertInf *tar, VertInf *start)
             }
             if ( !bNodeFound ) // If Node NOT found on PENDING
             {
-                // Check to see if already on DONE.
-                // Rather than iterate through the complete DONE list, which
-                // may get very large in the worst case, we look at just the
-                // ANodes for this vertex.  This is cheaper for us even than
-                // using a hash map for DONE, especially since a good hash 
-                // function on the unique combination of vertex and previous 
-                // vertex is very difficult.
-                for (std::list<unsigned int>::const_iterator currInd = 
-                        Node.inf->aStarDoneIndexes.begin();
-                        currInd != Node.inf->aStarDoneIndexes.end(); ++currInd)
+                // Check to see if it is already in the Done set for this
+                // vertex.
+                for (std::list<ANode *>::const_iterator currInd = 
+                        node.inf->aStarDoneNodes.begin();
+                        currInd != node.inf->aStarDoneNodes.end(); ++currInd)
                 {
-                    ANode& ati = DONE[*currInd];
-                    if ((Node.inf == ati.inf) && 
-                            (DONE[Node.prevIndex].inf == DONE[ati.prevIndex].inf))
+                    ati = **currInd;
+                    // The (node.prevNode == ati.prevNode) is redundant, but may
+                    // save checking the mosre costly prevNode->inf test if the
+                    // Nodes are the same.
+                    if ((node.inf == ati.inf) && ati.prevNode &&
+                            ((node.prevNode == ati.prevNode) ||
+                             (node.prevNode->inf == ati.prevNode->inf)))
                     {
-                        COLA_ASSERT(Node.g >= (ati.g - 10e-10));
-                        // This node is already in DONE, and the current 
-                        // node also has a higher g-value, so we don't
-                        // need to consider this node.
+                        //COLA_ASSERT(node.g >= (ati.g - 10e-10));
+                        // This node is already in the Done set and the 
+                        // current node also has a higher g-value, so we 
+                        // don't need to consider this node.
                         bNodeFound = true;
                         break;
                     }
                 }
             }
 
-            if (!bNodeFound ) // If Node NOT found on PENDING or DONE
+            if (!bNodeFound ) // If Node NOT in either Pending or Done.
             {
                 // Push NewNode onto PENDING
-                PENDING.push_back(Node);
+                ANode *newNode = newANode(node);
+                PENDING.push_back(newNode);
                 // Push NewNode onto heap
-                push_heap( PENDING.begin(), PENDING.end() );
+                push_heap( PENDING.begin(), PENDING.end(), pendingCmp);
 
 #if 0
                 using std::cout; using std::endl;
-                // Display PENDING and DONE containers (For Debugging)
+                // Display PENDING container (For Debugging)
                 cout << "PENDING:   ";
                 for (unsigned int i = 0; i < PENDING.size(); i++)
                 {
-                    cout << PENDING[i].g << "," << PENDING[i].h << ",";
-                    cout << PENDING[i].inf << "," << PENDING[i].pp << "  ";
-                }
-                cout << endl;
-                cout << "DONE:   ";
-                for (unsigned int i = 0; i < DONE_size; i++)
-                {
-                    cout << DONE[i].g << "," << DONE[i].h << ",";
-                    cout << DONE[i].inf << "," << DONE[i].pp << "  ";
+                    cout << PENDING[i]->g << "," << PENDING[i]->h << ",";
+                    cout << PENDING[i]->inf << "," << PENDING[i]->pp << "  ";
                 }
                 cout << endl << endl;
 #endif
@@ -854,13 +1423,13 @@ void aStarPath(ConnRef *lineRef, VertInf *src, VertInf *tar, VertInf *start)
         }
     }
 
-    // Cleanup lists used to store positions in DONE list for ANodes at each
-    // vertex.
+    // Cleanup lists used to store Done and Pending sets for each vertex.
     VertInf *endVert = router->vertices.end();
     for (VertInf *k = router->vertices.connsBegin(); k != endVert;
             k = k->lstNext)
     {
-        k->aStarDoneIndexes.clear();
+        k->aStarDoneNodes.clear();
+        k->aStarPendingNodes.clear();
     }
 }
 

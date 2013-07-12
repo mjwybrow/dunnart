@@ -44,7 +44,10 @@
 #include "libavoid/mtst.h"
 #include "libavoid/scanline.h"
 
+// For debugging:
 //#define NUDGE_DEBUG
+//#define DEBUG_JUST_UNIFY
+
 
 namespace Avoid {
 
@@ -531,8 +534,8 @@ class NudgingShiftSegment : public ShiftSegment
                     }
                     else if ((rhs->sBend && sBend) || (rhs->zBend && zBend))
                     {
-                        // Ccount them as overlapping for nudging if they 
-                        // are both // s-bends or both z-bends, i.e., when 
+                        // Count them as overlapping for nudging if they 
+                        // are both s-bends or both z-bends, i.e., when 
                         // the ordering would matter.
                         return nudgeColinearSegments;
                     }
@@ -545,12 +548,37 @@ class NudgingShiftSegment : public ShiftSegment
             }
             return false;
         }
-        bool shouldAlignWith(const ShiftSegment *rhsSuper, const size_t dim) const
+        // These segments are allowed to drift into alignment but don't have to.
+        bool canAlignWith(const NudgingShiftSegment *rhs, 
+                const size_t dim) const
+        {
+            COLA_UNUSED(dim);
+
+            // Don't segments of the same connector to drift together
+            // where one of them goes via a checkpoint.  We want the path 
+            // through the checkpoint to be maintained.
+            
+            if (connRef != rhs->connRef)
+            {
+                return false;
+            }
+            
+            bool hasCheckpoints = checkpoints.size() > 0;
+            bool rhsHasCheckpoints = rhs->checkpoints.size() > 0;
+            if (hasCheckpoints || rhsHasCheckpoints)
+            {
+                return false;
+            }
+            return true;
+        }
+        // These segments should align with each other.
+        bool shouldAlignWith(const ShiftSegment *rhsSuper, 
+                const size_t dim) const
         {
             const NudgingShiftSegment *rhs = 
                     dynamic_cast<const NudgingShiftSegment *> (rhsSuper);
-            if ((connRef == rhs->connRef) && (finalSegment == rhs->finalSegment) &&
-                overlapsWith(rhs, dim))
+            if ((connRef == rhs->connRef) && finalSegment && 
+                    rhs->finalSegment && overlapsWith(rhs, dim))
             {
                 // If both the segments are in shapes then we know limits
                 // and can align.  Otherwise we do this just for segments 
@@ -561,6 +589,43 @@ class NudgingShiftSegment : public ShiftSegment
                         (fabs(lowPoint()[dim] - rhs->lowPoint()[dim]) < 10))
                 {
                     return true;
+                }
+            }
+            else if ((connRef == rhs->connRef) && 
+                     // Not both final
+                     ((finalSegment & rhs->finalSegment) != true))
+            {
+                bool hasCheckpoints = checkpoints.size() > 0;
+                bool rhsHasCheckpoints = rhs->checkpoints.size() > 0;
+
+                if (hasCheckpoints != rhsHasCheckpoints)
+                {
+                    // At least one segment has checkpoints, but not both.
+
+                    size_t altDim = (dim + 1) % 2;
+                    double space = fabs(lowPoint()[dim] - rhs->lowPoint()[dim]);
+                    double touchPos;
+                    bool couldTouch = false;
+                    if (lowPoint()[altDim] == rhs->highPoint()[altDim])
+                    {
+                        couldTouch = true;
+                        touchPos = lowPoint()[altDim];
+                    }
+                    else if (highPoint()[altDim] == rhs->lowPoint()[altDim])
+                    {
+                        couldTouch = true;
+                        touchPos = highPoint()[altDim];
+                    }
+
+                    // We should align these so long as they are close
+                    // together (<= 10) and there isn't a checkpoint at the 
+                    // touch point, i.e., we'd be altering the edges leading 
+                    // into the checkpoint.  We want to keep these in place 
+                    // and opportunistically move other edges to align with 
+                    // them.
+                    return couldTouch && (space <= 10) &&
+                            !hasCheckpointAtPosition(touchPos, altDim) &&
+                            !rhs->hasCheckpointAtPosition(touchPos, altDim);
                 }
             }
             return false;
@@ -602,6 +667,18 @@ class NudgingShiftSegment : public ShiftSegment
                 size_t index = indexes[it];
                 connRef->displayRoute().ps[index][dimension] = segmentPos;
             }
+        }
+        bool hasCheckpointAtPosition(const double position, 
+                const size_t dim) const
+        {
+            for (size_t cp = 0; cp < checkpoints.size(); ++cp)
+            {
+                if (checkpoints[cp][dim] == position)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         ConnRef *connRef;
@@ -1329,9 +1406,9 @@ public:
     VertSet vertInfs;
     BreakpointSet breakPoints;
 private:
-	// MSVC wants to generate the assignment operator and the default 
-	// constructor, but fails.  Therefore we declare them private and 
-	// don't implement them.
+    // MSVC wants to generate the assignment operator and the default 
+    // constructor, but fails.  Therefore we declare them private and 
+    // don't implement them.
     LineSegment & operator=(LineSegment const &);
     LineSegment();
 };
@@ -1910,6 +1987,11 @@ extern void generateStaticOrthogonalVisGraph(Router *router)
     unsigned int posFinishIndex = 0;
     for (unsigned i = 0; i <= totalEvents; ++i)
     {
+        // Progress reporting and continuation check.
+        router->performContinuationCheck(
+                TransactionPhaseOrthogonalVisibilityGraphScanX, 
+                i, totalEvents);
+
         // If we have finished the current scanline or all events, then we
         // process the events on the current scanline in a couple of passes.
         if ((i == totalEvents) || (events[i]->pos != thisPos))
@@ -2002,6 +2084,11 @@ extern void generateStaticOrthogonalVisGraph(Router *router)
     posFinishIndex = 0;
     for (unsigned i = 0; i <= totalEvents; ++i)
     {
+        // Progress reporting and continuation check.
+        router->performContinuationCheck(
+                TransactionPhaseOrthogonalVisibilityGraphScanY, 
+                i, totalEvents);
+
         // If we have finished the current scanline or all events, then we
         // process the events on the current scanline in a couple of passes.
         if ((i == totalEvents) || (events[i]->pos != thisPos))
@@ -2278,6 +2365,8 @@ static void buildOrthogonalNudgingSegments(Router *router,
                 
                 if ((i == 1) || ((i + 1) == displayRoute.size()))
                 {
+                    // Is first or last segment of route.
+                    
                     if (nudgeFinalSegments)
                     {
                         // Determine available space for nudging these
@@ -2285,36 +2374,6 @@ static void buildOrthogonalNudgingSegments(Router *router,
                         double minLim = -CHANNEL_MAX;
                         double maxLim = CHANNEL_MAX;
                         
-                        // Limit their movement by the length of 
-                        // adjoining segments.
-                        bool first = (i == 1) ? true : false;
-                        bool last = ((i + 1) == displayRoute.size()) ? 
-                                true : false;
-                        if (!first)
-                        {
-                            double prevPos = displayRoute.ps[i - 2][dim];
-                            if (prevPos < thisPos)
-                            {
-                                minLim = std::max(minLim, prevPos);
-                            }
-                            else if (prevPos > thisPos)
-                            {
-                                maxLim = std::min(maxLim, prevPos);
-                            }
-                        }
-                        if (!last)
-                        {
-                            double nextPos = displayRoute.ps[i + 1][dim];
-                            if (nextPos < thisPos)
-                            {
-                                minLim = std::max(minLim, nextPos);
-                            }
-                            else if (nextPos > thisPos)
-                            {
-                                maxLim = std::min(maxLim, nextPos);
-                            }
-                        }
-
                         // If the position of the opposite end of the
                         // attached segment is within the shape boundaries
                         // then we want to use this as an ideal position
@@ -2356,7 +2415,7 @@ static void buildOrthogonalNudgingSegments(Router *router,
                             maxLim = std::min(maxLim, pos + freeConnBuffer);
                         }
 
-                        if (minLim == maxLim)
+                        if ((minLim == maxLim) || (*curr)->hasFixedRoute())
                         {
                             // Fixed.
                             segmentList.push_back(new NudgingShiftSegment(*curr, 
@@ -2396,88 +2455,66 @@ static void buildOrthogonalNudgingSegments(Router *router,
                 double minLim = -CHANNEL_MAX;
                 double maxLim = CHANNEL_MAX;
 
+                // Constrain these segments by checkpoints along the
+                // adjoining segments.  Ignore checkpoints at ends of
+                // those segments.  XXX Perhaps this should not
+                // affect the ideal centre position in the channel.
+                for (size_t cp = 0; cp < nextCheckpoints.size(); ++cp)
+                {
+                    if (nextCheckpoints[cp][dim] < thisPos)
+                    {
+                        // Not at thisPoint, so constrain.
+                        minLim = std::max(minLim, nextCheckpoints[cp][dim]);
+                    }
+                    else if (nextCheckpoints[cp][dim] > thisPos)
+                    {
+                        // Not at thisPoint, so constrain.
+                        maxLim = std::min(maxLim, nextCheckpoints[cp][dim]);
+                    }
+                }
+                for (size_t cp = 0; cp < prevCheckpoints.size(); ++cp)
+                {
+                    if (prevCheckpoints[cp][dim] < thisPos)
+                    {
+                        // Not at thisPoint, so constrain.
+                        minLim = std::max(minLim, prevCheckpoints[cp][dim]);
+                    }
+                    else if (prevCheckpoints[cp][dim] > thisPos)
+                    {
+                        // Not at thisPoint, so constrain.
+                        maxLim = std::min(maxLim, prevCheckpoints[cp][dim]);
+                    }
+                }
+
                 bool isSBend = false;
                 bool isZBend = false;
 
-                double prevPos = displayRoute.ps[i - 2][dim];
-                double nextPos = displayRoute.ps[i + 1][dim];
-                if ( ((prevPos < thisPos) && (nextPos > thisPos)) ||
-                     ((prevPos > thisPos) && (nextPos < thisPos)) )
+                if (checkpoints.empty())
                 {
-                    // Determine limits if the s-bend is not due to an 
-                    // obstacle.  In this case we need to limit the channel 
-                    // to the span of the adjoining segments to this one.
-                    if ((prevPos < thisPos) && (nextPos > thisPos))
+                    // Segments with checkpoints are held in place, but for
+                    // other segments, we should limit their movement based 
+                    // on the limits of the segments at either end.
+
+                    double prevPos = displayRoute.ps[i - 2][dim];
+                    double nextPos = displayRoute.ps[i + 1][dim];
+                    if ( ((prevPos < thisPos) && (nextPos > thisPos)) ||
+                         ((prevPos > thisPos) && (nextPos < thisPos)) )
                     {
-                        minLim = std::max(minLim, prevPos);
-                        maxLim = std::min(maxLim, nextPos);
-                        isZBend = true;
-                    
-                        // Constrain these segments by checkpoints along the
-                        // adjoining segments.  Ignore checkpoints at ends of
-                        // those segments.  XXX Perhaps this should not
-                        // affect the ideal centre position in the channel.
-                        for (size_t cp = 0; cp < prevCheckpoints.size(); ++cp)
+                        // Determine limits if the s-bend is not due to an 
+                        // obstacle.  In this case we need to limit the channel 
+                        // to the span of the adjoining segments to this one.
+                        if ((prevPos < thisPos) && (nextPos > thisPos))
                         {
-                            if (prevCheckpoints[cp][dim] < thisPos)
-                            {
-                                // Not at thisPoint, so constrain.
-                                minLim = std::max(minLim, 
-                                        prevCheckpoints[cp][dim]);
-                            }
+                            minLim = std::max(minLim, prevPos);
+                            maxLim = std::min(maxLim, nextPos);
+                            isZBend = true;
                         }
-                        for (size_t cp = 0; cp < nextCheckpoints.size(); ++cp)
+                        else // if ((prevPos > thisPos) && (nextPos < thisPos))
                         {
-                            if (nextCheckpoints[cp][dim] > thisPos)
-                            {
-                                // Not at thisPoint, so constrain.
-                                maxLim = std::min(maxLim, 
-                                        nextCheckpoints[cp][dim]);
-                            }
+                            minLim = std::max(minLim, nextPos);
+                            maxLim = std::min(maxLim, prevPos);
+                            isSBend = true;
                         }
-                    }
-                    else // if ((prevPos > thisPos) && (nextPos < thisPos))
-                    {
-                        minLim = std::max(minLim, nextPos);
-                        maxLim = std::min(maxLim, prevPos);
-                        isSBend = true;
-                        
-                        // Constrain these segments by checkpoints along the
-                        // adjoining segments.  Ignore checkpoints at ends of
-                        // those segments.  XXX Perhaps this should not
-                        // affect the ideal centre position in the channel.
-                        for (size_t cp = 0; cp < nextCheckpoints.size(); ++cp)
-                        {
-                            if (nextCheckpoints[cp][dim] < thisPos)
-                            {
-                                // Not at thisPoint, so constrain.
-                                minLim = std::max(minLim, 
-                                        nextCheckpoints[cp][dim]);
-                            }
-                        }
-                        for (size_t cp = 0; cp < prevCheckpoints.size(); ++cp)
-                        {
-                            if (prevCheckpoints[cp][dim] > thisPos)
-                            {
-                                // Not at thisPoint, so constrain.
-                                maxLim = std::min(maxLim, 
-                                        prevCheckpoints[cp][dim]);
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    // isCBend: Both adjoining segments are in the same
-                    // direction.  We indicate this for later by setting 
-                    // the maxLim or minLim to the segment position.
-                    if (prevPos < thisPos)
-                    {
-                        minLim = thisPos;
-                    }
-                    else
-                    {
-                        maxLim = thisPos;
                     }
                 }
 
@@ -2928,10 +2965,19 @@ static void nudgeOrthogonalRoutes(Router *router, size_t dimension,
     // we try 10 times, reducing each time by a 10th of the original amount.
     double reductionSteps = 10.0;
 
+    unsigned int totalSegmentsToShift = segmentList.size();
+    unsigned int numOfSegmentsShifted = 0;
     // Do the actual nudging.
     ShiftSegmentList currentRegion;
     while (!segmentList.empty())
     {
+        // Progress reporting and continuation check.
+        numOfSegmentsShifted = totalSegmentsToShift - segmentList.size();
+        router->performContinuationCheck(
+                (dimension == XDIM) ? TransactionPhaseOrthogonalNudgingX : 
+                TransactionPhaseOrthogonalNudgingY, numOfSegmentsShifted,
+                totalSegmentsToShift);
+
         // Take a reference segment
         ShiftSegment *currentSegment = segmentList.front();
         // Then, find the segments that overlap this one.
@@ -3092,7 +3138,7 @@ static void nudgeOrthogonalRoutes(Router *router, size_t dimension,
                         thisSepDist = 0;
                         equality = true;
                     }
-                    else if (currSegment->connRef == prevSeg->connRef)
+                    else if (currSegment->canAlignWith(prevSeg, dimension))
                     {
                         // We need to address the problem of two neighbouring
                         // segments of the same connector being kept separated
@@ -3206,7 +3252,7 @@ static void nudgeOrthogonalRoutes(Router *router, size_t dimension,
                         }
                         else if (vs[i]->id == channelRightID)
                         {
-                            // This is the left-hand-side of a channel.
+                            // This is the right-hand-side of a channel.
                             COLA_ASSERT(unsatisfiedRanges.size() > 0);
                             // Expand the existing range to include it.
                             unsatisfiedRanges.back().second = i;
@@ -3411,7 +3457,7 @@ extern void improveOrthogonalRoutes(Router *router)
     buildConnectorRouteCheckpointCache(router);
 
     // Do Unifying first, by itself.  This greedily tries to position free
-    // segments in overlaping channels at the same position.  This way they
+    // segments in overlapping channels at the same position.  This way they
     // have correct nudging orders determined for them since they will form
     // shared paths, rather than segments just positioned as an results of
     // the routing process.  Of course, don't do this when rerouting with
@@ -3432,6 +3478,7 @@ extern void improveOrthogonalRoutes(Router *router)
         }
     }
 
+#ifndef DEBUG_JUST_UNIFY
     // Do the Nudging and centring.
     for (size_t dimension = 0; dimension < 2; ++dimension)
     {
@@ -3447,6 +3494,7 @@ extern void improveOrthogonalRoutes(Router *router)
         buildOrthogonalChannelInfo(router, dimension, segmentList);
         nudgeOrthogonalRoutes(router, dimension, pointOrders, segmentList);
     }
+#endif // DEBUG_JUST_UNIFY
 
     // Resimplify all the display routes that may have been split.
     simplifyOrthogonalRoutes(router);
@@ -3970,6 +4018,30 @@ struct ImproveHyperEdges
         {
             HyperEdgeTreeNode *node = hyperEdgeTreeJunctions[*curr];
             node->removeOtherJunctionsFrom(NULL, hyperEdgeTreeRoots);
+        }
+
+        // Remove hyperedges containing one or more fixed route connectors.
+        // We may do something more clever with these in future.
+        JunctionRef *treeRootToErase = NULL;
+        for (JunctionSet::iterator curr = hyperEdgeTreeRoots.begin();
+                curr != hyperEdgeTreeRoots.end(); ++curr)
+        {
+            if (treeRootToErase)
+            {
+                hyperEdgeTreeRoots.erase(treeRootToErase);
+                treeRootToErase = NULL;
+            }
+
+            HyperEdgeTreeNode *node = hyperEdgeTreeJunctions[*curr];
+            if (node->hasFixedRouteConnectors(NULL))
+            {
+                treeRootToErase = *curr;
+            }
+        }
+        if (treeRootToErase)
+        {
+            hyperEdgeTreeRoots.erase(treeRootToErase);
+            treeRootToErase = NULL;
         }
 
         router->timers.Register(tmHyperedgeImprove, timerStart);

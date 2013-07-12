@@ -3,7 +3,7 @@
  *
  * libavoid - Fast, Incremental, Object-avoiding Line Router
  *
- * Copyright (C) 2004-2011  Monash University
+ * Copyright (C) 2004-2013  Monash University
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -110,6 +110,7 @@ class VertID
 static const VertID dummyOrthogID(0, 0);
 static const VertID dummyOrthogShapeID(0, 0, VertID::PROP_OrthShapeEdge);
 
+class ANode;
 
 class VertInf
 {
@@ -163,7 +164,8 @@ class VertInf
         double sptfDist;
 
         ConnDirFlags visDirections;
-        std::list<unsigned int> aStarDoneIndexes;
+        std::list<ANode *> aStarDoneNodes;
+        std::list<ANode *> aStarPendingNodes;
         // Flags for orthogonal visibility properties, i.e., whether the 
         // line points to a shape edge, connection point or an obstacle.
         unsigned int orthogVisPropFlags;
