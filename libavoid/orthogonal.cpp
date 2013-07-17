@@ -497,7 +497,7 @@ class NudgingShiftSegment : public ShiftSegment
         bool overlapsWith(const ShiftSegment *rhsSuper, const size_t dim) const
         {
             const NudgingShiftSegment *rhs = 
-                    dynamic_cast<const NudgingShiftSegment *> (rhsSuper);
+                    static_cast<const NudgingShiftSegment *> (rhsSuper);
             size_t altDim = (dim + 1) % 2;
             const Point& lowPt = lowPoint();
             const Point& highPt = highPoint();
@@ -576,7 +576,7 @@ class NudgingShiftSegment : public ShiftSegment
                 const size_t dim) const
         {
             const NudgingShiftSegment *rhs = 
-                    dynamic_cast<const NudgingShiftSegment *> (rhsSuper);
+                    static_cast<const NudgingShiftSegment *> (rhsSuper);
             if ((connRef == rhs->connRef) && finalSegment && 
                     rhs->finalSegment && overlapsWith(rhs, dim))
             {
@@ -655,7 +655,7 @@ class NudgingShiftSegment : public ShiftSegment
 
             // Merge the index lists and sort the new list.
             const NudgingShiftSegment *rhs = 
-                    dynamic_cast<const NudgingShiftSegment *> (rhsSuper);
+                    static_cast<const NudgingShiftSegment *> (rhsSuper);
             indexes.insert(indexes.end(), rhs->indexes.begin(), rhs->indexes.end());
             size_t altDim = (dim + 1) % 2;
             CmpIndexes compare(connRef, altDim);
@@ -1256,12 +1256,12 @@ public:
             // by going in that direction!
             if (finish == DBL_MAX)
             {
-                // Shorten line to first intersection point.
+                // Shorten line to last intersection point.
                 finish = breakPoints.rbegin()->pos;
             }
             else
             {
-                // Add begin point.
+                // Add finish point.
                 Point point(pos, pos);
                 point[dim] = finish;
                 VertInf *vert = new VertInf(router, dummyOrthogID, point);
@@ -1554,8 +1554,8 @@ static void intersectSegments(Router *router, SegmentList& segments,
 
 
 // Processes an event for the vertical sweep used for computing the static 
-// orthogonal visibility graph.  This adds possible visibility segments to 
-// the segments list.
+// orthogonal visibility graph.  This adds possible horizontal visibility 
+// segments to the segments list.
 // The first pass is adding the event to the scanline, the second is for
 // processing the event and the third for removing it from the scanline.
 static void processEventVert(Router *router, NodeSet& scanline, 
@@ -1737,8 +1737,8 @@ static void processEventVert(Router *router, NodeSet& scanline,
 
 
 // Processes an event for the vertical sweep used for computing the static 
-// orthogonal visibility graph.  This adds possible visibility segments to 
-// the segments list.
+// orthogonal visibility graph.  This adds possible vertical visibility 
+// segments to the segments list.
 // The first pass is adding the event to the scanline, the second is for
 // processing the event and the third for removing it from the scanline.
 static void processEventHori(Router *router, NodeSet& scanline, 
@@ -1977,9 +1977,9 @@ extern void generateStaticOrthogonalVisGraph(Router *router)
     fixConnectionPointVisibilityOnOutsideOfVisibilityGraph(events, totalEvents, 
             (ConnDirLeft | ConnDirRight));
 
-    // Process the vertical sweep.
+    // Process the vertical sweep -- creating cadidate horizontal edges.
     // We do multiple passes over sections of the list so we can add relevant
-    // entries to the scanline that might follow, before process them.
+    // entries to the scanline that might follow, before processing them.
     SegmentListWrapper segments;
     NodeSet scanline;
     double thisPos = (totalEvents > 0) ? events[0]->pos : 0;
@@ -2078,7 +2078,7 @@ extern void generateStaticOrthogonalVisGraph(Router *router)
     fixConnectionPointVisibilityOnOutsideOfVisibilityGraph(events, totalEvents, 
             (ConnDirUp | ConnDirDown));
 
-    // Process the horizontal sweep
+    // Process the horizontal sweep -- creating vertical visibility edges.
     thisPos = (totalEvents > 0) ? events[0]->pos : 0;
     posStartIndex = 0;
     posFinishIndex = 0;
@@ -2132,7 +2132,7 @@ extern void generateStaticOrthogonalVisGraph(Router *router)
     {
         delete events[i];
     }
-    delete [] events;
+    delete [] events; 
 
     // Add portions of the horizontal line that are after the final vertical
     // position we considered.
@@ -2740,9 +2740,9 @@ class CmpLineOrder
                 bool *comparable = NULL) const
         {
             const NudgingShiftSegment *lhs = 
-                    dynamic_cast<const NudgingShiftSegment *> (lhsSuper);
+                    static_cast<const NudgingShiftSegment *> (lhsSuper);
             const NudgingShiftSegment *rhs = 
-                    dynamic_cast<const NudgingShiftSegment *> (rhsSuper);
+                    static_cast<const NudgingShiftSegment *> (rhsSuper);
             if (comparable)
             {
                 *comparable = true;
@@ -2838,9 +2838,9 @@ static ShiftSegmentList linesort(bool nudgeFinalSegments,
                     otherSegIt != origList.end(); )
             {
                 NudgingShiftSegment *currSeg = 
-                        dynamic_cast<NudgingShiftSegment *> (*currSegIt);
+                        static_cast<NudgingShiftSegment *> (*currSegIt);
                 NudgingShiftSegment *otherSeg = 
-                        dynamic_cast<NudgingShiftSegment *> (*otherSegIt);
+                        static_cast<NudgingShiftSegment *> (*otherSegIt);
                 if ((currSegIt != otherSegIt) && currSeg && otherSeg && 
                         currSeg->shouldAlignWith(otherSeg, comparison.dimension))
                 {
@@ -3047,7 +3047,7 @@ static void nudgeOrthogonalRoutes(Router *router, size_t dimension,
         for (ShiftSegmentList::iterator currSegmentIt = currentRegion.begin();
                 currSegmentIt != currentRegion.end(); ++currSegmentIt )
         {
-            NudgingShiftSegment *currSegment = dynamic_cast<NudgingShiftSegment *> (*currSegmentIt);
+            NudgingShiftSegment *currSegment = static_cast<NudgingShiftSegment *> (*currSegmentIt);
             
             // Create a solver variable for the position of this segment.
             currSegment->createSolverVariable(justUnifying);
@@ -3116,7 +3116,7 @@ static void nudgeOrthogonalRoutes(Router *router, size_t dimension,
                     prevVarIt != prevVars.end(); ++prevVarIt)
             {
                 NudgingShiftSegment *prevSeg =
-                        dynamic_cast<NudgingShiftSegment *> (*prevVarIt);
+                        static_cast<NudgingShiftSegment *> (*prevVarIt);
                 Variable *prevVar = prevSeg->variable;
                 
                 if (currSegment->overlapsWith(prevSeg, dimension) &&
@@ -3415,7 +3415,7 @@ static void nudgeOrthogonalRoutes(Router *router, size_t dimension,
                     currSegment != currentRegion.end(); ++currSegment)
             {
                 NudgingShiftSegment *segment =
-                        dynamic_cast<NudgingShiftSegment *> (*currSegment);
+                        static_cast<NudgingShiftSegment *> (*currSegment);
 
                 segment->updatePositionsFromSolver();
             }
@@ -3430,7 +3430,7 @@ static void nudgeOrthogonalRoutes(Router *router, size_t dimension,
                 currSegment != currentRegion.end(); ++currSegment)
         {
             NudgingShiftSegment *segment =
-                    dynamic_cast<NudgingShiftSegment *> (*currSegment);
+                    static_cast<NudgingShiftSegment *> (*currSegment);
 
             fprintf(stdout, "<line style=\"stroke: #00F;\" x1=\"%g\" "
                     "y1=\"%g\" x2=\"%g\" y2=\"%g\" />\n",
@@ -3463,7 +3463,8 @@ extern void improveOrthogonalRoutes(Router *router)
     // the routing process.  Of course, don't do this when rerouting with
     // a fixedSharedPathPenalty since these routes include extra segments 
     // we want to keep apart which prevent some shared paths.
-    if (router->routingParameter(fixedSharedPathPenalty) == 0)
+    if (router->routingOption(performUnifyingNudgingPreprocessingStep) && 
+            (router->routingParameter(fixedSharedPathPenalty) == 0))
     {
         PtOrderMap pointOrders;
         for (size_t dimension = 0; dimension < 2; ++dimension)
@@ -3574,7 +3575,7 @@ struct ImproveHyperEdges
                 curr != segments.end(); ++curr)
         {
             HyperEdgeShiftSegment *edge1 =
-                    dynamic_cast<HyperEdgeShiftSegment *> (*curr);
+                    static_cast<HyperEdgeShiftSegment *> (*curr);
             for (ShiftSegmentList::iterator curr2 = segments.begin();
                     curr2 != segments.end(); )
             {
@@ -3584,7 +3585,7 @@ struct ImproveHyperEdges
                     continue;
                 }
                 HyperEdgeShiftSegment *edge2 =
-                        dynamic_cast<HyperEdgeShiftSegment *> (*curr2);
+                        static_cast<HyperEdgeShiftSegment *> (*curr2);
                 if (edge1->mergesWith(edge2))
                 {
                     delete edge2;
@@ -3680,7 +3681,7 @@ struct ImproveHyperEdges
                     currSeg != segmentList.end(); )
             {
                 HyperEdgeShiftSegment *segment =
-                        dynamic_cast<HyperEdgeShiftSegment *> (*currSeg);
+                        static_cast<HyperEdgeShiftSegment *> (*currSeg);
                 segment->setBalanceCount();
 
                 ++currSeg;
@@ -3695,7 +3696,7 @@ struct ImproveHyperEdges
                 // While we haven't considered every segment...
 
                 HyperEdgeShiftSegment *segment =
-                        dynamic_cast<HyperEdgeShiftSegment *> (*currSeg);
+                        static_cast<HyperEdgeShiftSegment *> (*currSeg);
 
                 if ( ! segment->settled() )
                 {
