@@ -180,7 +180,8 @@ CanvasView *CanvasTabWidget::canvasViewAt(int index) const
 
 Canvas *CanvasTabWidget::currentCanvas(void) const
 {
-    return currentCanvasView()->canvas();
+    CanvasView *canvasView = currentCanvasView();
+    return (canvasView) ? canvasView->canvas() : NULL;
 }
 
 QUndoGroup *CanvasTabWidget::undoGroup(void) const

@@ -143,7 +143,7 @@ void CanvasApplication::windowFocusChanged(QWidget *old, QWidget *now)
     }
 
     Canvas *canvas = currentCanvas();
-    if (canvas->isLayoutSuspended())
+    if (canvas && canvas->isLayoutSuspended())
     {
         // If the window focus changed while we are ALT-dragging, then
         // we should cancel the layout suspension and restart it.
