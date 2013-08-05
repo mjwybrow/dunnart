@@ -1529,23 +1529,108 @@ void Connector::paint(QPainter *painter,
 QAction *Connector::buildAndExecContextMenu(QGraphicsSceneMouseEvent *event,
         QMenu& menu)
 {
+    // These actions affect all connectors in the current selection.
+    QList<CanvasItem *> selectedItems = canvas()->selectedItems();
+
+    // Or just the unselected connector under the cursor if  it is
+    // not in the current selection.
+    if (isSelected() == false)
+    {
+        canvas()->clearSelection();
+        setSelected(true);
+        selectedItems.clear();
+        selectedItems.append(this);
+    }
+
+    QList<Connector *> selectedConns;
+    // For each connector.
+    foreach (CanvasItem *item, selectedItems)
+    {
+        Connector *connector = dynamic_cast<Connector *> (item);
+        if (connector)
+        {
+            selectedConns.append(connector);
+        }
+    }
+
     if (!menu.isEmpty())
     {
         menu.addSeparator();
     }
-    QAction *changeType = menu.addAction((m_routing_type == orthogonal) ?
-            tr("Change to polyline") : tr("Change to orthogonal"));
-    QAction *changeDirected = menu.addAction((m_is_directed) ?
-            tr("Change to undirected") : tr("Change to directed"));
+    QAction *makePolyline = menu.addAction(tr("Change to polyline"));
+    QAction *makeOrthogonal = menu.addAction(tr("Change to orthogonal"));
+    menu.addSeparator();
+    QAction *makeDirected = menu.addAction(tr("Make directed"));
+    QAction *makeUndirected = menu.addAction(tr("Make undirected"));
     QAction *swapDirection = menu.addAction(
-            tr("Swap connector direction"));
+            tr("Switch direction"));
+    menu.addSeparator();
+    QAction *automaticRouting = menu.addAction(tr("Use automatic routing"));
+    QAction *fixedRouting = menu.addAction(tr("Use fixed routing"));
     menu.addSeparator();
     QAction *addCheckpoint = menu.addAction(
-            tr("Add routing checkpoint at this point"));
+            tr("Add routing checkpoint at cursor"));
 
-    if (!m_is_directed)
+    bool selectedDirectedConns = false;
+    bool selectedUndirectedConns = false;
+    bool selectedPolylineConns = false;
+    bool selectedOrthogonalConns = false;
+    bool selectedAutomaticallyRoutedConns = false;
+    bool selectedManuallyRoutedConns = false;
+    foreach (Connector *connector, selectedConns)
     {
+        if (connector->isDirected())
+        {
+            selectedDirectedConns = true;
+        }
+        else
+        {
+            selectedUndirectedConns = true;
+        }
+
+        if (connector->routingType() == orthogonal)
+        {
+            selectedOrthogonalConns = true;
+        }
+        else if (connector->routingType() == polyline)
+        {
+            selectedPolylineConns = true;
+        }
+
+        if (connector->avoidRef->hasFixedRoute())
+        {
+            selectedManuallyRoutedConns = true;
+        }
+        else
+        {
+            selectedAutomaticallyRoutedConns = true;
+        }
+    }
+    if (selectedDirectedConns == false)
+    {
+        // There are no directed connectors, disable direction swap.
         swapDirection->setVisible(false);
+        makeUndirected->setVisible(false);
+    }
+    if (selectedUndirectedConns == false)
+    {
+        makeDirected->setVisible(false);
+    }
+    if (selectedOrthogonalConns == false)
+    {
+        makePolyline->setVisible(false);
+    }
+    if (selectedPolylineConns == false)
+    {
+        makeOrthogonal->setVisible(false);
+    }
+    if (selectedManuallyRoutedConns == false)
+    {
+        automaticRouting->setVisible(false);
+    }
+    if (selectedAutomaticallyRoutedConns == false)
+    {
+        fixedRouting->setVisible(false);
     }
 
     QAction *action = CanvasItem::buildAndExecContextMenu(event, menu);
@@ -1561,49 +1646,50 @@ QAction *Connector::buildAndExecContextMenu(QGraphicsSceneMouseEvent *event,
         avoidRef->makePathInvalid();
         avoidRef->setRoutingCheckpoints(checkpoints);
         reroute_connectors(canvas());
-        bool wasVisible = isSelected();
+        // Toggle selection off and make this the only selected
+        // connector to have it notice and highlight new
+        // checkpoint with a handle.
         setSelected(false);
-        setSelected(wasVisible);
+        selectedItems.clear();
+        selectedItems.append(this);
     }
     else
     {
-        // These actions affect all connectors in the current selection.
-        QList<CanvasItem *> selected_items = canvas()->selectedItems();
-
-        // Or the unselected connector under the cursor if there is no
-        // selection at present.
-        if (selected_items.empty())
+        foreach (Connector *connector, selectedConns)
         {
-            selected_items.append(this);
-        }
-
-        RoutingType newRoutingType = (m_routing_type == orthogonal) ?
-                polyline : orthogonal;
-
-        // For each connector.
-        for (int i = 0; i < selected_items.size(); ++i)
-        {
-            Connector *connector =
-                    dynamic_cast<Connector *> (selected_items.at(i));
-
-            if (connector)
+            if (action == makePolyline)
             {
-                if (action == changeType)
-                {
-                    connector->setRoutingType(newRoutingType);
-                }
-                else if (action == swapDirection)
-                {
-                    connector->swapDirection();
-                }
-                else if (action == changeDirected)
-                {
-                    connector->setDirected(!connector->isDirected());
-                }
+                connector->setRoutingType(polyline);
+            }
+            else if (action == makeOrthogonal)
+            {
+                connector->setRoutingType(orthogonal);
+            }
+            else if ((action == swapDirection) && connector->isDirected())
+            {
+                connector->swapDirection();
+            }
+            else if (action == makeDirected)
+            {
+                connector->setDirected(true);
+            }
+            else if (action == makeUndirected)
+            {
+                connector->setDirected(false);
+            }
+            else if (action == fixedRouting)
+            {
+                connector->avoidRef->setFixedRoute(
+                        connector->avoidRef->displayRoute());
+            }
+            else if (action == automaticRouting)
+            {
+                connector->avoidRef->clearFixedRoute();
             }
         }
-        canvas()->setSelection(selected_items);
     }
+
+    canvas()->setSelection(selectedItems);
 
     return action;
 }
