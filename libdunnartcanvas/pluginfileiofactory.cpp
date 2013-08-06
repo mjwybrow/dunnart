@@ -106,9 +106,10 @@ void PluginFileIOFactory::registerFileIOPlugin(FileIOPluginInterface *fileIOPlug
 bool PluginFileIOFactory::saveDiagramToFile(Canvas *canvas,
         const QFileInfo& fileInfo, QString& errorMessage)
 {
-    if (m_file_saving_handlers.contains(fileInfo.completeSuffix()))
+    QString fileExtension = fileInfo.suffix();
+    if (m_file_saving_handlers.contains(fileExtension))
     {
-        return m_file_saving_handlers[fileInfo.completeSuffix()]->
+        return m_file_saving_handlers[fileExtension]->
                 saveDiagramToFile(canvas, fileInfo, errorMessage);
     }
 
@@ -120,9 +121,10 @@ bool PluginFileIOFactory::saveDiagramToFile(Canvas *canvas,
 bool PluginFileIOFactory::loadDiagramFromFile(Canvas *canvas,
         const QFileInfo& fileInfo, QString& errorMessage)
 {
-    if (m_file_loading_handlers.contains(fileInfo.completeSuffix()))
+    QString fileExtension = fileInfo.suffix();
+    if (m_file_loading_handlers.contains(fileExtension))
     {
-        return m_file_loading_handlers[fileInfo.completeSuffix()]->
+        return m_file_loading_handlers[fileExtension]->
                 loadDiagramFromFile(canvas, fileInfo, errorMessage);
     }
 
