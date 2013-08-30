@@ -1,5 +1,5 @@
 
-set PATH=%PATH%;"C:\Users\mwybrow\AppData\Local\Programs\Git\bin"
+set PATH=%PATH%;"C:\Program File (x86)\Git\bin"
 
 git show --abbrev-commit | grep "^commit" | cut -f2 -d' ' > value
 COPY /Y .init+value initvar.bat

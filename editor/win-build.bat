@@ -1,4 +1,4 @@
-set PATH=C:\QtSDK\mingw\bin;C:\QtSDK\Desktop\Qt\4.8.1\mingw\bin;AppData\Local\Programs\Git\bin;%SystemRoot%\system32;%SystemRoot%;%SystemRoot%\System32\Wbem;%SYSTEMROOT%\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Microsoft Application Virtualization Client;C:\Program Files (x86)\QuickTime\QTSystem\;C:\Program Files (x86)\Google\Google Apps Sync\;C:\Program Files (x86)\PuTTY
+set PATH=C:\Qt\Qt5.1.0\5.1.0\mingw48_32\bin;C:\Qt\Qt5.1.0\Tools\mingw48_32\bin;C:\Program Files (x86)\Git\bin;%SystemRoot%\system32;%SystemRoot%;%SystemRoot%\System32\Wbem;%SYSTEMROOT%\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Microsoft Application Virtualization Client;C:\Program Files (x86)\QuickTime\QTSystem\;C:\Program Files (x86)\Google\Google Apps Sync\;C:\Program Files (x86)\PuTTY
 
 cd \ws-git\dunnart\editor
 

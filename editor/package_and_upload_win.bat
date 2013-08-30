@@ -1,13 +1,12 @@
-copy C:\QtSDK\mingw\bin\libgcc_s_dw2-1.dll ..\build
-copy C:\QtSDK\mingw\bin\mingwm10.dll ..\build
+copy C:\Qt\Qt5.1.0\Tools\mingw48_32\bin\libgcc_s_dw2-1.dll ..\build
 
-copy C:\QtSDK\Desktop\Qt\4.8.1\mingw\bin\QtCore4.dll ..\build
-copy C:\QtSDK\Desktop\Qt\4.8.1\mingw\bin\QtGui4.dll ..\build
-copy C:\QtSDK\Desktop\Qt\4.8.1\mingw\bin\QtSvg4.dll ..\build
-copy C:\QtSDK\Desktop\Qt\4.8.1\mingw\bin\QtXml4.dll ..\build
+copy C:\Qt\Qt5.1.0\5.1.0\mingw48_32\bin\QtCore4.dll ..\build
+copy C:\Qt\Qt5.1.0\5.1.0\mingw48_32\bin\QtGui4.dll ..\build
+copy C:\Qt\Qt5.1.0\5.1.0\mingw48_32\bin\QtSvg4.dll ..\build
+copy C:\Qt\Qt5.1.0\5.1.0\mingw48_32\bin\QtXml4.dll ..\build
 
-xcopy /y C:\QtSDK\Desktop\Qt\4.8.1\mingw\plugins\imageformats ..\build\plugins\imageformats\
-xcopy /y C:\QtSDK\Desktop\Qt\4.8.1\mingw\plugins\iconengines ..\build\plugins\iconengines\
+xcopy /y C:\Qt\Qt5.1.0\5.1.0\mingw48_32\plugins\imageformats ..\build\plugins\imageformats\
+xcopy /y C:\Qt\Qt5.1.0\5.1.0\mingw48_32\plugins\iconengines ..\build\plugins\iconengines\
 
 del /q ..\build\*.a
 
