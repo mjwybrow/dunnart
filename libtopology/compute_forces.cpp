@@ -22,6 +22,7 @@
 /*
  * Method body and support routines for topology::TopologyConstraints::computeForces.
  */
+#include <cstring>
 #include <valarray>
 
 #include "libvpsc/assertions.h"

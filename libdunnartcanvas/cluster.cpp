@@ -565,7 +565,7 @@ void Cluster::routerMove(void)
         {
             return;
         }
-        Polygon poly = polygon();
+        Avoid::Polygon poly = polygon();
         avoidClusterRef->setNewPoly(poly);
     }
     else
@@ -841,7 +841,7 @@ QDomElement Cluster::to_QDomElement(const unsigned int subset,
 }
 
 
-Polygon Cluster::polygon(void) const
+Avoid::Polygon Cluster::polygon(void) const
 {
     Avoid::Polygon poly(psn);
     poly._id = (int) m_internal_id;

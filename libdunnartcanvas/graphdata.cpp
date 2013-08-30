@@ -704,7 +704,7 @@ void resolveOverlappingRectangles(Rectangles &rs, vpsc::Dim dim) {
         vpsc.solve();
     } catch (char *str) {
         std::cerr<<str<<std::endl;
-        for(Rectangles::iterator r=rs.begin();r!=rs.end();++r) {
+        for(vpsc::Rectangles::iterator r=rs.begin();r!=rs.end();++r) {
             std::cerr << **r <<std::endl;
         }
     }
@@ -804,7 +804,7 @@ void GraphData::generateRoutes() {
             continue;
         Avoid::ConnRef *connRef;
         unsigned int connID = conn_vec[i]->internalId();
-        Rectangle* r0=rs[e.first], *r1=rs[e.second];
+        vpsc::Rectangle* r0=rs[e.first], *r1=rs[e.second];
         Avoid::Point srcPt(r0->getCentreX(),r0->getCentreY());
         Avoid::Point dstPt(r1->getCentreX(),r1->getCentreY());
 #ifdef PATHDEBUG
@@ -930,7 +930,7 @@ unsigned GraphData::getConnectionPoint(const CPoint& connPointInfo)
 
     double handleSize=0.1;
     double x,X,y,Y,cx,cy;
-    Rectangle *r=rs[nodeID];
+    vpsc::Rectangle *r=rs[nodeID];
     x = connPointInfo.x - handleSize/2.0;
     y = connPointInfo.y - handleSize/2.0;
     X = x + handleSize;
@@ -941,7 +941,7 @@ unsigned GraphData::getConnectionPoint(const CPoint& connPointInfo)
     // create dummy node for start handle and constraints to
     // position dummy node relative to centre of node
     unsigned dummyNodeID=rs.size();
-    rs.push_back(new Rectangle(x,X,y,Y,true));
+    rs.push_back(new vpsc::Rectangle(x,X,y,Y,true));
     ccs.push_back(new cola::SeparationConstraint(vpsc::XDIM, nodeID,
                 dummyNodeID, cx, true));
     ccs.push_back(new cola::SeparationConstraint(vpsc::YDIM, nodeID,
@@ -968,7 +968,7 @@ size_t GraphData::shapeToNode(ShapeObj* shape) {
         qWarning("dummy node, size<1 found - allowing overlap");
         allowOverlap=true;
     }
-    Rectangle *r = new Rectangle(rect.left(), rect.right(),
+    vpsc::Rectangle *r = new vpsc::Rectangle(rect.left(), rect.right(),
             rect.top(), rect.bottom(), allowOverlap);
     qWarning("Node id=%d, (x,y)=(%f,%f), (w,h)=%f,%f",
             shape->internalId(),r->getCentreX(), r->getCentreY(),

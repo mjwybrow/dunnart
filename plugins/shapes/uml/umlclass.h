@@ -79,7 +79,7 @@
 using namespace dunnart;
 
 
-enum UML_Param_Mode { UNSPECIFIED, IN, OUT };
+enum UML_Param_Mode { UNSPECIFIED, PARAM_IN, PARAM_OUT };
 
 struct Attribute {
     bool is_public;

@@ -137,7 +137,7 @@ void ClassShape::initWithXMLProperties(Canvas *canvas,
                     
                     if (param.hasAttribute("mode"))
                     {
-                        p->mode = (param.attribute("mode") == "in") ? IN : OUT;
+                        p->mode = (param.attribute("mode") == "in") ? PARAM_IN : PARAM_OUT;
                     }
 					else 
                     {
@@ -323,13 +323,13 @@ void ClassShape::update_contents(UML_Class_Edit_Type edit_type, const std::vecto
                     //optionally an 'in' or 'out' first.
                     if (*s == 'i' && *(s+1) == 'n')
                     {
-                        methods[i].params[j].mode = IN;
+                        methods[i].params[j].mode = PARAM_IN;
                         s += 2;
                         while (*s == ' ') s++;
                     }
                     else if (*s == 'o' && *(s+1) == 'u' && *(s+2) == 't')
                     {
-                        methods[i].params[j].mode = OUT;
+                        methods[i].params[j].mode = PARAM_OUT;
                         s += 3;
                         while (*s == ' ') s++;
                     }
@@ -533,9 +533,9 @@ int ClassShape::get_longest_text_width(UML_Class_Abbrev_Mode mode)
             for (j = 0; j < (int)methods[i].params.size(); j++)
             {
                 s += j == 0 ? "" : ", ";
-                if (methods[i].params[j].mode == IN)
+                if (methods[i].params[j].mode == PARAM_IN)
                     s += "in ";
-                if (methods[i].params[j].mode == OUT)
+                if (methods[i].params[j].mode == PARAM_OUT)
                     s += "out ";
                 s += methods[i].params[j].name;
                 if (mode < NO_PARAM_TYPES)
@@ -684,9 +684,9 @@ void UMLClass::draw(QPixmap *surface, const int x, const int y,
                 for (j = 0; j < methods[i].params.size(); j++)
                 {
                     s += j == 0 ? "" : ", ";
-                    if (methods[i].params[j].mode == IN)
+                    if (methods[i].params[j].mode == PARAM_IN)
                         s += "in ";
-                    if (methods[i].params[j].mode == OUT)
+                    if (methods[i].params[j].mode == PARAM_OUT)
                         s += "out ";
                     s += methods[i].params[j].name;
                     if (mode < NO_PARAM_TYPES)
@@ -747,9 +747,9 @@ QString ClassShape::method_to_string(int i, UML_Class_Abbrev_Mode mode)
         for (j = 0; j < methods[i].params.size(); j++)
         {
             s += j == 0 ? "" : ", ";
-            if (methods[i].params[j].mode == IN)
+            if (methods[i].params[j].mode == PARAM_IN)
                 s += "in ";
-            if (methods[i].params[j].mode == OUT)
+            if (methods[i].params[j].mode == PARAM_OUT)
                 s += "out ";
             s += methods[i].params[j].name;
             if (mode < NO_PARAM_TYPES)
@@ -845,7 +845,7 @@ QDomElement ClassShape::to_QDomElement(const unsigned int subset,
                 if (methods[i].params[j].mode != UNSPECIFIED)
                 {
                     newProp(param_node, "mode", 
-                            methods[i].params[j].mode == IN ? "in" : "out");
+                            methods[i].params[j].mode == PARAM_IN ? "in" : "out");
                 }
                 newProp(param_node, "name", methods[i].params[j].name);
                 newProp(param_node, "type", methods[i].params[j].type);

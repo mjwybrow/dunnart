@@ -378,7 +378,7 @@ QDomElement TextShape::to_QDomElement(const unsigned int subset,
 }
 
 
-Polygon TextShape::polygon(void) const
+Avoid::Polygon TextShape::polygon(void) const
 {
     double sx = x();
     double sy = y();

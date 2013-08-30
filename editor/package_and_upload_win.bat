@@ -1,9 +1,16 @@
 copy C:\Qt\Qt5.1.0\Tools\mingw48_32\bin\libgcc_s_dw2-1.dll ..\build
 
-copy C:\Qt\Qt5.1.0\5.1.0\mingw48_32\bin\QtCore4.dll ..\build
-copy C:\Qt\Qt5.1.0\5.1.0\mingw48_32\bin\QtGui4.dll ..\build
-copy C:\Qt\Qt5.1.0\5.1.0\mingw48_32\bin\QtSvg4.dll ..\build
-copy C:\Qt\Qt5.1.0\5.1.0\mingw48_32\bin\QtXml4.dll ..\build
+copy "C:\Qt\Qt5.1.0\5.1.0\mingw48_32\bin\libwinpthread-1.dll" ..\build
+copy "C:\Qt\Qt5.1.0\5.1.0\mingw48_32\bin\libstdc++-6.dll" ..\build
+copy C:\Qt\Qt5.1.0\5.1.0\mingw48_32\bin\icuin51.dll ..\build
+copy C:\Qt\Qt5.1.0\5.1.0\mingw48_32\bin\icudt51.dll ..\build
+copy C:\Qt\Qt5.1.0\5.1.0\mingw48_32\bin\icuuc51.dll ..\build
+copy C:\Qt\Qt5.1.0\5.1.0\mingw48_32\bin\Qt5Core.dll ..\build
+copy C:\Qt\Qt5.1.0\5.1.0\mingw48_32\bin\Qt5Widgets.dll ..\build
+copy C:\Qt\Qt5.1.0\5.1.0\mingw48_32\bin\Qt5Gui.dll ..\build
+copy C:\Qt\Qt5.1.0\5.1.0\mingw48_32\bin\Qt5Svg.dll ..\build
+copy C:\Qt\Qt5.1.0\5.1.0\mingw48_32\bin\Qt5Xml.dll ..\build
+copy C:\Qt\Qt5.1.0\5.1.0\mingw48_32\bin\Qt5PrintSupport.dll ..\build
 
 xcopy /y C:\Qt\Qt5.1.0\5.1.0\mingw48_32\plugins\imageformats ..\build\plugins\imageformats\
 xcopy /y C:\Qt\Qt5.1.0\5.1.0\mingw48_32\plugins\iconengines ..\build\plugins\iconengines\
