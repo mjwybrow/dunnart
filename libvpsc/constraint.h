@@ -23,7 +23,6 @@
 #ifndef VPSC_CONSTRAINT_H
 #define VPSC_CONSTRAINT_H
 
-#include <cstring>
 #include <iostream>
 #include <vector>
 

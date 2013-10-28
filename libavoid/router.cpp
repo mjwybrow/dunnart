@@ -67,7 +67,8 @@ Router::Router(const unsigned int flags)
       m_allows_polyline_routing(false),
       m_allows_orthogonal_routing(false),
       m_static_orthogonal_graph_invalidated(true),
-      m_in_crossing_rerouting_stage(false)
+      m_in_crossing_rerouting_stage(false),
+      m_settings_changes(false)
 {
     // At least one of the Routing modes must be set.
     COLA_ASSERT(flags & (PolyLineRouting | OrthogonalRouting));
@@ -625,11 +626,12 @@ void Router::processActions(void)
 bool Router::processTransaction(void)
 {
     // If SimpleRouting, then don't update here.
-    if ((actionList.empty() && (m_hyperedge_rerouter.count() == 0)) ||
-            SimpleRouting)
+    if ((actionList.empty() && (m_hyperedge_rerouter.count() == 0) &&
+         (m_settings_changes == false)) || SimpleRouting)
     {
         return false;
     }
+    m_settings_changes = false;
 
     processActions();
 
@@ -978,12 +980,34 @@ void Router::rerouteAndCallbackConnectors(void)
     // Perform centring and nudging for orthogonal routes.
     improveOrthogonalRoutes(this);
 
+    // Find a list of all the deleted connectors in hyperedges.
+    HyperedgeNewAndDeletedObjectLists changedHyperedgeObjs = 
+            m_hyperedge_improver.newAndDeletedObjectLists();
+    ConnRefList deletedConns = changedHyperedgeObjs.deletedConnectorList;
+    for (size_t index = 0; index < m_hyperedge_rerouter.count(); ++index)
+    {
+        changedHyperedgeObjs = 
+                m_hyperedge_rerouter.newAndDeletedObjectLists(index);
+        deletedConns.merge(changedHyperedgeObjs.deletedConnectorList);
+    }
+
     // Alert connectors that they need redrawing.
     fin = reroutedConns.end();
     for (ConnRefList::const_iterator i = reroutedConns.begin(); i != fin; ++i) 
     {
-        (*i)->m_needs_repaint = true;
-        (*i)->performCallback();
+        ConnRef *conn = *i;
+        
+        // Skip hyperedge connectors which have been deleted.
+        ConnRefList::iterator findIt = std::find(
+                deletedConns.begin(), deletedConns.end(), conn);
+        if (findIt != deletedConns.end())
+        {
+            // Connector deleted, skip.
+            continue;
+        }
+
+        conn->m_needs_repaint = true;
+        conn->performCallback();
     }
 
     // Progress reporting.
@@ -1827,6 +1851,7 @@ void Router::setRoutingParameter(const RoutingParameter parameter,
     {
         m_routing_parameters[parameter] = value;
     }
+    m_settings_changes = true;
 }
 
 
@@ -1841,6 +1866,7 @@ void Router::setRoutingOption(const RoutingOption option, const bool value)
 {
     COLA_ASSERT(option < lastRoutingOptionMarker);
     m_routing_options[option] = value;
+    m_settings_changes = true;
 }
 
 

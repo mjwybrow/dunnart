@@ -711,7 +711,8 @@ class AVOID_EXPORT Router {
         //!         during hyperedge improvement.
         //!
         //! This method will only return information once the router has
-        //! processed the transaction.
+        //! processed the transaction.  You should read this information 
+        //! before processTransaction() is called again.
         //!
         //! After calling this you should no longer refer to any of the
         //! objects in the "deleted" lists --- the router will delete these 
@@ -827,6 +828,8 @@ class AVOID_EXPORT Router {
         
         bool m_static_orthogonal_graph_invalidated;
         bool m_in_crossing_rerouting_stage;
+
+        bool m_settings_changes;
     
         HyperedgeImprover m_hyperedge_improver;
 };

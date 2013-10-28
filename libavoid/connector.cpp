@@ -105,6 +105,8 @@ ConnRef::ConnRef(Router *router, const ConnEnd& src, const ConnEnd& dst,
 
 ConnRef::~ConnRef()
 {
+    COLA_ASSERT(m_router);
+
     if (m_router->m_currently_calling_destructors == false)
     {
         err_printf("ERROR: ConnRef::~ConnRef() shouldn't be called directly.\n");
@@ -606,6 +608,12 @@ void ConnRef::set_route(const PolyLine& route)
     m_display_route.ps = route.ps;
 
     //_display_route.clear();
+}
+
+void ConnRef::setFixedExistingRoute(void)
+{
+    COLA_ASSERT(m_route.size() >= 2);
+    m_has_fixed_route = true;
 }
 
 void ConnRef::setFixedRoute(const PolyLine& route)

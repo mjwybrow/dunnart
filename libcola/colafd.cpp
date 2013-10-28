@@ -21,7 +21,6 @@
  *
 */
 
-#include <cstring>
 #include <vector>
 #include <cmath>
 #include <limits>
@@ -1222,8 +1221,7 @@ void ConstrainedFDLayout::outputInstanceToSVG(std::string instanceName)
         {
             if (G[i][j] == 1)
             {
-                fprintf(fp, "    es.push_back(std::make_pair(%lu, %lu));\n",
-                        (unsigned long) i, (unsigned long) j);
+                fprintf(fp, "    es.push_back(std::make_pair(%lu, %lu));\n", i, j);
             }
         }
     }

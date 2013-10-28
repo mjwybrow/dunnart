@@ -282,6 +282,7 @@ void HyperedgeImprover::clear(void)
     m_deleted_junctions.clear();
     m_new_connectors.clear();
     m_deleted_connectors.clear();
+    m_changed_connectors.clear();
     m_debug_count = 0;
 }
 
@@ -309,8 +310,9 @@ void HyperedgeImprover::createShiftSegmentsForDimensionExcluding(
 {
     if (edge->hasOrientation(dim) && ! edge->zeroLength())
     {
-        bool immovable = (edge->ends.first->edges.size() == 1) || 
-                (edge->ends.second->edges.size() == 1);
+        bool immovable = (edge->ends.first->isImmovable() || 
+                edge->ends.second->isImmovable());
+
         HyperedgeShiftSegment *newSegment =
                 new HyperedgeShiftSegment(edge->ends.first,
                 edge->ends.second, dim, immovable);
@@ -466,7 +468,7 @@ void HyperedgeImprover::removeZeroLengthEdges(HyperedgeTreeNode *self,
         HyperedgeTreeEdge *edge = *curr;
         if (edge != ignored)
         {
-            if (edge->zeroLength())
+            if (!edge->hasFixedRoute && edge->zeroLength())
             {
                 HyperedgeTreeNode *other = edge->followFrom(self);
                 HyperedgeTreeNode *target = NULL;
@@ -490,6 +492,16 @@ void HyperedgeImprover::removeZeroLengthEdges(HyperedgeTreeNode *self,
                         m_can_make_major_changes)
                 {
                     // Only delete junctions if we can make major changes.
+
+#ifdef MAJOR_HYPEREDGE_IMPROVEMENT_DEBUG
+                    fprintf(stderr, "HyperedgeImprover: Coalescing junctions "
+                            "%u and %u:\n", self->junction->id(), 
+                            other->junction->id());
+                    fprintf(stderr, "                   Deleted junction %u\n",
+                            other->junction->id());
+                    fprintf(stderr, "                   Deleted connector %u\n",
+                            edge->conn->id());
+#endif
                     
                     // Delete one of the junctions.
                     m_deleted_junctions.push_back(other->junction);
@@ -791,16 +803,6 @@ void HyperedgeImprover::execute(bool canMakeMajorChanges)
             jBack = connRef->m_dst_connend->junction();
         }
 
-        if (jFront && jFront->positionFixed())
-        {
-            jFront = NULL;
-        }
-
-        if (jBack && jBack->positionFixed())
-        {
-            jBack = NULL;
-        }
-
         if ( ! jFront && ! jBack )
         {
             ++connRefIt;
@@ -896,35 +898,14 @@ void HyperedgeImprover::execute(bool canMakeMajorChanges)
         node->removeOtherJunctionsFrom(NULL, m_hyperedge_tree_roots);
     }
 
-    // Remove hyperedges containing one or more fixed route connectors.
-    // We may do something more clever with these in future.
-    JunctionRef *treeRootToErase = NULL;
-    for (JunctionSet::iterator curr = m_hyperedge_tree_roots.begin();
-            curr != m_hyperedge_tree_roots.end(); ++curr)
-    {
-        if (treeRootToErase)
-        {
-            m_hyperedge_tree_roots.erase(treeRootToErase);
-            treeRootToErase = NULL;
-        }
-
-        HyperedgeTreeNode *node = m_hyperedge_tree_junctions[*curr];
-        if (node->hasFixedRouteConnectors(NULL))
-        {
-            treeRootToErase = *curr;
-        }
-    }
-    if (treeRootToErase)
-    {
-        m_hyperedge_tree_roots.erase(treeRootToErase);
-        treeRootToErase = NULL;
-    }
-
     m_router->timers.Register(tmHyperedgeImprove, timerStart);
 
     // Debug output.
     unsigned int versionNumber = 1;
     outputHyperedgesToSVG(versionNumber);
+
+    // Remove zero length edges.
+    removeZeroLengthEdges();
 
     // Move junctions to divergence points.
     moveJunctionsAlongCommonEdges();
@@ -972,7 +953,10 @@ void HyperedgeImprover::execute(bool canMakeMajorChanges)
         {
             HyperedgeTreeNode *treeRoot = m_hyperedge_tree_junctions[*curr];
             COLA_ASSERT(treeRoot);
-            treeRoot->updateConnEnds(NULL, m_router);
+            treeRoot->updateConnEnds(NULL, m_router, m_changed_connectors);
+        
+            // Validate the rewrtten connections.
+            treeRoot->validateHyperedge(NULL, 0);
         }
     }
 
@@ -1029,6 +1013,7 @@ HyperedgeNewAndDeletedObjectLists
     result.deletedJunctionList = m_deleted_junctions;
     result.newConnectorList = m_new_connectors;
     result.deletedConnectorList = m_deleted_connectors;
+    result.changedConnectorList = m_changed_connectors;
 
     return result;
 }
@@ -1062,6 +1047,11 @@ HyperedgeTreeNode *HyperedgeImprover::moveJunctionAlongCommonEdge(
             // Don't shift junctions onto other junctions.
             continue;
         }
+        if (currEdge->hasFixedRoute)
+        {
+            // Don't move junctions along fixed edges.
+            continue;
+        }
 
         // The current edge is a common edge we are looking to shift along.
         commonEdges.push_back(currEdge);
@@ -1077,6 +1067,13 @@ HyperedgeTreeNode *HyperedgeImprover::moveJunctionAlongCommonEdge(
             }
             
             HyperedgeTreeEdge *otherEdge = *curr2;
+            if (otherEdge->hasFixedRoute)
+            {
+                // Don't shift junctions along fixed route connectors.
+                otherEdges.push_back(otherEdge);
+                continue;
+            }
+            
             HyperedgeTreeNode *otherNode = otherEdge->followFrom(self);
             if (otherNode->point == currNode->point)
             {
@@ -1105,8 +1102,13 @@ HyperedgeTreeNode *HyperedgeImprover::moveJunctionAlongCommonEdge(
                 otherEdges.push_back(otherEdge);
             }
         }
+
+        // For the purpose of these changes a junction is considered fixed
+        // only when not performing major improvements.
+        bool selfFixed = self->junction->positionFixed() && 
+                !m_can_make_major_changes;
         
-        if ((commonEdges.size() > 1) && (otherEdges.size() <= 1))
+        if ((commonEdges.size() > 1) && (otherEdges.size() <= 1) && !selfFixed)
         {
             // One of the common nodes becomes the target node, we move 
             // all connections from the other common nodes to this node.
@@ -1153,8 +1155,7 @@ HyperedgeTreeNode *HyperedgeImprover::moveJunctionAlongCommonEdge(
 
             // One of the common nodes becomes the target node, we move 
             // all connections from the other common nodes to this node.
-            // We also move the junction there and remove it from the 
-            // current node. 
+            // We will also create a new junction there.
             HyperedgeTreeNode *targetNode = commonEdges[0]->followFrom(self);
             for (size_t i = 1; i < commonEdges.size(); ++i)
             {
@@ -1164,20 +1165,18 @@ HyperedgeTreeNode *HyperedgeImprover::moveJunctionAlongCommonEdge(
                 delete thisNode;
                 delete commonEdges[i];
             }
-            targetNode->junction = self->junction;
-            self->junction = NULL;
 
-            // Then we create a replacement junction at the current node for
+            // Create the additional junction at the target node for
             // the otherEdges to attach to.
-            self->junction = new JunctionRef(m_router, self->point);
-            m_router->removeObjectFromQueuedActions(self->junction);
-            self->junction->makeActive();
-            m_hyperedge_tree_junctions[self->junction] = self;
+            targetNode->junction = new JunctionRef(m_router, targetNode->point);
+            m_router->removeObjectFromQueuedActions(targetNode->junction);
+            targetNode->junction->makeActive();
+            m_hyperedge_tree_junctions[targetNode->junction] = targetNode;
             nodeMapHasChanged = true;
-            m_new_junctions.push_back(self->junction);
+            m_new_junctions.push_back(targetNode->junction);
 
-            // And we create a new connector between the moved junction 
-            // and the new junction at the current node.
+            // And we create a new connector between the original junction 
+            // and the new junction.
             ConnRef *conn = new ConnRef(m_router);
             m_router->removeObjectFromQueuedActions(conn);
             conn->makeActive();
@@ -1189,7 +1188,17 @@ HyperedgeTreeNode *HyperedgeImprover::moveJunctionAlongCommonEdge(
             commonEdges[0]->conn = conn;
             m_new_connectors.push_back(conn);
 
-            newSelf = targetNode;
+#ifdef MAJOR_HYPEREDGE_IMPROVEMENT_DEBUG
+            fprintf(stderr, "HyperedgeImprover: Split junction %u:\n",
+                    self->junction->id());
+            fprintf(stderr, "                   Added junction %u\n",
+                    targetNode->junction->id());
+            fprintf(stderr, "                   Added connector %u "
+                    "(between junctions %u and %u)\n", conn->id(),
+                    self->junction->id(), targetNode->junction->id());
+#endif
+
+            newSelf = self;
 
             break;
         }

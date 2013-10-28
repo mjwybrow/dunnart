@@ -67,12 +67,16 @@ typedef std::vector<VertexSet> VertexSetVector;
 //! the HyperedgeRerouter::newAndDeletedObjectLists() method for each 
 //! hyperedge being fully rerouted.
 //!
+//! changedConnectorList will only be used for hyperedge improvement and will 
+//! always be empty from hyperedge rerouting.
+//!
 struct HyperedgeNewAndDeletedObjectLists
 {
         JunctionRefList  newJunctionList;
         ConnRefList      newConnectorList;
         JunctionRefList  deletedJunctionList;
         ConnRefList      deletedConnectorList;
+        ConnRefList      changedConnectorList;
 };
 
 
@@ -149,7 +153,8 @@ class AVOID_EXPORT HyperedgeRerouter
         //!         during hyperedge improvement.
         //!
         //! This method will only return information once the router has
-        //! processed the transaction.
+        //! processed the transaction.  You should read this information 
+        //! before processTransaction() is called again.
         //!
         //! After calling this you should no longer refer to any of the
         //! objects in the "deleted" lists --- the router will delete these 
@@ -162,14 +167,15 @@ class AVOID_EXPORT HyperedgeRerouter
         HyperedgeNewAndDeletedObjectLists newAndDeletedObjectLists(
                 size_t index) const;
 
-    private:
-        friend class Router;
-
         // @brief  The number of hyperedges that are being or have been
         //         rerouted.
         // @return The number of rerouted hyperedges.
         //
         size_t count(void) const;
+
+    private:
+        friend class Router;
+
         // @brief  Sets the router instance that this object operates on.
         //
         // @param[in] router  The router instance to operate on.

@@ -136,6 +136,7 @@ class AStarPathPrivate
         // For determining estimated cost target.
         std::vector<VertInf *> m_cost_targets;
         std::vector<unsigned int> m_cost_targets_directions;
+        std::vector<double> m_cost_targets_displacements;
 };
 
 
@@ -225,11 +226,22 @@ static void constructPolygonPath(Polygon& connRoute, VertInf *inf2,
     routeSize -= 3;
     for (ANode *curr = inf1Node; curr != NULL; curr = curr->prevNode)
     {
+        // For connection pins, we stop and don't include the fake shape 
+        // center as part of this path.
+        bool isConnectionPin = curr->inf->id.isConnectionPin();
+
         if (!simplified)
         {
-            // Add new point.
+            // If this is non-simplified, we don't need to do anything 
+            // clever and can simply add the new point.
             connRoute.ps[routeSize] = curr->inf->point;
             routeSize -= 1;
+            
+            if (isConnectionPin)
+            {
+                // Stop at the connection pin.
+                break;
+            }
             continue;
         }
             
@@ -249,6 +261,12 @@ static void constructPolygonPath(Polygon& connRoute, VertInf *inf2,
         {
             // The last point is inline with this one, so update it.
             connRoute.ps[routeSize + 1] = curr->inf->point;
+        }
+            
+        if (isConnectionPin)
+        {
+            // Stop at the connection pin.
+            break;
         }
     }
 
@@ -794,6 +812,11 @@ double AStarPathPrivate::estimatedCost(ConnRef *lineRef, const Point *last,
     {
         double iEstimate = estimatedCostSpecific(lineRef, last,
                 curr, m_cost_targets[i], m_cost_targets_directions[i]);
+        
+        // Add on the distance to the real target, otherwise this difference
+        // might may make the comparisons unfair if they vary between targets.
+        iEstimate += m_cost_targets_displacements[i];
+        
         estimate = std::min(estimate, iEstimate);
     }
     return estimate;
@@ -860,9 +883,11 @@ void AStarPathPrivate::determineEndPointLocation(double dist, VertInf *start,
     Point otherPoint = other->point;
     unsigned int thisDirs = orthogonalDirection(otherPoint, target->point);
     COLA_ASSERT(orthogonalDirectionsCount(thisDirs) > 0);
+    double displacement = manhattanDist(otherPoint, target->point);
 
     m_cost_targets.push_back(other);
     m_cost_targets_directions.push_back(thisDirs);
+    m_cost_targets_displacements.push_back(displacement);
 
 #ifdef ESTIMATED_COST_DEBUG
     fprintf(stderr," - %g %g ", otherPoint.x, otherPoint.y);
@@ -930,10 +955,10 @@ void AStarPathPrivate::search(ConnRef *lineRef, VertInf *src, VertInf *tar, Vert
                 {
                     EdgeInf *edge = *it;
                     VertInf *other = edge->otherVert(replacementTar);
-                    if ((other == replacementTar) || 
-                            (other->point == replacementTar->point))
+                    if ((other == tar) || 
+                            (other->point == tar->point))
                     {
-                        // Ignore edge we came from, or zer-length edges.
+                        // Ignore edge we came from, or zero-length edges.
                         continue;
                     }
 
@@ -958,6 +983,7 @@ void AStarPathPrivate::search(ConnRef *lineRef, VertInf *src, VertInf *tar, Vert
         // directions for the purpose of cost estimations.
         m_cost_targets_directions.push_back(CostDirectionN |
                 CostDirectionE | CostDirectionS | CostDirectionW);
+        m_cost_targets_displacements.push_back(0.0);
     }
 
 #ifdef ESTIMATED_COST_DEBUG
@@ -1010,7 +1036,7 @@ void AStarPathPrivate::search(ConnRef *lineRef, VertInf *src, VertInf *tar, Vert
             VertID vID(pnt.id, pnt.vn, props);
 
 #ifdef PATHDEBUG
-            db_printf("/// %d %d %d\n", pnt.id, (int) isShape, pnt.vn);
+            db_printf("/// %d %d\n", pnt.id, pnt.vn);
 #endif
             VertInf *curr = router->vertices.getVertexByID(vID);
             COLA_ASSERT(curr != NULL);
@@ -1297,19 +1323,36 @@ void AStarPathPrivate::search(ConnRef *lineRef, VertInf *src, VertInf *tar, Vert
                 // can go the *really* long way round.
             }
 
-            node.g = bestNode->g + cost(lineRef, edgeDist, bestNodeInf, 
-                    node.inf, bestNode->prevNode);
-
-            // Calculate the Heuristic.
-            if (node.inf == tar)
+            // Figure out if we are at the target or at one of the cost targets.
+            bool atTarget = (node.inf == tar);
+            if (!atTarget)
             {
-                // If the current node is our target, then it should have no
-                // further cost.
-                node.h = 0;
+                for (size_t i = 0; i < m_cost_targets.size(); ++i)
+                {
+                    if ((bestNode->inf == m_cost_targets[i]) ||
+                            (node.inf == tar))
+                    {
+                        atTarget = true;
+                        break;
+                    }
+                }
+            }
+
+            if (atTarget)
+            {
+                // If the current node is our target or a connection point, 
+                // then it should have no further cost and the heuristic 
+                // should be zero.
                 node.g = bestNode->g;
+                node.h = 0;
             }
             else
             {
+                // Calculate the cost of this step.
+                node.g = bestNode->g + cost(lineRef, edgeDist, bestNodeInf, 
+                        node.inf, bestNode->prevNode);
+
+                // Calculate the Heuristic.
                 node.h = estimatedCost(lineRef, &(bestNodeInf->point),
                         node.inf->point);
             }
