@@ -1492,6 +1492,7 @@ void Connector::paint(QPainter *painter,
     }
 
     QPen pen(m_colour);
+    pen.setCosmetic(true);
     if (m_is_dotted)
     {
         QVector<qreal> dashes;
@@ -1501,13 +1502,6 @@ void Connector::paint(QPainter *painter,
     painter->setPen(pen);
     painter->drawPath(painterPath());
 
-    // Draw the connector's label.
-    // XXX We need to work on positioning labels.
-    painter->setPen(Qt::black);
-    painter->setFont(canvas()->canvasFont());
-    painter->setRenderHint(QPainter::TextAntialiasing, true);
-    painter->drawText(painterPath().pointAtPercent(0.25), m_label);
-    
     // Add the Arrowhead.
     if (m_is_directed)
     {
@@ -1523,6 +1517,13 @@ void Connector::paint(QPainter *painter,
         }
         painter->drawPath(m_arrow_path);
     }
+
+    // Draw the connector's label.
+    // XXX We need to work on positioning labels.
+    painter->setPen(Qt::black);
+    painter->setFont(canvas()->canvasFont());
+    painter->setRenderHint(QPainter::TextAntialiasing, true);
+    painter->drawText(painterPath().pointAtPercent(0.25), m_label);
 }
 
 

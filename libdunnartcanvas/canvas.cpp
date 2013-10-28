@@ -555,7 +555,9 @@ void Canvas::drawBackground(QPainter *painter, const QRectF& rect)
     painter->fillRect(rect, m_opt_canvas_background_colour);
     painter->fillRect(m_expanded_page, QColor(200, 200, 200));
     painter->fillRect(m_page, QColor(255, 255, 255));
-    painter->setPen(QColor(110, 110, 110));
+    QPen pen(QColor(110, 110, 110));
+    pen.setCosmetic(true);
+    painter->setPen(pen);
     painter->drawRect(m_expanded_page);
 }
 

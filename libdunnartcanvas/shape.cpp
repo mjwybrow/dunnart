@@ -350,7 +350,11 @@ void ShapeObj::paint(QPainter *painter,
     }
 #endif
 
-    painter->setPen(strokeColour());
+    QPen pen;
+    pen.setCosmetic(true);
+    pen.setColor(strokeColour());
+    
+    painter->setPen(pen);
     painter->setBrush(QBrush(fillColour()));
     
     painter->drawPath(painterPath());
