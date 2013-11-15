@@ -565,8 +565,7 @@ QDomElement Distribution::to_QDomElement(const unsigned int subset,
 
         newProp(node, x_direction, (int) type);
 
-        sprintf(value, "%g", space);
-        newProp(node, x_sepDistance, value);
+        newProp(node, x_sepDistance, space);
 
         newProp(node, "id", idString());
     }
