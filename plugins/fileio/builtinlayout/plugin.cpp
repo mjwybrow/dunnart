@@ -291,7 +291,7 @@ void BuiltinLayoutFileIOPlugin::createFromLayoutXML(Canvas *canvas,
                 // Set dynamic properties for any attributes not recognised and handled
                 // by Dunnart.
                 QDomNamedNodeMap attrs = node.attributes();
-                for (uint i = 0; i < attrs.length(); ++i)
+                for (int i = 0; i < attrs.length(); ++i)
                 {
                     QDomNode prop = attrs.item(i);
                     QString name = prop.localName();

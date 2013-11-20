@@ -553,7 +553,6 @@ void Distribution::paint(QPainter *painter,
 QDomElement Distribution::to_QDomElement(const unsigned int subset, 
         QDomDocument& doc)
 {
-    char value[50];
     QDomElement node = doc.createElement("dunnart:node");
 
     if (subset & XMLSS_IOTHER)

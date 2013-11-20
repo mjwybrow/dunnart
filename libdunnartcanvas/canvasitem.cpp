@@ -171,7 +171,7 @@ void CanvasItem::initWithXMLProperties(Canvas *canvas,
     // Set dynamic properties for any attributes not recognised and handled
     // by Dunnart.
     QDomNamedNodeMap attrs = node.attributes();
-    for (uint i = 0; i < attrs.length(); ++i)
+    for (int i = 0; i < attrs.length(); ++i)
     {
         QDomNode prop = attrs.item(i);
         QString name = prop.localName();
@@ -345,6 +345,7 @@ QPainterPath CanvasItem::shape() const
 void CanvasItem::paint(QPainter *painter, 
         const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    Q_UNUSED (painter)
     Q_UNUSED (option)
     Q_UNUSED (widget)
     assert(painter->isActive());

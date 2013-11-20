@@ -272,7 +272,7 @@ void Separation::recreate(void)
     RelsList trels = relationships;
     qSort(trels.begin(), trels.end(), relationshipLessThan);
 
-    double bx, by, bw, bh, first, last, size = 12;
+    double bx, by, bw, bh, first = 0, last = 0, size = 12;
     
     if (relationships.empty())
     {

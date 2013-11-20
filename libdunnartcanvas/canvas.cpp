@@ -1044,6 +1044,7 @@ void Canvas::alignSelection(int type)
     CanvasItemList selected_items = selectedItems();
     beginUndoMacro(tr("Create Alignment"));
     Guideline *guide = createAlignment((atypes) type, selected_items);
+    Q_UNUSED(guide);
 
     // Delselect shapes so they can be moved by layout solver.
     deselectAll();
@@ -2516,9 +2517,6 @@ void Canvas::moveSelectionResizeHandle(const int index, const QPointF pos)
         ShapeObj *shape = dynamic_cast<ShapeObj *> (item);
         if (shape && !shape->sizeLocked())
         {
-            QRectF shapeBR = shape->boundingRect().adjusted(
-                    +BOUNDINGRECTPADDING, +BOUNDINGRECTPADDING,
-                    -BOUNDINGRECTPADDING, -BOUNDINGRECTPADDING);
             QPointF topLeft = m_selection_resize_info[ind].topLeft();
             QPointF bottomRight = m_selection_resize_info[ind].bottomRight();
 

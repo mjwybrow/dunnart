@@ -65,7 +65,7 @@ void ClassShape::initWithXMLProperties(Canvas *canvas,
     /* load class name, params, and methods from xml */
     QDomNodeList children = node.childNodes();
 
-    for (uint i = 0; i < children.length(); ++i)
+    for (int i = 0; i < children.length(); ++i)
     {
         QDomElement element = children.item(i).toElement();
         QString name = element.nodeName();
@@ -123,7 +123,7 @@ void ClassShape::initWithXMLProperties(Canvas *canvas,
 
             QDomNodeList params = element.childNodes();
 
-            for (uint i = 0; i < params.length(); ++i)
+            for (int i = 0; i < params.length(); ++i)
             {
                 QDomElement param = params.item(i).toElement();
 
@@ -499,7 +499,7 @@ void ClassShape::do_edit(UML_Class_Edit_Type edit_type)
 
 int ClassShape::get_longest_text_width(UML_Class_Abbrev_Mode mode)
 {
-    int i, j, longest, width;
+    int i, j, longest = 0, width = 0;
 
         QString s;
 	
@@ -904,7 +904,7 @@ void ClassShape::do_init()
 
 int ClassShape::get_min_width()
 {
-    int w;
+    int w=0;
     get_text_width(class_name, &w);
     return w+10;
 }

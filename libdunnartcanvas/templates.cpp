@@ -1045,8 +1045,8 @@ void BranchedTemplate::recalc_min_width_and_height(double &min_width,
         size_t gcount = 0; // number of shapes on the guide
         
         // calculate the bounds based on all the shapes attached to this guide:
-        double buffer = 15;
-        QRectF bounds = getAttachedObjectsBounds<ShapeObj *>(*curr, buffer, &gcount);
+        //double buffer = 15;
+        //QRectF bounds = getAttachedObjectsBounds<ShapeObj *>(*curr, buffer, &gcount);
         if (gcount > 0) 
         {
             num_vert_nodes++;

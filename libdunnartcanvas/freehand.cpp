@@ -405,7 +405,7 @@ Avoid::Polygon FreehandShape::polygon(void) const
 
     return p;
 #endif
-    return NULL;
+    return Avoid::Polygon();
 }
 
 

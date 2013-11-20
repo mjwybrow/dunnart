@@ -149,7 +149,7 @@ void Handle::reposition(void)
 {
     double sw = 0, sh = 0;
 
-    double nxpos, nypos;
+    double nxpos = 0, nypos = 0;
 
     CanvasItem *parent = dynamic_cast<CanvasItem *> (parentItem());
     if (parent == NULL)

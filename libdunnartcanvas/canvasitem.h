@@ -331,7 +331,7 @@ template <typename T>
 T essentialProp(const QDomElement& node, const QString& prop,
         const QString& nsURI = QString())
 {
-    T value;
+    T value = T();
     bool result = optionalProp(node, prop, value, nsURI);
 
     if (!result)

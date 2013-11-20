@@ -599,7 +599,7 @@ Rectangle FMMLayout :: calculate_bounding_rectangle(Graph& G,NodeArray<NodeAttri
  mathExtension M;
  Rectangle r;
  node v;
- double x_min,x_max,y_min,y_max,act_x_min,act_x_max,act_y_min,act_y_max;
+ double x_min=0,x_max=0,y_min=0,y_max=0,act_x_min,act_x_max,act_y_min,act_y_max;
  double max_boundary;//the maximum of half of the width and half of the height of
                      //each node; (needed to be able to tipp rectangles over without
                      //having access to the height and width of each node) 
@@ -745,7 +745,7 @@ void FMMLayout :: calculate_attractive_forces(Graph& G,NodeArray<NodeAttributes>
 double FMMLayout :: f_attr_scalar (double d,double ind_ideal_edge_length)
 {
   mathExtension M;
-  double s;
+  double s=0;
 
   if(forceModel() == fmFruchtermanReingold)  
      s =  d*d/(ind_ideal_edge_length*ind_ideal_edge_length*ind_ideal_edge_length);
