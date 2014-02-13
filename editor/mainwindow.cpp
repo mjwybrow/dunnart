@@ -37,10 +37,6 @@
 #include <QSettings>
 #include <QDir>
 
-#if defined(Q_OS_MAC) && defined(USE_MAC_TOOLBAR)
-#include <QMacNativeToolBar>
-#endif
-
 #include "mainwindow.h"
 #include "canvastabwidget.h"
 #include "application.h"
@@ -95,6 +91,8 @@ MainWindow::MainWindow(Application *app)
 
     // Set the window title.
     setWindowTitle("Dunnart");
+
+    setUnifiedTitleAndToolBarOnMac(true);
 
     m_tab_widget = new CanvasTabWidget(this);    
     connect(m_tab_widget, SIGNAL(currentCanvasChanged(Canvas*)),
@@ -395,14 +393,12 @@ MainWindow::MainWindow(Application *app)
     // This must be created after the geometry has been restored, otherwise
     // the toolbar can be hidden in weird ways.
     m_edit_toolbar = new QToolBar(tr("Edit toolbar"), this);
+    m_edit_toolbar->setObjectName("EditToolbar");
     m_edit_toolbar->setIconSize(QSize(24, 24));
     m_edit_toolbar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     m_edit_toolbar->setMovable(false);
     m_tab_widget->addEditToolBarActions(m_edit_toolbar);
-#if defined(Q_OS_MAC) && defined(USE_MAC_TOOLBAR)
-    QMacNativeToolBar *macToolBar = QtMacExtras::setNativeToolBar(m_edit_toolbar);
-    macToolBar->setIconSize(QMacToolButton::IconSizeSmall);
-#endif
+
     addToolBar(Qt::TopToolBarArea, m_edit_toolbar);
 }
 
