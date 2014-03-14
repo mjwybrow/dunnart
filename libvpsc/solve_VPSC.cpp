@@ -17,6 +17,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
  * Author(s):  Tim Dwyer
+ *             Michael Wybrow
 */
 
 #include <cmath>
@@ -57,16 +58,21 @@ Solver::Solver(Variables const &vs, Constraints const &cs)
     : m(cs.size()), 
       cs(cs),
       n(vs.size()),
-      vs(vs) 
+      vs(vs),
+      needsScaling(false)
 {
     for(unsigned i=0;i<n;++i) {
         vs[i]->in.clear();
         vs[i]->out.clear();
+
+        // Set needsScaling if any variables have a scale other than 1.
+        needsScaling |= (vs[i]->scale != 1);
     }
     for(unsigned i=0;i<m;++i) {
         Constraint *c=cs[i];
         c->left->out.push_back(c);
         c->right->in.push_back(c);
+        c->needsScaling = needsScaling;
     }
     bs=new Blocks(vs);
 #ifdef LIBVPSC_LOGGING
@@ -76,6 +82,16 @@ Solver::Solver(Variables const &vs, Constraints const &cs)
 }
 Solver::~Solver() {
     delete bs;
+}
+
+void IncSolver::addConstraint(Constraint *c)
+{
+    ++m;
+    c->active = false;
+    inactive.push_back(c);
+    c->left->out.push_back(c);
+    c->right->in.push_back(c);
+    c->needsScaling = needsScaling;
 }
 
 // useful in debugging
@@ -380,39 +396,48 @@ void IncSolver::splitBlocks() {
  * Scan constraint list for the most violated constraint, or the first equality
  * constraint
  */
-Constraint* IncSolver::mostViolated(Constraints &l) {
-    double minSlack = DBL_MAX;
-    Constraint* v=NULL;
+Constraint* IncSolver::mostViolated(Constraints &l)
+{
+    double slackForMostViolated = DBL_MAX;
+    Constraint* mostViolated = NULL;
 #ifdef LIBVPSC_LOGGING
     ofstream f(LOGFILE,ios::app);
-    f<<"Looking for most violated..."<<endl;
+    f << "Looking for most violated..." << endl;
 #endif
-    Constraints::iterator end = l.end();
-    Constraints::iterator deletePoint = end;
-    for(Constraints::iterator i=l.begin();i!=end;++i) {
-        Constraint *c=*i;
-        double slack = c->slack();
-        if(c->equality || slack < minSlack) {
-            minSlack=slack;    
-            v=c;
-            deletePoint=i;
-            if(c->equality) break;
+    size_t lSize = l.size();
+    size_t deleteIndex = lSize;
+    Constraint *constraint = NULL;
+    double slack = 0;
+    for (size_t index = 0; index < lSize; ++index)
+    {
+        constraint = l[index];
+        slack = constraint->slack();
+        if (constraint->equality || slack < slackForMostViolated)
+        {
+            slackForMostViolated = slack;    
+            mostViolated = constraint;
+            deleteIndex = index;
+            if (constraint->equality)
+            {
+                break;
+            }
         }
     }
     // Because the constraint list is not order dependent we just
     // move the last element over the deletePoint and resize
     // downwards.  There is always at least 1 element in the
     // vector because of search.
-    if ( (deletePoint != end) && 
-         (((minSlack < ZERO_UPPERBOUND) && !v->active) || v->equality) )
+    if ( (deleteIndex < lSize) && 
+         (((slackForMostViolated < ZERO_UPPERBOUND) && !mostViolated->active) || 
+          mostViolated->equality) )
     {
-        *deletePoint = l[l.size()-1];
-        l.resize(l.size()-1);
+        l[deleteIndex] = l[lSize-1];
+        l.resize(lSize-1);
     }
 #ifdef LIBVPSC_LOGGING
-    f<<"  most violated is: "<<*v<<endl;
+    f << "  most violated is: " << *mostViolated << endl;
 #endif
-    return v;
+    return mostViolated;
 }
 
 struct node {

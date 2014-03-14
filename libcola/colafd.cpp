@@ -4,7 +4,7 @@
  * libcola - A library providing force-directed network layout using the 
  *           stress-majorization method subject to separation constraints.
  *
- * Copyright (C) 2006-2013  Monash University
+ * Copyright (C) 2006-2014  Monash University
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -83,7 +83,8 @@ void dumpSquareMatrix(unsigned n, T** L) {
 
 ConstrainedFDLayout::ConstrainedFDLayout(const vpsc::Rectangles& rs,
         const std::vector< Edge >& es, const double idealLength,
-        const bool preventOverlaps, const double* eLengths, 
+        const bool preventOverlaps, 
+        const std::valarray<double>& eLengths, 
         TestConvergence *doneTest, PreIteration* preIteration)
     : n(rs.size()),
       X(valarray<double>(n)),
@@ -97,7 +98,8 @@ ConstrainedFDLayout::ConstrainedFDLayout(const vpsc::Rectangles& rs,
       clusterHierarchy(NULL),
       rectClusterBuffer(0),
       m_idealEdgeLength(idealLength),
-      m_generateNonOverlapConstraints(preventOverlaps)
+      m_generateNonOverlapConstraints(preventOverlaps),
+      m_edge_lengths(eLengths)
 {
     if (done == NULL)
     {
@@ -122,19 +124,13 @@ ConstrainedFDLayout::ConstrainedFDLayout(const vpsc::Rectangles& rs,
         G[i]=new unsigned short[n];
     }
 
-    if(eLengths == NULL) {
-        computePathLengths(es,NULL);
-    } else {
-        valarray<double> eLengthsArray(eLengths,es.size());
-        computePathLengths(es,&eLengthsArray);
-    }    
+    computePathLengths(es,eLengths);
 }
 
 void dijkstra(const unsigned s, const unsigned n, double* d, 
-        const vector<Edge>& es, const double* eLengths)
+        const vector<Edge>& es, const std::valarray<double> & eLengths)
 {
-    const valarray<double> eLengthsArray(eLengths, es.size());
-    shortest_paths::dijkstra(s,n,d,es,&eLengthsArray);
+    shortest_paths::dijkstra(s,n,d,es,eLengths);
 }
 
 /*
@@ -153,9 +149,19 @@ void dijkstra(const unsigned s, const unsigned n, double* d,
  *     a connected path between them.
  */
 void ConstrainedFDLayout::computePathLengths(
-        const vector<Edge>& es,
-        const std::valarray<double>* eLengths) 
+        const vector<Edge>& es, std::valarray<double> eLengths) 
 {
+    // Correct zero or negative entries in eLengths array.
+    for (size_t i = 0; i < eLengths.size(); ++i)
+    {
+        if (eLengths[i] <= 0)
+        {
+            fprintf(stderr, "Warning: ignoring non-positive length at index %d "
+                    "in ideal edge length array.\n", (int) i);
+            eLengths[i] = 1;
+        }
+    }
+
     shortest_paths::johnsons(n,D,es,eLengths);
     //dumpSquareMatrix<double>(n,D);
     for(unsigned i=0;i<n;i++) {
@@ -167,7 +173,7 @@ void ConstrainedFDLayout::computePathLengths(
             if(d==DBL_MAX) {
                 // i and j are in disconnected subgraphs
                 p=0;
-            } else if(!eLengths) {
+            } else if(eLengths.size() == 0) {
                 D[i][j]*=m_idealEdgeLength;
             }
         }
@@ -422,7 +428,7 @@ void ConstrainedFDLayout::generateNonOverlapAndClusterCompoundConstraints(
             
             if (count == 0)
             {
-                // Not present in heirarchy, so add to root cluster.
+                // Not present in hierarchy, so add to root cluster.
                 clusterHierarchy->nodes.push_back(i);
             }
         }
@@ -521,6 +527,11 @@ void ConstrainedFDLayout::makeFeasible(void)
     }
 #endif
 
+    // We can keep adding new constraints to the existing VPSC instances so
+    // long as everything is satisfiable.  Only when it's not do we discard
+    // the existing VPSC instance for that dimension and create a new one.
+    vpsc::IncSolver *solver[2] = { NULL };
+
     // Main makeFeasible loop.
     while (!idleConstraints.empty())
     {
@@ -564,13 +575,26 @@ void ConstrainedFDLayout::makeFeasible(void)
                 COLA_ASSERT(alternatives.size() == 1);
                 vpsc::Dim& dim = alternatives.front().dim;
                 vpsc::Constraint& constraint = alternatives.front().constraint;
-                valid[dim].push_back(new vpsc::Constraint(constraint));
+                vpsc::Constraint *newConstraint = 
+                        new vpsc::Constraint(constraint);
+                valid[dim].push_back(newConstraint);
+                if (solver[dim])
+                {
+                    // If we have an existing valid solver instance, add the
+                    // constraint to that.
+                    solver[dim]->addConstraint(newConstraint);
+                }
                 cc->markCurrSubConstraintAsActive(subConstraintSatisfiable);
             }
+            // Satisfy the constraints in each dimension.
             for (size_t dim = 0; dim < 2; ++dim)
             {
-                vpsc::IncSolver vpscInstance(vs[dim], valid[dim]);
-                vpscInstance.satisfy();
+                if (solver[dim] == NULL)
+                {
+                    // Create a new VPSC solver if necessary.
+                    solver[dim] = new vpsc::IncSolver(vs[dim], valid[dim]);
+                }
+                solver[dim]->satisfy();
             }
             continue;
         }
@@ -605,12 +629,24 @@ void ConstrainedFDLayout::makeFeasible(void)
                 {
                     // Add the constraint from this alternative to the 
                     // valid constraint set.
-                    valid[dim].push_back(new vpsc::Constraint(constraint));
+                    vpsc::Constraint *newConstraint = 
+                            new vpsc::Constraint(constraint);
+                    valid[dim].push_back(newConstraint);
 
                     //fprintf(stderr, ".%d %3d - ", dim, valid[dim].size());
-                    // Solve with this constraint set.
-                    vpsc::IncSolver vpscInstance(vs[dim], valid[dim]);
-                    vpscInstance.satisfy();
+                    
+                    // Try to satisfy this set of constraints..
+                    if (solver[dim] == NULL)
+                    {
+                        // Create a new VPSC solver if necessary.
+                        solver[dim] = new vpsc::IncSolver(vs[dim], valid[dim]);
+                    }
+                    else
+                    {
+                        // Or just add the constraint to the existing solver.
+                        solver[dim]->addConstraint(newConstraint);
+                    }
+                    solver[dim]->satisfy();
                 }
                 catch (char *str) 
                 {
@@ -640,7 +676,10 @@ void ConstrainedFDLayout::makeFeasible(void)
 
                 if (!subConstraintSatisfiable)
                 {
-                    //fprintf(stderr, "*");
+                    // Since we had unsatisfiable constraints we must 
+                    // discard this solver instance.
+                    delete solver[dim];
+                    solver[dim] = NULL;
 
                     // Restore previous values for variables.
                     for (unsigned int i = 0; i < priorPos.size(); ++i)
@@ -655,6 +694,7 @@ void ConstrainedFDLayout::makeFeasible(void)
                 }
                 else
                 {
+                    // Satisfied, so don't need to consider other alternatives.
                     break;
                 }
                 // Move on to the next alternative.
@@ -681,6 +721,16 @@ void ConstrainedFDLayout::makeFeasible(void)
             }
 #endif
             cc->markCurrSubConstraintAsActive(subConstraintSatisfiable);
+        }
+    }
+
+    // Delete the persistent VPSC solver instances.
+    for (size_t dim = 0; dim < 2; ++dim)
+    {
+        if (solver[dim])
+        {
+            delete solver[dim];
+            solver[dim] = NULL;
         }
     }
 
@@ -753,6 +803,8 @@ void ConstrainedFDLayout::freeAssociatedObjects(void)
         delete clusterHierarchy;
         clusterHierarchy = NULL;
     }
+    
+    topologyAddon->freeAssociatedObjects();
 }
 
 void ConstrainedFDLayout::setTopology(TopologyAddonInterface *newTopology)
@@ -780,7 +832,7 @@ void setupVarsAndConstraints(unsigned n, const CompoundConstraints& ccs,
         vs[i] = new vpsc::Variable(i, coords[i]);
     }
 
-    if (clusterHierarchy && !clusterHierarchy->clusters.empty())
+    if (clusterHierarchy && !clusterHierarchy->flat())
     {
         // Create variables for clusters
         clusterHierarchy->computeBoundingRect(boundingBoxes);
@@ -1198,12 +1250,14 @@ void ConstrainedFDLayout::outputInstanceToSVG(std::string instanceName)
     // Output source code to generate this ConstrainedFDLayout instance.
     fprintf(fp, "<!-- Source code to generate this instance:\n");
     fprintf(fp, "#include <vector>\n");
+    fprintf(fp, "#include <valarray>\n");
     fprintf(fp, "#include <utility>\n");
     fprintf(fp, "#include \"libcola/cola.h\"\n");
     fprintf(fp, "using namespace cola;\n");
     fprintf(fp, "int main(void) {\n");
     fprintf(fp, "    CompoundConstraints ccs;\n");
     fprintf(fp, "    std::vector<Edge> es;\n");
+    fprintf(fp, "    std::valarray<double> eLengths;\n");
     fprintf(fp, "    double defaultEdgeLength=%g;\n", m_idealEdgeLength);
     fprintf(fp, "    std::vector<vpsc::Rectangle*> rs;\n");
     fprintf(fp, "    vpsc::Rectangle *rect = NULL;\n\n");
@@ -1227,13 +1281,23 @@ void ConstrainedFDLayout::outputInstanceToSVG(std::string instanceName)
     }
     fprintf(fp, "\n");
 
+    if (m_edge_lengths.size() > 0)
+    {
+        fprintf(fp, "    eLengths.resize(%d);\n", (int) m_edge_lengths.size());
+        for (size_t i = 0; i < m_edge_lengths.size(); ++i)
+        {
+            fprintf(fp, "    eLengths[%d] = %g;\n", (int) i, m_edge_lengths[i]);
+        }
+        fprintf(fp, "\n");
+    }
+
     for (cola::CompoundConstraints::iterator c = ccs.begin(); 
             c != ccs.end(); ++c)
     {
         (*c)->printCreationCode(fp);
     }
 
-    fprintf(fp, "    ConstrainedFDLayout alg(rs, es, defaultEdgeLength, %s);\n",
+    fprintf(fp, "    ConstrainedFDLayout alg(rs, es, defaultEdgeLength, %s, eLengths);\n",
             (m_generateNonOverlapConstraints) ? "true" : "false");
     if (clusterHierarchy)
     {
@@ -1246,6 +1310,15 @@ void ConstrainedFDLayout::outputInstanceToSVG(std::string instanceName)
     fprintf(fp, "    alg.run();\n");
     fprintf(fp, "};\n");
     fprintf(fp, "-->\n");
+
+    if (clusterHierarchy)
+    {
+        clusterHierarchy->computeBoundingRect(boundingBoxes);
+        fprintf(fp, "<g inkscape:groupmode=\"layer\" "
+            "inkscape:label=\"Clusters\">\n");
+        clusterHierarchy->outputToSVG(fp);
+        fprintf(fp, "</g>\n");
+    }
 
     fprintf(fp, "<g inkscape:groupmode=\"layer\" "
             "inkscape:label=\"Rects\">\n");

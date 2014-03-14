@@ -1245,7 +1245,7 @@ void GraphLayout::run(const bool shouldReinitialise)
     m_graph->getEdgeLengths(elengths);
 
     cola::ConstrainedFDLayout alg(m_graph->rs, m_graph->edges, 1.0,
-            m_canvas->m_opt_prevent_overlaps, &elengths[0], &postIter,
+            m_canvas->m_opt_prevent_overlaps, elengths, &postIter,
             &preIter);
     alg.setConstraints(m_graph->ccs);
     alg.setClusterHierarchy(&(m_graph->clusterHierarchy));
@@ -1283,7 +1283,10 @@ void GraphLayout::run(const bool shouldReinitialise)
     }
     alg.setUnsatisfiableConstraintInfo(&unsatisfiableX,&unsatisfiableY);
     alg.run(true,true);
-    //alg.outputInstanceToSVG();
+    if (outputDebugFiles)
+    {
+        alg.outputInstanceToSVG();
+    }
 }
 
 

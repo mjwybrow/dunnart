@@ -1904,7 +1904,7 @@ extern void generateStaticOrthogonalVisGraph(Router *router)
     }
     delete [] events; 
 
-    // Add portions of the horizontal line that are after the final vertical
+    // Add portions of horizontal lines that are after the final vertical
     // position we considered.
     for (SegmentList::iterator it = segments.list().begin(); 
             it != segments.list().end(); )
@@ -2811,11 +2811,11 @@ static void nudgeOrthogonalRoutes(Router *router, size_t dimension,
                 // For each variable...
                 if (vs[i]->id >= fixedSegmentID)
                 {
-                    // If it is a fixed segment (should stay still)
+                    // If it is a fixed segment (should stay still)...
                     if (fabs(vs[i]->finalPosition - 
-                            vs[i]->desiredPosition) > 0.01)
+                            vs[i]->desiredPosition) > 0.0001)
                     {
-                        // And it is not at it's desired position, then 
+                        // and it is not at it's desired position, then 
                         // we consider the problem to be unsatisfied.
                         satisfied = false;
 
@@ -3033,7 +3033,7 @@ static void nudgeOrthogonalRoutes(Router *router, size_t dimension,
 
 extern void improveOrthogonalRoutes(Router *router)
 {
-    router->timers.Register(tmOrthogNudge, timerStart);
+    TIMER_START(router, tmOrthogNudge);
 
     // Simplify routes.
     simplifyOrthogonalRoutes(router);
@@ -3092,7 +3092,7 @@ extern void improveOrthogonalRoutes(Router *router)
     // Clear the segment-checkpoint cache for connectors.
     clearConnectorRouteCheckpointCache(router);
 
-    router->timers.Stop();
+    TIMER_STOP(router);
 }
 
 
