@@ -95,12 +95,8 @@ public:
         }
         return NULL;
     }
-    void getEdgeLengths(std::valarray<double> &elengths) {
-        const unsigned n=edges.size();
-        elengths.resize(n);
-        if(n>0) {
-            copy(edgeLengths.begin(),edgeLengths.end(),&elengths[0]);
-        }
+    void getEdgeLengths(std::vector<double> &elengths) {
+        elengths = edgeLengths;
     }
     unsigned getNodeCount() {
         return rs.size();

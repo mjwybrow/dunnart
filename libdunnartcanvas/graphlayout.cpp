@@ -1241,7 +1241,7 @@ void GraphLayout::run(const bool shouldReinitialise)
     PreIteration preIter(*this);
     PostIteration postIter(*this);
 
-    valarray<double> elengths;
+    vector<double> elengths;
     m_graph->getEdgeLengths(elengths);
 
     cola::ConstrainedFDLayout alg(m_graph->rs, m_graph->edges, 1.0,
