@@ -23,7 +23,7 @@
 */
 
 
-#ifndef PDPPROCESSNODE_H
+#ifndef PDPROCESSNODE_H
 #define PDPROCESSNODE_H
 
 #include "pdepn.h"
