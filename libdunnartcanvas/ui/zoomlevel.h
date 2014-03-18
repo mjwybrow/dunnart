@@ -24,7 +24,7 @@
 #ifndef ZOOMLEVEL_H_
 #define ZOOMLEVEL_H_
 
-#include "libdunnartcanvas/gen-ui/ui_ZoomLevel.h"
+#include "ui_ZoomLevel.h"
 
 namespace dunnart {
 

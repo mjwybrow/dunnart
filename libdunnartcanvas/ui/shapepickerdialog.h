@@ -30,7 +30,7 @@
 
 #include <QDockWidget>
 #include <QObjectList>
-#include "libdunnartcanvas/gen-ui/ui_shapepickerdialog.h"
+#include "ui_shapepickerdialog.h"
 
 class QGridLayout;
 class QMouseEvent;

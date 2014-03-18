@@ -24,7 +24,7 @@
 #ifndef CONNECTORPROPERTIES_H
 #define CONNECTORPROPERTIES_H
 
-#include "libdunnartcanvas/gen-ui/ui_connectorproperties.h"
+#include "ui_connectorproperties.h"
 #include <QDockWidget>
 
 namespace dunnart {

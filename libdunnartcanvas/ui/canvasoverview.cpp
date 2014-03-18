@@ -28,7 +28,7 @@
 
 #include "canvasoverview.h"
 
-#include "libdunnartcanvas/gen-ui/ui_canvasoverview.h"
+#include "ui_canvasoverview.h"
 #include "libdunnartcanvas/canvasview.h"
 #include "libdunnartcanvas/canvas.h"
 #include "libdunnartcanvas/canvasitem.h"

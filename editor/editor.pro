@@ -2,7 +2,7 @@
 TEMPLATE = app
 DEPENDPATH =  .. .
 INCLUDEPATH = .. ../libvpsc ../libcola ../libtopology ../libproject \
-	../libavoid ../libogdf ../libdunnartcanvas ../libdunnartcanvas/qtpropertybrowser
+        ../libavoid ../libogdf ../libdunnartcanvas $$OUT_PWD/../libdunnartcanvas/gen-ui ../libdunnartcanvas/qtpropertybrowser
 DEPENDPATH += ..
 TARGET = Dunnart
 
@@ -36,7 +36,7 @@ RC_FILE = Dunnart.icns
 
 QMAKE_INFO_PLIST = Dunnart_Info.plist
 
-LIBS += -L../Dunnart.app/Contents/Frameworks
+LIBS += -L$$DESTDIR/Dunnart.app/Contents/Frameworks
 
 }
 else {

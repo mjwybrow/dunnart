@@ -24,7 +24,7 @@
 #ifndef LAYOUTPROPERTIES_H_
 #define LAYOUTPROPERTIES_H_
 
-#include "libdunnartcanvas/gen-ui/ui_LayoutProperties.h"
+#include "ui_LayoutProperties.h"
 
 class QSignalMapper;
 

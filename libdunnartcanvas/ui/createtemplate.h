@@ -23,7 +23,7 @@
 #ifndef CREATETEMPLATEDIALOG_H
 #define CREATETEMPLATEDIALOG_H
 
-#include "libdunnartcanvas/gen-ui/ui_createtemplate.h"
+#include "ui_createtemplate.h"
 #include <QDockWidget>
 
 class QSignalMapper;

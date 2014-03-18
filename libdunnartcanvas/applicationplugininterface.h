@@ -26,7 +26,7 @@
 //! Contains the interface for Dunnart application plugins.
 
 
-#ifndef APPLICATIONLUGININTERFACE_H
+#ifndef APPLICATIONPLUGININTERFACE_H
 #define APPLICATIONPLUGININTERFACE_H
 
 namespace dunnart {

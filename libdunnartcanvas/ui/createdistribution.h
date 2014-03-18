@@ -24,7 +24,7 @@
 #ifndef CREATEDISTRIBUTIONDIALOG_H
 #define CREATEDISTRIBUTIONDIALOG_H
 
-#include "libdunnartcanvas/gen-ui/ui_createdistribution.h"
+#include "ui_createdistribution.h"
 #include <QDockWidget>
 
 class QSignalMapper;

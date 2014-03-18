@@ -24,7 +24,7 @@
 #ifndef CREATESEPARATIONDIALOG_H
 #define CREATESEPARATIONDIALOG_H
 
-#include "libdunnartcanvas/gen-ui/ui_createseparation.h"
+#include "ui_createseparation.h"
 #include <QDockWidget>
 
 class QSignalMapper;

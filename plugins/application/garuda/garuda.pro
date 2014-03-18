@@ -40,8 +40,8 @@ defineTest(copyToDestDir) {
 }
 
 RESOURCE_FILES = \
-    ../../../libdunnartcanvas/doc/DunnartIcon.png \
-    ../../../libdunnartcanvas/doc/DunnartScreen.png
+    $$PWD/../../../libdunnartcanvas/doc/DunnartIcon.png \
+    $$PWD/../../../libdunnartcanvas/doc/DunnartScreen.png
 
 copyToDestDir($$RESOURCE_FILES)
 

@@ -24,7 +24,7 @@
 #ifndef CREATEALIGNMENTDIALOG_H
 #define CREATEALIGNMENTDIALOG_H
 
-#include "libdunnartcanvas/gen-ui/ui_createalignment.h"
+#include "ui_createalignment.h"
 #include <QDockWidget>
 
 class QSignalMapper;
