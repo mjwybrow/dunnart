@@ -64,4 +64,7 @@ MOC_DIR = gen-moc
 OBJECTS_DIR = gen-obj
 RCC_DIR = gen-rcc
 
+DEPENDPATH += $$OUT_PWD/gen-moc
+INCLUDEPATH += $$OUT_PWD/gen-moc
+
 
