@@ -2,7 +2,7 @@
  * Dunnart - Constraint-based Diagram Editor
  *
  * Copyright (C) 2003-2007  Michael Wybrow  <mjwybrow@users.sourceforge.net>
- * Copyright (C) 2006-2008  Monash University
+ * Copyright (C) 2006-2014  Monash University
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -471,16 +471,7 @@ bool MainWindow::loadDiagram(const QString& filename)
 
     bool successful = canvas()->loadDiagram(filename);
 
-    QSettings settings;
-    QStringList files = settings.value("recentFileList").toStringList();
-    files.removeAll(filename);
-    files.prepend(filename);
-    while (files.size() > MAX_RECENT_FILES)
-    {
-        files.removeLast();
-    }
-    settings.setValue("recentFileList", files);
-    updateRecentFileActions();
+    addRecentFile(filename);
 
     QFileInfo fileinfo(filename);
     canvasFileInfoChanged(fileinfo);
@@ -641,6 +632,20 @@ void MainWindow::documentPrint(void)
 }
 
 
+void MainWindow::addRecentFile(QString filename)
+{
+    QSettings settings;
+    QStringList files = settings.value("recentFileList").toStringList();
+    files.removeAll(filename);
+    files.prepend(filename);
+    while (files.size() > MAX_RECENT_FILES)
+    {
+        files.removeLast();
+    }
+    settings.setValue("recentFileList", files);
+    updateRecentFileActions();
+}
+
 void MainWindow::clearRecentFileMenu(void)
 {
     QSettings settings;
@@ -685,6 +690,7 @@ void MainWindow::canvasFileInfoChanged(const QFileInfo& fileinfo)
     }
     else
     {
+        addRecentFile(fileinfo.absoluteFilePath());
         setWindowFilePath(fileinfo.absoluteFilePath());
         setWindowTitle(fileinfo.fileName() + "[*] - Dunnart");
     }

@@ -2,7 +2,7 @@
  * Dunnart - Constraint-based Diagram Editor
  *
  * Copyright (C) 2003-2007  Michael Wybrow
- * Copyright (C) 2006-2011  Monash University
+ * Copyright (C) 2006-2014  Monash University
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -250,6 +250,9 @@ void CanvasTabWidget::currentChanged(int index)
     }
     m_canvas = canvasview->canvas();
 
+    connect(m_canvas, SIGNAL(diagramFilenameChanged(QFileInfo)),
+            this, SLOT(diagramFilenameChanged(QFileInfo)));
+
     m_undo_group->setActiveStack(m_canvas->undoStack());
     m_window->setWindowModified(!m_undo_group->isClean());
     currentCanvasEditModeChanged(m_canvas->editMode());
@@ -368,9 +371,6 @@ void CanvasTabWidget::newTab(void)
     Canvas *canvas = new Canvas();
     CanvasView *canvasview = new CanvasView(canvas);
     m_undo_group->addStack(canvas->undoStack());
-
-    connect(canvasview->canvas(), SIGNAL(diagramFilenameChanged(QFileInfo)),
-            this, SLOT(diagramFilenameChanged(QFileInfo)));
 
     insertTab(INT_MAX, canvasview, tr("untitled"));
     setCurrentWidget(canvasview);
@@ -671,7 +671,6 @@ void CanvasTabWidget::currentCanvasSaveAs(void)
     if (!filename.isEmpty())
     {
         currentCanvas()->saveDiagram(filename);
-        currentCanvas()->setFilename(filename);
     }
 }
 

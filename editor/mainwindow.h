@@ -2,7 +2,7 @@
  * Dunnart - Constraint-based Diagram Editor
  *
  * Copyright (C) 2003-2007  Michael Wybrow  <mjwybrow@users.sourceforge.net>
- * Copyright (C) 2006-2008  Monash University
+ * Copyright (C) 2006-2014  Monash University
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -51,7 +51,7 @@ class ShapePickerDialog;
 class UndoHistoryDialog;
 class CanvasOverviewDialog;
 
-static const int MAX_RECENT_FILES = 10;
+static const int MAX_RECENT_FILES = 20;
 
 class MainWindow : public QMainWindow
 {
@@ -83,6 +83,7 @@ class MainWindow : public QMainWindow
 
     private:
         void updateRecentFileActions(void);
+        void addRecentFile(QString filename);
         QString strippedName(const QString& fullFileName);
 
         CanvasTabWidget *m_tab_widget;

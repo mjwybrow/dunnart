@@ -2,7 +2,7 @@
  * Dunnart - Constraint-based Diagram Editor
  *
  * Copyright (C) 2003-2007  Michael Wybrow
- * Copyright (C) 2006-2008  Monash University
+ * Copyright (C) 2006-2014  Monash University
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -2884,6 +2884,7 @@ void Canvas::saveDiagram(const QString& outputFilename)
 
     if (successful)
     {
+        this->setFilename(outputFilename);
         undoStack()->setClean();
     }
     else
