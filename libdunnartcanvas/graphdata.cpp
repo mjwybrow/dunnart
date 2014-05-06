@@ -179,7 +179,9 @@ GraphData::GraphData(Canvas *canvas, bool ignoreEdges,
             QList<ShapeObj *> children = shape->containedShapes();
             if (!children.empty())
             {
-                cola::Cluster *c = new cola::RectangularCluster(snMap[shape]);
+                cola::RectangularCluster *c = new cola::RectangularCluster(snMap[shape]);
+                double buffer = canvas_->optShapeNonoverlapPadding();
+                c->setMargin(buffer);
                 rectClusterShapeMap[shape] = c;
                 allShapeClusters.insert(c);
                 dunnartClusters.push_back(NULL);
@@ -597,8 +599,6 @@ GraphData::GraphData(Canvas *canvas, bool ignoreEdges,
             dunnartClusterToCluster(cluster);
         } 
     }
-    double buffer = canvas->optShapeNonoverlapPadding();
-    clusterHierarchy.setRectBuffers(buffer * 2);
     setUpRootCluster();
     // distribution constraints contain a list of pairs of alignment guidelines
     for(vector<Distribution*>::iterator i=distrolist.begin();i!=distrolist.end();i++)
@@ -1008,7 +1008,10 @@ void GraphData::dunnartClusterToCluster(Cluster* cluster) {
     ShapeList& l=cluster->getMembers();
     cola::Cluster *c = NULL;
     if (cluster->rectangular) {
-        c = new cola::RectangularCluster();
+        cola::RectangularCluster *rectC = new cola::RectangularCluster();
+        double buffer = canvas_->optShapeNonoverlapPadding();
+        rectC->setMargin(buffer * 2);
+        c = rectC;
     } else {
         c = new cola::ConvexCluster();
     }
@@ -1107,8 +1110,7 @@ void GraphData::connectorToEdge(Connector* conn)
     }
 #endif
 
-    double idealLength = conn->idealLength() *
-            canvas_->optIdealEdgeLengthModifier();
+    double idealLength = conn->idealLength();
     addEdge(a,b,idealLength);
 
     // dump dot format

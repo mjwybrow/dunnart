@@ -71,6 +71,10 @@ class LinearTemplateConstraint : public cola::CompoundConstraint
         void unfixPos() {
             isFixed=false;
         }
+        std::string toString(void) const
+        {
+            return "LinearTemplateConstraint()";
+        }
 
         cola::SubConstraintAlternatives 
         getCurrSubConstraintAlternatives(vpsc::Variables vs[])
@@ -130,7 +134,11 @@ class RectangleConstraint : public cola::CompoundConstraint
                     "getCurrSubConstraintAlternatives() not implemented.\n");
             return cola::SubConstraintAlternatives();
         }
-        
+        std::string toString(void) const
+        {
+            return "RectangleConstraint()";
+        }
+
         // the pointer is used by dunnart to keep a ref to its local
         // representation of the linear template
         void *indicator;
@@ -198,7 +206,11 @@ class BranchedTemplateConstraint : public cola::CompoundConstraint
         void unfixPos() {
             isFixed=false;
         }
-        
+        std::string toString(void) const
+        {
+            return "BranchedTemplateConstraint()";
+        }
+
         ACList alignment; // list of Alignment Constraints
         double guide_sep; // separation value for the guides
         // the pointer is used by dunnart to keep a ref to its local

@@ -97,7 +97,7 @@ Rectangle Rectangle::unionWith(const Rectangle& rhs) const
 
     return Rectangle(newMinX, newMaxX, newMinY, newMaxY);
 }
-
+    
 void Rectangle::reset(unsigned d, double x, double X) {
     if(d==0) {
         minX=x;

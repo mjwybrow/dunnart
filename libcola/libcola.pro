@@ -25,7 +25,8 @@ SOURCES += cola.cpp \
     max_acyclic_subgraph.cpp \
     output_svg.cpp \
     cc_clustercontainmentconstraints.cpp \
-    cc_nonoverlapconstraints.cpp
+    cc_nonoverlapconstraints.cpp \
+    box.cpp
 HEADERS += cola.h \
     cluster.h \
     commondefs.h \
@@ -39,4 +40,5 @@ HEADERS += cola.h \
     cc_clustercontainmentconstraints.h \
     cc_nonoverlapconstraints.h \
     unused.h \
+    box.h \
     config.h

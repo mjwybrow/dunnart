@@ -47,7 +47,7 @@ QVector<int> SCCDetector::stronglyConnectedComponentIndexes(GraphData *graph)
     m_scc_index = 0;
     int shapesCount = m_graph->shape_vec.size();
 
-    m_indexes = QVector<int>(shapesCount, -1);
+    m_indexes = QVector<int>(shapesCount, k_undefined);
     m_scc_indexes = QVector<int>(shapesCount, 0);
     m_lowlinks = QVector<int>(shapesCount, 0);
     m_in_stack = QVector<bool>(shapesCount, false);
@@ -55,7 +55,7 @@ QVector<int> SCCDetector::stronglyConnectedComponentIndexes(GraphData *graph)
 
     for (int i = 0; i < shapesCount; ++i)
     {
-        if (m_indexes[i] == -1)
+        if (m_indexes[i] == k_undefined)
         {
             strongConnect(i);
         }

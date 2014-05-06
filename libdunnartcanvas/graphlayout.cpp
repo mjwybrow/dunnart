@@ -795,14 +795,20 @@ public:
             unsatisfiedConstraintsExist=true;
             delete *i;
         }
-        gl.unsatisfiableX.clear();
         for(cola::UnsatisfiableConstraintInfos::iterator i=gl.unsatisfiableY.begin();
                 i!=gl.unsatisfiableY.end();i++) {
             gl.showUnsatisfiable(*i);
             unsatisfiedConstraintsExist=true;
             delete *i;
         }
+        if (unsatisfiedConstraintsExist)
+        {
+            // Line break
+            qWarning("");
+        }
+        gl.unsatisfiableX.clear();
         gl.unsatisfiableY.clear();
+
         if(pageBoundChange) {
             gl.retPositions.push_back(
                     new PageBoundsPosInfo(pbx,pbX,pby,pbY));
@@ -1244,9 +1250,9 @@ void GraphLayout::run(const bool shouldReinitialise)
     vector<double> elengths;
     m_graph->getEdgeLengths(elengths);
 
-    cola::ConstrainedFDLayout alg(m_graph->rs, m_graph->edges, 1.0,
-            m_canvas->m_opt_prevent_overlaps, elengths, &postIter,
-            &preIter);
+    cola::ConstrainedFDLayout alg(m_graph->rs, m_graph->edges,
+            m_canvas->optIdealEdgeLengthModifier(),
+            m_canvas->optPreventOverlaps(), elengths, &postIter, &preIter);
     alg.setConstraints(m_graph->ccs);
     alg.setClusterHierarchy(&(m_graph->clusterHierarchy));
     if (runLevel == 1)
@@ -1297,11 +1303,10 @@ void GraphLayout::setOutputDebugFiles(const bool value)
 
 void GraphLayout::showUnsatisfiable(cola::UnsatisfiableConstraintInfo* i)
 {
-    qWarning("Unsatisfiable constraint:");
-    qWarning("  left id=%d,right id=%d",i->vlid,i->vrid);
+    qWarning("%s", i->toString().c_str());
 
-    ShapeObj *s1 = m_graph->getShape(i->vlid);
-    ShapeObj *s2 = m_graph->getShape(i->vrid);
+    ShapeObj *s1 = m_graph->getShape(i->leftVarIndex);
+    ShapeObj *s2 = m_graph->getShape(i->rightVarIndex);
     if(s1 && s2) {
         retPositions.push_back(
                 new TraceLinePosInfo(

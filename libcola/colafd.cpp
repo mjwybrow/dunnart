@@ -175,7 +175,7 @@ void ConstrainedFDLayout::computePathLengths(
             if(d==DBL_MAX) {
                 // i and j are in disconnected subgraphs
                 p=0;
-            } else if(eLengths.size() == 0) {
+            } else {
                 D[i][j]*=m_idealEdgeLength;
             }
         }
@@ -1016,6 +1016,12 @@ double ConstrainedFDLayout::applyForcesAndConstraints(const vpsc::Dim dim, const
         checkUnsatisfiable(cs,unsatisfiable[dim]);
     }
     FILE_LOG(logDEBUG) << "ConstrainedFDLayout::applyForcesAndConstraints... done, stress="<<stress;
+    if (clusterHierarchy)
+    {
+        clusterHierarchy->computeVarRect(vs, dim);
+        clusterHierarchy->computeBoundingRect(boundingBoxes);
+    }
+
     for_each(vs.begin(),vs.end(),delete_object());
     for_each(cs.begin(),cs.end(),delete_object());
     return stress;

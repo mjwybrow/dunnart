@@ -30,6 +30,7 @@
 
 #include "libcola/compound_constraints.h"
 #include "libcola/commondefs.h"
+#include "libcola/box.h"
 
 namespace cola {
 
@@ -69,11 +70,19 @@ class Cluster
          */
         void addChildCluster(Cluster *cluster);
         
+        virtual Box padding(void) const
+        {
+            return Box();
+        }
+        virtual Box margin(void) const
+        {
+            return Box();
+        }
+
         void setDesiredBounds(const vpsc::Rectangle bounds);
         void unsetDesiredBounds();
         void createVars(const vpsc::Dim dim, const vpsc::Rectangles& rs,
                 vpsc::Variables& vars);
-        void setRectBuffers(const double buffer);
         virtual void printCreationCode(FILE *fp) const = 0;
         virtual int containsShape(unsigned index) const;
         virtual bool clusterIsFromFixedRectangle(void) const;
@@ -87,16 +96,15 @@ class Cluster
         //
         void updateBounds(const vpsc::Dim dim);
         
+        virtual void computeVarRect(vpsc::Variables& vs, size_t dim);
+
         vpsc::Rectangle bounds;
+        vpsc::Rectangle varRect;
         vpsc::Variable *vXMin, *vXMax, *vYMin, *vYMax;
 
         // This will be the id of the left/bottom boundary, 
         // and the right/top will be clusterVarId + 1.
         unsigned clusterVarId; 
-
-        // This is padding used for rectangular non-overlap during 
-        // makeFeasible and for rectangular clusters during optimisation.
-        double rectBuffer;
 
         double varWeight;
         double internalEdgeWeightFactor;
@@ -194,6 +202,64 @@ class RectangularCluster : public Cluster
          */
         RectangularCluster(unsigned rectIndex);
 
+        /**
+         * @brief  Sets the margin size for this cluster.
+         *
+         * This value represents the outer spacing that will be put between
+         * the cluster boundary on all sides and other clusters (plus their 
+         * margin) and rectangles at the same level when non-overlap 
+         * constraints are enabled.
+         *
+         * @param[in]  margin  The size of the margin for this cluster.
+         */
+        void setMargin(double margin);
+        /**
+         * @brief  Sets the margin box for this cluster.
+         *
+         * This box represents the outer spacing that will be put between
+         * the cluster boundary and other clusters (plus their margin) and 
+         * rectangles at the same level when non-overlap constraints are 
+         * enabled.
+         *
+         * @param[in]  margin  The box representing the margins for this 
+         *                     cluster.
+         */
+        void setMargin(const Box margin);
+        /**
+         * @brief  Returns the margin box for this cluster.
+         *
+         * @return  The margin box for the cluster.
+         */
+        Box margin(void) const;
+
+        /**
+         * @brief  Sets the padding size for this cluster.
+         *
+         * This value represents the inner spacing that will be put between
+         * the cluster boundary and other child clusters (plus their margin) 
+         * and child rectangles on all sides.
+         *
+         * @param[in]  padding  The size of the padding for this cluster.
+         */
+        void setPadding(double padding);
+        /**
+         * @brief  Sets the padding box for this cluster.
+         *
+         * This box represents the inner spacing that will be put between
+         * the cluster boundary and other child clusters (plus their margin) 
+         * and child rectangles for each edge.
+         *
+         * @param[in]  padding  The Box representing padding values for this 
+         *                      cluster.
+         */
+        void setPadding(const Box padding);
+        /**
+         * @brief  Returns the padding box for this cluster.
+         *
+         * @return  The padding box for the cluster.
+         */
+        Box padding(void) const;
+
 #ifndef SWIG
         virtual ~RectangularCluster();
 #endif
@@ -213,7 +279,7 @@ class RectangularCluster : public Cluster
 
             // Set the Min and Max positions to be the min minus an offset.
             double edgePosition = minEdgeRect[dim]->getMinD(dim);
-            minEdgeRect[dim]->setMinD(dim, edgePosition - rectBuffer);
+            minEdgeRect[dim]->setMinD(dim, edgePosition - m_margin.min(dim));
             minEdgeRect[dim]->setMaxD(dim, edgePosition);
 
             return minEdgeRect[dim];
@@ -229,7 +295,7 @@ class RectangularCluster : public Cluster
 
             // Set the Min and Max positions to be the max plus an offset.
             double edgePosition = maxEdgeRect[dim]->getMaxD(dim);
-            maxEdgeRect[dim]->setMaxD(dim, edgePosition + rectBuffer);
+            maxEdgeRect[dim]->setMaxD(dim, edgePosition + m_margin.max(dim));
             maxEdgeRect[dim]->setMinD(dim, edgePosition);
 
             return maxEdgeRect[dim];
@@ -248,6 +314,8 @@ class RectangularCluster : public Cluster
         vpsc::Rectangle *minEdgeRect[2];
         vpsc::Rectangle *maxEdgeRect[2];
         int m_rectangle_index;
+        Box m_margin;
+        Box m_padding;
 };
 
 /**
