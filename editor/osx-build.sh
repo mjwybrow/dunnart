@@ -1,7 +1,9 @@
 #!/bin/sh -x
 
 MACPORTS=/opt/local
-QT=$HOME/Qt5.1.0/5.1.0-rc1/clang_64
+
+# Qt SDK path.  Also need to update editor/package_and_upload_osx.sh file.
+QT=$HOME/Qt5.2.1/5.2.1/clang_64
 
 export PATH=$QT/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:$MACPORTS/bin
 
