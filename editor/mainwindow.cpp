@@ -438,7 +438,7 @@ void MainWindow::about(void)
             "Built on " __DATE__ "<br />"
             "Based on Qt " QT_VERSION_STR "<br /><br />"
             "Copyright &copy; 2003&ndash;2008 Michael Wybrow<br />"
-            "Copyright&nbsp;&copy;&nbsp;2006-2012&nbsp;Monash&nbsp;University";
+            "Copyright&nbsp;&copy;&nbsp;2006-2014&nbsp;Monash&nbsp;University";
     box->setInformativeText(infoStr);
     box->show();
 }
