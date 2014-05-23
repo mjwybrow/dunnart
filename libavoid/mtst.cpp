@@ -3,7 +3,7 @@
  *
  * libavoid - Fast, Incremental, Object-avoiding Line Router
  *
- * Copyright (C) 2011-2013  Monash University
+ * Copyright (C) 2011-2014  Monash University
  *
  * --------------------------------------------------------------------
  * Sequential Construction of the Minimum Terminal Spanning Tree is an
@@ -11,7 +11,7 @@
  *     Long, J., Zhou, H., Memik, S.O. (2008). EBOARST: An efficient 
  *     edge-based obstacle-avoiding rectilinear Steiner tree construction 
  *     algorithm. IEEE Trans. on Computer-Aided Design of Integrated 
- *     Circuits and Systems 27(12), pages 2169–2182.
+ *     Circuits and Systems 27(12), pages 2169--2182.
  * --------------------------------------------------------------------
  *
  * This library is free software; you can redistribute it and/or
@@ -234,6 +234,14 @@ void MinimumTerminalSpanningTree::buildHyperedgeTreeToRoot(VertInf *currVert,
             // later use this to set the correct ConnEnd for the connector.
             addedNode->finalVertex = currVert;
         }
+
+        if (currVert->id.isDummyPinHelper())
+        {
+            // Note if we have an extra dummy vertex for connecting 
+            // to possible connection pins.
+            addedNode->isPinDummyEndpoint = true;
+        }
+
         prevNode = addedNode;
         prevVert = currVert;
         currVert = currVert->pathNext;
@@ -813,7 +821,7 @@ void MinimumTerminalSpanningTree::constructInterleaved(void)
     for (std::list<VertInf **>::iterator curr = rootVertexPointers.begin();
             curr != rootVertexPointers.end(); ++curr)
     {
-        delete *curr;
+        free(*curr);
     }
     rootVertexPointers.clear();
 
