@@ -124,6 +124,9 @@ class Canvas : public QGraphicsScene
     Q_PROPERTY (int routingSegmentPenalty READ optRoutingPenaltySegment WRITE setOptRoutingPenaltySegment)
     Q_PROPERTY (bool structuralEditingDisabled READ optStructuralEditingDisabled WRITE setOptStructuralEditingDisabled)
     Q_PROPERTY (QColor canvasBackgroundColour READ optCanvasBackgroundColour WRITE setOptCanvasBackgroundColour)
+    Q_PROPERTY (bool routingNudgeFinalSharedPathSegments READ optRoutingNudgeFinalSharedPathSegments WRITE setOptRoutingNudgeFinalSharedPathSegments)
+    Q_PROPERTY (bool routingNudgeSharedPathsWithCommonEnd READ optRoutingNudgeSharedPathsWithCommonEnd WRITE setOptRoutingNudgeSharedPathsWithCommonEnd)
+
     Q_ENUMS (FlowDirection)
     Q_ENUMS (LayoutMode)
     Q_ENUMS (LayeredAlignment)
@@ -202,6 +205,8 @@ class Canvas : public QGraphicsScene
         int optConnectorRoundingDistance(void) const;
         int optRoutingPenaltySegment(void) const;
         int optRoutingShapePadding(void) const;
+        bool optRoutingNudgeFinalSharedPathSegments(void) const;
+        bool optRoutingNudgeSharedPathsWithCommonEnd(void) const;
         LayoutMode optLayoutMode(void) const;
         FlowDirection optFlowDirection(void) const;
         double optFlowSeparationModifier(void) const;
@@ -272,6 +277,8 @@ class Canvas : public QGraphicsScene
         void setOptFitWithinPage(const bool value);
         void setOptRoutingPenaltySegment(const int value);
         void setOptRoutingShapePadding(const int value);
+        void setOptRoutingNudgeSharedPathsWithCommonEnd(const bool value);
+        void setOptRoutingNudgeFinalSharedPathSegments(const bool value);
         void setOptConnRoundingDist(const int value);
         void setOptStructuralEditingDisabled(const bool value);
         void setOptLayoutMode(const LayoutMode mode);

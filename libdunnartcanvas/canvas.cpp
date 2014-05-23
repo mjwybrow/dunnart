@@ -1386,6 +1386,33 @@ void Canvas::setOptPreventOverlaps(const bool value)
 }
 
 
+bool Canvas::optRoutingNudgeSharedPathsWithCommonEnd(void) const
+{
+    return m_router->routingOption(Avoid::nudgeSharedPathsWithCommonEndPoint);
+}
+
+
+bool Canvas::optRoutingNudgeFinalSharedPathSegments(void) const
+{
+    return m_router->routingOption(Avoid::nudgeOrthogonalSegmentsConnectedToShapes);
+}
+
+void Canvas::setOptRoutingNudgeSharedPathsWithCommonEnd(const bool value)
+{
+    m_router->setRoutingOption(Avoid::nudgeSharedPathsWithCommonEndPoint, value);
+
+    reroute_all_connectors(this);
+}
+
+
+void Canvas::setOptRoutingNudgeFinalSharedPathSegments(const bool value)
+{
+    m_router->setRoutingOption(Avoid::nudgeOrthogonalSegmentsConnectedToShapes, value);
+
+    reroute_all_connectors(this);
+}
+
+
 void Canvas::setOptRoutingPenaltySegment(const int value)
 {
     m_router->setRoutingParameter(Avoid::segmentPenalty, (double) value);
