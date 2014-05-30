@@ -279,6 +279,7 @@ GraphData::GraphData(Canvas *canvas, bool ignoreEdges,
                 {
                     // Don't constrain undirected edges, or those
                     // ignoring downward edge constraints.
+                    conn_vec[i]->setHasDownwardConstraint(false);
                     continue;
                 }
 

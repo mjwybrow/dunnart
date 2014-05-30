@@ -99,6 +99,7 @@ class Connector : public CanvasItem
     Q_PROPERTY (ArrowHeadType arrowHeadType READ arrowHeadType WRITE setArrowHeadType)
     Q_PROPERTY (QColor colour READ colour WRITE setColour)
     Q_PROPERTY (QString label READ getLabel WRITE setLabel)
+    Q_PROPERTY (bool obeysDirectedConstraint READ obeysDirectedEdgeConstraints WRITE setObeysDirectedEdgeConstraints)
     Q_ENUMS (RoutingType)
     Q_ENUMS (ArrowHeadType)
 

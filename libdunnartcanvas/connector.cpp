@@ -692,6 +692,11 @@ bool Connector::obeysDirectedEdgeConstraints(void) const
 void Connector::setObeysDirectedEdgeConstraints(const bool value)
 {
     m_obeys_directed_edge_constraints = value;
+
+    if (canvas())
+    {
+        canvas()->interrupt_graph_layout();
+    }
 }
 
 QColor Connector::colour(void) const
