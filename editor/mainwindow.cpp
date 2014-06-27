@@ -501,11 +501,15 @@ void MainWindow::documentOpen(void)
         workingDir = workingDirSetting.toString();
     }
 
-    QString fileName = QFileDialog::getOpenFileName(this,
+    QString fileNameString = QFileDialog::getOpenFileName(this,
             tr("Open Diagram"), workingDir, filter);
-    if (!fileName.isEmpty())
+    if (!fileNameString.isEmpty())
     {
-        loadDiagram(fileName);
+        QSettings settings;
+        settings.setValue("workingDirectory", QFileInfo(fileNameString).absolutePath());
+        settings.sync();
+
+        loadDiagram(fileNameString);
     }
 }
 

@@ -661,16 +661,30 @@ void CanvasTabWidget::currentCanvasSaveAs(void)
     QString currFilename = currentCanvas()->filename();
     if (currFilename.isEmpty())
     {
-        currFilename = "untitled.svg";
+        // Determine the working directory.
+        QSettings settings;
+        QString workingDir(QDir::homePath());
+        QVariant workingDirSetting =
+                settings.value("workingDirectory");
+        if (workingDirSetting.isValid())
+        {
+            workingDir = workingDirSetting.toString();
+        }
+
+        currFilename = workingDir + "/untitled.svg";
     }
 
     QString defaultFilter = "Dunnart Annotated SVG (*.svg)";
     PluginFileIOFactory *fileIOFactory = sharedPluginFileIOFactory();
-    QString filename = QFileDialog::getSaveFileName(m_window, tr("Save Diagram"),
+    QString filenameString = QFileDialog::getSaveFileName(m_window, tr("Save Diagram"),
             currFilename, fileIOFactory->saveableFileFiltersString(), &defaultFilter);
-    if (!filename.isEmpty())
+    if (!filenameString.isEmpty())
     {
-        currentCanvas()->saveDiagram(filename);
+        QSettings settings;
+        settings.setValue("workingDirectory", QFileInfo(filenameString).absolutePath());
+        settings.sync();
+
+        currentCanvas()->saveDiagram(filenameString);
     }
 }
 
