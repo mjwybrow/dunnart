@@ -110,6 +110,19 @@ class ShapeObj: public CanvasItem
         virtual void initWithDimensions(QString id, const double x,
                 const double y, const double w, const double h);
 
+        /**
+         * @brief Override this to set up any label text, colours, etc for the
+         *        instance of the shape to be shown in the shape picker.
+         */
+        virtual void setupForShapePickerPreview(void);
+
+        /**
+         * @brief Override this to set up any label text, colours, etc for the
+         *        instance of the shape created on the canvas when the users
+         *        drags shapes from the shape picker.
+         */
+        virtual void setupForShapePickerDropOnCanvas(void);
+
         QString getLabel(void) const;
         virtual void setLabel(const QString& label);
 

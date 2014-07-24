@@ -216,6 +216,7 @@ void CanvasView::dropEvent(QDropEvent *event)
         ShapeObj *shape = factory->createShape(type);
         shape->initWithDimensions(0, shapeCentrePos.x(), shapeCentrePos.y(),
                 size.x(), size.y());
+        shape->setupForShapePickerDropOnCanvas();
 
         UndoMacro *macro = canvas()->beginUndoMacro(tr("Create Shape"));
         QUndoCommand *cmd = new CmdCanvasSceneAddItem(canvas(), shape);

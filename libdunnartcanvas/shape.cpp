@@ -1110,6 +1110,16 @@ void ShapeObj::initWithXMLProperties(Canvas *canvas,
     setPainterPath(buildPainterPath());
 }
 
+void ShapeObj::setupForShapePickerPreview(void)
+{
+
+}
+
+void ShapeObj::setupForShapePickerDropOnCanvas(void)
+{
+
+}
+
 
 ShapeObj::~ShapeObj()
 {

@@ -149,6 +149,7 @@ void ShapePickerDialog::changeIndex(const QString& text)
         ShapeObj *shape = factory->createShape(shapeType);
         shape->initWithDimensions(0, 0, 0,
                 pixmap.width() - 10, pixmap.height() - 10);
+        shape->setupForShapePickerPreview();
 
         // Render the shape into the pixmap, at the center.
         QPainter painter;
