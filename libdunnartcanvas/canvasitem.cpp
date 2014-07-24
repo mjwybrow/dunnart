@@ -330,9 +330,7 @@ QRectF CanvasItem::boundingRect(void) const
     assert(!m_painter_path.boundingRect().isNull());
 
     // Return the boundingRect, with padding for drawing selection cue.
-    return m_painter_path.boundingRect().adjusted(-BOUNDINGRECTPADDING,
-            -BOUNDINGRECTPADDING, +BOUNDINGRECTPADDING,
-            +BOUNDINGRECTPADDING);
+    return expandRect(m_painter_path.boundingRect(), BOUNDINGRECTPADDING);
 }
 
 

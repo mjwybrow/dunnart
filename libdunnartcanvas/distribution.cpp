@@ -408,8 +408,7 @@ QRectF Distribution::boundingRect() const
 {
     const double padding = BOUNDINGRECTPADDING;
     QRectF bb(-width() / 2, -height() / 2, width(), height());
-    bb.adjust(-padding, -padding, padding, padding);
-    return bb;
+    return expandRect(bb, padding);
 }
 
 

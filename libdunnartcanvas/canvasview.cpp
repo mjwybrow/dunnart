@@ -144,13 +144,6 @@ void CanvasView::repaintCanvasViewport(void)
 }
 
 
-static QRectF expandRect(const QRectF& origRect, double amount)
-{
-    return (origRect.isEmpty()) ?
-            origRect : origRect.adjusted(-amount, -amount, amount, amount);
-}
-
-
 void CanvasView::dragEnterEvent(QDragEnterEvent *event)
 {
     if (canvas()->optStructuralEditingDisabled())

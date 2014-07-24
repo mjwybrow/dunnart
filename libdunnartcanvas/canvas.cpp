@@ -2325,9 +2325,8 @@ void Canvas::selectionChangeTriggers(void)
     this->hideSelectionResizeHandles();
 
     // Update the area covered by the selection and the resize handles.
-    this->update(m_selection_shapes_bounding_rect.adjusted(
-            -BOUNDINGRECTPADDING, -BOUNDINGRECTPADDING,
-            +BOUNDINGRECTPADDING, BOUNDINGRECTPADDING));
+    this->update(expandRect(m_selection_shapes_bounding_rect,
+            BOUNDINGRECTPADDING));
     // Then reset the selection shape's bounding Rectangle.
     m_selection_shapes_bounding_rect = QRectF();
 
@@ -2354,9 +2353,8 @@ void Canvas::selectionChangeTriggers(void)
     }
 
     // Remove the boundingRect padding.
-    m_selection_shapes_bounding_rect = m_selection_shapes_bounding_rect.adjusted(
-            +BOUNDINGRECTPADDING, +BOUNDINGRECTPADDING,
-            -BOUNDINGRECTPADDING, -BOUNDINGRECTPADDING);
+    m_selection_shapes_bounding_rect = expandRect(
+                m_selection_shapes_bounding_rect, -BOUNDINGRECTPADDING);
 
     if (shapeCount > 0)
     {
@@ -2442,9 +2440,8 @@ void Canvas::storeSelectionResizeInfo(void)
         ShapeObj *shape = dynamic_cast<ShapeObj *> (item);
         if (shape && !shape->sizeLocked())
         {
-            QRectF shapeBR = shape->boundingRect().adjusted(
-                    +BOUNDINGRECTPADDING, +BOUNDINGRECTPADDING,
-                    -BOUNDINGRECTPADDING, -BOUNDINGRECTPADDING);
+            QRectF shapeBR = expandRect(shape->boundingRect(),
+                    -BOUNDINGRECTPADDING);
             shapeBR = shapeBR.translated(shape->scenePos());
             QPointF topLeft = (shapeBR.topLeft() - selectionTopLeft);
             topLeft = QPointF(topLeft.x() / selectionDimensions.x(),
@@ -2606,9 +2603,8 @@ void Canvas::repositionAndShowSelectionResizeHandles(bool calculatePosition)
             }
         }
         // Remove the boundingRect padding.
-        m_selection_shapes_bounding_rect = m_selection_shapes_bounding_rect.adjusted(
-                +BOUNDINGRECTPADDING, +BOUNDINGRECTPADDING,
-                -BOUNDINGRECTPADDING, -BOUNDINGRECTPADDING);
+        m_selection_shapes_bounding_rect = expandRect(m_selection_shapes_bounding_rect,
+                -BOUNDINGRECTPADDING);
     }
 
     if (m_selection_shapes_bounding_rect.isEmpty())
@@ -3134,6 +3130,11 @@ QRectF diagramBoundingRect(const QList<CanvasItem *>& list)
     }
 
     return rect;
+}
+
+QRectF expandRect(const QRectF& origRect, double amount)
+{
+    return origRect.adjusted(-amount, -amount, amount, amount);
 }
 
 

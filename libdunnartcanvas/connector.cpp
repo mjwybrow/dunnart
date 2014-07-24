@@ -1426,8 +1426,7 @@ void Connector::applyMultiEdgeOffset(Point& p1, Point& p2, bool justSecond)
 QRectF Connector::boundingRect(void) const
 {
     const double padding = BOUNDINGRECTPADDING;
-    return (painterPath().boundingRect().adjusted(-padding, -padding,
-            +padding, +padding) | m_arrow_path.boundingRect());
+    return (expandRect(painterPath().boundingRect(), padding) | m_arrow_path.boundingRect());
 }
 
 

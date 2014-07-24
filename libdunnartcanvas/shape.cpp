@@ -740,11 +740,7 @@ QRectF ShapeObj::shapeRect(const double buffer) const
     QRectF rect;
     rect.setSize(size());
     rect.moveCenter(centrePos());
-    if (buffer > 0)
-    {
-        rect.adjust(-buffer, -buffer, buffer, buffer);
-    }
-    return rect;
+    return expandRect(rect, buffer);
 }
 
 

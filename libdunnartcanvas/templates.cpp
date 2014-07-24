@@ -595,14 +595,12 @@ QRectF getAttachedObjectsBounds(Indicator *ind, double buffer,
         }
     }
 
-    bounds.adjust(-buffer, -buffer, buffer, buffer);
-
     if (objectCount)
     {
         *objectCount = count;
     }
 
-    return bounds;
+    return expandRect(bounds, buffer);
 }
 
 

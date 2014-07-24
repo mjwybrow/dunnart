@@ -492,6 +492,7 @@ class RoutingRequiredEvent : public QEvent
 
 
 extern QRectF diagramBoundingRect(const QList<CanvasItem *>& list);
+extern QRectF expandRect(const QRectF& origRect, double amount);
 
 
 }

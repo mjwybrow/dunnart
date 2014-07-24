@@ -96,10 +96,9 @@ class CanvasOverviewWidget : public QWidget
                 return;
             }
 
-            // Compute the diagram bounds.
-            QRectF diagramBounds =  diagramBoundingRect(canvas->items());
+            // Compute the diagram bounds.            
             double buffer = 50;
-            diagramBounds.adjust(-buffer, -buffer, buffer, buffer);
+            QRectF diagramBounds =  expandRect(diagramBoundingRect(canvas->items()), buffer);
 
             // Compute the scale to with the drawing into the overview rect.
             qreal xscale = drawingRect.width() / diagramBounds.width();

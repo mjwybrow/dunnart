@@ -88,8 +88,13 @@ class BuiltinSVGFileIOPlugin : public QObject, public FileIOPluginInterface
                 QString& errorMessage)
         {
             QString outputFilename = fileInfo.absoluteFilePath();
-            QSize size = canvas->pageRect().size().toSize();
             QRectF viewBox = canvas->pageRect();
+            if (viewBox.size().isEmpty())
+            {
+                // There is no page set, so set a viewbox equal to diagram bounds
+                double padding = 10;
+                viewBox = expandRect(diagramBoundingRect(canvas->items()), padding);
+            }
 
             QBuffer buffer;
             buffer.open(QBuffer::WriteOnly);
@@ -97,6 +102,7 @@ class BuiltinSVGFileIOPlugin : public QObject, public FileIOPluginInterface
             QSvgGenerator generator;
             generator.setOutputDevice(&buffer);
 
+            QSize size = viewBox.size().toSize();
             generator.setSize(size);
             generator.setViewBox(viewBox);
             generator.setTitle(QFileInfo(outputFilename).fileName());

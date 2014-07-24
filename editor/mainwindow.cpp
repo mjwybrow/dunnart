@@ -549,7 +549,17 @@ void MainWindow::documentExport(void)
     currFilename.chop(4);
     if (currFilename.isEmpty())
     {
-        currFilename = "untitled";
+        // Determine the working directory.
+        QSettings settings;
+        QString workingDir(QDir::homePath());
+        QVariant workingDirSetting =
+                settings.value("workingDirectory");
+        if (workingDirSetting.isValid())
+        {
+            workingDir = workingDirSetting.toString();
+        }
+
+        currFilename = workingDir + "/untitled";
     }
     QString filename = QFileDialog::getSaveFileName(this, tr("Export Diagram"),
             currFilename, tr("SVG (*.svg);;PDF (*.pdf);;Postscript (*.ps)"));
@@ -558,18 +568,27 @@ void MainWindow::documentExport(void)
         return;
     }
 
+    QRectF pageRect = currCanvas->pageRect();
+    if (pageRect.size().isEmpty())
+    {
+        // There is no page set, so use a page equal to diagram bounds
+        double padding = 10;
+        pageRect = expandRect(diagramBoundingRect(currCanvas->items()), padding);
+    }
+
     QFileInfo file(filename);
     if (file.suffix() == "svg")
     {
         QSvgGenerator generator;
         generator.setFileName(filename);
 
-        generator.setSize(currCanvas->pageRect().size().toSize());
-        QRectF targetRect(QPointF(0, 0), QSizeF(currCanvas->sceneRect().size()));
+        QRectF targetRect(QPointF(0, 0), currCanvas->sceneRect().size());
 
-        QRectF viewbox(currCanvas->pageRect().topLeft() -
-                currCanvas->sceneRect().topLeft(),
-                currCanvas->pageRect().size());
+        QPointF topLeft = pageRect.topLeft() -
+                currCanvas->sceneRect().topLeft();
+        QRectF viewbox(topLeft, pageRect.size());
+
+        generator.setSize(viewbox.size().toSize());
         generator.setViewBox(viewbox);
 
         generator.setTitle(QFileInfo(filename).fileName());
@@ -598,7 +617,7 @@ void MainWindow::documentExport(void)
         // Use QPrinter for PDF and PS.
         QPrinter printer;
         printer.setOutputFileName(filename);
-        printer.setPaperSize(currCanvas->pageRect().size(),
+        printer.setPaperSize(pageRect.size(),
                 QPrinter::Millimeter);
         QPainter painter;
         if (painter.begin(&printer))
@@ -606,7 +625,7 @@ void MainWindow::documentExport(void)
             painter.setRenderHint(QPainter::Antialiasing);
             currCanvas->setRenderingForPrinting(true);
             currCanvas->render(&painter, QRectF(),
-                    currCanvas->pageRect().adjusted(+3, +3, -3, -3),
+                    expandRect(pageRect, -3),
                     Qt::IgnoreAspectRatio);
             currCanvas->setRenderingForPrinting(false);
         }

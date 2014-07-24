@@ -109,8 +109,8 @@ QVariant SvgShape::itemChange(GraphicsItemChange change,
 
 QRectF SvgShape::boundingRect(void) const
 {
-    double b = 4;
-    return QGraphicsSvgItem::boundingRect().adjusted(-b, -b, b, b);
+    double padding = 4;
+    return expandRect(QGraphicsSvgItem::boundingRect(), padding);
 }
 
 
