@@ -3,7 +3,7 @@
  *
  * libavoid - Fast, Incremental, Object-avoiding Line Router
  *
- * Copyright (C) 2004-2013  Monash University
+ * Copyright (C) 2004-2014  Monash University
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -1841,6 +1841,9 @@ void Router::setRoutingParameter(const RoutingParameter parameter,
             case idealNudgingDistance:
                 m_routing_parameters[parameter] = 4.0;
                 break;
+            case portDirectionPenalty:
+                m_routing_parameters[parameter] = 100;
+                break;
             default:
                 m_routing_parameters[parameter] = 50;
                 break;
@@ -2267,11 +2270,13 @@ void Router::outputInstanceToSVG(std::string instanceName)
     fprintf(fp, "    ConnEnd srcPt;\n");
     fprintf(fp, "    ConnEnd dstPt;\n");
     fprintf(fp, "    PolyLine newRoute;\n");
+    fprintf(fp, "    ShapeConnectionPin *connPin = NULL;\n");
+    fprintf(fp, "\n");
     ClusterRefList::reverse_iterator revClusterRefIt = clusterRefs.rbegin();
     while (revClusterRefIt != clusterRefs.rend())
     {
         ClusterRef *cRef = *revClusterRefIt;
-        fprintf(fp, "    Polygon polygon.resize(%lu);\n", 
+        fprintf(fp, "    polygon = Polygon(%lu);\n", 
                 (unsigned long)cRef->polygon().size());
         for (size_t i = 0; i <cRef->polygon().size(); ++i)
         {
@@ -2315,7 +2320,7 @@ void Router::outputInstanceToSVG(std::string instanceName)
     {
         ClusterRef *cRef = *revClusterRefIt;
         fprintf(fp, "<path id=\"cluster-%u\" style=\"stroke-width: 1px; "
-                "stroke: black; fill: green; fill-opacity: 0.1;\" d=\"", 
+                "stroke: black; fill: green; opacity: 0.1;\" d=\"", 
                 cRef->id());
         for (size_t i = 0; i < cRef->polygon().size(); ++i)
         {
@@ -2324,8 +2329,8 @@ void Router::outputInstanceToSVG(std::string instanceName)
         }
         fprintf(fp, "Z\" />\n");
 
-        fprintf(fp, "<path id=\"cluster-%u\" style=\"stroke-width: 1px; "
-                "stroke: black; fill: green; fill-opacity: 0.1;\" d=\"", 
+        fprintf(fp, "<path id=\"cluster-%u-rect\" style=\"stroke-width: 1px; "
+                "stroke: black; fill: green; opacity: 0.1;\" d=\"", 
                 cRef->id());
         for (size_t i = 0; i < cRef->rectangularPolygon().size(); ++i)
         {
