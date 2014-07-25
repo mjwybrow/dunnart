@@ -24,3 +24,6 @@ diff
 
 #ignore the executable
 
+#documentation
+doc/html
+doc/latex
