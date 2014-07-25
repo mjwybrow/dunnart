@@ -17,12 +17,10 @@ SOURCES += cola.cpp \
     conjugate_gradient.cpp \
     gradient_projection.cpp \
     straightener.cpp \
-    cycle_detector.cpp \
     connected_components.cpp \
     convex_hull.cpp \
     cluster.cpp \
     compound_constraints.cpp \
-    max_acyclic_subgraph.cpp \
     output_svg.cpp \
     cc_clustercontainmentconstraints.cpp \
     cc_nonoverlapconstraints.cpp \
@@ -32,7 +30,6 @@ HEADERS += cola.h \
     commondefs.h \
     compound_constraints.h \
     gradient_projection.h \
-    max_acyclic_subgraph.h \
     sparse_matrix.h \
     straightener.h \
     output_svg.h \
