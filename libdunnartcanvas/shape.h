@@ -98,6 +98,9 @@ class ShapeObj: public CanvasItem
     Q_PROPERTY (bool sizeLocked READ sizeLocked WRITE setSizeLocked)
     Q_PROPERTY (bool pinned READ isPinned WRITE setPinned)
 
+    // QMarginsF not handled by qtpropertybrowser.
+    //Q_PROPERTY (QMarginsF containmentPadding READ containmentPadding() WRITE setContainmentPadding())
+
     UNDO_ACTION (ShapeObj, QPointF, centrePos, setCentrePos, UNDO_SHAPE_POS, "move shape")
     UNDO_ACTION (ShapeObj, QSizeF, size, setSize, UNDO_SHAPE_SIZE, "resize shape")
 
@@ -110,17 +113,15 @@ class ShapeObj: public CanvasItem
         virtual void initWithDimensions(QString id, const double x,
                 const double y, const double w, const double h);
 
-        /**
-         * @brief Override this to set up any label text, colours, etc for the
-         *        instance of the shape to be shown in the shape picker.
-         */
+        //! @brief Override this to set up any label text, colours, etc for the
+        //!        instance of the shape to be shown in the shape picker.
+        //!
         virtual void setupForShapePickerPreview(void);
 
-        /**
-         * @brief Override this to set up any label text, colours, etc for the
-         *        instance of the shape created on the canvas when the users
-         *        drags shapes from the shape picker.
-         */
+        //! @brief Override this to set up any label text, colours, etc for the
+        //!        instance of the shape created on the canvas when the users
+        //!        drags shapes from the shape picker.
+        //!
         virtual void setupForShapePickerDropOnCanvas(void);
 
         QString getLabel(void) const;
@@ -138,10 +139,26 @@ class ShapeObj: public CanvasItem
                 CanvasItem **path);
         virtual void addXmlProps(const unsigned int subset, QDomElement& node,
                 QDomDocument& doc);
+
         void addContainedShape(ShapeObj *shape);
         void addContainedShapes(QList<ShapeObj *>& shapes);
         void removeContainedShape(ShapeObj *shape);
         void removeContainedShapes(QList<ShapeObj *>& shapes);
+
+        //! @brief Returns the internal padding specified for containment
+        //!        constraints for any contained shapes.
+        //!
+        //! @return A QMarginsF object representing the padding values.
+        //!
+        QMarginsF containmentPadding(void) const;
+
+        //! @brief Specify internal padding values to be used for constraining
+        //!        contained shapes within this shape.
+        //!
+        //! @param padding A QMarginsF object specifying padding values.
+        //!
+        void setContainmentPadding(const QMarginsF& padding);
+
         QList<ShapeObj *> containedShapes(void) const;
         void showConnectionPoints(void);
         void hideConnectionPoints(void);
@@ -238,6 +255,7 @@ class ShapeObj: public CanvasItem
         QVector<Handle *> m_handles;
         uint m_detail_level;
         bool m_being_resized;
+        QMarginsF m_containment_padding;
 
         friend class Cluster;
 };

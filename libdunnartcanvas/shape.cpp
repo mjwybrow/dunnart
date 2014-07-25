@@ -304,6 +304,20 @@ void ShapeObj::userMoveBy(qreal dx, qreal dy)
     cmd_setCentrePos(centrePos() + QPointF(dx, dy));
 }
 
+QMarginsF ShapeObj::containmentPadding(void) const
+{
+    return m_containment_padding;
+}
+
+void ShapeObj::setContainmentPadding(const QMarginsF &padding)
+{
+    m_containment_padding = padding;
+
+    if (canvas())
+    {
+        canvas()->interrupt_graph_layout();
+    }
+}
 
 QList<ShapeObj *> ShapeObj::containedShapes(void) const
 {

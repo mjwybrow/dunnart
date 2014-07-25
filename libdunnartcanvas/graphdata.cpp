@@ -182,6 +182,15 @@ GraphData::GraphData(Canvas *canvas, bool ignoreEdges,
                 cola::RectangularCluster *c = new cola::RectangularCluster(snMap[shape]);
                 double buffer = canvas_->optShapeNonoverlapPadding();
                 c->setMargin(buffer);
+
+                // If the shape has containment padding specified, use it.
+                if (!shape->containmentPadding().isNull())
+                {
+                    QMarginsF padding = shape->containmentPadding();
+                    cola::Box containmentPadding(padding.left(), padding.right(), padding.top(), padding.bottom());
+                    c->setPadding(containmentPadding);
+                }
+
                 rectClusterShapeMap[shape] = c;
                 allShapeClusters.insert(c);
                 dunnartClusters.push_back(NULL);
