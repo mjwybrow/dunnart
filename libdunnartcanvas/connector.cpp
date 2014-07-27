@@ -76,7 +76,7 @@ Connector::Connector()
       m_has_downward_constraint(false),
       m_obeys_directed_edge_constraints(true),
       m_arrow_head_type(normal),
-      m_is_dotted(false),
+      m_dashed_stroke(false),
       m_is_lone_selected(false)
 {
     setCanvasItemFlag(CanvasItem::ItemIsMovable, false);
@@ -241,11 +241,11 @@ void Connector::initWithXMLProperties(Canvas *canvas,
         //       qPrintable(m_colour.name()));
     }
     
-    // get dotted
+    // Get dashed stroke setting.
     value = nodeAttribute(node, ns, "LineStyle");
     if (!value.isNull())
     {
-        setDotted(value == "dashed");
+        setDashedStroke(value == "dashed");
     }
 
     // From old PolyConn.
@@ -446,7 +446,7 @@ void Connector::addXmlProps(const unsigned int subset, QDomElement& node,
 
         char value[40];
         // also add line style
-        if (m_is_dotted)
+        if (m_dashed_stroke)
         {
             strcpy(value, "dashed");
             newProp(node, "LineStyle", value);
@@ -611,6 +611,17 @@ QString Connector::label(void) const
 void Connector::setLabel(const QString& label)
 {
     m_label = label;
+    update();
+}
+
+bool Connector::dashedStroke(void) const
+{
+    return m_dashed_stroke;
+}
+
+void Connector::setDashedStroke(bool dashed)
+{
+    m_dashed_stroke = dashed;
     update();
 }
 
@@ -1390,10 +1401,6 @@ void Connector::setPainterPath(QPainterPath path)
     stroker.setWidth(8);
     m_shape_path = stroker.createStroke(m_conn_path);
 
-    // Don't want this to be an open shape with fill, so add the reverse
-    // path to join it back up to the beginning of the connector.
-    path.connectPath(path.toReversed());
-    path.closeSubpath();
     CanvasItem::setPainterPath(path);
 }
 
@@ -1497,7 +1504,7 @@ void Connector::paint(QPainter *painter,
 
     QPen pen(m_colour);
     pen.setCosmetic(true);
-    if (m_is_dotted)
+    if (m_dashed_stroke)
     {
         QVector<qreal> dashes;
         dashes << 5 << 3;

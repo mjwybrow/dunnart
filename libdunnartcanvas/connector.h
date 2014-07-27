@@ -98,6 +98,7 @@ class Connector : public CanvasItem
     Q_PROPERTY (double idealLength READ idealLength WRITE setIdealLength)
     Q_PROPERTY (ArrowHeadType arrowHeadType READ arrowHeadType WRITE setArrowHeadType)
     Q_PROPERTY (QColor colour READ colour WRITE setColour)
+    Q_PROPERTY (bool dashedStroke READ dashedStroke WRITE setDashedStroke)
     Q_PROPERTY (QString label READ label WRITE setLabel)
     Q_PROPERTY (bool obeysDirectedConstraint READ obeysDirectedEdgeConstraints WRITE setObeysDirectedEdgeConstraints)
     Q_ENUMS (RoutingType)
@@ -143,7 +144,7 @@ class Connector : public CanvasItem
         double idealLength(void) const;
         void setIdealLength(double length);
 
-        //! @brief Return the current label for the connector.
+        //! @brief Returns the current label for the connector.
         //!
         //! @return The current label, a QString.
         //!
@@ -154,6 +155,18 @@ class Connector : public CanvasItem
         //! @param label  A QString with the new label.
         //!
         virtual void setLabel(const QString& label);
+
+        //! @brief Returns whether the connector has a dashed stroke.
+        //!
+        //! @return The bool representing this setting.
+        //!
+        bool dashedStroke(void) const;
+
+        //! @brief Set whether the connector is drawn with a dashed stroke.
+        //!
+        //! @param dashed  A bool denoting the desired dashed stroke state.
+        //!
+        void setDashedStroke(bool dashed);
 
         void rerouteAvoidingIntersections(void);
         virtual void cascade_distance(int dist, unsigned int dir,
@@ -175,7 +188,6 @@ class Connector : public CanvasItem
         void setObeysDirectedEdgeConstraints(const bool value);
         void overrideColour(QColor col);
         void restoreColour();
-        void setDotted(bool dotted) {this->m_is_dotted = dotted;}
         virtual void setNewLibavoidEndpoint(const int type);
         void reapplyRoute(void);
         void applyNewRoute(const Avoid::Polygon& route);
@@ -232,7 +244,7 @@ class Connector : public CanvasItem
         bool m_obeys_directed_edge_constraints;
         ArrowHeadType m_arrow_head_type;
         bool m_arrow_head_outline;
-        bool m_is_dotted;
+        bool m_dashed_stroke;
         QPainterPath m_arrow_path;
         // Unclosed and unreversed representation of connector path route.
         QPainterPath m_conn_path;
