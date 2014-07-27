@@ -386,9 +386,9 @@ MainWindow::MainWindow(Application *app)
     m_help_menu->addAction(m_about_action);
 
     // Restore window geometry and Dock Widget geometry.
-  //  QSettings settings;
-  //  restoreGeometry(settings.value("geometry").toByteArray());
-  //  restoreState(settings.value("windowState").toByteArray());
+    QSettings settings;
+    restoreGeometry(settings.value("geometry").toByteArray());
+    restoreState(settings.value("windowState").toByteArray());
 
     // This must be created after the geometry has been restored, otherwise
     // the toolbar can be hidden in weird ways.
