@@ -602,7 +602,7 @@ void Connector::setDirected(const bool directed)
 }
 
 
-QString Connector::getLabel(void) const
+QString Connector::label(void) const
 {
     return m_label;
 }

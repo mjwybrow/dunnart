@@ -91,7 +91,7 @@ class ShapeObj: public CanvasItem
 {
     Q_OBJECT
     Q_PROPERTY (QPointF position READ centrePos WRITE cmd_setCentrePos)
-    Q_PROPERTY (QString label READ getLabel WRITE setLabel)
+    Q_PROPERTY (QString label READ label WRITE setLabel)
     Q_PROPERTY (QSizeF size READ size WRITE cmd_setSize)
     Q_PROPERTY (QColor fillColour READ fillColour WRITE setFillColour)
     Q_PROPERTY (QColor strokeColour READ strokeColour WRITE setStrokeColour)
@@ -124,7 +124,16 @@ class ShapeObj: public CanvasItem
         //!
         virtual void setupForShapePickerDropOnCanvas(void);
 
-        QString getLabel(void) const;
+        //! @brief Return the current label for the shape.
+        //!
+        //! @return The current label, a QString.
+        //!
+        virtual QString label(void) const;
+
+        //! @brief Set a new label for the shape.
+        //!
+        //! @param label  A QString with the new label.
+        //!
         virtual void setLabel(const QString& label);
 
         QColor strokeColour(void) const;

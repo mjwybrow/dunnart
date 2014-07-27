@@ -1217,7 +1217,7 @@ void ShapeObj::cascade_distance(int dist, unsigned int dir, CanvasItem **path)
 }
 
 
-QString ShapeObj::getLabel(void) const
+QString ShapeObj::label(void) const
 {
     return m_label;
 }

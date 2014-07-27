@@ -98,7 +98,7 @@ class Connector : public CanvasItem
     Q_PROPERTY (double idealLength READ idealLength WRITE setIdealLength)
     Q_PROPERTY (ArrowHeadType arrowHeadType READ arrowHeadType WRITE setArrowHeadType)
     Q_PROPERTY (QColor colour READ colour WRITE setColour)
-    Q_PROPERTY (QString label READ getLabel WRITE setLabel)
+    Q_PROPERTY (QString label READ label WRITE setLabel)
     Q_PROPERTY (bool obeysDirectedConstraint READ obeysDirectedEdgeConstraints WRITE setObeysDirectedEdgeConstraints)
     Q_ENUMS (RoutingType)
     Q_ENUMS (ArrowHeadType)
@@ -143,8 +143,17 @@ class Connector : public CanvasItem
         double idealLength(void) const;
         void setIdealLength(double length);
 
-        QString getLabel(void) const;
-        void setLabel(const QString& label);
+        //! @brief Return the current label for the connector.
+        //!
+        //! @return The current label, a QString.
+        //!
+        virtual QString label(void) const;
+
+        //! @brief Set a new label for the connector.
+        //!
+        //! @param label  A QString with the new label.
+        //!
+        virtual void setLabel(const QString& label);
 
         void rerouteAvoidingIntersections(void);
         virtual void cascade_distance(int dist, unsigned int dir,
