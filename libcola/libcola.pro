@@ -24,7 +24,8 @@ SOURCES += cola.cpp \
     output_svg.cpp \
     cc_clustercontainmentconstraints.cpp \
     cc_nonoverlapconstraints.cpp \
-    box.cpp
+    box.cpp \
+    shapepair.cpp
 HEADERS += cola.h \
     cluster.h \
     commondefs.h \
@@ -38,4 +39,5 @@ HEADERS += cola.h \
     cc_nonoverlapconstraints.h \
     unused.h \
     box.h \
+    shapepair.h \
     config.h

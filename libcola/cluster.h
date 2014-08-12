@@ -31,9 +31,13 @@
 #include "libcola/compound_constraints.h"
 #include "libcola/commondefs.h"
 #include "libcola/box.h"
+#include "libcola/shapepair.h"
 
 namespace cola {
 
+class Cluster;
+typedef std::vector<Cluster *> Clusters;
+typedef std::vector<Clusters> ClustersList;
 
 /**
  * @brief  A cluster defines a hierarchical partitioning over the nodes
@@ -84,7 +88,7 @@ class Cluster
         void createVars(const vpsc::Dim dim, const vpsc::Rectangles& rs,
                 vpsc::Variables& vars);
         virtual void printCreationCode(FILE *fp) const = 0;
-        virtual int containsShape(unsigned index) const;
+        virtual void countContainedNodes(std::vector<unsigned>& counts);
         virtual bool clusterIsFromFixedRectangle(void) const;
         virtual void outputToSVG(FILE *fp) const = 0;
         
@@ -108,17 +112,39 @@ class Cluster
 
         double varWeight;
         double internalEdgeWeightFactor;
-        std::vector<unsigned> nodes;
+        std::set<unsigned> nodes;
         std::vector<Cluster*> clusters;
         std::valarray<double> hullX, hullY;
         
+    protected:
+        void recPathToCluster(RootCluster *rootCluster, 
+                Clusters currentPath);
+        bool includesAllNodesFrom(const Cluster *rhs) const;
+        
+        // The following are for handling the generation of the correct
+        // set of non-overlap constraints in the case overlapping clusters
+        // (i.e., multiple inheritence). 1) We need to exclude the overlapping
+        // clusters from having non-overlap constraints.  2) We replace nodes
+        // with multiple parent clusters when enforcing non-overlap with their 
+        // siblings and instead inforce non-overlap with the other clusters 
+        // they are part of, since otherwise there is nothing stopping the
+        // other siblings of each cluster from overlapping each other.  3) We 
+        // also need to enforce overlap still between the set of nodes replaced
+        // from each cluster in this way, since they may now be part of some
+        // new set.
+        std::set<ShapePair> m_cluster_cluster_overlap_exceptions;
+        std::map<unsigned, Cluster *> m_overlap_replacement_map;
+        std::set<unsigned> m_nodes_replaced_with_clusters;
+
     private:
+        friend class ConstrainedFDLayout;
+        friend class RootCluster;
+
         bool desiredBoundsSet;
         vpsc::Rectangle desiredBounds;
 
         vpsc::Variable *vMin, *vMax;
 };
-typedef std::vector<Cluster*> Clusters;
 
 
 /**
@@ -173,7 +199,14 @@ class RootCluster : public Cluster
         //! sa allowsMultipleParents()
         void setAllowsMultipleParents(const bool value);
    private:
+        void calculateClusterPathsToEachNode(size_t nodesCount);
+        
+        friend class ConstrainedFDLayout;
+        friend class Cluster;
+
         bool m_allows_multiple_parents;
+        
+        std::vector<ClustersList> m_cluster_vectors_leading_to_nodes;
 };
 
 /**
@@ -264,7 +297,7 @@ class RectangularCluster : public Cluster
         virtual ~RectangularCluster();
 #endif
         void computeBoundary(const vpsc::Rectangles& rs);
-        virtual int containsShape(unsigned index) const;
+        virtual void countContainedNodes(std::vector<unsigned>& counts);
         virtual void printCreationCode(FILE *fp) const;
         virtual void outputToSVG(FILE *fp) const;
         virtual void computeBoundingRect(const vpsc::Rectangles& rs);

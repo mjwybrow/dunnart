@@ -66,23 +66,34 @@ void Cluster::unsetDesiredBounds(void)
 // Checks to see if the shape at the given index is contained within this
 // cluster or its child clusters.
 //
-int Cluster::containsShape(unsigned index) const
+void Cluster::countContainedNodes(std::vector<unsigned>& counts)
 {
-    int count = 0;
-    for (vector<unsigned>::const_iterator i = nodes.begin(); 
-            i != nodes.end(); ++i)
+    vector<unsigned> invalidNodes;
+    for (set<unsigned>::iterator it = nodes.begin(); it != nodes.end(); ++it)
     {
-        if (*i == index)
+        unsigned nodeIndex = *it;
+        if (nodeIndex < counts.size())
         {
-            ++count;
+            // Node index is valid, increase count.
+            counts[*it] += 1;
+        }
+        else
+        {
+            fprintf(stderr, "Warning: Invalid node index %u specified in "
+                    "cluster. Ignoring...\n", nodeIndex);
+            invalidNodes.push_back(nodeIndex);
         }
     }
+    for (size_t i = 0; i < invalidNodes.size(); ++i)
+    {
+        nodes.erase(invalidNodes[i]);
+    }
+
     for (vector<Cluster*>::const_iterator i = clusters.begin(); 
             i != clusters.end(); ++i)
     {
-        count += (*i)->containsShape(index);
+        (*i)->countContainedNodes(counts);
     }
-    return count;
 }
 
 void Cluster::computeBoundingRect(const vpsc::Rectangles& rs) 
@@ -96,7 +107,7 @@ void Cluster::computeBoundingRect(const vpsc::Rectangles& rs)
                 (*i)->margin().rectangleByApplyingBox((*i)->bounds);
         bounds = bounds.unionWith(rectangle);
     }
-    for (vector<unsigned>::const_iterator i = nodes.begin(); 
+    for (set<unsigned>::const_iterator i = nodes.begin(); 
             i != nodes.end(); ++i)
     {
         vpsc::Rectangle* r=rs[*i];
@@ -131,10 +142,10 @@ void ConvexCluster::computeBoundary(const vpsc::Rectangles& rs)
     valarray<double> X(n);
     valarray<double> Y(n);
     unsigned pctr = 0;
-    for (vector<unsigned>::const_iterator i = nodes.begin(); 
-            i != nodes.end(); ++i)
+    vector<unsigned> nodesVector(nodes.begin(), nodes.end());
+    for (size_t i = 0; i < nodesVector.size(); ++i)
     {
-        vpsc::Rectangle* r=rs[*i];
+        vpsc::Rectangle* r=rs[nodesVector[i]];
         // Bottom Right
         X[pctr]=r->getMaxX();
         Y[pctr++]=r->getMinY();
@@ -163,7 +174,7 @@ void ConvexCluster::computeBoundary(const vpsc::Rectangles& rs)
     {
         hullX[j]=X[hull[j]];
         hullY[j]=Y[hull[j]];
-        hullRIDs[j]=hull[j]/4;
+        hullRIDs[j]=nodesVector[hull[j]/4];
         hullCorners[j]=hull[j]%4;
     }
 }
@@ -173,7 +184,7 @@ void ConvexCluster::printCreationCode(FILE *fp) const
 {
     fprintf(fp, "    ConvexCluster *cluster%llu = new ConvexCluster();\n",
             (unsigned long long) this);
-    for(vector<unsigned>::const_iterator i = nodes.begin(); 
+    for(set<unsigned>::const_iterator i = nodes.begin(); 
             i != nodes.end(); ++i)
     {
         fprintf(fp, "    cluster%llu->addChildNode(%u);\n",
@@ -275,16 +286,14 @@ Box RectangularCluster::padding(void) const
 }
 
 
-int RectangularCluster::containsShape(unsigned index) const
+void RectangularCluster::countContainedNodes(std::vector<unsigned>& counts)
 {
-    int count = 0;
-    if (m_rectangle_index == (int) index)
+    if (m_rectangle_index >= 0)
     {
         // This cluster is the shape in question.
-        ++count;
+        counts[m_rectangle_index] += 1;
     }
-    count += Cluster::containsShape(index);
-    return count;
+    Cluster::countContainedNodes(counts);
 }
 
 
@@ -323,12 +332,13 @@ void RectangularCluster::generateFixedRectangleConstraints(
 void RectangularCluster::computeBoundary(const vpsc::Rectangles& rs)
 {
     double xMin=DBL_MAX, xMax=-DBL_MAX, yMin=DBL_MAX, yMax=-DBL_MAX;
-    for (unsigned i=0;i<nodes.size();i++)
+    for (std::set<unsigned>::iterator it = nodes.begin();
+            it != nodes.end(); ++it)
     {
-        xMin=std::min(xMin,rs[nodes[i]]->getMinX());
-        xMax=std::max(xMax,rs[nodes[i]]->getMaxX());
-        yMin=std::min(yMin,rs[nodes[i]]->getMinY());
-        yMax=std::max(yMax,rs[nodes[i]]->getMaxY());
+        xMin=std::min(xMin,rs[*it]->getMinX());
+        xMax=std::max(xMax,rs[*it]->getMaxX());
+        yMin=std::min(yMin,rs[*it]->getMinY());
+        yMax=std::max(yMax,rs[*it]->getMaxY());
     }
     hullX.resize(4);
     hullY.resize(4);
@@ -367,7 +377,7 @@ void RectangularCluster::printCreationCode(FILE *fp) const
         m_padding.outputCode(fp);
         fprintf(fp, ");\n");
     }
-    for(vector<unsigned>::const_iterator i = nodes.begin(); 
+    for(set<unsigned>::const_iterator i = nodes.begin(); 
             i != nodes.end(); ++i)
     {
         fprintf(fp, "    cluster%llu->addChildNode(%u);\n",
@@ -384,23 +394,24 @@ void RectangularCluster::printCreationCode(FILE *fp) const
 
 void RectangularCluster::outputToSVG(FILE *fp) const
 {
+    double rounding = 4;
     if (varRect.isValid())
     {
         fprintf(fp, "<rect id=\"cluster-%llu-r\" x=\"%g\" y=\"%g\" width=\"%g\" "
                 "height=\"%g\" style=\"stroke-width: 1px; stroke: black; "
-                "fill: green; fill-opacity: 0.3;\" />\n",
+                "fill: green; fill-opacity: 0.3;\" rx=\"%g\" ry=\"%g\" />\n",
                 (unsigned long long) this, varRect.getMinX(), varRect.getMinY(), 
                 varRect.getMaxX() - varRect.getMinX(), 
-                varRect.getMaxY() - varRect.getMinY());
+                varRect.getMaxY() - varRect.getMinY(), rounding, rounding);
     }
     else
     {
         fprintf(fp, "<rect id=\"cluster-%llu\" x=\"%g\" y=\"%g\" width=\"%g\" "
             "height=\"%g\" style=\"stroke-width: 1px; stroke: black; "
-            "fill: red; fill-opacity: 0.3;\" />\n",
+            "fill: red; fill-opacity: 0.3;\" rx=\"%g\" ry=\"%g\" />\n",
             (unsigned long long) this, bounds.getMinX(), bounds.getMinY(), 
             bounds.getMaxX() - bounds.getMinX(), 
-            bounds.getMaxY() - bounds.getMinY());
+            bounds.getMaxY() - bounds.getMinY(), rounding, rounding);
     }
 
     for(vector<Cluster *>::const_iterator i = clusters.begin(); 
@@ -451,6 +462,121 @@ RootCluster::RootCluster()
 {
 }
 
+void Cluster::recPathToCluster(RootCluster *rootCluster, Clusters currentPath)
+{
+    // Reset cluster-cluster overlap exceptions.
+    m_cluster_cluster_overlap_exceptions.clear();
+    m_nodes_replaced_with_clusters.clear();
+    m_overlap_replacement_map.clear();
+
+    // Add this cluster to the path.
+    currentPath.push_back(this);
+
+    // Recusively all on each child cluster.
+    for (unsigned i = 0; i < clusters.size(); ++i) 
+    {
+        clusters[i]->recPathToCluster(rootCluster, currentPath);
+    }
+
+    // And store the path to each child node.
+    for (std::set<unsigned>::iterator it = nodes.begin();
+            it != nodes.end(); ++it)
+    {
+        rootCluster->m_cluster_vectors_leading_to_nodes[*it].
+                push_back(currentPath);
+    }
+}
+
+
+void RootCluster::calculateClusterPathsToEachNode(size_t nodesCount)
+{
+    m_cluster_vectors_leading_to_nodes.clear();
+    m_cluster_vectors_leading_to_nodes.resize(nodesCount);
+
+    recPathToCluster(this, Clusters());
+
+    for (unsigned i = 0; i < m_cluster_vectors_leading_to_nodes.size(); ++i) 
+    {
+        size_t paths = m_cluster_vectors_leading_to_nodes[i].size();
+        for (size_t j = 1; j < paths; ++j)
+        {
+            for (size_t k = 0; k < j; ++k)
+            {
+                // For each pair of paths.
+
+                // Find the lowest common ancestor by finding where the two
+                // paths from the root cluster to node i diverge.
+                Clusters pathJ = m_cluster_vectors_leading_to_nodes[i][j];
+                Clusters pathK = m_cluster_vectors_leading_to_nodes[i][k];
+                size_t lcaIndex = 0;
+                while ((lcaIndex < pathJ.size()) && 
+                       (lcaIndex < pathK.size()) &&
+                        (pathJ[lcaIndex] == pathK[lcaIndex]))
+                {
+                    ++lcaIndex;
+                }
+                COLA_ASSERT(lcaIndex > 0);
+
+                // lcaIndex will be the clusters/nodes that need to overlap
+                // due to these two paths to node i.
+                size_t lcaChildJIndex = i;
+                size_t lcaChildKIndex = i;
+                Cluster *lcaChildJCluster = NULL;
+                Cluster *lcaChildKCluster = NULL;
+                
+                // lcaIndex < path{J,K}.size() means the child J or K of 
+                // the lca is a Cluster.   At least one of them will always
+                // be a cluster.
+                COLA_ASSERT((lcaIndex < pathJ.size()) ||
+                        (lcaIndex < pathK.size()));
+                if (lcaIndex < pathJ.size())
+                {
+                    lcaChildJCluster = pathJ[lcaIndex];
+                    lcaChildJIndex = lcaChildJCluster->clusterVarId;
+                }
+                if (lcaIndex < pathK.size())
+                {
+                    lcaChildKCluster = pathK[lcaIndex];
+                    lcaChildKIndex = lcaChildKCluster->clusterVarId;
+                }
+
+                // We want to exclude the overlapping children of the lca 
+                // from having non-overlap constraints generated for them
+                // (siblings of a particular cluster usually have 
+                // non-overlap constraints generated for them).
+                Cluster *lcaCluster = pathJ[lcaIndex - 1];
+                lcaCluster->m_cluster_cluster_overlap_exceptions.insert(
+                        ShapePair(lcaChildJIndex, lcaChildKIndex));
+
+                if (lcaChildJCluster)
+                {
+                    // In cluster J, replace node i with cluster K for the 
+                    // purpose of non-overlap with siblings, and remember 
+                    // this replacement so we can still generate non-overlap 
+                    // constraints between multiple nodes that are children
+                    // of the same overlapping clusters.
+                    lcaChildJCluster->m_overlap_replacement_map[i] =
+                            lcaChildKCluster;
+                    lcaChildJCluster->m_nodes_replaced_with_clusters.insert(i);
+                }
+
+                if (lcaChildKCluster)
+                {
+                    // In cluster K, replace node i with cluster J for the 
+                    // purpose of non-overlap with siblings, and remember 
+                    // this replacement so we can still generate non-overlap 
+                    // constraints between multiple nodes that are children
+                    // of the same overlapping clusters.
+                    lcaChildKCluster->m_overlap_replacement_map[i] =
+                            lcaChildJCluster;
+                    lcaChildKCluster->m_nodes_replaced_with_clusters.insert(i);
+                }
+            }
+        }
+    }
+}
+
+
 void RootCluster::computeBoundary(const vpsc::Rectangles& rs) 
 {
     for (unsigned i = 0; i < clusters.size(); ++i) 
@@ -463,7 +589,7 @@ void RootCluster::printCreationCode(FILE *fp) const
 {
     fprintf(fp, "    RootCluster *cluster%llu = new RootCluster();\n",
             (unsigned long long) this);
-    for(vector<unsigned>::const_iterator i = nodes.begin(); 
+    for(set<unsigned>::const_iterator i = nodes.begin(); 
             i != nodes.end(); ++i)
     {
         fprintf(fp, "    cluster%llu->addChildNode(%u);\n",
@@ -562,7 +688,7 @@ void Cluster::createVars(const vpsc::Dim dim, const vpsc::Rectangles& rs,
 double Cluster::area(const vpsc::Rectangles& rs)
 {
     double a = 0;
-    for (vector<unsigned>::iterator i = nodes.begin(); i != nodes.end(); ++i)
+    for (set<unsigned>::iterator i = nodes.begin(); i != nodes.end(); ++i)
     {
         vpsc::Rectangle *r = rs[*i];
         a += r->width() * r->height();
@@ -576,7 +702,7 @@ double Cluster::area(const vpsc::Rectangles& rs)
 
 void Cluster::addChildNode(unsigned index)
 {
-    this->nodes.push_back(index);
+    this->nodes.insert(index);
 }
 
 void Cluster::addChildCluster(Cluster *cluster)

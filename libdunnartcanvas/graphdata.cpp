@@ -200,7 +200,7 @@ GraphData::GraphData(Canvas *canvas, bool ignoreEdges,
                     // Only add as nodes, if they themselves contain
                     // no children.
                     unsigned nodeID = snMap[children.at(j)];
-                    c->nodes.push_back(nodeID);
+                    c->addChildNode(nodeID);
                     rootNodes.erase(nodeID);
                 }
             }
@@ -1030,7 +1030,7 @@ void GraphData::dunnartClusterToCluster(Cluster* cluster) {
     for(ShapeList::iterator i = l.begin();
             i!=l.end();i++) {
         unsigned nodeID = snMap[*i];
-        c->nodes.push_back(nodeID);
+        c->addChildNode(nodeID);
         rootNodes.erase(nodeID);
     }
 
@@ -1083,8 +1083,7 @@ void GraphData::dunnartClusterToCluster(Cluster* cluster) {
 
 
 void GraphData::setUpRootCluster() {
-    clusterHierarchy.nodes.resize(rootNodes.size());
-    copy(rootNodes.begin(),rootNodes.end(),clusterHierarchy.nodes.begin());
+    clusterHierarchy.nodes = rootNodes;
 }
 /**
  * Creates cola edge for a dunnart Conn.
