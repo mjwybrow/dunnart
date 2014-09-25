@@ -27,7 +27,6 @@
 #include <QMessageBox>
 
 #include "appgarudaclient.h"
-#include "qt-json/json.h"
 
 
 AppGarudaClient::AppGarudaClient(QObject *parent) :
@@ -119,7 +118,8 @@ void AppGarudaClient::readData(void)
 
 void AppGarudaClient::parseMessage(const QString &message)
 {
-    QVariant var = QtJson::Json::parse(message);
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(message.toUtf8());
+    QVariant var = jsonDoc.toVariant();
     QVariantMap data = var.toMap();
 
     QVariantMap header = data["header"].toMap();
@@ -156,7 +156,8 @@ void AppGarudaClient::activateDunnartWithCore(void)
     root["header"] = header;
     root["body"] = body;
 
-    QByteArray data = QtJson::Json::serialize(root);
+    QJsonDocument jsonDoc = QJsonDocument::fromVariant(root);
+    QByteArray data = jsonDoc.toJson(QJsonDocument::Compact);
 
     sendData(QString(data));
 }
@@ -176,7 +177,8 @@ void AppGarudaClient::registerDunnart(void)
     header["version"] = "0.1";
 
     QVariantList categoryList;
-    categoryList.append(QVariant("Layout"));
+    categoryList.append(QVariant("Pathways"));
+    categoryList.append(QVariant("Visualization"));
 
     QVariantList screenshots;
     screenshots.append(pluginsDir.absoluteFilePath("DunnartScreen.png"));
@@ -192,7 +194,7 @@ void AppGarudaClient::registerDunnart(void)
     body["categoryList"] = categoryList;
     body["description"] = "Dunnart is a prototype constraint-based diagram editor. It includes standard diagram editing capabilities, as well as advanced features such as constraint-based geometric placement tools (alignment, distribution, separation, non-overlap, and page containment), automatic object-avoiding poly-line connector routing, and continuous network layout.";
     body["gadgetUUID"] = m_app_uuid;
-    body["iconPath"] = pluginsDir.absoluteFilePath("DunnartIcon.png");
+    body["iconPath"] = pluginsDir.absoluteFilePath("DunnartIcon64.png");
     body["inputFileFormats"] = fileFormats;
     body["outputFileFormats"] = fileFormats;
     body["launchCommand"] = "open " + QCoreApplication::applicationFilePath();
@@ -205,14 +207,14 @@ void AppGarudaClient::registerDunnart(void)
     root["header"] = header;
     root["body"] = body;
 
-    QByteArray data = QtJson::Json::serialize(root);
+    QJsonDocument jsonDoc = QJsonDocument::fromVariant(root);
+    QByteArray data = jsonDoc.toJson(QJsonDocument::Compact);
 
     sendData(QString(data));
 }
 
 void AppGarudaClient::deregisterWithCore(void)
 {
-/*
     QVariantMap header;
     header["id"] = "DeregisterFromGarudaRequest";
     header["version"] = "0.1";
@@ -225,10 +227,10 @@ void AppGarudaClient::deregisterWithCore(void)
     root["header"] = header;
     root["body"] = body;
 
-    QByteArray data = QtJson::Json::serialize(root);
+    QJsonDocument jsonDoc = QJsonDocument::fromVariant(root);
+    QByteArray data = jsonDoc.toJson(QJsonDocument::Compact);
 
     sendData(QString(data));
-*/
 }
 
 void AppGarudaClient::loadFileIntoSoftware(QFileInfo fileInfo, QString softwareName,
@@ -249,7 +251,8 @@ void AppGarudaClient::loadFileIntoSoftware(QFileInfo fileInfo, QString softwareN
     root["header"] = header;
     root["body"] = body;
 
-    QByteArray data = QtJson::Json::serialize(root);
+    QJsonDocument jsonDoc = QJsonDocument::fromVariant(root);
+    QByteArray data = jsonDoc.toJson(QJsonDocument::Compact);
 
     sendData(QString(data));
 }
@@ -270,7 +273,8 @@ void AppGarudaClient::showCompatibleSoftwareFor(QString extension, QString forma
     root["header"] = header;
     root["body"] = body;
 
-    QByteArray data = QtJson::Json::serialize(root);
+    QJsonDocument jsonDoc = QJsonDocument::fromVariant(root);
+    QByteArray data = jsonDoc.toJson(QJsonDocument::Compact);
 
     sendData(QString(data));
 }

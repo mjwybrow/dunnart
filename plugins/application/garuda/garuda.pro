@@ -10,12 +10,10 @@ include(../application_plugin_options.pri)
 HEADERS       = \
     appgarudaclient.h \
     openincompatiblesoftwarewidget.h \
-    qt-json/json.h
 
 SOURCES       = plugin.cpp \
     appgarudaclient.cpp \
     openincompatiblesoftwarewidget.cpp \
-    qt-json/json.cpp
 
 FORMS += \
     openincompatiblesoftwarewidget.ui
@@ -40,7 +38,7 @@ defineTest(copyToDestDir) {
 }
 
 RESOURCE_FILES = \
-    $$PWD/../../../libdunnartcanvas/doc/DunnartIcon.png \
+    $$PWD/../../../libdunnartcanvas/doc/DunnartIcon64.png \
     $$PWD/../../../libdunnartcanvas/doc/DunnartScreen.png
 
 copyToDestDir($$RESOURCE_FILES)
