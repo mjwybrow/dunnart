@@ -300,7 +300,7 @@ bool Canvas::loadGmlDiagram(const QFileInfo& fileInfo)
     setOptAutomaticGraphLayout(true);
     setOptShapeNonoverlapPadding(10);
     int cxoff, cyoff;
-    m_gml_graph = new gml::Graph(this, fileInfo.absolutePath().toStdString(),
+    m_gml_graph = new gml::Graph(this, fileInfo.absoluteFilePath().toStdString(),
             gml::Page(this), gml::COff(cxoff, cyoff));
     return true;
 }
