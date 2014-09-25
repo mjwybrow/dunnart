@@ -3,7 +3,7 @@
  *
  * libavoid - Fast, Incremental, Object-avoiding Line Router
  *
- * Copyright (C) 2004-2013  Monash University
+ * Copyright (C) 2004-2014  Monash University
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -94,14 +94,14 @@ bool Point::operator<(const Point& rhs) const
 }
 
 
-double& Point::operator[](const unsigned int dimension)
+double& Point::operator[](const size_t dimension)
 {
     COLA_ASSERT((dimension == 0) || (dimension == 1));
     return ((dimension == 0) ? x : y);
 }
 
 
-const double& Point::operator[](const unsigned int dimension) const
+const double& Point::operator[](const size_t dimension) const
 {
     COLA_ASSERT((dimension == 0) || (dimension == 1));
     return ((dimension == 0) ? x : y);
@@ -231,7 +231,7 @@ Box PolygonInterface::offsetBoundingBox(double offset) const
     return bBox;
 }
 
-double Box::length(const unsigned int dimension) const
+double Box::length(size_t dimension) const
 {
     if (dimension == 0)
     {
@@ -535,7 +535,6 @@ Polygon Polygon::simplify(void) const
     
     std::vector<std::pair<size_t, Point> >& checkpoints = 
             simplified.checkpointsOnRoute;
-    size_t checkpointIndex = 0;
     bool hasCheckpointInfo = !(checkpoints.empty());
 
     std::vector<Point>::iterator it = simplified.ps.begin();
@@ -568,22 +567,17 @@ Polygon Polygon::simplify(void) const
                 //
                 //
                 size_t deletedPointValue = (j - 1) - 1;
-                while (checkpoints[checkpointIndex].first < deletedPointValue)
+                for (size_t i = 0; i < checkpoints.size(); ++i)
                 {
-                    ++checkpointIndex;
+                    if (checkpoints[i].first == deletedPointValue)
+                    {
+                        checkpoints[i].first -= 1;
+                    }
+                    else if (checkpoints[i].first > deletedPointValue)
+                    {
+                        checkpoints[i].first -= 2;
+                    }
                 }
-                size_t checkpointIndexAtDeletionPoint = checkpointIndex;
-                while (checkpoints[checkpointIndex].first == deletedPointValue)
-                {
-                    checkpoints[checkpointIndex].first = deletedPointValue - 1;
-                    ++checkpointIndex;
-                }
-                while (checkpointIndex < checkpoints.size())
-                {
-                    checkpoints[checkpointIndex].first -= 2;
-                    ++checkpointIndex;
-                }
-                checkpointIndex = checkpointIndexAtDeletionPoint;
             }
         }
         else
