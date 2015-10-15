@@ -32,6 +32,7 @@
 #include <QString>
 #include <QStringList>
 #include <QFileInfo>
+#include <QtPlugin>
 
 namespace dunnart {
 
@@ -91,8 +92,9 @@ class FileIOPluginInterface
 
 }
 
-Q_DECLARE_INTERFACE(dunnart::FileIOPluginInterface,
-        "org.dunnart.dunnart.FileIOPluginInterface/1.0")
+#define FileIOPluginInterface_iid "org.dunnart.dunnart.FileIOPluginInterface/1.0"
+
+Q_DECLARE_INTERFACE(dunnart::FileIOPluginInterface, FileIOPluginInterface_iid)
 
 
 #endif // FILEIOPLUGININTERFACE_H

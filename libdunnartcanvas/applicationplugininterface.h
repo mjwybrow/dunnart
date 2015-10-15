@@ -29,6 +29,8 @@
 #ifndef APPLICATIONPLUGININTERFACE_H
 #define APPLICATIONPLUGININTERFACE_H
 
+#include <QtPlugin>
+
 namespace dunnart {
 
 class Canvas;
@@ -54,8 +56,9 @@ class ApplicationPluginInterface
 
 }
 
-Q_DECLARE_INTERFACE(dunnart::ApplicationPluginInterface,
-        "org.dunnart.dunnart.ApplicationPluginInterface/1.0")
+#define ApplicationPluginInterface_iid "org.dunnart.dunnart.ApplicationPluginInterface/1.0"
+
+Q_DECLARE_INTERFACE(dunnart::ApplicationPluginInterface, ApplicationPluginInterface_iid)
 
 
 #endif // APPLICATIONPLUGININTERFACE_H

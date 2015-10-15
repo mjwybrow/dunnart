@@ -31,6 +31,7 @@
 
 #include <QString>
 #include <QStringList>
+#include <QtPlugin>
 
 
 namespace dunnart {
@@ -45,6 +46,7 @@ class ShapeObj;
 class ShapePluginInterface
 {
     public:
+
         virtual ~ShapePluginInterface() {}
 
         //! @brief   Returns a short label that describes the group of shapes
@@ -70,8 +72,9 @@ class ShapePluginInterface
 
 }
 
-Q_DECLARE_INTERFACE(dunnart::ShapePluginInterface,
-        "org.dunnart.dunnart.ShapePluginInterface/1.0")
+#define ShapePluginInterface_iid "org.dunnart.dunnart.ShapePluginInterface/1.0"
+
+Q_DECLARE_INTERFACE(dunnart::ShapePluginInterface, ShapePluginInterface_iid)
 
 #endif // SHAPEPLUGININTERFACE_H
 // vim: filetype=cpp ts=4 sw=4 et tw=0 wm=0 cindent
