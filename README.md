@@ -104,7 +104,7 @@ GNU General Public License for more details.
 [mw]: http://www.csse.monash.edu.au/~mwybrow/
 [monash]: http://wwww.csse.monash.edu.au/
 [dunnart]: http://www.dunnart.org/
-[qt]: http://qt.nokia.com/
+[qt]: http://www.qt.io/
 [adaptagramsrepo]: https://github.com/mjwybrow/adaptagrams/
 [dunnartrepo]: https://github.com/mjwybrow/dunnart/
 [repo]: https://github.com/mjwybrow/adaptagrams/
