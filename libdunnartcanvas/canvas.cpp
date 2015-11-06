@@ -1767,6 +1767,9 @@ void Canvas::pasteSelection(void)
             sep->moveToDefaultPos(store_undo);
         }
     }
+
+    repositionAndShowSelectionResizeHandles(true);
+
     interrupt_graph_layout();
     restart_graph_layout();
 }
