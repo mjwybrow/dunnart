@@ -810,7 +810,7 @@ void Separation::Resize(Guideline *guide, double origSep, const QPointF posDiff,
 }
 
 
-Separation *createSeparation(QWidget *window, const dtype type,
+QPair<Separation *, QString> createSeparation(const dtype type,
         CanvasItemList& objList, double separationDist, bool sortGuidelines)
 {
     Separation *separation = NULL;
@@ -873,22 +873,17 @@ Separation *createSeparation(QWidget *window, const dtype type,
     // Remove duplicates
     guideList.unique();
 
+    QString errorMessage;
+
     bool must_undo = false;
     if (guideList.size() < 2)
     {
-        if (window)
-        {
-            QString warning = QString(
-                    QObject::tr("<p><b>Separation constraints must be applied "
-                    "to two or more selected shapes or guidelines.</b></p>"
-                    "<p>The current selection contains only %1 such object."
-                    "</p>")).arg(guideList.size());
+        errorMessage = QString(
+                "<p><b>Separation constraints must be applied "
+                "to two or more selected shapes or guidelines.</b></p>"
+                "<p>The current selection contains only %1 such object."
+                "</p>").arg(guideList.size());
 
-            QMessageBox message(QMessageBox::Warning, "Invalid Action",
-                                warning, QMessageBox::Ok, window);
-            message.setWindowModality(Qt::WindowModal);
-            message.exec();
-        }
         must_undo = true;
     }
     else
@@ -904,7 +899,7 @@ Separation *createSeparation(QWidget *window, const dtype type,
         // UNDO clear_redo_stack();
     }
 
-    return separation;
+    return QPair<Separation *, QString>(separation, errorMessage);
 }
 
 

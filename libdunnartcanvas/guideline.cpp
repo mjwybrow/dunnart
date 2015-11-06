@@ -617,7 +617,7 @@ void Guideline::moveRelationshipsToGuideline(Guideline *targetGuideline)
 }
 
 
-Guideline *createAlignment(const atypes atype, CanvasItemList items)
+QPair<Guideline *, QString> createAlignment(const atypes atype, CanvasItemList items)
 {
     Guideline *alignmentGuideline = NULL;
     QSet<Guideline *> guidelinesToMerge;
@@ -716,25 +716,30 @@ Guideline *createAlignment(const atypes atype, CanvasItemList items)
         }
     }
 
-    // Rewrite the relationships from the to-merge guidelines onto the
-    // master guideline for the alignment.
-    assert(alignmentGuideline);
-    UndoMacro *currentUndoMacro = alignmentGuideline->canvas()->currentUndoMacro();
-    foreach (Guideline *guideline, guidelinesToMerge)
+    QString errorMessage;
+    if (alignmentGuideline)
     {
-        guideline->moveRelationshipsToGuideline(alignmentGuideline);
-        QUndoCommand *cmd = new CmdCanvasSceneRemoveItem(
-                guideline->canvas(), guideline);
-        currentUndoMacro->addCommand(cmd);
+        // Rewrite the relationships from the to-merge guidelines onto the
+        // master guideline for the alignment.
+        assert(alignmentGuideline);
+        UndoMacro *currentUndoMacro = alignmentGuideline->canvas()->currentUndoMacro();
+        foreach (Guideline *guideline, guidelinesToMerge)
+        {
+            guideline->moveRelationshipsToGuideline(alignmentGuideline);
+            QUndoCommand *cmd = new CmdCanvasSceneRemoveItem(
+                    guideline->canvas(), guideline);
+            currentUndoMacro->addCommand(cmd);
 
+        }
+    }
+    else
+    {
+        errorMessage = QString(
+                "<p><b>Alignment constraints must be applied "
+                "to one or more selected shapes.</b></p>");
     }
 
-    if (!alignmentGuideline)
-    {
-        qWarning("No alignment created in createAlignment().");
-    }
-
-    return alignmentGuideline;
+    return QPair<Guideline *, QString>(alignmentGuideline, errorMessage);
 }
 
 

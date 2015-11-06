@@ -48,6 +48,7 @@
 #include "libdunnartcanvas/oldcanvas.h"
 #include "libdunnartcanvas/undo.h"
 #include "libdunnartcanvas/templates.h"
+#include "libdunnartcanvas/ui/createalignment.h"
 #include "libdunnartcanvas/ui/createseparation.h"
 #include "libdunnartcanvas/ui/createdistribution.h"
 #include "libdunnartcanvas/ui/createtemplate.h"
@@ -1041,58 +1042,112 @@ void Canvas::templateFromSelection(int type)
 
 void Canvas::alignSelection(int type)
 {
+    CreateAlignmentDialog *dialog =
+            dynamic_cast<CreateAlignmentDialog *> (sender()->parent());
     CanvasItemList selected_items = selectedItems();
     beginUndoMacro(tr("Create Alignment"));
-    Guideline *guide = createAlignment((atypes) type, selected_items);
-    Q_UNUSED(guide);
+    QPair<Guideline *, QString> result = 
+            createAlignment((atypes) type, selected_items);
+    Guideline *guide = result.first;
 
-    // Delselect shapes so they can be moved by layout solver.
-    deselectAll();
-    // Clear previous moves.
-    Actions& actions = getActions();
-    actions.clear();
-    // UNDO add_undo_record(DELTA_MOVE, guide);
-    // Relayout.
-    interrupt_graph_layout();
+    if (guide)
+    {
+        // Deselect shapes so they can be moved by layout solver.
+        deselectAll();
+        // Clear previous moves.
+        Actions& actions = getActions();
+        actions.clear();
+        // UNDO add_undo_record(DELTA_MOVE, guide);
+        // Relayout.
+        interrupt_graph_layout();
+    }
+    else
+    {
+        QWidget *window = (dialog) ? dialog->window() : NULL;
+        if (window)
+        {
+            QString warning = result.second;
+
+            QMessageBox message(QMessageBox::Warning, "Invalid Action",
+                                warning, QMessageBox::Ok, window);
+            message.setWindowModality(Qt::WindowModal);
+            message.exec();
+        }
+    }
 }
 
 
 void Canvas::distributeSelection(int type)
 {
-    CreateDistributionDialog *sepDialog =
+    CreateDistributionDialog *dialog =
             dynamic_cast<CreateDistributionDialog *> (sender()->parent());
     CanvasItemList selected_items = selectedItems();
-    QWidget *window = (sepDialog) ? sepDialog->window() : NULL;
     beginUndoMacro(tr("Create Distribution"));
-    createDistribution(window, (dtype) type, selected_items);
+    QPair<Distribution *, QString> result = 
+            createDistribution((dtype) type, selected_items);
 
-    // Delselect shapes so they can be moved by layout solver.
-    deselectAll();
-    // Clear previous moves.
-    Actions& actions = getActions();
-    actions.clear();
-    // Relayout.
-    interrupt_graph_layout();
+    Distribution *newDistribution = result.first;
+    if (newDistribution)
+    {
+        // Deselect shapes so they can be moved by layout solver.
+        deselectAll();
+        // Clear previous moves.
+        Actions& actions = getActions();
+        actions.clear();
+        // Relayout.
+        interrupt_graph_layout();
+    }
+    else
+    {
+        QWidget *window = (dialog) ? dialog->window() : NULL;
+        if (window)
+        {
+            QString warning = result.second;
+
+            QMessageBox message(QMessageBox::Warning, "Invalid Action",
+                                warning, QMessageBox::Ok, window);
+            message.setWindowModality(Qt::WindowModal);
+            message.exec();
+        }
+    }
 }
 
 void Canvas::separateSelection(int type)
 {
-    CreateSeparationDialog *sepDialog =
+    CreateSeparationDialog *dialog =
             dynamic_cast<CreateSeparationDialog *> (sender()->parent());
-    double minSeparationDist = (sepDialog) ? sepDialog->separationDistance() : 50.0;
+    double minSeparationDist = (dialog) ? dialog->separationDistance() : 50.0;
     CanvasItemList selected_items = selectedItems();
 
-    QWidget *window = (sepDialog) ? sepDialog->window() : NULL;
     beginUndoMacro(tr("Create Separation"));
-    createSeparation(window, (dtype) type, selected_items, minSeparationDist);
+    QPair<Separation *, QString> result = 
+            createSeparation((dtype) type, selected_items, minSeparationDist);
+    
+    Separation *newSeparation = result.first;
+    
+    if (newSeparation)
+    {    
+        // Deselect shapes so they can be moved by layout solver.
+        deselectAll();
+        // Clear previous moves.
+        Actions& actions = getActions();
+        actions.clear();
+        // Relayout.
+        fully_restart_graph_layout();
+    }
+    else
+    {
+        QWidget *window = (dialog) ? dialog->window() : NULL;
+        if (window)
+        {
+            QString warning = result.second;
 
-    // Deselect shapes so they can be moved by layout solver.
-    deselectAll();
-    // Clear previous moves.
-    Actions& actions = getActions();
-    actions.clear();
-    // Relayout.
-    fully_restart_graph_layout();
+            QMessageBox message(QMessageBox::Warning, "Invalid Action",
+                                warning, QMessageBox::Ok, window);
+            message.setWindowModality(Qt::WindowModal);
+            message.exec();
+        }
+    }
 }
 
 

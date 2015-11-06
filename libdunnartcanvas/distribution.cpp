@@ -865,7 +865,7 @@ void Distribution::Resize(Guideline *guide, const double newx, const double newy
 }
 
 
-Distribution *createDistribution(QWidget *window, const dtype type,
+QPair<Distribution *, QString> createDistribution(const dtype type, 
         CanvasItemList& objList)
 {
     Distribution *distro = NULL;
@@ -920,22 +920,16 @@ Distribution *createDistribution(QWidget *window, const dtype type,
     // Remove duplicates
     guideList.unique();
 
+    QString errorMessage;
     bool must_undo = false;
     if (guideList.size() < 2)
     {
-        if (window)
-        {
-            QString warning = QString(
-                    QObject::tr("<p><b>Distribution constraints must be applied "
-                    "to two or more selected shapes or guidelines.</b></p>"
-                    "<p>The current selection contains only %1 such object."
-                    "</p>")).arg(guideList.size());
+        errorMessage = QString(
+                "<p><b>Distribution constraints must be applied "
+                "to two or more selected shapes or guidelines.</b></p>"
+                "<p>The current selection contains only %1 such object."
+                "</p>").arg(guideList.size());
 
-            QMessageBox message(QMessageBox::Warning, "Invalid Action",
-                                warning, QMessageBox::Ok, window);
-            message.setWindowModality(Qt::WindowModal);
-            message.exec();
-        }
         must_undo = true;
     }
     else
@@ -951,7 +945,7 @@ Distribution *createDistribution(QWidget *window, const dtype type,
         // UNDO clear_redo_stack();
     }
 
-    return distro;
+    return QPair<Distribution *, QString>(distro, errorMessage);
 }
 
 

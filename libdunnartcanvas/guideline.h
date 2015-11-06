@@ -115,7 +115,8 @@ typedef std::list<Guideline *> GuidelineList;
 
 
 extern bool guideCompare(Guideline *g1, Guideline *g2);
-extern Guideline *createAlignment(const atypes atype, CanvasItemList items);
+extern QPair<Guideline *, QString> createAlignment(const atypes atype,
+        CanvasItemList items);
 
 
 }

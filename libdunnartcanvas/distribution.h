@@ -102,7 +102,7 @@ class Distribution: public Indicator
 
 typedef std::list<Distribution *> DistributionList;
 
-extern Distribution *createDistribution(QWidget *window, const dtype type,
+extern QPair<Distribution *, QString> createDistribution(const dtype type, 
         CanvasItemList& objList);
 
 

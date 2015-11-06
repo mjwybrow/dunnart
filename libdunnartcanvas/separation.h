@@ -87,9 +87,8 @@ class Separation: public Indicator
 extern double separation_constraint_gap;
 typedef std::list<Separation *> SeparationList;
 
-extern Separation *createSeparation(QWidget *windows, const dtype dtype,
-        CanvasItemList& objList, double separationDistance,
-        bool sortGuidelines = true);
+extern QPair<Separation *, QString> createSeparation(const dtype type,
+        CanvasItemList& objList, double separationDist, bool sortGuidelines = true);
 
 
 }
