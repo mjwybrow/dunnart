@@ -144,31 +144,6 @@ GraphData::GraphData(Canvas *canvas, bool ignoreEdges,
         }
     }
 
-    if (!ignoreEdges)
-    {
-        // If the nodes are all clumped at one position, then the layout
-        // won't be able to separate them, thus we distribute them a small
-        // amount.
-        if (xMax == xMin)
-        {
-            for (size_t i = 0; i < rs.size(); ++i)
-            {
-                double jiggle = ((double) i) - (rs.size() / 2);
-                //qDebug("Clumped: offset X: %g", jiggle);
-                rs[i]->offset(jiggle, 0.0);
-            }
-        }
-        if (yMax == yMin)
-        {
-            for (size_t i = 0; i < rs.size(); ++i)
-            {
-                double jiggle = ((double) i) - (rs.size() / 2);
-                //qDebug("Clumped: offset Y: %g", jiggle);
-                rs[i]->offset(0.0, jiggle);
-            }
-        }
-    }
-
     // Determine cluster heirarchy for shape-based clusters.
     QSet<cola::Cluster *> allShapeClusters;
     for (int i = 0; i < canvasObjects.size(); ++i)

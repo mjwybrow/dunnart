@@ -25,7 +25,8 @@ SOURCES += cola.cpp \
     cc_clustercontainmentconstraints.cpp \
     cc_nonoverlapconstraints.cpp \
     box.cpp \
-    shapepair.cpp
+    shapepair.cpp \
+    pseudorandom.cpp
 HEADERS += cola.h \
     cluster.h \
     commondefs.h \
@@ -40,4 +41,5 @@ HEADERS += cola.h \
     unused.h \
     box.h \
     shapepair.h \
+    pseudorandom.h \
     config.h
